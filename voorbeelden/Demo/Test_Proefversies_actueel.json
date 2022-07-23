@@ -1,0 +1,1148 @@
+{
+    "Testresultaat - Proefversies": {
+        "/akn/nl/act/gm9999/2022/REG_A": [
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-01T07:00:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie2"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                            "TotEnMet": "2022-03-15T07:00:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging"
+                                ],
+                                "GemaaktOp": "2022-03-16T08:30:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-16T08:30:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                            "TotEnMet": "2022-05-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging"
+                                ],
+                                "GemaaktOp": "2022-03-16T08:30:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                            "TotEnMet": "2022-05-02T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-01T07:00:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                                ],
+                                "GemaaktOp": "2022-05-02T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk2"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "GemaaktOp": "2022-05-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                            "TotEnMet": "2022-05-02T08:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "GemaaktOp": "2022-05-02T07:00:00Z",
+                                    "Vanaf": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-16T08:30:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                            "TotEnMet": "2022-05-02T08:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                                ],
+                                "GemaaktOp": "2022-05-02T08:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": false
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "GemaaktOp": "2022-05-02T08:00:00Z",
+                                    "Vanaf": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                            "TotEnMet": "2022-06-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "GemaaktOp": "2022-05-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                            "TotEnMet": "2022-05-02T08:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-16T08:30:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                            "TotEnMet": "2022-05-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                                ],
+                                "GemaaktOp": "2022-05-02T08:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging4"
+                                ],
+                                "GemaaktOp": "2022-06-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging4"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "GemaaktOp": "2022-06-01T07:00:00Z",
+                                    "Vanaf": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                            "TotEnMet": "2022-07-14T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "GemaaktOp": "2022-05-02T08:00:00Z",
+                                    "Vanaf": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                            "TotEnMet": "2022-06-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "GemaaktOp": "2022-05-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                            "TotEnMet": "2022-05-02T08:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-16T08:30:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                            "TotEnMet": "2022-05-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
+                                ],
+                                "GemaaktOp": "2022-07-14T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging4"
+                                ],
+                                "GemaaktOp": "2022-06-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "GemaaktOp": "2022-05-02T08:00:00Z",
+                                    "Vanaf": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                            "TotEnMet": "2022-07-15T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "GemaaktOp": "2022-05-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                            "TotEnMet": "2022-05-02T08:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-16T08:30:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                            "TotEnMet": "2022-05-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                                ],
+                                "GemaaktOp": "2022-05-02T08:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging4"
+                                ],
+                                "GemaaktOp": "2022-06-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging4"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "GemaaktOp": "2022-06-01T07:00:00Z",
+                                    "Vanaf": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                            "TotEnMet": "2022-07-16T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "GemaaktOp": "2022-05-02T08:00:00Z",
+                                    "Vanaf": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                            "TotEnMet": "2022-06-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "GemaaktOp": "2022-05-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                            "TotEnMet": "2022-05-02T08:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-16T08:30:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                            "TotEnMet": "2022-05-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
+                                ],
+                                "GemaaktOp": "2022-07-14T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging4"
+                                ],
+                                "GemaaktOp": "2022-06-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk_rechter"
+                }
+            ]
+        ],
+        "/join/id/regdata/2022/IO_A": [
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-01T07:00:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie2"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                            "TotEnMet": "2022-03-15T07:00:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging"
+                                ],
+                                "GemaaktOp": "2022-03-16T08:30:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "GemaaktOp": "2022-05-02T08:00:00Z",
+                                    "Vanaf": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                            "TotEnMet": "2022-07-15T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "GemaaktOp": "2022-05-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                            "TotEnMet": "2022-05-02T08:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-16T08:30:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                            "TotEnMet": "2022-05-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                                ],
+                                "GemaaktOp": "2022-05-02T08:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging4"
+                                ],
+                                "GemaaktOp": "2022-06-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging4"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter"
+                }
+            ]
+        ],
+        "/join/id/regdata/2022/IO_B": [
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                            "TotEnMet": "2022-03-15T07:00:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging"
+                                ],
+                                "GemaaktOp": "2022-03-16T08:30:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "GemaaktOp": "2022-05-02T08:00:00Z",
+                                    "Vanaf": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                            "TotEnMet": "2022-07-15T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "GemaaktOp": "2022-05-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                            "TotEnMet": "2022-05-02T08:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-16T08:30:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                            "TotEnMet": "2022-05-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-16T08:30:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "Pons",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                                ],
+                                "GemaaktOp": "2022-05-02T08:00:00Z"
+                            }
+                        },
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging4"
+                                ],
+                                "GemaaktOp": "2022-06-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging4"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter"
+                }
+            ]
+        ]
+    }
+}

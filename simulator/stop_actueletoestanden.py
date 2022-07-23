@@ -1,0 +1,118 @@
+#======================================================================
+#
+# In-memory representatie van de STOP ActueleToestanden module.
+#
+#======================================================================
+#
+# De actuele toestanden worden opgeslagen in een in-memory versie van
+# de STOP module, via de ActueleToestanden klasse.
+#
+# De actuele toestanden worden gemaakt door de code in de
+# MaakActueleToestanden klasse uit te voeren.
+#
+#======================================================================
+
+from data_doel import Doel
+from stop_toestand import Toestandidentificatie, NogTeConsolideren
+
+#======================================================================
+#
+# ActueleToestanden module
+#
+#======================================================================
+class ActueleToestanden:
+
+    def __init__ (self):
+        """Maak een lege module aan"""
+        # Datum waarop de informatie in de module voor het eerst bekend is geworden
+        self.BekendOp = None
+        # Datum waarop de informatie door de STOP-gebruikende applicatie
+        # ontvangen is (maar het mag niet eerder zijn dan bekendOp).
+        self.OntvangenOp = None
+        # Datum waarop de regeling of informatieobject als juridisch uitgewerkt wordt beschouwd.
+        self.JuridischUitgewerktOp = None
+        # Datum waarop de regeling of informatieobject als materieel uitgewerkt wordt beschouwd.
+        self.MaterieelUitgewerktOp = None
+        # Toestanden van het geconsolideerde instrument, op volgorde van inwerkingtreding
+        self.Toestanden = []
+
+    def ModuleXml (self):
+        """Geeft de XML van de STOP module, als lijst van regels.
+        In deze applicatie alleen nodig voor weergave"""
+        xml = ['<ActueleToestanden xmlns="https://standaarden.overheid.nl/stop/imop/consolidatie/">',
+               '\t<bekendOp>' + self.BekendOp + '</bekendOp>',
+               '\t<ontvangenOp>' + self.OntvangenOp + '</ontvangenOp>']
+        if self.MaterieelUitgewerktOp:
+            xml.append ('\t<materieelUitgewerktOp>' + self.MaterieelUitgewerktOp + '</materieelUitgewerktOp>')
+        if self.JuridischUitgewerktOp:
+            xml.append ('\t<juridischUitgewerktOp>' + self.JuridischUitgewerktOp + '</juridischUitgewerktOp>')
+        for toestand in self.Toestanden:
+            if not toestand.NietMeerActueel:
+                xml.append ('')
+                xml.extend (['\t' + x for x in toestand.ModuleXmlElement ()])
+        xml.extend (['',
+                     '</ActueleToestanden>'])
+        return xml
+
+
+#----------------------------------------------------------------------
+# Toestand
+#----------------------------------------------------------------------
+class ToestandActueel(Toestandidentificatie, NogTeConsolideren):
+
+    def __init__ (self):
+        super ().__init__()
+        # Eerste datum waarop de toestand juridisch in werking is
+        self.JuridischWerkendVanaf = None
+        # Eerste datum waarop de toestand juridisch niet meer in werking is,
+        # of None als de juridische werking geen einddatum kent
+        self.JuridischWerkendTot = None
+
+        # De identificatie van de instrumentversie die de inhoud van de toestand geeft;
+        # kan None zijn. 
+        self.Instrumentversie = None
+
+        # Doelen die tegelijk in werking treden maar die niet allemaal
+        # dezelfde status voorschrijven voor de toestand. Er kan sprake
+        # zijn van verschillende beoogde versies of combinatie van intrekking en versie(s).
+        # Lijst met instanties van TegensprekendDoel, (voor weergave:) gesorteerd op de Identificatie van het doel
+        self.TegensprekendeDoelen = []
+
+    def ModuleXmlElement (self):
+        """Geeft de XML van dit element in de STOP module, als lijst van regels.
+        In deze applicatie alleen nodig voor weergave.
+        """
+        xml = ['<ToestandActueel>',
+               '\t<FRBRExpression>' + self.ExpressionId + '</FRBRExpression>',
+               '\t<juridischWerkendVanaf>' + self.JuridischWerkendVanaf + '</juridischWerkendVanaf>']
+        if self.JuridischWerkendTot:
+            xml.append ('\t<juridischWerkendTot>' + self.JuridischWerkendTot + '</juridischWerkendTot>')
+        xml.extend (['\t' + x for x in self._ModuleXmlDoelen ()])
+        if self.Instrumentversie:
+            xml.append ('\t<instrumentVersie>' + self.Instrumentversie + '</instrumentVersie>')
+        if len (self.TegensprekendeDoelen) > 0:
+            xml.append ('\t<heeftElkaarTegensprekendeDoelen>')
+            for td in self.TegensprekendeDoelen: # volgorde is niet belangrijk
+                xml.extend (['\t\t' + x for x in td.ModuleXmlElement ()])
+            xml.append ('\t</heeftElkaarTegensprekendeDoelen>')
+        xml.extend (['\t' + x for x in self._ModuleXmlAttributen ()])
+
+        xml.append ('</ToestandActueel>')
+        return xml
+
+class TegensprekendDoel:
+
+    def __init__ (self, doel : Doel, laatstBekend):
+        # Het doel waarvoor nog uitwisselingen verwerkt moeten worden
+        self.Doel = doel
+        # De gemaaktOp van de meest recente uitwisseling die is meegenomen bij nog-te-verwerken conclusie 
+        self.LaatstBekend = laatstBekend
+
+    def ModuleXmlElement (self):
+        """Geeft de XML uit deze klasse als onderdeel van een element in de STOP module, als lijst van regels.
+        In deze applicatie alleen nodig voor weergave"""
+        return ['<RepresentatiefDoel>',
+               '\t<doel>' + self.Doel.Identificatie + '</doel>',
+               '\t<laatstBekend>' + self.LaatstBekend + '</laatstBekend>',
+               '</RepresentatiefDoel>']
+

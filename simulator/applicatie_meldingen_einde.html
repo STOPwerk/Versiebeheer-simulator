@@ -1,0 +1,16 @@
+</div>
+<script type="text/javascript">
+    function Meldingen_Aanpassen(e) {
+        var show = e.srcElement.checked;
+        var container = document.querySelector("#meldingen_tabel");
+        var matches = container.querySelectorAll("tr.entry" + e.srcElement.id.slice(4));
+
+        for (var i = 0; i < matches.length; i++) {
+            matches[i].style.display = show ? '' : 'none';
+        }
+    }
+
+    document.querySelectorAll(".meldingen_checkbox").forEach((checkbox) => {
+        checkbox.addEventListener('change', Meldingen_Aanpassen);
+    });
+</script>

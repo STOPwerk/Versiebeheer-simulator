@@ -1,0 +1,42 @@
+.ct_o_toestanden { /* Tabel */
+    border-collapse: collapse
+}
+
+    .ct_o_toestanden td {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+        .ct_o_toestanden td.s {
+            text-align: left;
+            white-space: nowrap;
+        }
+
+.ct_o_toestand { /* Toestand */
+    border: 1px solid #000000;
+}
+
+.ct_o_t { /* toestand-rij in tabel */
+    background-color: #ffe6cc;
+    cursor: pointer;
+}
+
+    .ct_o_t:hover {
+        background-color: #dae8fc;
+    }
+
+    .ct_o_t.uit { /* uitgefilterd */
+        background-color: #f5f5f5;
+    }
+
+        .ct_o_t.uit:hover {
+            background-color: #dae8fc;
+        }
+
+    .ct_o_t.geselecteerd { /* geselecteerde toestand */
+        border: 3px solid #000000;
+    }
+
+    .ct_o_t .wl { /* weggelaten kolom */
+        background-color: #f5f5f5;
+    }

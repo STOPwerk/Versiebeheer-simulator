@@ -1,0 +1,42 @@
+<p>
+    Het volledig overzicht van complete toestanden kan erg omvangrijk worden als een instrument vaak gewijzigd wordt.
+    Bovendien zal niet elke afnemer van deze informatie behoefte hebben aan tijdreizen over alle vier de tijdassen.
+    Daarom staat STOP het toe dat een STOP-gebruikend systeem (zoals de LVBB) een selectie maakt uit de toestanden en
+    die via de <a href="@@@Documentatie_Url@@@/go/go.html?id=xsd:cons:CompleteToestanden">CompleteToestanden</a> module
+    uitwisselt. Omdat er een groot aantal mogelijkheden is om een selectie te maken, is het ondoenlijk in de STOP module
+    vast te leggen welke filtering precies is gemaakt. De documentatie of API van het systeem dat de module maakt zal
+    daarover uitsluitsel moeten geven.
+</p>
+<p>
+    <span class="leestip"></span> Het filter wordt toegepast op elk overzicht van complete toestanden uit de vorige sectie(s).
+    Pas een van de beschikbare filters toe en zie hoe de selectie aangepast wordt. Kies ook een
+    andere uitwisseling/momentopname om het effect daarvan te zien. De resulterende STOP module staat in de volgende sectie.
+</p>
+<p>
+    Kies als eerste uit:
+    <dl>
+        <dt>Ex nunc</dt>
+        <dd>
+            Een selectie van toestanden waarin de informatie uit alle uitwisselingen is verwerkt. Dat kan
+            ertoe leiden dat toestanden nieuwe eigenschappen krijgen nadat de geldigheid al is verlopen.
+        </dd>
+        <dt>Ex tunc</dt>
+        <dd>
+            Een selectie van toestanden waarin toestanden niet meer worden bijgesteld nadat de geldigheid is verlopen.
+            De eigenschappen van toestanden die nu of in de toekomst geldig zijn kunnen nog wel veranderen.
+        </dd>
+    </dl>
+</p>
+<p>
+    Gekozen kan worden welke tijdstempels overgehouden worden. Als niet alle tijdstempels gekozen worden, dan kan in de lijst
+    dezelfde toestand (combinatie van tijdtempels, identificatie en inhoud) meermalen voorkomen; alleen de eerste daarvan hoeft
+    behouden te blijven. Als er meerdere tijdstempels overblijven kunnen er toestanden zijn die nooit meer via een tijdreis te
+    bereiken zijn, omdat het verschil met een toestand eerder in de lijst zit in een verschil in de waarde voor een tijdstempel
+    die weggelaten is. Deze applicatie kan dergelijke toestanden detecteren als er twee tijdstempels overblijven.
+    Als er drie tijdstempels overblijven dan verwijdert de applicatie alleen dubbel voorkomende toestanden.
+</p>
+<p>
+    Tot slot kan ervoor gekozen worden maar een deel van de toestanden uit te wisselen. Bijvoorbeeld als de ontvangende
+    partij regelmatig het overzicht opvraagt om de eigen administratie bij te werken: alle toestanden met een <i>ontvangenOp</i>
+    groter dan of gelijk aan de datum waarop het vorige overzicht is opgevraagd. Of alleen de actuele (nu en in de toekomst geldende) toestanden.
+</p>

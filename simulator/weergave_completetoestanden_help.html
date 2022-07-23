@@ -1,0 +1,55 @@
+<p>
+    Het overzicht van complete toestanden is bedoeld voor gebruik in software die de geconsolideerde regelgeving
+    betrekt van de LVBB. Het overzicht van complete toestanden verschilt op twee punten van het overzicht van
+    de actuele toestanden die hierboven zijn gepresenteerd:
+    <ul>
+        <li>Een toestand bevat voldoende informatie om altijd de inhoud van de toestand te kunnen beschrijven.</li>
+        <li>Het overzicht bevat alle toestanden die ooit geldig waren/zouden zijn/zullen zijn, waarmee tijdreizen met een tot vier parameters mogelijk is.</li>
+    </ul>
+    STOP beschrijft hoe de complete toestanden bepaald moeten worden; daarover meer in latere secties.
+    Het is ook de basis voor het synchroniseren van non-STOP annotaties met de geldige instrumentversies,
+    wat in een latere sectie beschreven is.
+</p>
+<p>
+    Net als voor een actuele toestand wordt voor een toestand in het overzicht van complete toestanden nagegaan
+    welke instrumentversie de inhoud van een toestand weergeeft. Als dat niet mogelijk is wordt bij een actuele toestand
+    aangegeven wat er schort aan de consolidatie. Bij een complete toestand wordt voldoende informatie gegeven
+    zodat de inhoud weergegeven kan worden als een bekende instrumentversie met een lijst van publicaties die
+    daarin nog verwerkt moeten worden. Een complete toestand bevat niet de lijst met publicaties maar (net als bij de actuele
+    toestand) de te verwerken uitwisselingen/momentopnamen. Die kunnen aan de hand van de juridische verantwoording
+    (door elk STOP-gebruikend systeem, niet alleen door de LVBB) vertaald worden naar publicaties.
+</p>
+<p>
+    Die bepaling gaat uit van de maximale <a href="@@@Documentatie_Url@@@/regelgeving_in_de_tijd.html">tijdreismogelijkheden</a>
+    op basis van vier parameters: twee voor beschikbaarheid (<i>ontvangenOp</i> en <i>bekendOp</i>) en
+    twee voor geldigheid ()<i>juridischWerkendVanaf</i> en <i>geldigVanaf</i>).
+    Afnemers van informatie over de geconsolideerde regeling hebben die informatie
+    lang niet altijd nodig. De CompleteToestanden module van STOP kan daarom in gefilterde vorm worden uitgeleverd,
+    waarbij minder tijdreisparameters worden meegenomen (in deze sectie vrij te kiezen) en de historie beperkt
+    wordt (in deze sectie tot alleen de informatie van de dag van uitwisseling of tot de actuele toestanden).
+</p>
+<p>
+    Om de beschikbare en geldige toestand op een bepaald moment te achterhalen moet voor elk van de
+    tijdreisparameters de van toepassing zijnde waarde bepaald worden. De toestand is dan de eerste toestand,
+    beginnend vanaf de eerste toestand in het overzicht, waarvoor alle tijdreisparameters in het overzicht
+    kleiner dan of gelijk zijn aan de bepaalde waarde. Dus de toestand die:
+</p>
+<ul>
+    <li>op tijdstip t<sub>b</sub> bekend was,</li>
+    <li>op tijdstip t<sub>o</sub> in het systeem stond,</li>
+    <li>op tijdstip t<sub>jwv</sub> juridisch in werking was of zal zijn,</li>
+    <li>en (eventueel terugwerkend) geldig is vanaf tijdstip t<sub>gv</sub></li>
+</ul>
+is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt:
+<p>
+    ontvangenOp &le; t<sub>o</sub> en bekendOp &le; t<sub>b</sub> en juridischWerkendVanaf &le; t<sub>jwv</sub> en geldigVanaf &le; t<sub>gv</sub>
+</p>
+<p>
+    <span class="leestip"></span> De getallen bij identificatie en inhoud verwijzen naar lijsten in de resulterende STOP module die in een latere sectie staat.
+    klik op een rij in de tabel om de details van een toestand te bekijken. Klik in de sectie over versiebeheer hierboven op een actuele toestand
+    om te zien welke actuele toestanden met een complete toestand correspondeert. Selecteer verschillende uitwisselingen/momentopnamen (rechtsboven)
+    om te zien hoe de lijst met toestanden in de loop van de tijd wijzigt.
+</p>
+<p>
+    <span class="leestip"></span> In sommige scenario's staat het symbool <!--SYMBOOL--> bij een toestand. Voor deze toestand is een extra toelichting beschikbaar.
+</p>

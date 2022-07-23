@@ -1,0 +1,294 @@
+.vbd_i { /* Iets om op te klikken */
+    cursor: pointer;
+}
+
+.vbd_th_t { /* toestand in legenda */
+    background-color: #ffe6cc;
+    border: 1px solid #d79b00;
+}
+
+.vbd_t { /* toestand */
+    fill: #ffe6cc;
+    stroke: #d79b00;
+}
+
+    .vbd_t.geselecteerd { /* geselecteerde toestand */
+        stroke-width: 3;
+    }
+
+.vbd_l_t { /* label in toestand en jwv-datum*/
+    user-select: none;
+}
+
+.vbd_th { /* niet-meer-actuele (historische) toestand */
+    fill: #f5f5f5;
+    stroke: #666666;
+    cursor: pointer;
+}
+
+    .vbd_th.geselecteerd { /* geselecteerde niet-meer-actuele (historische) toestand */
+        stroke-width: 3;
+    }
+
+.vbd_l_th { /* label in niet-meer-actuele toestand */
+    user-select: none;
+}
+
+.vbd_th_mo { /* momentopname in legenda */
+    background-color: #dae8fc;
+    border: 1px solid #6c8ebf;
+}
+
+.vbd_mo { /* momentopname */
+    fill: #dae8fc;
+    stroke: #6c8ebf;
+}
+
+    .vbd_mo.geselecteerd { /* geselecteerde momentopname */
+        stroke-width: 3;
+    }
+
+    .vbd_mo.nvt { /* momentopname niet in toestand */
+        fill: #ffffff;
+        stroke: #666666;
+    }
+
+    .vbd_mo.iv { /* momentopname behorend bij instrumentversie */
+        fill: #dae8fc;
+        stroke: #6c8ebf;
+        stroke-width: 5;
+    }
+
+    .vbd_mo.vw { /* momentopname verwerkt in toestand/instrumentversie */
+        fill: #d5e8d4;
+        stroke: #82b366;
+    }
+
+    .vbd_mo.ts { /* (tbv toestand) momentopname die andere tegenspreekt */
+        fill: #e1d5e7;
+        stroke: #9673a6;
+    }
+
+        .vbd_mo.ts.iv { /* (tbv toestand) momentopname die andere tegenspreekt */
+            fill: #e1d5e7;
+            stroke: #6c8ebf;
+            stroke-width: 5;
+        }
+
+    .vbd_mo.tv { /* (tbv toestand) te verwerken momentopname */
+        fill: #ffe6cc;
+        stroke: #d79b00;
+    }
+
+    .vbd_mo.to { /* (tbv toestand) te ontvlechten momentopname */
+        fill: #f8cecc;
+        stroke: #6c8ebf;
+    }
+
+        .vbd_mo.to.iv { /* (tbv toestand) te ontvlechten momentopname */
+            fill: #f8cecc;
+            stroke: #6c8ebf;
+            stroke-width: 5;
+        }
+
+.vbd_l_mo { /* label in momentopname */
+    user-select: none;
+}
+
+    .vbd_l_mo.nvt { /* label in momentopname niet in toestand */
+        display: none;
+    }
+
+.vbd_mot { /* momentopname voor terugtrekking */
+    fill: #ffffff;
+    stroke: #666666;
+}
+
+    .vbd_mot.geselecteerd { /* geselecteerde momentopname */
+        stroke-width: 3;
+    }
+
+    .vbd_mot.nvt { /* momentopname niet in toestand */
+        fill: #ffffff;
+        stroke: #666666;
+    }
+
+    .vbd_mot.vw { /* momentopname verwerkt in toestand/instrumentversie */
+        fill: #d5e8d4;
+        stroke: #82b366;
+    }
+
+    .vbd_mot.ts { /* (tbv toestand) momentopname die andere tegenspreekt */
+        fill: #e1d5e7;
+        stroke: #9673a6;
+    }
+
+    .vbd_mot.tv { /* (tbv toestand) te verwerken momentopname */
+        fill: #ffe6cc;
+        stroke: #d79b00;
+    }
+
+    .vbd_mot.to { /* (tbv toestand) te ontvlechten momentopname */
+        fill: #f8cecc;
+        stroke: #6c8ebf;
+    }
+
+.vbd_l_mot { /* label in momentopname */
+    user-select: none;
+}
+
+    .vbd_l_mot.nvt { /* label in momentopname niet in toestand */
+        display: none;
+    }
+
+.vbd_ntc.iv { /* Nog te consolideren tekst (tabel):  instrumentversie */
+    background-color: #dae8fc;
+    border: 2px solid #6c8ebf;
+}
+
+.vbd_ntc.vw { /* Nog te consolideren tekst (tabel):  momentopname verwerkt in toestand/instrumentversie */
+    background-color: #d5e8d4;
+}
+
+.vbd_ntc.ts { /* Nog te consolideren tekst (tabel): (tbv toestand) momentopname die andere tegenspreekt */
+    background-color: #e1d5e7;
+}
+
+.vbd_ntc.tv { /* Nog te consolideren tekst (tabel): te verwerken momentopname */
+    background-color: #ffe6cc;
+}
+
+.vbd_ntc.to { /* Nog te consolideren tekst (tabel): te ontvlechten momentopname */
+    background-color: #f8cecc;
+}
+
+.vbd_mov { /* verbinding tussen momentopnamen */
+    fill: #dae8fc;
+    stroke: #6c8ebf;
+}
+
+.vbd_txt { /* Label van branch / gemaaktOp */
+    user-select: none;
+}
+
+.vbd_line_uw { /* Lijn gemaaktOp */
+    fill: none;
+    stroke: #666666;
+    stroke-width: 1;
+}
+
+.vbd_line_b { /* Lijn branch */
+    fill: none;
+    stroke: #000000;
+    stroke-width: 2;
+}
+
+.vbd_line_sb { /* Stippellijn branch */
+    fill: none;
+    stroke: #000000;
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+}
+
+.vbd_line_t { /* Lijn toestanden */
+    fill: none;
+    stroke: #d79b00;
+    stroke-width: 2;
+}
+
+.vbd_line_th { /* Lijn niet-meer-actuele toestanden */
+    fill: none;
+    stroke: #666666;
+    stroke-width: 1;
+}
+
+.vbd_line_st { /* Stippellijn toestanden */
+    fill: none;
+    stroke: #d79b00;
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+}
+
+.vbd_line_sth { /* Stippellijn niet-meer-actuele toestanden */
+    fill: none;
+    stroke: #666666;
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+}
+
+.vbd_line_b_t { /* Stippellijn branch maar toestand */
+    fill: none;
+    stroke: #000000;
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+}
+
+.vbd_line_p_b_t { /* Punt van lijn branch maar toestand */
+    fill: #000000;
+    stroke: #000000;
+    stroke-width: 1;
+}
+
+.vbd_line_b_th { /* Stippellijn branch maar niet-meer-actuele toestand */
+    fill: none;
+    stroke: #666666;
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+}
+
+.vbd_line_p_b_th { /* Punt van lijn branch maar niet-meer-actuele toestand */
+    fill: #666666;
+    stroke: #666666;
+    stroke-width: 1;
+}
+
+.vbd_line_basis { /* Lijn basisversie */
+    fill: none;
+    stroke: #3333FF;
+    stroke-width: 3;
+}
+
+.vbd_line_basis_p { /* Punt van lijn basisversie */
+    fill: #3333FF;
+    stroke: #3333FF;
+    stroke-width: 1;
+}
+
+.vbd_line_vv { /* Lijn vervlochten versie */
+    fill: none;
+    stroke: #82B366;
+    stroke-width: 3;
+}
+
+.vbd_line_vv_p { /* Punt van lijn vervlochten versie */
+    fill: #82B366;
+    stroke: #82B366;
+    stroke-width: 1;
+}
+
+.vbd_line_ov { /* Lijn ontvlochten versie */
+    fill: none;
+    stroke: #B20000;
+    stroke-width: 3;
+}
+
+.vbd_line_ov_p { /* Punt van lijn ontvlochten versie */
+    fill: #B20000;
+    stroke: #B20000;
+    stroke-width: 1;
+}
+
+.vbd_line_ov_x { /* X in lijn ontvlochten versie */
+    color: #B20000;
+    fill: none;
+    stroke: none;
+}
+
+.vbd_tl { /* toelichting */
+    display: none;
+}
+
+    .vbd_tl.geselecteerd { /* geselecteerde toelichting */
+        display: block;
+        border: 1px solid #000000;
+    }

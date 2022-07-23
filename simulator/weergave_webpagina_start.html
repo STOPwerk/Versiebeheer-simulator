@@ -1,0 +1,183 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!--TITEL-->
+    <style>
+        body {
+            background-color: White;
+            color: Black;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 10pt;
+            line-height: 1.4em;
+        }
+
+        table {
+            background-color: White;
+            color: Black;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 10pt;
+            line-height: 1.4em;
+        }
+
+        .log {
+            width: 100%;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            a:visited {
+                color: blue;
+            }
+
+        .aslink {
+            color: blue;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+            .aslink:hover {
+                text-decoration: underline;
+            }
+
+
+        #meldingen_tabel {
+            border: 1px solid #808080;
+        }
+
+        .entry_detail {
+            color: #CCCCCC;
+        }
+
+            .entry_detail td {
+                color: #CCCCCC;
+            }
+
+        .level_fout {
+            color: #FFFFFF;
+            background-color: #FF0000;
+        }
+
+        .level_letop {
+            color: #FFFFFF;
+            background-color: #CC8800;
+        }
+
+        .main {
+            width: 70em;
+            overflow: auto;
+            white-space: pre-line;
+        }
+
+        .message_fout {
+            color: #FF0000;
+        }
+
+        .message_letop {
+            color: #880000;
+        }
+
+        .message_detail {
+            color: #CCCCCC;
+        }
+
+        .extra {
+            width: 200pt;
+            color: #CCCCCC;
+            overflow: auto;
+        }
+
+        .exception {
+            color: #CCCCCC;
+            font-family: Courier New, monospace;
+        }
+
+        .accordion_h {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 8px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            transition: 0.4s;
+        }
+
+            .accordion_h.active, .accordion_h:hover {
+                background-color: #ccc;
+            }
+
+        .accordion_h_paneel {
+            padding: 0 8px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .accordion_t {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 4px;
+            text-align: center;
+            border: 1px solid #000000;
+            outline: none;
+            transition: 0.4s;
+        }
+
+            .accordion_t.active {
+                background-color: #ccc;
+                padding: 10px;
+            }
+
+            .accordion_t:hover {
+                background-color: #ccc;
+            }
+
+        .accordion_t_paneel {
+            overflow: hidden;
+        }
+
+        .accordion_t_titel {
+            display: none;
+            overflow: hidden;
+            padding: 0 4px;
+        }
+
+        .leestip::after {
+            content: "\1F453";
+            # https://unicode-table.com/en/1F453/
+        }
+
+        .a_symbool_goed {
+            color: #82b366;
+            font-weight: bold;
+        }
+
+        .a_symbool_fout {
+            color: #b85450;
+            font-weight: bold;
+        }
+
+        /*EXTRASTYLE*/
+    </style>
+
+    <script type="text/javascript">
+        /*EXTRASCRIPT*/
+    </script>
+</head>
+<body>

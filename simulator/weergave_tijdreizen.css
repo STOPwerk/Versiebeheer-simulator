@@ -1,0 +1,122 @@
+.ct_tr_toestanden { /* Tabel */
+    border-collapse: collapse
+}
+
+    .ct_tr_toestanden td {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+        .ct_tr_toestanden td.s {
+            text-align: left;
+            white-space: nowrap;
+        }
+
+.ct_tr_tk { /* Toestand die in de toekomst ontstaat */
+    color: #cccccc;
+}
+
+    .ct_tr_tk:hover {
+        color: #666666;
+    }
+
+    .ct_tr_tk.geselecteerd { /* eerder geselecteerde toestand */
+        border: 3px solid #000000;
+    }
+
+.ct_tr_to { /* Toestand die overschreven is */
+    background-color: #f5f5f5;
+    color: #666666;
+}
+
+    .ct_tr_to:hover {
+        background-color: #dae8fc;
+    }
+
+    .ct_tr_to.geselecteerd { /* geselecteerde toestand */
+        border: 3px solid #000000;
+    }
+
+.ct_tr_t { /* Toestand die meedoet */
+    background-color: #ffe6cc;
+    cursor: pointer;
+}
+
+    .ct_tr_t:hover {
+        background-color: #dae8fc;
+    }
+
+    .ct_tr_t.uw { /* Toestand in uitwisseling */
+        background-color: #d5e8d4;
+    }
+
+        .ct_tr_t.uw:hover {
+            background-color: #dae8fc;
+        }
+
+    .ct_tr_t.geselecteerd { /* geselecteerde toestand */
+        border: 3px solid #000000;
+        background-color: #dae8fc;
+    }
+
+        .ct_tr_t.geselecteerd.uw {
+            background-color: #dae8fc;
+        }
+
+.ct_tr_diagram {
+    border-left: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    width: 300px;
+    height: 300px;
+}
+
+.ct_tr_diagram_x {
+    width: 300px;
+    text-align: right;
+}
+
+.ct_tr_diagram_y {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.ct_tr_dr { /* gebied in diagram */
+    fill: #ffe6cc;
+    cursor: pointer;
+}
+
+    .ct_tr_dr.geselecteerd {
+        fill: #dae8fc;
+    }
+
+    .ct_tr_dr.uw { /* ... uit deze uitwisseling */
+        fill: #d5e8d4;
+    }
+
+        .ct_tr_dr.uw.geselecteerd {
+            fill: #dae8fc;
+        }
+
+.ct_tr_du { /* uitgewerkt gebied in diagram */
+    fill: #ffffff;
+    cursor: pointer;
+}
+
+    .ct_tr_du.geselecteerd {
+        fill: #dae8fc;
+    }
+
+.ct_tr_dl { /* lijn in diagram */
+    stroke: #000000;
+    stroke-width: 1;
+}
+
+.ct_tr_dt { /* tekst in diagram */
+    cursor: pointer;
+    user-select: none;
+}
+
+.ct_tr_dt_obt { /* pointer naar geldigheidsdiagram */
+    user-select: none;
+    text-anchor: middle;
+}

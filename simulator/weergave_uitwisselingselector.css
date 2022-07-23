@@ -1,0 +1,85 @@
+#uitwisselingselector {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 1px solid #808080;
+    background-color: #fff;
+    padding: 2px;
+}
+
+.uitwisselingselector_paneel {
+}
+
+.uitwisselingselector_accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 18pt;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    .active, .uitwisselingselector_accordion:hover {
+        background-color: #ccc;
+    }
+
+#uitwisselingselector_gemaaktOp {
+    padding: 2px;
+}
+
+.uitwisselingselectorknop {
+    text-decoration: none;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+    .uitwisselingselectorknop:hover {
+        text-decoration: underline;
+    }
+
+    .uitwisselingselectorknop.geselecteerd {
+        background-color: #ffe6cc;
+    }
+
+/* https://csslayout.io/triangle-buttons/ */
+.pijlknop {
+    /* Center the content */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    /* Spacing */
+    padding: 2px;
+}
+
+.pijlknop_driehoek {
+    border-style: solid;
+    /* Size */
+    height: 0px;
+    width: 0px;
+}
+
+.pijlknop_driehoek_omhoog {
+    border-color: transparent transparent rgba(0, 0, 0, 0.3);
+    border-width: 0px 8px 8px;
+}
+
+.pijlknop_driehoek_rechts {
+    border-color: transparent transparent transparent rgba(0, 0, 0, 0.3);
+    border-width: 8px 0px 8px 8px;
+}
+
+.pijlknop_driehoek_omlaag {
+    border-color: rgba(0, 0, 0, 0.3) transparent transparent;
+    border-width: 8px 8px 0px;
+}
+
+.pijlknop_driehoek_links {
+    border-color: transparent rgba(0, 0, 0, 0.3) transparent transparent;
+    border-width: 8px 8px 8px 0px;
+}

@@ -1,0 +1,45 @@
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+
+        function TogglePaneel() {
+            this.classList.toggle("active");
+            var panel = document.querySelector('[data-accordion-paneel="' + this.dataset.accordion + '"]');
+            var titel = document.querySelector('[data-accordion-titel="' + this.dataset.accordion + '"]');
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+                if (titel) {
+                    titel.style.display = "block";
+                }
+            } else {
+                panel.style.display = "block";
+                if (titel) {
+                    titel.style.display = "none";
+                }
+            }
+        }
+
+        function VerbergPanelen() {
+            document.querySelectorAll("[data-accordion]").forEach((elt) => {
+                elt.classList.remove("active");
+            });
+            document.querySelectorAll("[data-accordion-paneel]").forEach((elt) => {
+                elt.style.display = "none";
+            });
+            document.querySelectorAll("[data-accordion-titel]").forEach((elt) => {
+                elt.style.display = "block";
+            });
+        }
+
+        // Event handlers voor de accordion panelen (op te klikken stukjes van de pagina)
+        document.querySelectorAll("[data-accordion]").forEach((elt) => {
+            elt.addEventListener("click", TogglePaneel);
+        });
+        // Event handler voor het sluiten van alle accordion panelen
+        document.querySelectorAll("#accordion-sluiten").forEach((elt) => {
+            elt.addEventListener("click", VerbergPanelen);
+        });
+    });
+    /*EXTRASCRIPT*/
+</script>
+</body>
+</html>
