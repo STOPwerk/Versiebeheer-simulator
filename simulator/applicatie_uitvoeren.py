@@ -64,16 +64,17 @@ class Uitvoering:
 
                 if self._Scenario.Log.Waarschuwingen > 0:
                     if self._Scenario.Log.Fouten > 0:
-                        self._Scenario.ApplicatieLog.Fout  ("Fouten bij uitvoering ({:.3f}s) van consolidatie".format(tijd) + ': <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
+                        self._Scenario.ApplicatieLog.Fout  ("Fouten bij uitvoering ({:.3f}s) van simulatie".format(tijd))
                     else:
-                        self._Scenario.ApplicatieLog.Waarschuwing  ("Waarschuwingen bij uitvoering ({:.3f}s) van consolidatie".format(tijd) + ': <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
+                        self._Scenario.ApplicatieLog.Waarschuwing  ("Waarschuwingen bij uitvoering ({:.3f}s) van simulatie".format(tijd))
                 else:
-                    self._Scenario.ApplicatieLog.Informatie ("Consolidatie uitgevoerd ({:.3f}s)".format(tijd) + ': <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
+                    self._Scenario.ApplicatieLog.Informatie ("Consolidatie uitgevoerd ({:.3f}s)".format(tijd))
 
             else:
-                self._Scenario.ApplicatieLog.Informatie ("Niet-valide invoer voor scenario in '" + self._Scenario.Pad + "'")
+                self._Scenario.ApplicatieLog.Informatie ("Scenario in '" + self._Scenario.Pad + "' niet uitgevoerd wegens invalide invoer")
 
             ResultaatGenerator.MaakPagina (self._Scenario)
+            self._Scenario.ApplicatieLog.Informatie ('Voor een verslag zie: <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
 
             return self._Scenario.IsValide and self._Scenario.Log.Fouten == 0
 

@@ -55,7 +55,7 @@ class Scenario:
                         succes = voer_uit (scenario)
                         log.Informatie ("Uitvoering afgerond voor het scenario in '" + scenario.Pad + "'")
                     else:
-                        log.Informatie ("Niet-valide invoer voor scenario in '" + directory_pad + "'")
+                        log.Fout ("Niet-valide invoer voor scenario in '" + directory_pad + "'")
                         succes = voer_uit (scenario)
                     if succes:
                         aantalSucces += 1

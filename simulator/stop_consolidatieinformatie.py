@@ -91,16 +91,14 @@ class ConsolidatieInformatie:
 
         module = ConsolidatieInformatie (log, pad)
         module.GemaaktOp = module._LeesGemaaktOp (xml)
-        if module.GemaaktOp:
+        if not module.GemaaktOp is None:
             module.OntvangenOp = module.GemaaktOp[0:10]
             module._BekendOp = module.GemaaktOp[0:10]
-        else:
-            module._BekendOp = '0000-00-00'
 
         def _VoegToe (lijst, element):
             if not element is None:
                 lijst.append (element)
-                if not element._BekendOp is None and element._BekendOp > module._BekendOp:
+                if not module._BekendOp is None and not element._BekendOp is None and element._BekendOp > module._BekendOp:
                     module._BekendOp = element._BekendOp
 
         for elt in xml.findall ('.//{' + ConsolidatieInformatie.DataNamespace + '}BeoogdeRegeling'):
@@ -120,7 +118,7 @@ class ConsolidatieInformatie:
         for elt in xml.findall ('.//{' + ConsolidatieInformatie.DataNamespace + '}TerugtrekkingTijdstempel'):
             _VoegToe (module.TijdstempelTerugtrekkingen, TerugtrekkingTijdstempel.LeesXml (module, elt))
 
-        if module._BekendOp > module.OntvangenOp:
+        if not module._BekendOp is None and module._BekendOp > module.OntvangenOp:
             module.Log.Informatie ("Bestand '" + module.Pad + "': bekendOp ligt in de toekomst - dat is alleen toegestaan in deze applicatie")
 
         if module.IsValide:

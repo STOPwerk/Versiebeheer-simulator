@@ -107,12 +107,12 @@ class UnitTests:
                 start = time.perf_counter ()
                 self._Proces.VoerUit ()
                 tijd = time.perf_counter() - start
-                self._Scenario.ApplicatieLog.Informatie ("Consolidatie voor test uitgevoerd ({:.3f}s)".format(tijd) + ': <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
-
+                self._Scenario.ApplicatieLog.Informatie ("Consolidatie voor test uitgevoerd ({:.3f}s)".format(tijd))
             else:
-                self._Scenario.ApplicatieLog.Informatie ("Niet-valide invoer voor scenario in '" + self._Scenario.Pad + "'")
+                self._Scenario.ApplicatieLog.Informatie ("Scenario in '" + self._Scenario.Pad + "' niet uitgevoerd wegens invalide invoer")
 
             self._BewaarEnTestResultaten ()
+            self._Scenario.ApplicatieLog.Informatie ('Voor een verslag zie: <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
 
         except Exception as e:
             self.Succes = False
