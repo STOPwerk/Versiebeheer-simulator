@@ -20,9 +20,9 @@ window.addEventListener('load', function () {
         }
         document.querySelectorAll("[data-uw]").forEach((button) => {
             if (elt.value == button.dataset.uw) {
-                button.classList.add('geselecteerd')
+                button.classList.add('huidige-uw')
             } else {
-                button.classList.remove('geselecteerd')
+                button.classList.remove('huidige-uw')
             }
         });
     }

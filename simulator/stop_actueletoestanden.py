@@ -12,6 +12,8 @@
 #
 #======================================================================
 
+from typing import List
+
 from data_doel import Doel
 from stop_toestand import Toestandidentificatie, NogTeConsolideren
 
@@ -29,12 +31,10 @@ class ActueleToestanden:
         # Datum waarop de informatie door de STOP-gebruikende applicatie
         # ontvangen is (maar het mag niet eerder zijn dan bekendOp).
         self.OntvangenOp = None
-        # Datum waarop de regeling of informatieobject als juridisch uitgewerkt wordt beschouwd.
-        self.JuridischUitgewerktOp = None
         # Datum waarop de regeling of informatieobject als materieel uitgewerkt wordt beschouwd.
         self.MaterieelUitgewerktOp = None
         # Toestanden van het geconsolideerde instrument, op volgorde van inwerkingtreding
-        self.Toestanden = []
+        self.Toestanden : List[ToestandActueel] = []
 
     def ModuleXml (self):
         """Geeft de XML van de STOP module, als lijst van regels.
@@ -44,8 +44,6 @@ class ActueleToestanden:
                '\t<ontvangenOp>' + self.OntvangenOp + '</ontvangenOp>']
         if self.MaterieelUitgewerktOp:
             xml.append ('\t<materieelUitgewerktOp>' + self.MaterieelUitgewerktOp + '</materieelUitgewerktOp>')
-        if self.JuridischUitgewerktOp:
-            xml.append ('\t<juridischUitgewerktOp>' + self.JuridischUitgewerktOp + '</juridischUitgewerktOp>')
         for toestand in self.Toestanden:
             if not toestand.NietMeerActueel:
                 xml.append ('')
@@ -75,8 +73,8 @@ class ToestandActueel(Toestandidentificatie, NogTeConsolideren):
         # Doelen die tegelijk in werking treden maar die niet allemaal
         # dezelfde status voorschrijven voor de toestand. Er kan sprake
         # zijn van verschillende beoogde versies of combinatie van intrekking en versie(s).
-        # Lijst met instanties van TegensprekendDoel, (voor weergave:) gesorteerd op de Identificatie van het doel
-        self.TegensprekendeDoelen = []
+        # Gesorteerd op de Identificatie van het doel
+        self.TegensprekendeDoelen : List[TegensprekendDoel] = []
 
     def ModuleXmlElement (self):
         """Geeft de XML van dit element in de STOP module, als lijst van regels.
@@ -90,12 +88,13 @@ class ToestandActueel(Toestandidentificatie, NogTeConsolideren):
         xml.extend (['\t' + x for x in self._ModuleXmlDoelen ()])
         if self.Instrumentversie:
             xml.append ('\t<instrumentVersie>' + self.Instrumentversie + '</instrumentVersie>')
-        if len (self.TegensprekendeDoelen) > 0:
-            xml.append ('\t<heeftElkaarTegensprekendeDoelen>')
-            for td in self.TegensprekendeDoelen: # volgorde is niet belangrijk
-                xml.extend (['\t\t' + x for x in td.ModuleXmlElement ()])
-            xml.append ('\t</heeftElkaarTegensprekendeDoelen>')
-        xml.extend (['\t' + x for x in self._ModuleXmlAttributen ()])
+        else:
+            xml.append ('\t<nogTeConsolideren>')
+            if len (self.TegensprekendeDoelen) > 0:
+                for td in self.TegensprekendeDoelen: # volgorde is niet belangrijk
+                    xml.extend (['\t\t' + x for x in td.ModuleXmlElement ()])
+            xml.extend (['\t\t' + x for x in self._ModuleXmlAttributen ()])
+            xml.append ('\t</nogTeConsolideren>')
 
         xml.append ('</ToestandActueel>')
         return xml
@@ -111,8 +110,8 @@ class TegensprekendDoel:
     def ModuleXmlElement (self):
         """Geeft de XML uit deze klasse als onderdeel van een element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        return ['<RepresentatiefDoel>',
-               '\t<doel>' + self.Doel.Identificatie + '</doel>',
+        return ['<Tegensprekend>',
+               '\t<tegensprekendDoel>' + self.Doel.Identificatie + '</tegensprekendDoel>',
                '\t<laatstBekend>' + self.LaatstBekend + '</laatstBekend>',
-               '</RepresentatiefDoel>']
+               '</Tegensprekend>']
 

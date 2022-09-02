@@ -10,11 +10,11 @@
 # informatie niet nodig.
 #
 # De minimale uitbreiding op de STOP modules voor het bepalen van de
-# proefversies (het interne datamodel) staat in data_proefversies.py.
+# proefversies (het interne datamodel) staat in data_lv_proefversies.py.
 #
 #======================================================================
 
-from data_proefversies import Proefversie as DataProefversie, ProefversieAnnotatie as DataProefversieAnnotatie
+from data_lv_proefversies import Proefversie as DataProefversie, ProefversieAnnotatie as DataProefversieAnnotatie
 from stop_proefversies import Proefversies as STOPProefversies
 
 #----------------------------------------------------------------------

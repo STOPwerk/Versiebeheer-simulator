@@ -68,7 +68,7 @@ if len(directory_paden) == 0:
 # Uitvoeren van de applicatie.
 #======================================================================
 from applicatie_meldingen import Meldingen
-from data_scenario import Scenario
+from applicatie_scenario import Scenario
 
 log = Meldingen (True)
 

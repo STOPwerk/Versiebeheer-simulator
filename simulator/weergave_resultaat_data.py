@@ -2,7 +2,7 @@
 #
 # Data voor het aanmaken van een webpagina die alle beschikbare
 # resultaten laat zien van het consolidatie proces uit 
-# proces_consolidatie.py.
+# proces_lv_consolidatie.py.
 #
 #----------------------------------------------------------------------
 #
@@ -16,8 +16,8 @@
 #======================================================================
 
 from data_doel import Doel
-from data_versiebeheerinformatie import Uitwisseling
-from proces_tijdreisfilter import Filter_CompleteToestanden, Filtervoorschrift
+from data_lv_versiebeheerinformatie import Uitwisseling
+from proces_lv_tijdreisfilter import Filter_CompleteToestanden, Filtervoorschrift
 from stop_completetoestanden import CompleteToestanden, Toestand
 from weergave_data_proefversies import Proefversies, Proefversie
 from weergave_data_toestanden import Toestand
@@ -371,7 +371,7 @@ class InstrumentUitwisseling:
         self._CompleteToestanden[str(exNunc + ontvangenOp + bekendOp + juridischWerkendVanaf)] = filter.JuridischWerkendVanafPlus2 (True, True, False)
         self._CompleteToestanden[str(exNunc + ontvangenOp + bekendOp + juridischWerkendVanaf + laatstOntvangen)] = filter.JuridischWerkendVanafPlus2 (True, True, False, True)
         self._CompleteToestanden[str(exNunc + ontvangenOp + geldigVanaf + juridischWerkendVanaf)] = filter.JuridischWerkendVanafPlus2 (True, False, True)
-        self._CompleteToestanden[str(exNunc + ontvangenOp + geldigVanaf + juridischWerkendVanaf + laatstOntvangen)] = filter.JuridischWerkendVanafPlus2 (True, False, True)
+        self._CompleteToestanden[str(exNunc + ontvangenOp + geldigVanaf + juridischWerkendVanaf + laatstOntvangen)] = filter.JuridischWerkendVanafPlus2 (True, False, True, True)
         self._CompleteToestanden[str(exNunc + bekendOp + geldigVanaf + juridischWerkendVanaf)] = filter.JuridischWerkendVanafPlus2 (False, True, True)
 
         self._CompleteToestanden[str(exNunc + ontvangenOp + bekendOp + geldigVanaf + juridischWerkendVanaf)] = filter.AlleToestanden (False)
@@ -379,7 +379,5 @@ class InstrumentUitwisseling:
 
         self._CompleteToestanden[str(exTunc + ontvangenOp + juridischWerkendVanaf)] = filter.ExTunc (False)
         self._CompleteToestanden[str(exTunc + ontvangenOp + juridischWerkendVanaf + laatstOntvangen)] = filter.ExTunc (True)
-
-        # ex tunc moet nog
 
 

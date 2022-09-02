@@ -33,7 +33,7 @@ class Toestandidentificatie:
         index int  Index van de toestand zoals gebruikt in de tijdreistabel
         """
         xml = ['<ToestandIdentificatie>',
-               '\t<id>' + str(index) + '</id>',
+               '\t<toestandId>' + str(index) + '</toestandId>',
                '\t<FRBRExpression>' + self.ExpressionId + '</FRBRExpression>']
         xml.extend (['\t' + x for x in self._ModuleXmlDoelen ()])
         xml.append ('</ToestandIdentificatie>')
@@ -72,13 +72,9 @@ class NogTeConsolideren:
         In deze applicatie alleen nodig voor weergave"""
         xml = []
         for td in self.TeVerwerkenDoelen: # volgorde is niet belangrijk
-            xml.extend (['<teVerwerkenDoel>',
-                         *['\t' + x for x in td.ModuleXmlElement ()],
-                         '</teVerwerkenDoel>'])
+            xml.extend (['\t' + x for x in td.ModuleXmlElement ()])
         for td in self.TeOntvlechtenDoelen: # volgorde is niet belangrijk
-            xml.extend (['<teOntvlechtenDoel>',
-                         *['\t' + x for x in td.ModuleXmlElement ()],
-                         '</teOntvlechtenDoel>'])
+            xml.extend (['\t' + x for x in td.ModuleXmlElement ()])
         return xml
 
 class NogTeVerwerken:
@@ -95,11 +91,11 @@ class NogTeVerwerken:
         """Geeft de XML uit deze klasse als onderdeel van een element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
         xml = ['<NogTeVerwerken>',
-               '\t<doel>' + self.Doel.Identificatie + '</doel>',
+               '\t<teVerwerkenDoel>' + self.Doel.Identificatie + '</teVerwerkenDoel>',
                '\t<laatstBekend>' + self.LaatstBekend + '</laatstBekend>']
         if not self.LaatstVerwerkt is None:
                xml.append ('\t<laatstVerwerkt>' + self.LaatstVerwerkt + '</laatstVerwerkt>')
-        xml.append ('<NogTeVerwerken>')
+        xml.append ('</NogTeVerwerken>')
         return xml
 
 class NogTeOntvlechten:
@@ -114,6 +110,6 @@ class NogTeOntvlechten:
         """Geeft de XML uit deze klasse als onderdeel van een element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
         return ['<NogTeOntvlechten>',
-               '\t<doel>' + self.Doel.Identificatie + '</doel>',
+               '\t<teOntvlechtenDoel>' + self.Doel.Identificatie + '</teOntvlechtenDoel>',
                '\t<laatstVerwerkt>' + self.LaatstVerwerkt + '</laatstVerwerkt>',
-               '<NogTeOntvlechten>']
+               '</NogTeOntvlechten>']

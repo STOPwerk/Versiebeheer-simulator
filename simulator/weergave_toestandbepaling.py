@@ -6,7 +6,7 @@
 #
 #======================================================================
 
-from data_versiebeheerinformatie import Instrument
+from data_lv_versiebeheerinformatie import Instrument
 from stop_toestand import Toestandidentificatie
 from weergave_data_toestanden import ConsolidatieprocesInformatie
 from weergave_resultaat_data import InstrumentData, InstrumentUitwisseling
@@ -150,7 +150,7 @@ class Weergave_Toestandbepaling ():
                     if toestand.GemaaktOp != uitwisseling.GemaaktOp:
                         continue
                     inhoud = uitwisseling.CompleteToestanden.ToestandInhoud[toestand.Inhoud]
-                    if inhoud.IsJuridischUitgewerkt:
+                    if inhoud.IsNietInWerking:
                         continue
                     identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                     maker = Weergave_Toestandbepaling (generator, uniekId, uitwisseling, True, uitlegStappen)
@@ -169,7 +169,7 @@ class Weergave_Toestandbepaling ():
                     if toestand.GemaaktOp != uitwisseling.GemaaktOp:
                         continue
                     inhoud = uitwisseling.CompleteToestanden.ToestandInhoud[toestand.Inhoud]
-                    if inhoud.IsJuridischUitgewerkt:
+                    if inhoud.IsNietInWerking:
                         continue
                     identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                     if not inhoud.OnvolledigeVersies is None:
@@ -216,7 +216,7 @@ class Weergave_Toestandbepaling ():
                     if toestand.GemaaktOp != uitwisseling.GemaaktOp:
                         continue
                     inhoud = uitwisseling.CompleteToestanden.ToestandInhoud[toestand.Inhoud]
-                    if inhoud.IsJuridischUitgewerkt:
+                    if inhoud.IsNietInWerking:
                         continue
                     identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                     maker = Weergave_Toestandbepaling (generator, uniekId, uitwisseling, True, uitlegStappen)
@@ -249,7 +249,7 @@ class Weergave_Toestandbepaling ():
                     if toestand.GemaaktOp != uitwisseling.GemaaktOp:
                         continue
                     inhoud = uitwisseling.CompleteToestanden.ToestandInhoud[toestand.Inhoud]
-                    if inhoud.IsJuridischUitgewerkt:
+                    if inhoud.IsNietInWerking:
                         continue
                     identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                     if not inhoud.OnvolledigeVersies is None:

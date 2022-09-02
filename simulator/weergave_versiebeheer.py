@@ -6,7 +6,7 @@
 #
 #======================================================================
 
-from data_versiebeheerinformatie import Instrument
+from data_lv_versiebeheerinformatie import Instrument
 from stop_consolidatieinformatie import ConsolidatieInformatie
 from weergave_data_toestanden import ToestandActueel
 from weergave_resultaat_data import InstrumentData

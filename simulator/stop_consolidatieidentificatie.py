@@ -20,18 +20,16 @@ from stop_naamgeving import Naamgeving
 #======================================================================
 class ConsolidatieIdentificatie:
 
-    def __init__ (self, instrumentWorkId, juridischWerkendVanaf):
+    def __init__ (self, scenario, instrumentWorkId, juridischWerkendVanaf):
         """Maak de identificatie voor het geconsolideerde instrument aan
 
         Argumenten:
+        scenario Scenario  Scenrario waar het instrument onderdeel van is
         instrumentWorkId string  Work-identificatie van het niet=geconsildeerde instrument
         juridischWerkendVanaf string  Datum van eerste inwerkingtreding
         """
         # De work-identificatie van het instrument
         self.IsConsolidatieVan = instrumentWorkId
         # De work-identificatie van het geconsolideerde element
-        self.WorkId  = Naamgeving.WorkVoorConsolidatieVan (instrumentWorkId, int (juridischWerkendVanaf[0:4]), ConsolidatieIdentificatie._Volgnummer)
-        ConsolidatieIdentificatie._Volgnummer += 1
-
-    # Volgend volgnummer te gebruiken bij de toekenning van een work-id
-    _Volgnummer = 1
+        self.WorkId  = Naamgeving.WorkVoorConsolidatieVan (instrumentWorkId, int (juridischWerkendVanaf[0:4]), scenario._InstrumentVolgnummer)
+        scenario._InstrumentVolgnummer += 1

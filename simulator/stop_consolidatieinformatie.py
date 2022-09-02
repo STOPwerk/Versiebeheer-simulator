@@ -13,6 +13,7 @@
 #======================================================================
 
 import re
+from typing import Dict, List
 
 from data_doel import Doel
 from stop_naamgeving import Naamgeving
@@ -47,20 +48,39 @@ class ConsolidatieInformatie:
         # gemaaktOp.
         self.OntvangenOp = None
 
-        # Doorgeven van instrumentversies: array van BeoogdeVersie instanties
-        self.BeoogdeVersies = []
-        # Doorgeven van terugtrekkingen: array van Terugtrekking instanties
-        self.Terugtrekkingen = []
-        # Doorgeven van intrekkingen: array van Intrekking instanties
-        self.Intrekkingen = []
-        # Doorgeven van terugtrekkingen: array van TerugtrekkingIntrekking instanties
-        self.TerugtrekkingenIntrekking = []
-        # Doorgeven van tijdstempels: array van Tijdstempel instanties
-        self.Tijdstempels = []
-        # Doorgeven van terugtrekking tijdstempels: array van TerugtrekkingTijdstempel instanties
-        self.TijdstempelTerugtrekkingen = []
+        # Doorgeven van instrumentversies
+        self.BeoogdeVersies : List[BeoogdeVersie] = []
+        # Doorgeven van terugtrekkingen
+        self.Terugtrekkingen : List[Terugtrekking] = []
+        # Doorgeven van intrekkingen
+        self.Intrekkingen : List[Intrekking] = []
+        # Doorgeven van terugtrekkingen
+        self.TerugtrekkingenIntrekking : List[TerugtrekkingIntrekking] = []
+        # Doorgeven van tijdstempels
+        self.Tijdstempels : List[Tijdstempel] = []
+        # Doorgeven van terugtrekking tijdstempels
+        self.TijdstempelTerugtrekkingen: List[TerugtrekkingTijdstempel] = []
         # Geeft aan of er fouten zijn gesignaleerd bij het inlezen van de module
         self.IsValide = True
+
+    def ModuleXml (self):
+        """Geef de XML voor deze STOP module
+        """
+        xml = ['<ConsolidatieInformatie xmlns="' + ConsolidatieInformatie.DataNamespace + '">']
+        xml.append ('\t<gemaaktOp>' + self.GemaaktOp + '</gemaaktOp>')
+        perCollectie = {}
+        for lijst in [self.BeoogdeVersies, self.Terugtrekkingen, self.Intrekkingen, self.TerugtrekkingenIntrekking, self.Tijdstempels, self.TijdstempelTerugtrekkingen]:
+            for ci in lijst:
+                collectie = ci.ModuleXmlInCollectie ()
+                if not collectie in perCollectie:
+                    perCollectie[collectie] = []
+                perCollectie[collectie].extend (['\t\t' + line for line in ci.ModuleXmlElement (False)])
+        for collectie in sorted (perCollectie):
+            xml.append ('\t<' + collectie + '>')
+            xml.extend (perCollectie[collectie])
+            xml.append ('\t</' + collectie + '>')
+        xml.append ('</ConsolidatieInformatie>')
+        return xml
 
 #----------------------------------------------------------------------
 # Inlezen van XML
@@ -173,19 +193,20 @@ class ConsolidatieInformatie:
         return None
 
     @staticmethod
-    def ValideerGemaaktOp (log, pad, gemaaktOp):
+    def ValideerGemaaktOp (log, pad, gemaaktOp, naam = 'gemaaktOp'):
         """Valideer de waarde van een gemaaktOp tijdstip
 
         Argumenten:
         log Meldingen  Verzameling van meldingen
         pad string  Pad van het bestand waar de gemaaktOp in voorkomt
         gemaaktOp string  Te valideren waarde
+        naam string  Naam van de parameter die het tijdstip als waarde heeft
 
         Geeft de waarde terug als de waarde valide is, anders None
         """
         if gemaaktOp and ConsolidatieInformatie._GemaaktOpPatroon.match (gemaaktOp):
             return gemaaktOp
-        log.Fout ("Bestand '" + pad + "': gemaaktOp moet een UTC tijdstip zijn in plaats van '" + (gemaaktOp if gemaaktOp else 'null') + "'")
+        log.Fout ("Bestand '" + pad + "': " + naam + " moet een UTC tijdstip zijn in plaats van '" + (gemaaktOp if gemaaktOp else 'null') + "'")
         return None
 
     _GemaaktOpPatroon = re.compile ('^[1-9][0-9]{3}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$')
@@ -227,7 +248,14 @@ class ConsolidatieInformatie:
 #----------------------------------------------------------------------
 class Momentopname:
 
-    def __init__ (self, doel, gemaaktOp):
+    def __init__ (self, doel : Doel, gemaaktOp : str):
+        """Maak een nieuwe momentopname aan.
+        
+        Argumenten:
+        
+        doel Doel  Doel/branch waar de momentopname onderdeel van is
+        gemaaktOp string  Tijdstip waarop de momentopname gemaakt is
+        """
         self.Doel = doel
         self.GemaaktOp = gemaaktOp
 
@@ -261,20 +289,27 @@ class VoorInstrumentEnTijdstempel:
             ontvangenOp = self._BekendOp
         return ontvangenOp
 
-    def ModuleXmlElement (self):
+    def ModuleXmlElement (self, inclusiefImplicieteTijdstempels = True):
         """Geeft de XML van het element in de STOP module, als lijst van regels.
-        In deze applicatie alleen nodig voor weergave"""
+        In deze applicatie alleen nodig voor weergave
+        
+        Argumenten:
+        
+        inclusiefImplicieteTijdstempels bool  Geeft aan of ontvangenOp/bekendOp altijd opgenomen moeten worden (als comment)
+        """
         naam = self.ModuleXmlNaam ()
         xml = ["<" + naam + ">"]
-        # Alleen voor weergave; is geen onderdeel van het STOP schema!
-        xml.append ('\t<!-- ontvangenOp: ' + self.OntvangenOp() + ' -->')
+        if inclusiefImplicieteTijdstempels:
+            # Alleen voor weergave; is geen onderdeel van het STOP schema!
+            xml.append ('\t<!-- ontvangenOp: ' + self.OntvangenOp() + ' -->')
         bekendOp = self.BekendOp ()
         if bekendOp >= self.ConsolidatieInformatie.OntvangenOp:
-            # Alleen voor weergave
-            # Alleen een bekendOp in het verleden zal door BG aan LVBB worden aangeleverd
-            # Een bekendOp gelijk aan ontvangenOp of in de toekomst betreft een LVBB publicatie,
-            # dan bepaalt LVBB de bekendOp datum o.b.v. de publicatiedatum.
-            xml.append ('\t<!-- bekendOp: ' + bekendOp + ' -->')
+            if inclusiefImplicieteTijdstempels:
+                # Alleen voor weergave
+                # Alleen een bekendOp in het verleden zal door BG aan LVBB worden aangeleverd
+                # Een bekendOp gelijk aan ontvangenOp of in de toekomst betreft een LVBB publicatie,
+                # dan bepaalt LVBB de bekendOp datum o.b.v. de publicatiedatum.
+                xml.append ('\t<!-- bekendOp: ' + bekendOp + ' -->')
         else:
             xml.append ('\t<bekendOp>' + bekendOp + '</bekendOp>')
         xml.extend ([*['\t' + x for x in self._ModuleXmlElement ()],
@@ -291,10 +326,10 @@ class VoorInstrument (VoorInstrumentEnTijdstempel):
         self.WorkId = workId
         if not doelen is None:
             doelen = [Doel.DoelInstantie (d) for d in doelen]
-        self.Doelen = doelen
-        self.Basisversies = {} # key = doel, value = instantie van Momentopname
-        self.OntvlochtenVersies = {} # key = doel, value = instantie van Momentopname
-        self.VervlochtenVersies = {} # key = doel, value = instantie van Momentopname
+        self.Doelen : List[Doel] = doelen
+        self.Basisversies : Dict[Doel,Momentopname] = {}
+        self.OntvlochtenVersies : Dict[Doel,Momentopname] = {}
+        self.VervlochtenVersies : Dict[Doel,Momentopname] = {}
 
     def _LeesGemeenschappelijkeInformatie (self, module, xml, moetBestaan):
         """Lees gemaaktOpBasisVan"""
@@ -363,7 +398,7 @@ class VoorInstrument (VoorInstrumentEnTijdstempel):
 #----------------------------------------------------------------------
 class BeoogdeVersie (VoorInstrument):
 
-    def __init__ (self, consolidatieInformatie, doelen, workId, expressionId, isRegeling):
+    def __init__ (self, consolidatieInformatie, doelen, workId, expressionId):
         super ().__init__ (consolidatieInformatie, workId, doelen)
         self.ExpressionId = expressionId
 
@@ -383,7 +418,7 @@ class BeoogdeVersie (VoorInstrument):
                     module.Log.Fout ("Bestand '" + module.Pad + "': expression identificatie '" + expressionId + "' past niet bij een informatieobject")
                     module.IsValide = False
                     return
-            return BeoogdeVersie (module, doelen, Naamgeving.WorkVan (expressionId), expressionId, isRegeling)._LeesGemeenschappelijkeInformatie (module, xml, False)
+            return BeoogdeVersie (module, doelen, Naamgeving.WorkVan (expressionId), expressionId)._LeesGemeenschappelijkeInformatie (module, xml, False)
         workId = module._LeesElement (xml, "instrument", False)
         if workId is None:
             module.Log.Fout ("Bestand '" + module.Pad + "': Instrument of Instrumentversie ontbreekt")
@@ -399,7 +434,7 @@ class BeoogdeVersie (VoorInstrument):
                     module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie '" + workId + "' past niet bij een informatieobject")
                     module.IsValide = False
                     return
-            return BeoogdeVersie (module, doelen, workId, None, isRegeling)._LeesGemeenschappelijkeInformatie (module, xml, False)
+            return BeoogdeVersie (module, doelen, workId, None)._LeesGemeenschappelijkeInformatie (module, xml, False)
 
     @staticmethod
     def LeesXmlZonderVersie (module, xml, isRegeling):
@@ -468,7 +503,7 @@ class Intrekking (VoorInstrument):
 #----------------------------------------------------------------------
 class Terugtrekking (VoorInstrument):
 
-    def __init__ (self, consolidatieInformatie, doelen, workId, isRegeling):
+    def __init__ (self, consolidatieInformatie, doelen, workId):
         super ().__init__ (consolidatieInformatie, workId, doelen)
 
     @staticmethod
@@ -487,7 +522,7 @@ class Terugtrekking (VoorInstrument):
                     module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een informatieobject")
                     module.IsValide = False
                     return
-            return Terugtrekking (module, doelen, workId, isRegeling)._LeesGemeenschappelijkeInformatie (module, xml, True)
+            return Terugtrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True)
 
     def ModuleXmlInCollectie (self):
         """Geeft de naam van de collectie in de STOP module waar dit element onderdeel van is.

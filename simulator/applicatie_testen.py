@@ -7,11 +7,11 @@
 # Ondersteuning voor het uitvoeren van (unit) testen door de
 # applicatie. Het is bewerkelijk om alle unit testen in Python te
 # coderen. Daarom kan de applicatie zelf ook unit testen uitvoeren.
-# Zo'n unit test is een map met invoerbestanden voor de consolidatie
+# Zo'n unit test is een map met invoerbestanden voor de simulatie
 # (als gebruikelijk), en daarnaast bestanden met de verwachte 
 # resultaten in JSON ("<data>_verwacht.json"). De applicatie
 # bewaart de gegenereerde data ("<data>_actueel.json") en vergelijkt
-# de twee na uitvoeren van het consolidatieproces.
+# de twee na uitvoeren van het consolidatiescenario.
 # 
 # Een test kan uitgevoerd worden door de applicatie te draaien 
 # met --testen als argument. Gebruik optie --alle om een reeks
@@ -23,7 +23,7 @@
 # die op applicatieniveau voor elk gevonden scenario (= set van 
 # invoerbestanden) wordt uitgevoerd.
 #
-# Om de resultaten van de consolidatie te kunnen bewaren als JSON
+# Om de resultaten van de simulatie te kunnen bewaren als JSON
 # zijn en aantal JsonEncoders opgenomen.
 #
 #======================================================================
@@ -34,12 +34,11 @@ import os
 import os.path
 import time
 
-from data_actueleannotaties import ActueleToestandenMetAnnotaties
+from applicatie_scenario import Scenario
 from data_doel import Doel
-from data_scenario import Scenario
-from data_versiebeheerinformatie import Branch, Instrument, Momentopname, Uitwisseling
-from proces_consolidatie import Proces_Consolidatie
-from weergave_data_proefversies import ProefversieAnnotatie
+from data_lv_actueleannotaties import ActueleToestandenMetAnnotaties
+from data_lv_versiebeheerinformatie import Branch, Instrument, Momentopname, Uitwisseling
+from proces_simulatie import Proces_Simulatie
 from weergave_resultaat import ResultaatGenerator
 from weergave_webpagina import WebpaginaGenerator
 
@@ -75,8 +74,8 @@ class UnitTests:
         scenario Scenario Invoer voor het consolidatiescenario
         """
         self._Scenario = scenario
-        # Proces voor het uitvoeren van de consolidatie
-        self._Proces = Proces_Consolidatie (self._Scenario)
+        # Proces voor het uitvoeren van de simulatie
+        self._Proces = Proces_Simulatie (self._Scenario)
         # Basisnaam voor het bestand met meldingen uit het proces
         self._MeldingenBasisPad = os.path.join (self._Scenario.Pad, "Test_Meldingen")
         # Basisnaam voor het bestand met versiebeheerinformatie
@@ -108,10 +107,12 @@ class UnitTests:
                 self._Proces.VoerUit ()
                 tijd = time.perf_counter() - start
                 self._Scenario.ApplicatieLog.Informatie ("Consolidatie voor test uitgevoerd ({:.3f}s)".format(tijd))
+
             else:
                 self._Scenario.ApplicatieLog.Informatie ("Scenario in '" + self._Scenario.Pad + "' niet uitgevoerd wegens invalide invoer")
 
             self._BewaarEnTestResultaten ()
+
             self._Scenario.ApplicatieLog.Informatie ('Voor een verslag zie: <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
 
         except Exception as e:

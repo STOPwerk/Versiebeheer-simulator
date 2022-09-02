@@ -10,15 +10,15 @@
 # informatie niet nodig.
 #
 # De minimale uitbreiding op de STOP modules voor het bepalen van de
-# toestanden (het interne datamodel) staat in data_toestanden.py.
+# toestanden (het interne datamodel) staat in data_lv_toestanden.py.
 #
 #======================================================================
 
 from typing import List
 
 from data_doel import Doel
-from data_toestanden import ToestandActueel as DataToestandActueel, ToestandCompleet as SataToestandCompleet
-from stop_completetoestanden import Toestand as STOPToestand, OnvolledigeVersie as STOPOnvolledigeVersie, JuridischUitgewerkt as STOPJuridischUitgewerkt
+from data_lv_toestanden import ToestandActueel as DataToestandActueel, ToestandCompleet as SataToestandCompleet
+from stop_completetoestanden import Toestand as STOPToestand, OnvolledigeVersie as STOPOnvolledigeVersie
 from stop_toestand import NogTeConsolideren, Toestandidentificatie as STOPToestandidentificatie
 
 #======================================================================
@@ -173,24 +173,3 @@ class AnnotatieBijToestand:
         self.Annotatie = annotatie
         # De gevonden uitwisselingen
         self.Uitwisseling = []
-
-class JuridischUitgewerkt (STOPJuridischUitgewerkt):
-
-    def __init__ (self, gemaaktOp : str, ontvangenOp : str, bekendOp : str, juridischUitgewerktOp : str, intrekkingsdoelen : List[Doel]):
-        super ().__init__(ontvangenOp, bekendOp, juridischUitgewerktOp)
-        # Tijdstip van de uitwisseling waarin deze toestand is ontstaan
-        # Alleen nodig voor de weergave
-        self.GemaaktOp = gemaaktOp
-        # Tijdstip van de uitwisseling waarin deze toestand is overschreven door een andere
-        # Alleen nodig voor de weergave
-        self.OverschrevenOp = None
-        # De doelen corresponderend met de intrekking van het instrument op de JuridischUitgewerktOp datum
-        # Lijst met instanties van Doel
-        self.Intrekkingsdoelen = intrekkingsdoelen
-        # Beschrijving van de toestand als tijdreis
-        self._Beschrijving = None
-        # Unieke identificatie van een toestand, als combinatie van een ID + tijdreis
-        # Voor de weergave wordt er een uniek nummer aan toegekend,
-        # zodat verschillende weergaven (stukjes HTML) de toestand kunnen herkennen
-        # en dezelfde toestand kunnen laten
-        self.UniekId = None

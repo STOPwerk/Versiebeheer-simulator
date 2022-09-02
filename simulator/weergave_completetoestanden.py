@@ -126,7 +126,7 @@ class Weergave_CompleteToestanden ():
                     html += '<td data-' + self.UniekId + '_ts="o">' + toestand.OntvangenOp + '</td><td data-' + self.UniekId + '_ts="b">' + toestand.BekendOp + '</td><td>' + toestand.JuridischWerkendVanaf + '</td><td data-' + self.UniekId + '_ts="g">' + toestand.GeldigVanaf + '</td>'
                     html += '<td>#' + str(toestand.Identificatie) + '</td><td>' + ' '.join (letter for _, letter in self._InstrumentData.WeergaveData.Branches (identificatie.Inwerkingtredingsdoelen)) + '</td>'
                     html += '<td>#' + str(toestand.Inhoud) + '</td><td class="s">'
-                    if inhoud.IsJuridischUitgewerkt:
+                    if inhoud.IsNietInWerking:
                         html += Weergave_Symbolen.Toestand_Uitgewerkt
                     elif inhoud.Instrumentversie is None:
                         html += Weergave_Symbolen.Toestand_OnbekendeInhoud
@@ -160,8 +160,8 @@ class Weergave_CompleteToestanden ():
             html += '<tr><td>Expression identificatie</td><td colspan="2">' + identificatie.ExpressionId + '</td></tr>'
             html += '<tr><td rowspan="' + str(len (identificatie.Inwerkingtredingsdoelen)) + '">Inwerkingtredingsdoelen</td>' + '<tr>'.join ('<td>' + self._InstrumentData.WeergaveData.DoelLetter (doel) + '</td><td>' + str(doel) + '</td></tr>\n' for doel in identificatie.Inwerkingtredingsdoelen)
             html += '<tr><th colspan="3">Inhoud</th></tr>'
-            if inhoud.IsJuridischUitgewerkt:
-                html += '<tr><td></td><td colspan="2">Het instrument is ingetrokken</td></tr>'
+            if inhoud.IsNietInWerking:
+                html += '<tr><td></td><td colspan="2">Het instrument is niet in werking</td></tr>'
             else:
                 html += '<tr><td>Instrumentversie</td><td colspan="2">' + (inhoud.Instrumentversie if inhoud.Instrumentversie else 'Onbekend') + '</td></tr>'
             html += '</table>\n'
@@ -192,20 +192,4 @@ class Weergave_CompleteToestanden ():
             html += '</div>\n'
 
         return html
- 
-
-#----------------------------------------------------------------------
-#
-# STOP module XML
-#
-#----------------------------------------------------------------------
-    def _STOPModules (self, generator):
-        """Maak de weergave aan van de STOP modules
-        """
-        moduleMaker = Weergave_STOPModule (generator)
-        for uitwisseling in self._InstrumentData.Uitwisselingen:
-            if not uitwisseling.CompleteToestandenXml is None:
-                generator.VoegHtmlToe ('<div ' + self._Selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>')
-                moduleMaker.VoegHtmlToe (uitwisseling.CompleteToestandenXml)
-                generator.VoegHtmlToe ('</div>')
 

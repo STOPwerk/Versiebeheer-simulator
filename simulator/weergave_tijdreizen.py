@@ -9,7 +9,7 @@
 #
 #======================================================================
 
-from data_versiebeheerinformatie import Instrument
+from data_lv_versiebeheerinformatie import Instrument
 from weergave_resultaat_data import InstrumentData, InstrumentUitwisseling
 from weergave_symbolen import Weergave_Symbolen
 from weergave_uitwisselingselector import Weergave_Uitwisselingselector
@@ -146,7 +146,7 @@ class Weergave_Tijdreizen ():
             toestandHtml += '<td>' + toestand.OntvangenOp + '</td><td>' + toestand.BekendOp + '</td><td>' + toestand.JuridischWerkendVanaf + '</td><td>' + toestand.GeldigVanaf + '</td>'
             toestandHtml += '<td>#' + str(toestand.Identificatie) + '</td><td>' + ' '.join (letter for _, letter in self._InstrumentData.WeergaveData.Branches (identificatie.Inwerkingtredingsdoelen)) + '</td>'
             toestandHtml += '<td>#' + str(toestand.Inhoud) + '</td><td class="s">'
-            if inhoud.IsJuridischUitgewerkt:
+            if inhoud.IsNietInWerking:
                 toestandHtml += Weergave_Symbolen.Toestand_Uitgewerkt
             elif inhoud.Instrumentversie is None:
                 toestandHtml += Weergave_Symbolen.Toestand_OnbekendeInhoud
@@ -269,7 +269,7 @@ class Weergave_Tijdreizen ():
                 xt = x + (Weergave_Tijdreizen._SvgKolomBreedte/4)
                 yt = y - (Weergave_Tijdreizen._SvgRijHoogte/4)
                 inhoud = self._CompleteToestanden.ToestandInhoud[toestand.Inhoud]
-                if inhoud.IsJuridischUitgewerkt:
+                if inhoud.IsNietInWerking:
                     inhoud = Weergave_Symbolen.Toestand_Uitgewerkt
                 elif inhoud.Instrumentversie is None:
                     inhoud = Weergave_Symbolen.Toestand_OnbekendeInhoud

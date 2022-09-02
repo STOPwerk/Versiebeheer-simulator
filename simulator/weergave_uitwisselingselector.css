@@ -43,7 +43,7 @@
         text-decoration: underline;
     }
 
-    .uitwisselingselectorknop.geselecteerd {
+    .uitwisselingselectorknop.huidige-uw {
         background-color: #ffe6cc;
     }
 

@@ -44,33 +44,26 @@ class CompleteToestanden:
         In deze applicatie alleen nodig voor weergave"""
         xml = ['<CompleteToestanden xmlns="https://standaarden.overheid.nl/stop/imop/consolidatie/">',
                '\t<bekendOp>' + self.BekendOp + '</bekendOp>',
-               '\t<ontvangenOp>' + self.OntvangenOp + '</ontvangenOp>',
-               '\t<heeftFilter>']
-        xml.extend (['\t\t' + x for x in self.Tijdreisfilter.ModuleXmlElement ()])
-        xml.append ('\t</heeftFilter>')
+               '\t<ontvangenOp>' + self.OntvangenOp + '</ontvangenOp>']
+        xml.extend (['\t' + x for x in self.Tijdreisfilter.ModuleXmlElement ()])
 
         if self.MaterieelUitgewerktOp:
             xml.append ('\t<materieelUitgewerktOp>' + self.MaterieelUitgewerktOp + '</materieelUitgewerktOp>')
+        if len (self.ToestandIdentificatie) > 0:
+            xml.append ('')
+            for idx, toestand in enumerate (self.ToestandIdentificatie):
+                xml.extend (['\t' + x for x in toestand.IdentificatieXmlElement (idx)])
+        if len (self.ToestandInhoud) > 0:
+            xml.append ('')
+            for idx, toestand in enumerate (self.ToestandInhoud):
+                xml.extend (['\t' + x for x in toestand.ModuleXmlElement (idx)])
+        if len (self.Toestanden) > 0:
+            xml.extend (['',
+                        '\t<Tijdreisindex>'])
+            for idx, toestand in enumerate (self.Toestanden):
+                xml.extend (['\t\t' + x for x in toestand.ModuleXmlElement ()])
+            xml.append ('\t<Tijdreisindex>')
         xml.extend (['',
-                     '\t<bekendeToestanden>'])
-        for idx, toestand in enumerate (self.ToestandIdentificatie):
-            if idx > 0:
-                xml.append ('')
-            xml.extend (['\t\t' + x for x in toestand.IdentificatieXmlElement (idx)])
-        xml.extend (['\t</bekendeToestanden>',
-                     '',
-                     '\t<toestanden>'])
-        for idx, toestand in enumerate (self.ToestandInhoud):
-            if idx > 0:
-                xml.append ('')
-            xml.extend (['\t\t' + x for x in toestand.ModuleXmlElement (idx)])
-        xml.extend (['\t</toestanden>',
-                     '',
-                     '\t<tijdreisIndex>'])
-        for toestand in self.Toestanden:
-            xml.extend (['\t\t' + x for x in toestand.ModuleXmlElement ()])
-        xml.extend (['\t</tijdreisIndex>',
-                     '',
                      '</CompleteToestanden>'])
         return xml
 
@@ -102,7 +95,7 @@ class ToestandCompleet:
         # Als de toestand de juridisch uitgewerkte staat van het instrument representeert:
         # geeft aan dat het instrument juridisch is uitgewerkt (is ingetrokken).
         # (Is False in de andere gevallen.) 
-        self.IsJuridischUitgewerkt = False
+        self.IsNietInWerking = False
 
     def ModuleXmlElement (self, index : int):
         """Geeft de XML van dit element in de STOP module, als lijst van regels.
@@ -112,18 +105,18 @@ class ToestandCompleet:
 
         index int  Index van de toestand zoals gebruikt in de tijdreistabel
         """
-        xml = ['<ToestandCompleet>',
-               '\t<id>' + str(index) + '</id>']
+        xml = ['<ToestandInhoud>',
+               '\t<inhoudId>' + str(index) + '</inhoudId>']
         if self.Instrumentversie:
             xml.append ('\t<instrumentVersie>' + self.Instrumentversie + '</instrumentVersie>')
         if not self.OnvolledigeVersies is None:
-            xml.append ('\t<heeftOnvolledigeVersies>')
+            xml.append ('\t<isTePresenterenAls>')
             for versie in self.OnvolledigeVersies:
                 xml.extend (['\t\t' + x for x in versie.ModuleXmlElement ()])
-            xml.append ('\t</heeftOnvolledigeVersies>')
-        if self.IsJuridischUitgewerkt:
-            xml.append ('\t<isJuridischUitgewerkt/>')
-        xml.append ('<ToestandCompleet>')
+            xml.append ('\t</isTePresenterenAls>')
+        if self.IsNietInWerking:
+            xml.append ('\t<isNietInWerking/>')
+        xml.append ('<ToestandInhoud>')
         return xml
 
 class OnvolledigeVersie(NogTeConsolideren):
@@ -138,9 +131,11 @@ class OnvolledigeVersie(NogTeConsolideren):
         """Geeft de XML van dit element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
         xml = ['<OnvolledigeVersie>',
-               '\t<instrumentVersie>' + self.Instrumentversie + '</instrumentVersie>']
-        xml.extend (['\t' + x for x in self._ModuleXmlAttributen ()])
-        xml.append ('<OnvolledigeVersie>')
+               '\t<instrumentVersie>' + self.Instrumentversie + '</instrumentVersie>',
+               '\t<nogTeConsolideren>']
+        xml.extend (['\t\t' + x for x in self._ModuleXmlAttributen ()])
+        xml.extend (['\t</nogTeConsolideren>',
+                     '<OnvolledigeVersie>'])
         return xml
 
 #----------------------------------------------------------------------
@@ -149,6 +144,8 @@ class OnvolledigeVersie(NogTeConsolideren):
 class Tijdreisfilter:
 
     def __init__(self):
+        # Geeft aan welke tijdreis gebruikt is voor het samenstellen van het overzicht
+        self.SoortTijdreis = None
         # Geeft aan dat de OntvangenOp datum in de tijdreisindex voorkomt
         self.OntvangenOpAanwezig = True
         # Geeft aan dat de BekendOp datum in de tijdreisindex voorkomt
@@ -156,14 +153,31 @@ class Tijdreisfilter:
         # Geeft aan dat de GeldigVanaf datum in de tijdreisindex voorkomt
         self.GeldigVanafAanwezig = True
 
+    _SoortTijdreis_ActueleToestanden = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_at'
+    _SoortTijdreis_AlleenJuridischWerkendVanaf = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_jwv'
+    _SoortTijdreis_BekendOpGeldigVanafJuridischWerkendVanaf = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_b_gv_jwv'
+    _SoortTijdreis_BekendOpJuridischWerkendVanaf = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_b_jwv'
+    _SoortTijdreis_GeldigVanafJuridischWerkendVanaf = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_gv_jwv'
+    _SoortTijdreis_OntvangenOpBekendOpJuridischWerkendVanaf = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_o_b_jwv'
+    _SoortTijdreis_OntvangenOpBekendOpJuridischWerkendVanaf_Update = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_o_b_jwv_u'
+    _SoortTijdreis_OntvangenOpGeldigVanafJuridischWerkendVanaf = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_o_gv_jwv'
+    _SoortTijdreis_OntvangenOpGeldigVanafJuridischWerkendVanaf_Update = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_o_gv_jwv_u'
+    _SoortTijdreis_OntvangenOpJuridischWerkendVanaf = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_o_jwv'
+    _SoortTijdreis_OntvangenOpJuridischWerkendVanaf_Update = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_o_jwv_u'
+    _SoortTijdreis_ExTunc = 'http://omgevingswet/tijdreis/extunc'
+    _SoortTijdreis_ExTunc_Update = 'http://omgevingswet/tijdreis/extunc/update'
+    _SoortTijdreis_CompleteToestanden = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct'
+    _SoortTijdreis_CompleteToestanden_Update = 'https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct_u'
+
     def ModuleXmlElement (self):
         """Geeft de XML van dit element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        return ['<Tijdreisfilter>',
+        return ['<TijdreisFilter>',
+                '\t<soortTijdreis>' + (self.SoortTijdreis if self.SoortTijdreis else 'https://tijdre.is/42') + '</soortTijdreis>',
                 '\t<ontvangenOpAanwezig>' + ('true' if self.OntvangenOpAanwezig else 'false') + '</ontvangenOpAanwezig>',
                 '\t<bekendOpAanwezig>' + ('true' if self.BekendOpAanwezig else 'false') + '</bekendOpAanwezig>',
                 '\t<GeldigVanafAanwezig>' + ('true' if self.GeldigVanafAanwezig else 'false') + '</geldigVanafAanwezig>',
-                '</Tijdreisfilter>']
+                '</TijdreisFilter>']
 
 #----------------------------------------------------------------------
 # Tijdstempels voor de toestanden
@@ -189,7 +203,7 @@ class Toestand:
     def ModuleXmlElement (self):
         """Geeft de XML van dit element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        xml = ['<Toestand>']
+        xml = ['<Tijdreistupel>']
         if not self.OntvangenOp is None:
             xml.append ('\t<ontvangenOp>' + self.OntvangenOp + '</ontvangenOp>')
         if not self.BekendOp is None:
@@ -197,34 +211,7 @@ class Toestand:
         xml.append ('\t<juridischWerkendVanaf>' + self.JuridischWerkendVanaf + '</juridischWerkendVanaf>')
         if not self.GeldigVanaf is None:
             xml.append ('\t<geldigVanaf>' + self.GeldigVanaf + '</geldigVanaf>')
-        xml.extend (['\t<identificatie>' + str(self.Identificatie) + '</identificatie>',
-                     '\t<inhoud>' + str(self.Inhoud) + '</inhoud>',
-                     '</Toestand>'])
-        return xml
-
-#----------------------------------------------------------------------
-# Tijdstempels voor intrekkingen
-#----------------------------------------------------------------------
-class JuridischUitgewerkt:
-
-    def __init__(self, ontvangenOp : str, bekendOp : str, juridischUitgewerktOp : str):
-        # OntvangenOp datum of None, afhankelijk van het filter
-        self.OntvangenOp = ontvangenOp
-        # BekendOp datum of None, afhankelijk van het filter
-        self.BekendOp = bekendOp
-        # JuridischWerkendVanaf datum, of None om aan te geven dat het instrument
-        # niet (meer) juridisch uitgewerkt is.
-        self.JuridischUitgewerktOp = juridischUitgewerktOp
-
-    def ModuleXmlElement (self):
-        """Geeft de XML van dit element in de STOP module, als lijst van regels.
-        In deze applicatie alleen nodig voor weergave"""
-        xml = ['<JuridischUitgewerkt>']
-        if not self.OntvangenOp is None:
-            xml.append ('\t<ontvangenOp>' + self.OntvangenOp + '</ontvangenOp>')
-        if not self.BekendOp is None:
-            xml.append ('\t<bekendOp>' + self.BekendOp + '</bekendOp>')
-        if not self.JuridischUitgewerktOp is None:
-            xml.append ('\t<juridischUitgewerktOp>' + self.JuridischUitgewerktOp + '</juridischUitgewerktOp>')
-        xml.append ('</JuridischUitgewerkt>')
+        xml.extend (['\t<toestandId>' + str(self.Identificatie) + '</toestandId>',
+                     '\t<inhoudId>' + str(self.Inhoud) + '</inhoudId>',
+                     '</Tijdreistupel>'])
         return xml

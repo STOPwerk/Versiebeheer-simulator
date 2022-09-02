@@ -9,8 +9,8 @@
 
 from typing import List
 
-from data_annotatie import Annotatie
-from data_versiebeheerinformatie import Instrument
+from data_lv_annotatie import Annotatie
+from data_lv_versiebeheerinformatie import Instrument
 from weergave_data_proefversies import Proefversies, Proefversie, ProefversieAnnotatie
 from weergave_resultaat_data import InstrumentData, InstrumentUitwisseling
 from weergave_stopmodule import Weergave_STOPModule

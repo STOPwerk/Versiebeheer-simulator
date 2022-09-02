@@ -1,34 +1,33 @@
 #======================================================================
 #
-# Uitvoeren van het consolidatieproces
+# Uitvoeren van het simulatieproces
 #
 #----------------------------------------------------------------------
 #
-# Ondersteuning voor het uitvoeren van het consolideren door de
-# applicatie. Gebruik de Uitvoering klasse op applicatieniveau 
-# om voor elk gevonden scenario (= set van  invoerbestanden) 
-# de consolidatie uit te voeren.
+# Ondersteuning voor het uitvoeren van de simulatie. Gebruik de 
+# Uitvoering klasse op applicatieniveau om voor elk gevonden scenario 
+# (= set van  invoerbestanden) de simulatie uit te voeren.
 #
 #======================================================================
 
 import time
 
-from data_scenario import Scenario
-from proces_consolidatie import Proces_Consolidatie
+from applicatie_scenario import Scenario
+from proces_simulatie import Proces_Simulatie
 from weergave_resultaat import ResultaatGenerator
 from weergave_webpagina import WebpaginaGenerator
 
 
 #======================================================================
 #
-# Uitvoeren van de consolidatie
+# Uitvoeren van de simulatie
 #
 #======================================================================
 class Uitvoering:
     
     @staticmethod
     def VoerUit (scenario : Scenario):
-        """Voeren de geautomatiseerde consolidatie uit
+        """Voer de simulatie uit
         
         Argumenten:
         scenario Scenario Invoer voor het consolidatiescenario
@@ -50,13 +49,13 @@ class Uitvoering:
         self._Scenario = scenario
     
     def _VoerUit (self):
-        """Voer de geautomatiseerde consolidatie uit
+        """Voer de simulatie uit
         Geeft terug of de uitvoering zonder problemen is verlopen
         """
         try:
             if self._Scenario.IsValide:
-                proces = Proces_Consolidatie (self._Scenario)
-                self._Scenario.ApplicatieLog.Detail ("Start van de geautomatiseerde consolidatie: " + self._Scenario.Pad)
+                proces = Proces_Simulatie (self._Scenario)
+                self._Scenario.ApplicatieLog.Detail ("Start van de simulatie: " + self._Scenario.Pad)
 
                 start = time.perf_counter ()
                 proces.VoerUit ()

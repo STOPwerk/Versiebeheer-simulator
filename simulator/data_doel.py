@@ -27,6 +27,8 @@ class Doel:
         """
         if identificatie is None:
             return None
+        if isinstance (identificatie, Doel):
+            return identificatie
         doel = Doel._DoelIndex.get (identificatie)
         if doel is None:
             Doel._DoelIndex[identificatie] = doel = Doel (identificatie, len (Doel._DoelIndex) + 1)

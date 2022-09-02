@@ -1,7 +1,7 @@
 #======================================================================
 #
 # Aanmaken van een webpagina die alle beschikbare resultaten laat zien
-# van het consolidatie proces uit proces_consolidatie.py.
+# van het consolidatie proces uit proces_lv_consolidatie.py.
 #
 #----------------------------------------------------------------------
 #
@@ -14,16 +14,19 @@
 
 import os.path
 
-from data_scenario import Scenario
+from applicatie_scenario import Scenario
 from stop_naamgeving import Naamgeving
 from weergave_actueletoestanden import Weergave_ActueleToestanden
 from weergave_annotaties import Weergave_Annotaties
 from weergave_completetoestanden import Weergave_CompleteToestanden
+from weergave_consolidatieinformatie import Weergave_ConsolidatieInformatie
 from weergave_proefversies import Weergave_Proefversies
+from weergave_projecten import Weergave_Projecten
 from weergave_resultaat_data import InstrumentData
 from weergave_tijdreisfilter import Weergave_Tijdreisfilter
 from weergave_tijdreizen import Weergave_Tijdreizen
 from weergave_toestandbepaling import Weergave_Toestandbepaling
+from weergave_uitwisselingen import Weergave_Uitwisselingen
 from weergave_uitwisselingselector import Weergave_Uitwisselingselector
 from weergave_versiebeheer import Weergave_Versiebeheer
 from weergave_webpagina import WebpaginaGenerator
@@ -45,8 +48,12 @@ class ResultaatGenerator (WebpaginaGenerator):
         generator = ResultaatGenerator (scenario)
         try:
             generator._MaakPagina ()
-        except:
+        except Exception as e:
             # Invalide invoer kan het maken van een pagina in de weg zitten
+            scenario.ApplicatieLog.Fout ("Potverdorie, een fout in het maken van de resultaatpagina die niet voorzien werd: " + str(e))
+            scenario.Log.Fout ("Potverdorie, een fout in het maken van de resultaatpagina die niet voorzien werd: " + str(e))
+
+            # Maak een pagina met alleen de meldingen
             generator = ResultaatGenerator (scenario)
             generator.VoegHtmlToe ('<p>De resultaatpagina kan niet gemaakt worden</p>')
             generator._AlleenMeldingen ()
@@ -78,34 +85,89 @@ class ResultaatGenerator (WebpaginaGenerator):
     def _AlleenMeldingen (self):
         self.Scenario.Log.MaakHtml (self, 'Uitvoering van de applicatie')
 
+#======================================================================
+#
+# Indeling van de pagina
+#
+#======================================================================
     def _MaakPagina (self):
+
+        if self.Scenario.Versiebeheerinformatie is None:
+            # Als er geen versiebeheerinformatie is, dan is de uitvoering van de applicatie niet goed gegaan
+            self.Scenario.Log.MaakHtml (self, 'Uitvoering van de applicatie')
+            return
+
+        #--------------------------------------------------------------
+        #
+        # Algemene informatie over de pagina en het scenario
+        #
+        #--------------------------------------------------------------
+        self.VoegHtmlToe ('<p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.</p>')
 
         self.VoegHtmlToe ('<div id="intro">')
         if self.Scenario.Opties.Beschrijving:
             einde = self.StartToelichting ('Beschrijving van het scenario')
             self.VoegHtmlToe (self.Scenario.Opties.Beschrijving)
             self.VoegHtmlToe (einde)
-
-        if not self.Scenario.Versiebeheerinformatie is None:
-            Weergave_Uitwisselingselector(self.Scenario).VoegSelectorToe (self)
+        Weergave_Uitwisselingselector(self.Scenario).VoegSelectorToe (self)
+        self.VoegHeadScriptToe (self.LeesJSTemplate ('Applicatie', False).replace ('TOESTANDEN_DATA', self._MaakToestandenData()))
         self.VoegHtmlToe ('</div>')
 
-        if self.Scenario.Versiebeheerinformatie is None:
-            self.Scenario.Log.MaakHtml (self, 'Uitvoering van de applicatie')
-            return
-        else:
-            self.VoegHeadScriptToe (self.LeesJSTemplate ('Applicatie', False).replace ('TOESTANDEN_DATA', self._MaakToestandenData()))
-            self.VoegHtmlToe ('<p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.</p>')
+        einde = self.StartToelichting ('Over deze pagina')
+        self.LeesHtmlTemplate ('help_pagina')
+        self.VoegHtmlToe (einde)
 
-            einde = self.StartToelichting ('Over deze pagina')
-            self.LeesHtmlTemplate ('help')
+        self.Scenario.Log.MaakHtml (self, 'Uitvoering van de applicatie', self.LeesHtmlTemplate ('help_meldingen', False))
+        
+        # Beschrijving van de geselecteerde uitwisseling
+        Weergave_Uitwisselingselector(self.Scenario).VoegBeschrijvingToe (self)
+
+        if self.Scenario.Opties.Versiebeheer:
+            #--------------------------------------------------------------
+            #
+            # Simulatie van bevoegd gezag systemen
+            #
+            #--------------------------------------------------------------
+            self.VoegHtmlToe ('<div class="sectie_bg"><h1>Opstellen en consolideren</h1>')
+            einde = self.StartToelichting ('Over opstellen en consolideren')
+            self.LeesHtmlTemplate ('help_sectie_bg')
             self.VoegHtmlToe (einde)
 
-            self.Scenario.Log.MaakHtml (self, 'Uitvoering van de applicatie', self.LeesHtmlTemplate ('help_meldingen', False))
-            
-            Weergave_Uitwisselingselector(self.Scenario).VoegBeschrijvingToe (self)
+            Weergave_Projecten.VoegToe (self, self.Scenario)
 
+            self.VoegHtmlToe ('</div>')
+
+        #--------------------------------------------------------------
+        #
+        # Simulatie van de uitwisselingen/publicaties
+        #
+        #--------------------------------------------------------------
+        self.VoegHtmlToe ('<div class="sectie_op"><h1>Publiceren</h1>')
+        einde = self.StartToelichting ('Over publiceren')
+        self.LeesHtmlTemplate ('help_sectie_op')
+        self.VoegHtmlToe (einde)
+        Weergave_Uitwisselingen.VoegToe (self, self.Scenario)
+        Weergave_ConsolidatieInformatie.VoegToe (self, self.Scenario)
+        self.VoegHtmlToe ('</div>')
+
+        #--------------------------------------------------------------
+        #
+        # Simulatie van landelijke voorzieningen
+        #
+        #--------------------------------------------------------------
+        self.VoegHtmlToe ('<div class="sectie_lv"><h1>Beschikbaar stellen</h1>')
+        einde = self.StartToelichting ('Over beschikbaar stellen')
+        self.LeesHtmlTemplate ('help_sectie_lv')
+        self.VoegHtmlToe (einde)
+
+        altDiv = 0
         for instrument in sorted (self.Scenario.Versiebeheerinformatie.Instrumenten.values (), key = lambda x: x.WorkId):
+            if altDiv == 0:
+                altDiv = 1
+            else:
+                self.VoegHtmlToe ('</div><div class="sectie_lv_alt' + str(altDiv) + '">')
+                altDiv = 3 - altDiv
+
             instrumentData = self.Scenario.WeergaveData.InstrumentData.get (instrument.WorkId)
             if instrumentData is None:
                 instrumentData = InstrumentData (self.Scenario.WeergaveData, instrument.WorkId)
@@ -129,6 +191,8 @@ class ResultaatGenerator (WebpaginaGenerator):
                 Weergave_Tijdreisfilter.VoegToe (self, instrumentData)
                 Weergave_Toestandbepaling.VoegCompleteToestandenToe (self, instrument, instrumentData)
                 Weergave_Tijdreizen.VoegToe (self, instrument, instrumentData)
+
+        self.VoegHtmlToe ('</div>')
 
 #----------------------------------------------------------------------
 #

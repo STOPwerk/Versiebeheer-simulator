@@ -27,6 +27,7 @@ class WebpaginaGenerator:
         Argumenten:
         titel string/HTML  Titel van de pagina
         """
+        super().__init__ ()
         # Template voor de start van de pagina
         self._Start = self.LeesHtmlTemplate ("start", False)
         # Inhoud van de pagina
