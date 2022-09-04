@@ -17,8 +17,8 @@
 from typing import List
 
 from applicatie_meldingen import Melding
-from data_annotatie import Annotatie
-from data_versiebeheerinformatie import Uitwisseling, UitgewisseldeInstrumentversie
+from data_lv_annotatie import Annotatie
+from data_lv_versiebeheerinformatie import Uitwisseling, UitgewisseldeInstrumentversie
 from stop_proefversies import Annotatiebron, AnnotatiebronOvernme
 from weergave_data_proefversies import Proefversie, ProefversieAnnotatie
 

@@ -100,7 +100,7 @@ class Annotatie:
             alleGemaaktOp = []
             for spec in uitwisselingen:
                 if not isinstance (spec, dict):
-                    log.Fout ("Bestand '" + pad + "': 'Uitwisselingen' moet een object zijn")
+                    log.Fout ("Bestand '" + pad + "': element van 'Uitwisselingen' moet een object zijn")
                     annotatie._IsValide = False
                 else:
                     if annotatie.ViaVersiebeheer is None:

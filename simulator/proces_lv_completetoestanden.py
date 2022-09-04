@@ -6,7 +6,7 @@
 #======================================================================
 #
 # De bepaling van complete toestanden maakt gebruik van een aantal
-# operaties die in proces_toestanden.py zijn ondergebracht:
+# operaties die in proces_lv_toestanden.py zijn ondergebracht:
 # - Selectie van de relevante delen uit het versiebeheer
 # - Bepaling van de instrumentversie van een toestand
 #
@@ -29,9 +29,9 @@
 #======================================================================
 
 from applicatie_meldingen import Melding
-from data_consolidatie import GeconsolideerdInstrument
-from proces_toestanden import MaakToestanden
-from weergave_data_toestanden import  ToestandCompleet, OnvolledigeVersie, Toestand, Toestandidentificatie, JuridischUitgewerkt
+from data_lv_consolidatie import GeconsolideerdInstrument
+from proces_lv_toestanden import MaakToestanden
+from weergave_data_toestanden import  ToestandCompleet, OnvolledigeVersie, Toestand, Toestandidentificatie
 from weergave_toestandbepaling import Weergave_Toestandbepaling
 
 #======================================================================
@@ -443,7 +443,7 @@ class _MaakToestanden (MaakToestanden):
         
         for toestand in self._NuBepaaldeToestanden:
             # Bepaal de inhoud van de toestand
-            if not toestand.Inhoud.IsJuridischUitgewerkt:
+            if not toestand.Inhoud.IsNietInWerking:
                 self._BepaalInhoud (toestand.Inhoud._Consolidatieproces, toestand.Identificatie, toestand.Inhoud.Basisversiedoelen)
                 toestand.Inhoud.Instrumentversie = toestand.Inhoud._Consolidatieproces.Instrumentversie
 
@@ -637,7 +637,7 @@ class _MaakToestanden (MaakToestanden):
             # Maak een nieuwe toestand voor de ingetrokken staat van het instrument
             nieuweToestand = MaakCompleteToestanden._BepaaldeToestand (Toestandidentificatie(), self._GemaaktOp, self._OntvangenOp, self._BekendOp, juridischUitgewerktOp, juridischUitgewerktOp)
             nieuweToestand.Identificatie.Inwerkingtredingsdoelen.extend (intrekkingsdoelen)
-            nieuweToestand.Inhoud.IsJuridischUitgewerkt = True
+            nieuweToestand.Inhoud.IsNietInWerking = True
             geldendeToestanden = [nieuweToestand]
             _MaakToestandExpressionId (0)
             self._NuBepaaldeToestanden.append (nieuweToestand)

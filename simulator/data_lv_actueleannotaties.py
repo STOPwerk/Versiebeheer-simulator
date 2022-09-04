@@ -10,8 +10,8 @@
 
 from typing import List
 
-from data_annotatie import Annotatie, AnnotatieVersie
-from data_proefversies import Proefversie, ProefversieAnnotatie
+from data_lv_annotatie import Annotatie, AnnotatieVersie
+from data_lv_proefversies import Proefversie, ProefversieAnnotatie
 from stop_actueletoestanden import ActueleToestanden
 from weergave_data_toestanden import  ToestandActueel
 

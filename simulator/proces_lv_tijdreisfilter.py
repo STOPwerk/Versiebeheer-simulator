@@ -78,6 +78,7 @@ class Filter_CompleteToestanden:
         Geeft een Filtervoorschrift terug. 
         """
         resultaat = Filtervoorschrift ()
+        resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_ActueleToestanden if alleenActueleToestanden else Tijdreisfilter._SoortTijdreis_AlleenJuridischWerkendVanaf
         resultaat.Tijdreisfilter.OntvangenOpAanwezig = False
         resultaat.Tijdreisfilter.BekendOpAanwezig = False
         resultaat.Tijdreisfilter.GeldigVanafAanwezig = False
@@ -116,7 +117,8 @@ class Filter_CompleteToestanden:
         Geeft een Filtervoorschrift terug.
         """
         resultaat = self._JuridischWerkendVanafPlus1 (lambda t: t.OntvangenOp, alleenLaatstOntvangen)
-        resultaat.OntvangenOpAanwezig = True
+        resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_OntvangenOpJuridischWerkendVanaf_Update if alleenLaatstOntvangen else Tijdreisfilter._SoortTijdreis_OntvangenOpJuridischWerkendVanaf
+        resultaat.Tijdreisfilter.OntvangenOpAanwezig = True
         return resultaat
 
     def BekendOpJuridischWerkendVanaf (self):
@@ -125,7 +127,8 @@ class Filter_CompleteToestanden:
         Geeft een Filtervoorschrift terug.
         """
         resultaat = self._JuridischWerkendVanafPlus1 (lambda t: t.BekendOp, False)
-        resultaat.BekendOpAanwezig = True
+        resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_BekendOpJuridischWerkendVanaf
+        resultaat.Tijdreisfilter.BekendOpAanwezig = True
         return resultaat
 
     def GeldigVanafJuridischWerkendVanaf (self):
@@ -134,7 +137,8 @@ class Filter_CompleteToestanden:
         Geeft een Filtervoorschrift terug.
         """
         resultaat = self._JuridischWerkendVanafPlus1 (lambda t: t.GeldigVanaf, False)
-        resultaat.GeldigVanafAanwezig = True
+        resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_GeldigVanafJuridischWerkendVanaf
+        resultaat.Tijdreisfilter.GeldigVanafAanwezig = True
         return resultaat
 
     def _JuridischWerkendVanafPlus1 (self, geefTijdstempel, alleenLaatstOntvangen : bool):
@@ -246,6 +250,15 @@ class Filter_CompleteToestanden:
         resultaat.Tijdreisfilter.OntvangenOpAanwezig = metOntvangenOp
         resultaat.Tijdreisfilter.BekendOpAanwezig = metBekendOp
         resultaat.Tijdreisfilter.GeldigVanafAanwezig = metGeldigVanaf
+        if not metOntvangenOp:
+            if alleenLaatstOntvangen:
+                raise 'Filter_CompleteToestanden.JuridischWerkendVanafPlus2: alleenLaatstOntvangen moet False zijn als ontvangenOp ontbreekd'
+            resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_BekendOpGeldigVanafJuridischWerkendVanaf
+        if not metBekendOp:
+            resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_OntvangenOpGeldigVanafJuridischWerkendVanaf_Update if alleenLaatstOntvangen else Tijdreisfilter._SoortTijdreis_OntvangenOpGeldigVanafJuridischWerkendVanaf
+        if not metGeldigVanaf:
+            resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_OntvangenOpBekendOpJuridischWerkendVanaf_Update if alleenLaatstOntvangen else Tijdreisfilter._SoortTijdreis_OntvangenOpBekendOpJuridischWerkendVanaf
+
         alleenLaatstOntvangen = alleenLaatstOntvangen & metOntvangenOp
 
         geefTijdstempel = []
@@ -257,7 +270,7 @@ class Filter_CompleteToestanden:
         if metGeldigVanaf:
             geefTijdstempel.append (lambda t: t.GeldigVanaf)
         if len (geefTijdstempel) != 3:
-            raise 'Filter_CompleteToestanden.OntvangenOpJuridischWerkendVanaf: gemaakt voor precies 3 tijdstempels, niet ' + str(len (geefTijdstempel))
+            raise 'Filter_CompleteToestanden.JuridischWerkendVanafPlus2: gemaakt voor precies 3 tijdstempels, niet ' + str(len (geefTijdstempel))
 
         laatsteOntvangenOp = None
         gedaan = set()
@@ -294,6 +307,7 @@ class Filter_CompleteToestanden:
         Geeft een Filtervoorschrift terug.
         """
         resultaat = Filtervoorschrift ()
+        resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_CompleteToestanden_Update if alleenLaatstOntvangen else Tijdreisfilter._SoortTijdreis_CompleteToestanden
         resultaat.Tijdreisfilter.OntvangenOpAanwezig = True
         resultaat.Tijdreisfilter.BekendOpAanwezig = True
         resultaat.Tijdreisfilter.GeldigVanafAanwezig = True
@@ -330,9 +344,10 @@ class Filter_CompleteToestanden:
         Geeft een Filtervoorschrift terug.
         """
         resultaat = Filtervoorschrift ()
+        resultaat.Tijdreisfilter.SoortTijdreis = Tijdreisfilter._SoortTijdreis_ExTunc_Update if alleenLaatstOntvangen else Tijdreisfilter._SoortTijdreis_ExTunc
         resultaat.Tijdreisfilter.OntvangenOpAanwezig = True
-        resultaat.Tijdreisfilter.BekendOpAanwezig = True
-        resultaat.Tijdreisfilter.GeldigVanafAanwezig = True
+        resultaat.Tijdreisfilter.BekendOpAanwezig = False
+        resultaat.Tijdreisfilter.GeldigVanafAanwezig = False
 
         bepaalJWVHuidigeToestand = True # Bepaal per ontvangenOp datum wat de JWV van de huidige toestand is
         jwvHuidigeToestand = None
@@ -420,15 +435,15 @@ class Filter_CompleteToestanden:
 
                 # Kopieer de identiteit; die krijgt (meestal) een nieuwe index
                 idx = vertaalIdentiteit.get (toestand.Identificatie)
-                if not idx is None:
-                    vertaalIdentiteit[toestand.Identificatie] = len (module.ToestandIdentificatie)
+                if idx is None:
+                    vertaalIdentiteit[toestand.Identificatie] = idx = len (module.ToestandIdentificatie)
                     module.ToestandIdentificatie.append (self._CompleteToestanden.ToestandIdentificatie[toestand.Identificatie])
                 nieuw.Identificatie = idx
 
                 # Kopieer de inhoud; die krijgt (meestal) een nieuwe index
                 idx = vertaalInhoud.get (toestand.Inhoud)
-                if not idx is None:
-                    vertaalInhoud[toestand.Inhoud] = len (module.ToestandInhoud)
+                if idx is None:
+                    vertaalInhoud[toestand.Inhoud] = idx = len (module.ToestandInhoud)
                     module.ToestandInhoud.append (self._CompleteToestanden.ToestandInhoud[toestand.Inhoud])
                 nieuw.Inhoud = idx
 

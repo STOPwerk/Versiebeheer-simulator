@@ -1,5 +1,7 @@
 # Code van de applicatie
 
+_**Verouderd, moet nog bijgewerkt worden**_
+
 ## Waarvoor dient de code?
 
 De Python code in deze map is een implementatie van de geautomatiseerde consolidatie die in STOP beschreven is. STOP beschrijft de invoer van het proces, wat het resultaat moet zijn, en geeft aanwijzingen hoe het een in het ander om te zetten is. STOP schrijft niet voor hoe dat precies moet. Deze code is een voorbeeld hoe de implementatie eruit kan zien.

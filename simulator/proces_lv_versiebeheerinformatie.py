@@ -9,7 +9,7 @@
 # inhoud van de XML bestanden gemaakt, zoals in de module
 # stop_consolidatieinformatie is geïmplementeerd. Daarna worden 
 # alle ingelezen ConsolidatieInformatie instanties omgezet naar 
-# het interne datamodel dat in data_versiebeheerinformatie is
+# het interne datamodel dat in data_lv_versiebeheerinformatie is
 # gedeclareerd. De code voor de omzetting is geïmplementeerd 
 # in de klasse WerkVersiebeheerinformatieBij, die de verschillende 
 # Verwerk* klassen gebruikt voor de interpretatie van de consolidatie-
@@ -19,8 +19,8 @@
 #======================================================================
 
 from applicatie_meldingen import Melding
-from data_versiebeheerinformatie import Versiebeheerinformatie, Uitwisseling, UitgewisseldeInstrumentversie, Instrument, Branch, MomentopnameInstrument, MomentopnameTijdstempels
-from proces_branchescumulatief import AccumuleerBranchInformatie
+from data_lv_versiebeheerinformatie import Versiebeheerinformatie, Uitwisseling, UitgewisseldeInstrumentversie, Instrument, Branch, MomentopnameInstrument, MomentopnameTijdstempels
+from proces_lv_branchescumulatief import AccumuleerBranchInformatie
 from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Terugtrekking, Intrekking, TerugtrekkingIntrekking, VoorTijdstempel, Tijdstempel, TerugtrekkingTijdstempel
 from stop_juridischeverantwoording import JuridischeVerantwoording, Verantwoording, Publicatie
 from weergave_symbolen import Weergave_Symbolen
@@ -61,8 +61,7 @@ class VerwerkBeoogdInstrument(VerwerkVoorInstrument):
         Geeft terug of de informatie is bijgewerkt
         """
         if momentopname.IsIngetrokken:
-            momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, "De intrekking van het instrument wordt ongedaan gemaakt."))
-            momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, "Instrumentversie = " + self.VoorInstrument.ExpressionId))
+            # De intrekking van het instrument wordt ongedaan gemaakt
             verwerking._Log.Detail ("Instrumentversie per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ") is '" + self.VoorInstrument.ExpressionId + "'; intrekking is ongedaan gemaakt")
             momentopname.IsIngetrokken = False
         elif self.VoorInstrument.ExpressionId is None:
@@ -71,10 +70,8 @@ class VerwerkBeoogdInstrument(VerwerkVoorInstrument):
                 verwerking.IsValide = False
                 return False
             else:
-                momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, "Instrumentversie onbekend, instrument = " + self.VoorInstrument.WorkId))
                 verwerking._Log.Detail ("Instrumentversie per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ") is " + 'onbekend')
         else:
-            momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, "Instrumentversie = " + self.VoorInstrument.ExpressionId ))
             verwerking._Log.Detail ("Instrumentversie per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ") is " + "'" + self.VoorInstrument.ExpressionId + "'" )
         momentopname.ExpressionId = self.VoorInstrument.ExpressionId
         momentopname.IsTeruggetrokken = False
@@ -104,7 +101,6 @@ class VerwerkTerugtrekking(VerwerkVoorInstrument):
                 verwerking.IsValide = False
                 return False
             else:
-                momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, "Het instrument wordt voor dit doel niet meer gewijzigd."))
                 verwerking._Log.Detail ("Wijziging van instrument " + self.VoorInstrument.WorkId + " teruggetrokken per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ")")
         momentopname.IsIngetrokken = False
         momentopname.ExpressionId = None
@@ -130,7 +126,6 @@ class VerwerkIntrekking(VerwerkVoorInstrument):
             verwerking._Log.Waarschuwing ("Intrekking (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ") voor " + self.VoorInstrument.WorkId + ": wijziging/intrekking instrument is al ingetrokken")
             return False
         else:
-            momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, "Het instrument wordt ingetrokken."))
             verwerking._Log.Detail ("Instrument " + self.VoorInstrument.WorkId + " ingetrokken per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ")")
         momentopname.IsIngetrokken = True
         momentopname.ExpressionId = None
@@ -161,7 +156,6 @@ class VerwerkTerugtrekkingIntrekking(VerwerkVoorInstrument):
                 verwerking.IsValide = False
                 return False
             else:
-                momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, "Het instrument wordt voor dit doel niet meer ingetrokken."))
                 verwerking._Log.Detail ("Intrekking van instrument " + self.VoorInstrument.WorkId + " teruggetrokken per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ")")
         momentopname.IsIngetrokken = False
         momentopname.ExpressionId = None
@@ -204,7 +198,6 @@ class VerwerkTijdstempel (VerwerkTijdstempel):
             verwerking.IsValide = False
             return False
         else:
-            momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, ("GeldigVanaf" if self.VoorTijdstempel.IsGeldigVanaf else "JuridischWerkendVanaf") + " = " + self.VoorTijdstempel.Datum))
             verwerking._Log.Detail (("GeldigVanaf" if self.VoorTijdstempel.IsGeldigVanaf else "JuridischWerkendVanaf") + " = " + self.VoorTijdstempel.Datum + " per (" + str(self.VoorTijdstempel.Doel) + " @" + self.VoorTijdstempel.ConsolidatieInformatie.GemaaktOp + ")")
             momentopname._Symbool = Weergave_Symbolen.Tijdstempel_Waarde
         return True
@@ -242,7 +235,6 @@ class VerwerkTerugtrekkingTijdstempel (VerwerkTijdstempel):
             momentopname.JuridischWerkendVanaf = None
             # Toon dit als een terugtrekking
             momentopname._Symbool = Weergave_Symbolen.Tijdstempel_Terugtrekking
-        momentopname._Wijzigingen.append (Melding (Melding.Ernst_Informatie, "Datum voor " + ("GeldigVanaf" if self.VoorTijdstempel.IsGeldigVanaf else "JuridischWerkendVanaf") + " is teruggetrokken"))
         verwerking._Log.Detail (("GeldigVanaf" if self.VoorTijdstempel.IsGeldigVanaf else "JuridischWerkendVanaf") + " teruggetrokken per (" + str(self.VoorTijdstempel.Doel) + " @" + self.VoorTijdstempel.ConsolidatieInformatie.GemaaktOp + ")")
         return True
 
@@ -294,7 +286,7 @@ class WerkVersiebeheerinformatieBij:
         Argumenten:
         log Verzameling van meldingen
         versiebeheerinformatie Versiebeheerinformatie Alle versiebeheerinformatie gereconstrueerd tot deze uitwisseling
-        publicatieblad string Identificatie van het publicatieblad waarin de publicatie is verschenen voor hetgeen door de consolidatieinformatie is bechreven
+        publicatieblad string Identificatie van het publicatieblad waarin de publicatie is verschenen voor hetgeen door de consolidatie-informatie is beschreven; kan None zijn
         consolidatieInformatie ConsolidatieInformatie[] alle uitgewisselde consolidatie-informatie modules
 
         Resultaat is een indicatie of er geen fouten gevonden zijn tijdens de verwerking.
@@ -330,6 +322,8 @@ class WerkVersiebeheerinformatieBij:
 
         # Nieuwe uitwisseling
         self.Resultaat.Uitwisseling = Uitwisseling (consolidatieInformatie.GemaaktOp, consolidatieInformatie.OntvangenOp)
+        self.Resultaat.Uitwisseling._Publicatieblad = self._Publicatieblad
+        self.Resultaat.Uitwisseling._ConsolidatieInformatie = consolidatieInformatie
         self.Versiebeheerinformatie.Uitwisselingen.append (self.Resultaat.Uitwisseling)
 
         # Verwerk de instrument-gerelateerde wijzigingen
@@ -543,20 +537,21 @@ class WerkVersiebeheerinformatieBij:
         if eersteBekendOp is None or eersteBekendOp > bekendOp:
             self.Resultaat.EersteBekendOp[instrument.WorkId] = bekendOp
 
-        juridischeVarantwoording = self.Resultaat.Verantwoording.get (instrument.WorkId)
-        if juridischeVarantwoording is None:
-            self.Resultaat.Verantwoording[instrument.WorkId] = juridischeVarantwoording = JuridischeVerantwoording ()
-        verantwoording = juridischeVarantwoording.Verantwoording.get (doel)
-        if verantwoording is None:
-            juridischeVarantwoording.Verantwoording[doel] = verantwoording = Verantwoording ()
-            verantwoording.Doel = doel
-            verantwoording.Publicaties.append (Publicatie ())
-            verantwoording.Publicaties[0].Publicatieblad = self._Publicatieblad
-            verantwoording.Publicaties[0].GemaaktOp = self.Resultaat.Uitwisseling.GemaaktOp
-        if voorInstrument:
-            verantwoording.Publicaties[0].VoorInstrument = True
-        else:
-            verantwoording.Publicaties[0].VoorTijdstempels = True
+        if not self._Publicatieblad is None:
+            juridischeVarantwoording = self.Resultaat.Verantwoording.get (instrument.WorkId)
+            if juridischeVarantwoording is None:
+                self.Resultaat.Verantwoording[instrument.WorkId] = juridischeVarantwoording = JuridischeVerantwoording ()
+            verantwoording = juridischeVarantwoording.Verantwoording.get (doel)
+            if verantwoording is None:
+                juridischeVarantwoording.Verantwoording[doel] = verantwoording = Verantwoording ()
+                verantwoording.Doel = doel
+                verantwoording.Publicaties.append (Publicatie ())
+                verantwoording.Publicaties[0].Publicatieblad = self._Publicatieblad
+                verantwoording.Publicaties[0].GemaaktOp = self.Resultaat.Uitwisseling.GemaaktOp
+            if voorInstrument:
+                verantwoording.Publicaties[0].VoorInstrument = True
+            else:
+                verantwoording.Publicaties[0].VoorTijdstempels = True
 
 
 #----------------------------------------------------------------------

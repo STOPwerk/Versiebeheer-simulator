@@ -1,0 +1,31 @@
+.uw_overzicht { /* Tabel */
+    border-collapse: collapse;
+    border: 1px solid #666666;
+}
+
+    .uw_overzicht td {
+        border-left: 1px solid #666666;
+        border-right: 1px solid #666666;
+    }
+
+    .uw_overzicht th {
+        border: 1px solid #666666;
+    }
+
+    .uw_overzicht td.nw {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .uw_overzicht tr { /* uitwisseling in tabel */
+        cursor: pointer;
+    }
+
+        .uw_overzicht tr:hover {
+            background-color: #dae8fc;
+        }
+
+        .uw_overzicht tr.huidige-uw { /* geselecteerde uitwisseling */
+            background-color: #ffe6cc;
+            border: 3px solid #000000;
+        }

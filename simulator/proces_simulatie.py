@@ -1,32 +1,37 @@
 #======================================================================
 #
-# Geautomatiseerde consolidatie
+# Simulatie
 #
 #----------------------------------------------------------------------
 #
-# Proces van het inlezen (/ontvangen) van consolidatie informatie in
-# het interne datamodel, en het afleiden van de proefversies en
-# geconsolideerde regelingen/informatieobjecten behorend bij de laatst
-# aangeleverde consolidatie-informatie.
-# 
-# De resultaten worden in een webpagina bij het scenario bewaard
+# Dit is de simulatie van het uitvoeren van versiebeheer door het bevoegd
+# gezag, het ontvangen van consolidatie-informatie en het uitvoeren van
+# de geautomatiseerde consolidatie door het ontvangende systeem.
+#
+# In dit proces zit niet het uitwisselen/bewaren van de informatie.
+# Alle consolidatie-informatie is al ingelezen of wordt gemaakt via het
+# interne in-memory datamodel, waarin ook de resultaten worden opgeslagen.
 #
 #======================================================================
 
-from data_scenario import Scenario
+from pickle import NONE
+from applicatie_scenario import Scenario
+from data_bg_project import ProjectActie
 from weergave_resultaat_data import WeergaveData
-from proces_versiebeheerinformatie import WerkVersiebeheerinformatieBij
-from proces_proefversies import MaakProefversies
-from proces_completetoestanden import MaakCompleteToestanden
-from proces_actueletoestanden import MaakActueleToestanden
-from proces_actueleannotaties import MaakActueleToestandenMetAnnotaties
+from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
+from proces_bg_projectacties import ProjectactieUitvoering
+from proces_lv_versiebeheerinformatie import WerkVersiebeheerinformatieBij
+from proces_lv_proefversies import MaakProefversies
+from proces_lv_completetoestanden import MaakCompleteToestanden
+from proces_lv_actueletoestanden import MaakActueleToestanden
+from proces_lv_actueleannotaties import MaakActueleToestandenMetAnnotaties
 
 #======================================================================
 #
-# Uitvoeren van de geautomatiseerde consolidatie
+# Uitvoeren van de simulatie
 #
 #======================================================================
-class Proces_Consolidatie:
+class Proces_Simulatie:
 
     def __init__ (self, scenario : Scenario):
         """Maak een nieuwe instantie voor het proces
@@ -40,22 +45,46 @@ class Proces_Consolidatie:
 # Hoofdproces
 #----------------------------------------------------------------------
     def VoerUit (self):
-        """Voer de geautomatiseerde consolidatie uit"""
+        """Voer de simulatie uit"""
         try:
-            self.Scenario.Log.Informatie ("Voer de gaautomatiseerde consolidatie uit")
+            self.Scenario.Log.Informatie ("Voer de simulatie uit")
             self.Scenario.WeergaveData = WeergaveData (self.Scenario)
 
-            for idx, consolidatieInformatie in enumerate (self.Scenario.ConsolidatieInformatie):
-                publicatieblad = 'pb{:03d}'.format (idx)
-                volgendeGemaaktOp = self.Scenario.ConsolidatieInformatie[idx+1].GemaaktOp if idx < len (self.Scenario.ConsolidatieInformatie) - 1 else None
+            publicatiebladNummer = 0
+            for idx, consolidatieInformatieBron in enumerate (self.Scenario.ConsolidatieInformatie):
 
-                # Verwerk de uitgewisselde consolidatie-informatie. Een productie-waardige applicatie begint
+                publicatieblad = None
+
+                if not consolidatieInformatieBron.Module is None:
+                    # Specificatie van consolidatie-informatie
+                    consolidatieInformatie = consolidatieInformatieBron.Module
+                    if self.Scenario.Opties.Versiebeheer:
+                        # Verwerk dat in het versiebeheer van het bevoegd gezag
+                        if not ConsolidatieInformatieMaker.WerkBij (self.Scenario.Log, self.Scenario.Versiebeheer, consolidatieInformatie, consolidatieInformatieBron.Actie):
+                            # Er is iets fout gegaan
+                            return
+                else:
+                    # Project actie: voer de actie uit
+                    isValide, consolidatieInformatie = ProjectactieUitvoering.Voor (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
+                    if not isValide:
+                        # Er is iets fout gegaan
+                        return
+                    if consolidatieInformatie is None:
+                        # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
+                        continue
+
+                # Verwerk de uitgewisselde consolidatie-informatie. Een productie-waardige (ontvangende) applicatie begint
                 # hier met de verwerking na ontvangst van een uitwisseling
                 self.Scenario.Log.Informatie ("Verwerk de consolidatie-informatie ontvangen op " + consolidatieInformatie.OntvangenOp + " (@" + consolidatieInformatie.GemaaktOp + ")")
 
-                # In een productie-waardige applicatie die tijdreizen op bekendOp ondersteund zou de verwerking per bekendOp-datum
-                # die in de consolidatie-informatie module gedaan kunnen worden, omdat de geraakte instrumenten daarvan afhankelijk zijn.
-                # Dat is een optimalisatie: in deze applicatie wordt het niet zo gedaan en dat leidt tot dezelfde resultaten
+                # Zit er een publicatie aan vast?
+                if self.Scenario.Opties.IsRevisie (consolidatieInformatie.GemaaktOp):
+                    publicatieblad = None
+                else:
+                    publicatiebladNummer += 1
+                    publicatieblad = 'pb{:03d}'.format (publicatiebladNummer)
+
+                # Voeg de uitwisseling toe aan het interne versiebeheer-datamodel van het ontvangende systeem
                 uitwisseling = WerkVersiebeheerinformatieBij.VoerUit (self.Scenario.Log, self.Scenario.Versiebeheerinformatie, publicatieblad, consolidatieInformatie)
                 if not uitwisseling.IsValide:
                     return
@@ -103,10 +132,23 @@ class Proces_Consolidatie:
                             MaakActueleToestanden.VoerUit (self.Scenario.Log, geconsolideerd, uitwisseling.Uitwisseling.GemaaktOp, uitwisseling.Uitwisseling.OntvangenOp, uitwisseling.Uitwisseling.BekendOp)
 
                             if len (self.Scenario.Annotaties) > 0:
+                                # De volgendeGemaaktOp is in productie-waardige applicaties bij de verwerking op dit moment natuurlijk
+                                # niet bekend. Het wordt hier gebruikt in de zin van: uitgewisseld tegelijk met of na de huidige uitwisseling,
+                                # maar voor de volgende uitwisseling. In plaats van eerst de verwerking voor deze uitwisseling af te ronden en
+                                # dan naar latere uitwisselingen van uitsluitend annotaties te kijken, wordt hier vooruit gekeken naar de
+                                # annotatie-uitwisselingen. Dat is het voorrecht van een simulatie :-)
+                                volgendeGemaaktOp = None
+                                jdx = idx+1
+                                while jdx < len (self.Scenario.ConsolidatieInformatie):
+                                    bron = self.Scenario.ConsolidatieInformatie[jdx]
+                                    if bron.Actie is None or bron.Actie.SoortActie in ProjectActie._SoortActie_MetUitwisseling:
+                                        volgendeGemaaktOp = bron.GemaaktOp()
+                                        break
+                                    jdx += 1
                                 MaakActueleToestandenMetAnnotaties.VoerUit (geconsolideerd, self.Scenario.Annotaties, uitwisseling.Uitwisseling.GemaaktOp, volgendeGemaaktOp)
 
                 # Werk de data bij die nodig is voor de weergave
                 self.Scenario.WeergaveData.WerkBij (uitwisseling.Uitwisseling, uitwisseling.InstrumentDoelen.keys(), uitwisseling.Doelen, alleProefversies)
 
         except Exception as e:
-            self.Scenario.Log.Fout ("Potverdorie, een fout in de consolidatie die niet voorzien werd: " + str(e))
+            self.Scenario.Log.Fout ("Potverdorie, een fout in de simulatie die niet voorzien werd: " + str(e))

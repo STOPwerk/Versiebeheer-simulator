@@ -91,6 +91,10 @@ class Uitwisseling:
         # Datum dat de uitwisseling ontvangen en publiek bekend is, te gebruiken als
         # ontvangenOp datum in de STOP context modules die door de uitwisseling ontstaan.
         self.OntvangenOp = ontvangenOp
+        # Nummer van het publicatieblad waarin het besluit/rectificatie/mededeling uit de uitwisseling is gepubliceerd.
+        self._Publicatieblad = None
+        # De consolidatie-informatie die onderdeel is van de uitwisseling
+        self._ConsolidatieInformatie = None
 
 class UitgewisseldeInstrumentversie:
 
@@ -184,9 +188,6 @@ class Momentopname:
         self.BekendOp = consolidatieInformatieElement.BekendOp ()
         # In deze applicatie, alleen voor weergave: de consolidatie=informatie elementen die de aanleiding zijn tot deze momentopname
         self._ConsolidatieInformatieElementen = [consolidatieInformatieElement]
-        # Wijzigingen die tot deze momentopname hebben geleid
-        # Lijst met instanties van Melding
-        self._Wijzigingen = []
         # Alleen weergave: symbool om deze momentopname mee te karakteriseren
         self._Symbool = None
 

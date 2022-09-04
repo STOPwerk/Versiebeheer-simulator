@@ -15,7 +15,7 @@
 #======================================================================
 
 from applicatie_meldingen import Melding
-from data_toestanden import CompleteToestanden
+from data_lv_toestanden import CompleteToestanden
 from stop_completetoestanden import Toestand
 from stop_consolidatieidentificatie import ConsolidatieIdentificatie
 from stop_juridischeverantwoording import JuridischeVerantwoording
@@ -36,6 +36,7 @@ class GeconsolideerdInstrument:
         scenario Scenario  Scenario dat het geconsolideerde instrument aanmaakt
         instrument Instrument  Het niet=geconsolideerde instrument
         """
+        self._Scenario = scenario
         self.Instrument = instrument
         # Identificatie van het geconsolideerde instrument
         # Instantie van ConsolidatieIdentificatie
@@ -94,7 +95,7 @@ class GeconsolideerdInstrument:
                                 eersteDatum = momentopname.JuridischWerkendVanaf
                             break
             if not eersteDatum is None:
-                self.ConsolidatieIdentificatie = ConsolidatieIdentificatie (self.Instrument.WorkId, eersteDatum)
+                self.ConsolidatieIdentificatie = ConsolidatieIdentificatie (self._Scenario, self.Instrument.WorkId, eersteDatum)
                 log.Detail ("Instrument " + self.Instrument.WorkId + " heeft consolidatie " + self.ConsolidatieIdentificatie.WorkId)
 
 #----------------------------------------------------------------------

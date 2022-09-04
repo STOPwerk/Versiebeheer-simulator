@@ -21,7 +21,7 @@ from typing import List
 
 from applicatie_meldingen import Meldingen
 from data_doel import Doel
-from data_versiebeheerinformatie import Instrument, MomentopnameInstrument, BranchBijdrage
+from data_lv_versiebeheerinformatie import Instrument, MomentopnameInstrument, BranchBijdrage
 
 class AccumuleerBranchInformatie:
 

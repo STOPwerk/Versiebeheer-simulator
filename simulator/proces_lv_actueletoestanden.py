@@ -6,7 +6,7 @@
 #======================================================================
 #
 # De bepaling van actuele toestanden maakt gebruik van een aantal
-# operaties die in proces_toestanden.py zijn ondergebracht:
+# operaties die in proces_lv_toestanden.py zijn ondergebracht:
 # - Selectie van de relevante delen uit het versiebeheer
 # - Bepaling van de instrumentversie van een toestand
 #
@@ -34,8 +34,8 @@
 #======================================================================
 
 from applicatie_meldingen import Melding
-from data_consolidatie import GeconsolideerdInstrument
-from proces_toestanden import MaakToestanden
+from data_lv_consolidatie import GeconsolideerdInstrument
+from proces_lv_toestanden import MaakToestanden
 from stop_actueletoestanden import ActueleToestanden, TegensprekendDoel
 from weergave_data_toestanden import  ToestandActueel
 from weergave_toestandbepaling import Weergave_Toestandbepaling
@@ -194,7 +194,7 @@ class MaakActueleToestanden (MaakToestanden):
             juridischUitgewerktOp, _ = self.JuridischUitgewerktOp ()
             intrekkingstijdstempels = self.Intrekkingstijdstempels ()
 
-            actueleToestanden.JuridischUitgewerktOp = tot = juridischUitgewerktOp
+            tot = juridischUitgewerktOp
             for toestand in reversed (actueleToestanden.Toestanden):
                 toestand.JuridischWerkendTot = tot
                 if tot is None or toestand.JuridischWerkendVanaf < tot:

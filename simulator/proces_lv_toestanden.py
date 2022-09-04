@@ -10,8 +10,8 @@
 # - Selectie van de relevante delen uit het versiebeheer
 # - Bepaling van de instrumentversie van een toestand
 #
-# De overige verwerkingstaken zijn in proces_actueletoestanden.py
-# en proces_completetoestanden.py ondergebracht.
+# De overige verwerkingstaken zijn in proces_lv_actueletoestanden.py
+# en proces_lv_completetoestanden.py ondergebracht.
 #
 # De verschillende lijsten worden in deze applicatie gesorteerd
 # zodat de uiteindelijke weergave onafhankelijk is van
@@ -23,10 +23,10 @@
 from typing import List, Dict, Tuple
 
 from applicatie_meldingen import Melding
-from data_consolidatie import GeconsolideerdInstrument
+from data_lv_consolidatie import GeconsolideerdInstrument
 from data_doel import Doel
-from data_versiebeheerinformatie import Branch, MomentopnameInstrument, MomentopnameTijdstempels, BranchBijdrage
-from proces_branchescumulatief import AccumuleerBranchInformatie
+from data_lv_versiebeheerinformatie import Branch, MomentopnameInstrument, MomentopnameTijdstempels, BranchBijdrage
+from proces_lv_branchescumulatief import AccumuleerBranchInformatie
 from stop_actueletoestanden import TegensprekendDoel
 from stop_toestand import Toestandidentificatie, NogTeConsolideren, NogTeVerwerken, NogTeOntvlechten
 from weergave_data_toestanden import ConsolidatieprocesInformatie

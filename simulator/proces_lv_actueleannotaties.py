@@ -33,9 +33,9 @@
 
 from typing import List
 
-from data_actueleannotaties import ActueleToestandenMetAnnotaties, ExTuncTijdlijn, ExTuncToestand, ActueleAnnotatieVersie
-from data_annotatie import Annotatie
-from data_consolidatie import GeconsolideerdInstrument
+from data_lv_actueleannotaties import ActueleToestandenMetAnnotaties, ExTuncTijdlijn, ExTuncToestand, ActueleAnnotatieVersie
+from data_lv_annotatie import Annotatie
+from data_lv_consolidatie import GeconsolideerdInstrument
 from stop_actueletoestanden import ActueleToestanden
 from weergave_data_toestanden import  ToestandActueel
 

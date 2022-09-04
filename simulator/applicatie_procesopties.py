@@ -1,6 +1,6 @@
 #======================================================================
 #
-# Opties voor het consolidatieproces (invoer)
+# Opties voor het simulatieproces (invoer)
 #
 #----------------------------------------------------------------------
 #
@@ -8,6 +8,8 @@
 # gespecificeerd worden.
 #
 #======================================================================
+
+from typing import Dict, List
 
 from stop_consolidatieinformatie import ConsolidatieInformatie
 
@@ -20,6 +22,9 @@ class ProcesOpties:
 
     def __init__ (self, defaultSelectie = None):
         """Maak default opties aan voor het uitvoeren van het proces"""
+        # Geeft aan dat het versiebeheer bij het bevoegd gezag gesimuleerd wordt
+        # Deze optie wordt aangezet als er projectinvoer is.
+        # self.Versiebeheer = False
         # Geeft aan dat de actuele toestanden berekend moeten worden
         self.ActueleToestanden = True if defaultSelectie is None else defaultSelectie
         # Geeft aan dat de complete toestanden berekend moeten worden
@@ -29,16 +34,22 @@ class ProcesOpties:
         # Beschrijving (html) van het scenario
         self.Beschrijving = None
         # Benoemde uitwisselingen in het scenario
-        # Lijst met instanties van BenoemdeUitwisseling
-        self.Uitwisselingen = []
+        self.Uitwisselingen : List[BenoemdeUitwisseling] = []
         # Benoemde tijdreizen in het scenario
-        # Key = work-ID, value = lijst met instanties van BenoemdeTijdreis
-        self.Tijdreizen = {}
+        # Key = work-ID
+        self.Tijdreizen : Dict[str,List[BenoemdeTijdreis]] = {}
         # Geeft aan dat de proefversies berekend moeten worden
         # Proefversies worden alleen berekend als annotaties obv versiebeheer onderdeel zijn van het scenario
         # self.Proefversies = False
         # Geeft aan of er fouten zijn gesignaleerd bij het inlezen van de specificatie
         self.IsValide = True
+
+    def IsRevisie (self, gemaaktOp):
+        """Geeft aan of een uitwisseling een revisie is of een uitwisseling tussen BG en adviesbureau"""
+        for uitwisseling in self.Uitwisselingen:
+            if uitwisseling.GemaaktOp == gemaaktOp:
+                return uitwisseling.IsRevisie
+        return False
 
 #----------------------------------------------------------------------
 # Inlezen specificatie
@@ -119,6 +130,8 @@ class BenoemdeUitwisseling:
         self.GemaaktOp = None
         # Beschrijving van de uitwisseling
         self.Beschrijving = None
+        # Geeft aan dat het om een revisie gaat
+        self.IsRevisie = False
 
     @staticmethod
     def LeesJson (log, pad, data):
@@ -138,13 +151,13 @@ class BenoemdeUitwisseling:
 
         isValide = True
         if not "naam" in data or not isinstance (data["naam"], str):
-            log.Fout ("Bestand '" + pad + "': elk object in 'Uitwisselingen' moet een naam (string) hebben")
+            log.Fout ("Bestand '" + pad + "': elk object in 'Uitwisselingen' moet een 'naam' (string) hebben")
             isValide = False
         else:
             uitwisseling.Naam = data["naam"]
 
         if not "gemaaktOp" in data or not isinstance (data["gemaaktOp"], str):
-            log.Fout ("Bestand '" + pad + "': elk object in 'Uitwisselingen' moet een gemaaktOp (string) hebben")
+            log.Fout ("Bestand '" + pad + "': elk object in 'Uitwisselingen' moet een 'gemaaktOp' (string) hebben")
             isValide = False
         else:
             uitwisseling.GemaaktOp = data["gemaaktOp"]
@@ -153,10 +166,17 @@ class BenoemdeUitwisseling:
 
         if "beschrijving" in data:
             if not isinstance (data["beschrijving"], str):
-                log.Fout ("Bestand '" + pad + "': de beschrijving in 'Uitwisselingen' moet een string zijn")
+                log.Fout ("Bestand '" + pad + "': de 'beschrijving' in 'Uitwisselingen' moet een string zijn")
                 isValide = False
             else:
                 uitwisseling.Beschrijving = data["beschrijving"]
+
+        if "revisie" in data:
+            if not isinstance (data["revisie"], bool):
+                log.Fout ("Bestand '" + pad + "': de 'revisie' in 'Uitwisselingen' moet een boolean zijn")
+                isValide = False
+            else:
+                uitwisseling.IsRevisie = data["revisie"]
 
         if isValide:
             return uitwisseling
