@@ -1,0 +1,38 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/mnre1034/2020/VRACT": {
+            "BekendOp": "2020-07-14",
+            "OntvangenOp": "2020-07-14",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/land/2021/regeling1/nld@2021-01-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Instrumentversie": "/akn/nl/act/mnre1034/2020/VRACT/nld@2020-03-12;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-07-14",
+                    "GeldigVanaf": "2021-01-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2021-01-01",
+                    "OntvangenOp": "2020-07-14"
+                }
+            ]
+        }
+    }
+}

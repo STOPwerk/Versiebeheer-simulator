@@ -28,6 +28,7 @@ class Weergave_Symbolen:
     Toestand_OnbekendeInhoud = Instrument_OnbekendeVersie
     Toestand_MeerdereVersies = "&#128218;" # https://unicode-table.com/en/1F4DA/ multiple books
     Toestand_Uitgewerkt = "&#128683;" # https://unicode-table.com/en/1F6AB/ no entry
+    Toestand_MaterieelUitgewerkt = "&#128123;" # https://unicode-table.com/en/1F47B/ ghost
 
     Annotatie_Uitwisseling = "&#128391;" # https://unicode-table.com/en/1F587/ paperclips
     Annotatie_BekendeVersie = '<span class="a_symbool_goed">&#x2713;</span>' # ✓

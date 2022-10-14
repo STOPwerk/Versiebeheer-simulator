@@ -36,8 +36,8 @@
 from applicatie_meldingen import Melding
 from data_lv_consolidatie import GeconsolideerdInstrument
 from proces_lv_toestanden import MaakToestanden
-from stop_actueletoestanden import ActueleToestanden, TegensprekendDoel
-from weergave_data_toestanden import  ToestandActueel
+from stop_actueletoestanden import TegensprekendDoel
+from weergave_data_toestanden import  ActueleToestanden, ToestandActueel
 from weergave_toestandbepaling import Weergave_Toestandbepaling
 
 #======================================================================
@@ -199,6 +199,10 @@ class MaakActueleToestanden (MaakToestanden):
                 toestand.JuridischWerkendTot = tot
                 if tot is None or toestand.JuridischWerkendVanaf < tot:
                     tot = toestand.JuridischWerkendVanaf
+
+            actueleToestanden.MaterieelUitgewerktOp = self._Consolidatie.Instrument.MaterieelUitgewerkt
+            # Alleen voor weergave: bewaar juridischUitgewerktOp
+            actueleToestanden.JuridischUitgewerktOp = juridischUitgewerktOp
 
             # Bepaal de inhoud van de toestanden
             for toestand in actueleToestanden.Toestanden:

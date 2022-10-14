@@ -1,0 +1,13 @@
+{
+    "Uitwisselingen": [
+        {
+            "naam": "Test",
+            "gemaaktOp": "2022-02-15T07:00:00Z"
+        },
+        {
+            "naam": "Vooraf",
+            "gemaaktOp": "2022-02-01T07:00:00Z"
+        }
+    ],
+    "Procesopties": true
+}

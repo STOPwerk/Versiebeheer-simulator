@@ -1,0 +1,87 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2020/REG0001": {
+                "BekendOp": [
+                    "2020-01-21"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-01-21",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1",
+                                "GemaaktOp": "2020-01-21T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                ]
+            },
+            "/join/id/regdata/gm9999/2019/gio993859238": {
+                "BekendOp": [
+                    "2020-01-21"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-01-21",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                                ],
+                                "ExpressionId": "/join/id/regdata/gm9999/2019/gio993859238/nld@2019-12-20;1",
+                                "GemaaktOp": "2020-01-21T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                ]
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-01-21",
+                        "Doel": "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "GemaaktOp": "2020-01-21T09:03:00Z",
+                        "JuridischWerkendVanaf": "2020-02-01"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2020-01-21",
+                "GemaaktOp": "2020-01-21T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1"
+                    },
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2019-12-20;1"
+                    }
+                ],
+                "OntvangenOp": "2020-01-21"
+            }
+        ]
+    }
+}

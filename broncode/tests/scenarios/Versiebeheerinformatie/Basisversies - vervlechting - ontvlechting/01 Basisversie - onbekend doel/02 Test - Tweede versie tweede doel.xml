@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns="https://standaarden.overheid.nl/stop/imop/data/" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/ https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+	<gemaaktOp>2022-01-02T07:00:00Z</gemaaktOp>
+	<BeoogdeRegelgeving>
+		<BeoogdeRegeling>
+			<doelen>
+				<doel>/join/id/proces/gm9999/2022/Wijziging</doel>
+			</doelen>
+			<instrumentVersie>/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2</instrumentVersie>
+			<eId>art_I</eId>
+			<gemaaktOpBasisVan>
+				<Basisversie>
+					<doel>/join/id/proces/gm9999/2022/OnbekendDoel</doel>
+					<gemaaktOp>2022-01-01T07:00:00Z</gemaaktOp>
+				</Basisversie>
+			</gemaaktOpBasisVan>
+		</BeoogdeRegeling>
+	</BeoogdeRegelgeving>
+</ConsolidatieInformatie>

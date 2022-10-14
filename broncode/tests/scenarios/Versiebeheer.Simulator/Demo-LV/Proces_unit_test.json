@@ -1,0 +1,92 @@
+{
+    "Beschrijving": "<p>Demonstratie van de werking van het <a href=\"@@@Documentatie_Url@@@/versiebeheer_principes.html\">STOP versiebeheer</a>, de <a href=\"@@@Documentatie_Url@@@/consolideren.html\">geautomatiseerde consolidatie</a> en het synchroniseren van annotaties met de geldende regelgeving. De demonstratie is gezien vanuit de landelijke voorzieningen: de invoer bestaat uit consolidatie-informatie modules en uitgewisselde annotatieversies.</p><p>Dit voorbeeld is gemaakt om het gros van de capaciteiten van STOP te demonstreren. Het is daarmee niet het meest toegankelijke scenario om door te nemen. Het is beter geschikt voor een interactieve presentatie door iemand die weet hoe STOP werkt, en die kan uitleggen waar de verschillende onderdelen van de demo voor bedoeld zijn. Er zijn andere voorbeelden die de verschillende onderwerpen apart bespreken en die daardoor toegankelijker zijn.</p><p>Dit voorbeeld laat zien:<ul><li>Het versiebeheer voor de instelling en een reeks wijziging van een regeling, waarbij sommige wijzigingen tegelijk in werking treden.</li><li>Het doorgeven van de vernietiging van een besluit door de rechter en de doorwerking op de geldende regeling.</li><li>Het effect van het wijzigen van de geldende regeling op regelgeving die later in werking treedt.</li><li>Intrekken van een regeling en van een informatieobject, en het effect op wijzigingen (van een informatieobject) die op een later tijdstip in werking zouden treden.</li><li>De communicatie tussen LVBB en BG via actuele toestanden over (incomplete) resultaten van de geautomatiseerde consolidatie.</li><li>Het gebruik van proefversies om annotaties (informatie over of ter duiding van regelgeving) uit STOP en uit andere standaarden te koppelen aan regelingversies en aan de geldende regelgeving.</li><li>Het gebruik van alleen <i>doel</i> om annotaties met geldende regelgeving te synchroniseren zonder afhankelijk te zijn van de details van de juridische processen.</li><li>Het be\u00c3\u00abindigen van de geldigheid van annotaties bij intrekking van een regeling of informatieobject.</li><li>Het verschil tussen het werken met actuele toestanden (<i>ex tunc</i>) en de complete toestanden voor volledig tijdreizen ()ook <i>ex nunc</i>), gedemonstreerd via een besluit met terugwerkende kracht en de vernietiging van een besluit door de rechter.</li><li>Het gebruik van complete toestanden en de juridische verantwoording (WTI) om bij tijdreizen toch de toestand te kunnen beschrijven zonder de exacte regelingversie te kennen.</li><li>Het gebruik van de STOP module met complete toestanden om de uitkomst van diverse soorten tijdreizen uit te wisselen.</li><li>Uitleg hoe actuele en complete toestanden bepaald zijn door de algoritmen achter de geautomatiseerde consolidatie.</li><li>Illustratie van het verband tussen complete toestanden en het bitemporele model dat gangbaar is in kringen van consolidatie-connaisseurs.</li></ul></p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Start",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "De regeling in ingesteld en er is een  wijzigingsbesluit gepubliceerd. Kies dit moment om alle informatie tot het einde van de pagina door te lopen, om een indruk te krijgen wat er zoal beschikbaar is."
+        },
+        {
+            "naam": "Omgekeerde volgorde",
+            "gemaaktOp": "2022-03-15T07:00:00Z",
+            "beschrijving": "Een wijzigingsbesluit wordt later gepubliceerd maar treedt eerder in werking. Dat leidt tot samenloop die in dit voorbeeld pas later wordt opgelost. Het ligt voor de hand dat de oplossing meteen meegestuurd wordt, hier wordt dat niet gedaan om het effect te laten zien. In de nieuwe versie komt een ander informatieobject in de plaats van het bestaande, wat tot samenloop tussen een versie en intrekking leidt."
+        },
+        {
+            "naam": "Oplossing samenloop",
+            "gemaaktOp": "2022-03-16T08:30:00Z",
+            "beschrijving": "De samenloop wordt volgens het boekje opgelost. Het nieuwe informatieobject wordt ook voor de oplossing van de samenloop gebruikt."
+        },
+        {
+            "naam": "Gelijktijdig (1)",
+            "gemaaktOp": "2022-05-02T07:00:00Z",
+            "beschrijving": "Een nieuw wijzigingsbesluit wordt gepubliceerd en blijft tegelijk met het voorgaande in werking te treden. Daar was bij publicatie geen rekening mee gehouden. Dat wordt gesignaleerd via de actuele toestanden. Omdat er geen regelingversie voor de consolidatie beschikbaar is wordt voor een alternatieve weergave ervan gekozen. De annotaties bij de regeling kunnen ook niet goed bepaald worden."
+        },
+        {
+            "naam": "Gelijktijdig (2)",
+            "gemaaktOp": "2022-05-02T08:00:00Z",
+            "beschrijving": "Een nieuwe publicatie (in de praktijk vaak een revisie) lost de samenloop (in de juridische informatie) tussen de twee gelijktijdig in werking tredende wijzigingsbesluiten op; er is een regelingversie bekend voor de geconsolideerde regeling. De samenloop in annotatie wordt niet opgelost. Dat kan in productie-waardige applicatie niet toegestaan zijn; in deze applicatie wel om het effect ervan te kunnen tonen."
+        },
+        {
+            "naam": "Terugwerkend",
+            "gemaaktOp": "2022-07-14T07:00:00Z",
+            "beschrijving": "Het effect van een besluit dat met terugwerkende kracht geldig wordt is in de actuele toestanden niet te zien, maar leidt er wel toe dat er meerdere complete toestanden beschikbaar komen. Die extra toestanden zijn alleen van belang voor tijdreizen."
+        },
+        {
+            "naam": "Vernietiging",
+            "gemaaktOp": "2022-07-15T07:00:00Z",
+            "beschrijving": "De rechter vernietigt het tweede wijzigingsbesluit. Dat hoeft alleen in de versies verwerkt te worden die nu of in de toekomst geldig worden. Als eerste wordt het effect op de nu geldende regelgeving aangegeven."
+        },
+        {
+            "naam": "Doorwerking vernietiging",
+            "gemaaktOp": "2022-07-16T07:00:00Z",
+            "beschrijving": "De vernietiging van het tweede wijzigingsbesluit wordt pas later verwerkt in de versie die nu nog niet maar op  een later tijdstip geldig zal worden."
+        }
+    ],
+    "Tijdreizen": {
+        "/akn/nl/act/gm9999/2022/REG_A": [
+            {
+                "ontvangenOp": "2022-05-02",
+                "bekendOp": "2022-05-02",
+                "juridischWerkendOp": "2022-06-01",
+                "geldigOp": "2022-06-01",
+                "beschrijving": "De samenloop tussen de twee wijzigingebesluiten die tegelijk in werking treden wordt op dezelfde dag opgelost. Omdat alle tijdreisinformatie op basis van datums werkt is achteraf alleen de correcte versie te vinden. De versie met samenloop is slechts een korte periode als toekomstige versie terug te vinden."
+            },
+            {
+                "ontvangenOp": "2022-07-14",
+                "bekendOp": "2022-07-14",
+                "juridischWerkendOp": "2022-08-01",
+                "geldigOp": "2022-05-01",
+                "beschrijving": "De terugwerkende kracht is terug te vinden in de complete toestanden. Omdat het besluit terugwerkt tot voorbij de inwerkingtredeing van eerdere besluiten, ontstaan nieuwe toestanden mer andere combinaties van (inwerkingtredings-)doelen die aan de toestand bijdragen. Er is geen consolidatieverplichting voor deze toestanden, omdat ze nooit de geldige versie van de regeling zullen zijn. De inhoud van de toestanden kan wel op een alternatieve manier weergegeven worden."
+            },
+            {
+                "ontvangenOp": "2022-07-15",
+                "bekendOp": "2022-07-13",
+                "juridischWerkendOp": "2022-07-01",
+                "geldigOp": "2022-07-01",
+                "beschrijving": "Omdat doorgegeven wordt wanneer de rechter uitspraak gedaan heeft, is ook vast te stellen per wanneer de op dat moment geldende regeling niet meer door de eerder opgegeven instrumentversie weergegeven wordt. Die informatie is alleen terug te zien bij het tijdreizen. Tegelijk met de informatie over de vernietiging wordt ook het effect ervan op deze toestand doorgegeven. De uitspraak is gedaan  voordat het volgende wijzigingsbesluit is bekendgemaakt, maar de informatie erover is pas erna beschikbaar gekomen. Dat is de reden dat deze toestand in het overzicht staat."
+            },
+            {
+                "ontvangenOp": "2022-07-15",
+                "bekendOp": "2022-07-13",
+                "juridischWerkendOp": "2022-02-01",
+                "geldigOp": "2022-02-01",
+                "beschrijving": "Deze toestand correspondeert met de instelling van de regeling. Op het eerste gezicht is het vreemd dat die nogmaals in het overzicht vermeld staat, want de regelingversie is niet gewijzigd. De reden is dat de volgende toestand is vervallen vanwege de vernietiging van het tweede besluit. De tijdreizen die anders bij die toestand terecht zouden komen, moeten nu bij de eerste toestand terecht komen. Dat wordt bereikt dor de instelling van de regeling met nieuwe tijdstempels op te nemen. Bij een <i>ex tunc</i> tijdreis wordt deze toestant uit het overzicht weggelaten, want dan is het wel de bedoeling om de toestand voor het (niet-vernietigde) besluit te vinden."
+            },
+            {
+                "ontvangenOp": "2022-07-15",
+                "bekendOp": "2022-07-13",
+                "juridischWerkendOp": "2022-06-01",
+                "geldigOp": "2022-06-01",
+                "beschrijving": "De vernietiging van het besluit heeft ook een effect op de regelingversie die ontstaat na de twee gelijktijdig in werking getreden besluiten. Omdat de regelingversie niet meer geldig is, is er geen consolidatieverplichting om dit effect te beschrijven. De toestand is geen onderdeel meer van de actuele toestanden. In de complete toestanden is het effect wel terug te vinden, maar niet als voor een <i>ex tunc</i> tijdreis gekozen wordt, want dan worden wijzigingen voor historische versies niet meer doorgevoerd."
+            },
+            {
+                "ontvangenOp": "2022-07-15",
+                "bekendOp": "2022-07-15",
+                "juridischWerkendOp": "2022-08-01",
+                "geldigOp": "2022-07-01",
+                "beschrijving": "Het effect van de vernietiging van het tweede besluit wordt niet meteen in de toekomstig geldende versie van de geconsolideerde regeling verwerkt. Dit is in de actuele toestanden zichtbaar totdat de verwerking gedaan is, daarna alleen in het tijdreizen als de verwerking meer dan een dag na het publiceren van de vernietiging via de LVBB bekend is geworden."
+            }
+        ]
+    },
+    "Procesopties": true
+}

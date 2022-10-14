@@ -142,16 +142,25 @@ class AccumuleerBranchInformatie:
             if huidig is None:
                 # Er was nog geen bijdrage voor dit doel
                 self.BranchesCumulatief[doel] = bijdrage
+                continue
 
-            elif huidig.LaatstVerwerkt < bijdrage.LaatstVerwerkt:
+            if huidig.LaatstVerwerkt < bijdrage.LaatstVerwerkt:
                 # De nieuwe bijdrage is recenter, gebruik die
                 self.BranchesCumulatief[doel] = bijdrage
+                continue
 
-            elif huidig.LaatstVerwerkt == bijdrage.LaatstVerwerkt and not huidig.IsOntvlochten and bijdrage.IsOntvlochten:
-                # Neem de ontvlochten status over
-                self.BranchesCumulatief[doel] = bijdrage
+            if huidig.LaatstVerwerkt == bijdrage.LaatstVerwerkt:
+                if huidig.IsOntvlochten is None and not bijdrage.IsOntvlochten:
+                    # Dit is een bevestiging van de vervlochten status
+                    self.BranchesCumulatief[doel] = bijdrage
+                    continue
 
-            elif doel == vervlochtenversie.Branch.Doel:
+                if not huidig.IsOntvlochten and bijdrage.IsOntvlochten:
+                    # Neem de ontvlochten status over
+                    self.BranchesCumulatief[doel] = bijdrage
+                    continue
+
+            if doel == vervlochtenversie.Branch.Doel: # huidig.IsOntvlochten os None
                 self._Log.Fout ('Doel ' + str(doel) + ' is al verwerkt tot en met @' + huidig.LaatstVerwerkt + ' in (' + str(self._Momentopname.Branch.Doel) + ', @' + self._Momentopname.GemaaktOp + ', vervlechting met @' + vervlochtenversie.GemaaktOp + ' is overbodig of onbedoeld')
                 self._IsValide = False
 

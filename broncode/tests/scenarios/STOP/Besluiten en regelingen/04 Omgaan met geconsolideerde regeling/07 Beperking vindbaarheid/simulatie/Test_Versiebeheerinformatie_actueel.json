@@ -1,0 +1,63 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/mnre1109/2020/INST0021": {
+                "BekendOp": [
+                    "2020-01-18"
+                ],
+                "Branches": {
+                    "/join/id/proces/mnre1109/2020/InstructieDeParkel": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-01-18",
+                                "Doelen": [
+                                    "/join/id/proces/mnre1109/2020/InstructieDeParkel"
+                                ],
+                                "ExpressionId": "/akn/nl/act/mnre1109/2020/INST0021/nld@2020-06-14;1",
+                                "GemaaktOp": "2020-01-18T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/mnre1109/2020/InstructieDeParkel"
+                ],
+                "MaterieelUitgewerkt": "2022-09-01"
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/mnre1109/2020/InstructieDeParkel": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-01-18",
+                        "Doel": "/join/id/proces/mnre1109/2020/InstructieDeParkel",
+                        "GemaaktOp": "2020-01-18T09:03:00Z",
+                        "JuridischWerkendVanaf": "2020-09-01"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2020-01-18",
+                "GemaaktOp": "2020-01-18T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/mnre1109/2020/InstructieDeParkel"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/mnre1109/2020/INST0021/nld@2020-06-14;1"
+                    }
+                ],
+                "OntvangenOp": "2020-01-18"
+            },
+            {
+                "BekendOp": "2020-07-03",
+                "GemaaktOp": "2020-07-03T09:03:00Z",
+                "OntvangenOp": "2020-07-03"
+            }
+        ]
+    }
+}

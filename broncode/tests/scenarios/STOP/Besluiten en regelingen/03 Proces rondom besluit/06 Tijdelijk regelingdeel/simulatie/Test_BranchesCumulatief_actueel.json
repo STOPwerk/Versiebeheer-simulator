@@ -1,0 +1,32 @@
+{
+    "Testresultaat - Cumulatieve versieinformatie": {
+        "/akn/nl/act/gm9999/2020/REG00123": {
+            "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-02-13T09:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-02-13T09:00:00Z"
+                }
+            ],
+            "/join/id/proces/gm9999/2021/Intrekken_tijdelijkregelingdeel_Geitenhouderij": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-02-13T09:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2021/Intrekken_tijdelijkregelingdeel_Geitenhouderij": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-02-13T09:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-02-13T09:00:00Z"
+                }
+            ]
+        }
+    }
+}

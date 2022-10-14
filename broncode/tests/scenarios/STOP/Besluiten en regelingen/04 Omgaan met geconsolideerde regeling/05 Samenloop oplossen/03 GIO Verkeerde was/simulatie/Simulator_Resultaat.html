@@ -1,0 +1,621 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>simulatie</title>
+    <style>
+        body {
+            background-color: White;
+            color: Black;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 10pt;
+            line-height: 1.4em;
+        }
+
+        table {
+            background-color: White;
+            color: Black;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 10pt;
+            line-height: 1.4em;
+        }
+
+        .log {
+            width: 100%;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            a:visited {
+                color: blue;
+            }
+
+        .aslink {
+            color: blue;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+            .aslink:hover {
+                text-decoration: underline;
+            }
+
+
+        #meldingen_tabel {
+            border: 1px solid #808080;
+        }
+
+        .entry_detail {
+            color: #CCCCCC;
+        }
+
+            .entry_detail td {
+                color: #CCCCCC;
+            }
+
+        .level_fout {
+            color: #FFFFFF;
+            background-color: #FF0000;
+        }
+
+        .level_letop {
+            color: #FFFFFF;
+            background-color: #CC8800;
+        }
+
+        .main {
+            width: 70em;
+            overflow: auto;
+            white-space: pre-line;
+        }
+
+        .message_fout {
+            color: #FF0000;
+        }
+
+        .message_letop {
+            color: #880000;
+        }
+
+        .message_detail {
+            color: #CCCCCC;
+        }
+
+        .extra {
+            width: 200pt;
+            color: #CCCCCC;
+            overflow: auto;
+        }
+
+        .exception {
+            color: #CCCCCC;
+            font-family: Courier New, monospace;
+        }
+
+        .accordion_h {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 8px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            transition: 0.4s;
+        }
+
+            .accordion_h.active, .accordion_h:hover {
+                background-color: #ccc;
+            }
+
+        .accordion_h_paneel {
+            padding: 0 8px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .accordion_t {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 4px;
+            text-align: center;
+            border: 1px solid #000000;
+            outline: none;
+            transition: 0.4s;
+        }
+
+            .accordion_t.active {
+                background-color: #ccc;
+                padding: 10px;
+            }
+
+            .accordion_t:hover {
+                background-color: #ccc;
+            }
+
+        .accordion_t_paneel {
+            overflow: hidden;
+        }
+
+        .accordion_t_titel {
+            display: none;
+            overflow: hidden;
+            padding: 0 4px;
+        }
+
+        .leestip::after {
+            content: "\1F453";
+            # https://unicode-table.com/en/1F453/
+        }
+
+        .a_symbool_goed {
+            color: #82b366;
+            font-weight: bold;
+        }
+
+        .a_symbool_fout {
+            color: #b85450;
+            font-weight: bold;
+        }
+
+        .sectie_bg {
+            border-right: 1em solid #9673a6;
+            border-top: 3px solid #9673a6;
+        }
+
+            .sectie_bg h1 {
+                color: #9673a6;
+            }
+
+        .sectie_op {
+            border-right: 1em solid #6c8ebf;
+            border-top: 3px solid #6c8ebf;
+        }
+
+            .sectie_op h1 {
+                color: #6c8ebf;
+            }
+
+        .sectie_lv {
+            border-right: 1em solid #d79b00;
+            border-top: 3px solid #d79b00;
+        }
+
+            .sectie_lv h1 {
+                color: #d79b00;
+            }
+
+        .sectie_lv_alt1 {
+            border-right: 1em solid #ffe6cc;
+        }
+
+        .sectie_lv_alt2 {
+            border-right: 1em solid #d79b00;
+        }
+
+        .uw_overzicht { /* Tabel */
+    border-collapse: collapse;
+    border: 1px solid #666666;
+}
+
+    .uw_overzicht td {
+        border-left: 1px solid #666666;
+        border-right: 1px solid #666666;
+    }
+
+    .uw_overzicht th {
+        border: 1px solid #666666;
+    }
+
+    .uw_overzicht td.nw {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .uw_overzicht tr { /* uitwisseling in tabel */
+        cursor: pointer;
+    }
+
+        .uw_overzicht tr:hover {
+            background-color: #dae8fc;
+        }
+
+        .uw_overzicht tr.huidige-uw { /* geselecteerde uitwisseling */
+            background-color: #ffe6cc;
+            border: 3px solid #000000;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+        Applicatie = (function () {
+
+    // Selectie van toestanden
+    Applicatie = {}
+    var geselecteerdeToestand = false;
+
+    Applicatie.SelecteerGeenToestand = function (welMomentopname) {
+        window.dispatchEvent(new CustomEvent('toestand', {
+            detail: {
+                Identificatie: -1,
+                UniekId: -1,
+                SelectieMomentopname: welMomentopname
+            },
+            cancelable: true
+        }));
+        window.dispatchEvent(new CustomEvent('toestand:after', {
+            detail: {
+                Identificatie: -1,
+                UniekId: -1,
+                SelectieMomentopname: welMomentopname
+            },
+            cancelable: true
+        }));
+        geselecteerdeToestand = false;
+    }
+
+    Applicatie.SelecteerToestand = function (wid, ti, tid) {
+        if (geselecteerdeToestand) {
+            if (geselecteerdeToestand.UniekId == tid) {
+                // 2x dezelfde toestand: deselecteer de toestand
+                Applicatie.SelecteerGeenToestand(wid, false);
+                return;
+            }
+        }
+        geselecteerdeToestand = {
+            WorkId: wid,
+            UniekId: tid,
+            Identificatie: ti
+        };
+
+        window.dispatchEvent(new CustomEvent('toestand', {
+            detail: geselecteerdeToestand,
+            cancelable: true
+        }));
+        window.dispatchEvent(new CustomEvent('toestand:after', {
+            detail: geselecteerdeToestand,
+            cancelable: true
+        }));
+    }
+
+    // Swelectie van momentopnamen
+    Applicatie.SelecteerMomentopname = function (wid, mid) {
+        window.dispatchEvent(new CustomEvent('momentopname', {
+            detail: {
+                WorkId: wid,
+                UniekId: mid
+            }
+        }));
+        Applicatie.SelecteerGeenToestand(wid, true);
+    }
+
+    // Selectie van uitwisselingen
+    var toestanden = {
+        
+    };
+    Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
+        window.dispatchEvent(new CustomEvent('uitwisseling', {
+            detail: gemaaktOp
+        }));
+        if (geselecteerdeToestand) {
+            var uniekId = -1;
+            toestanden[geselecteerdeToestand.Identificatie].forEach((periode) => {
+                if (periode[0] <= gemaaktOp) {
+                    uniekId = periode[1];
+                }
+            });
+            if (uniekId != geselecteerdeToestand.UniekId) {
+                // Pas de toestandselectie aan 
+                Applicatie.SelecteerToestand(geselecteerdeToestand.Identificatie, uniekId);
+            }
+        }
+    }
+
+    // Initialisatie van een diagram
+    Applicatie.InitialseerDiagram = function (svgElementId) {
+        // svgPanZoom werkt niet als de SVG hidden is
+        // Wacht daarom totdat het diagram in beeld komt
+        new IntersectionObserver(function (entries, observer) {
+            if (entries[0].isIntersecting) {
+                observer.unobserve(document.getElementById(svgElementId));
+
+                svgPanZoom('#' + svgElementId, {
+                    zoomEnabled: true,
+                    controlIconsEnabled: true,
+                    fit: true,
+                    center: true
+                })
+            }
+        }, {
+            threshold: 0
+        }).observe(document.getElementById(svgElementId));
+    }
+
+    // Luister naar zowel een touch als een click event; niet gebruiken voor <input>s
+    Applicatie.AddTouchStartClickListener = function (elt, handler) {
+        elt.addEventListener('touchstart', handler);
+        elt.addEventListener('click', handler);
+    }
+
+    // Voorkom dat een touchtstart event later nog als click event uitgevoerd wordt
+    Applicatie.EnkeleTouchStartClick = function (e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }
+
+    return Applicatie;
+})();
+
+
+    </script>
+</head>
+<body>
+<h1>simulatie</h1><p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> (ontwikkelversie)</p>
+<div id="intro">
+</div>
+<table><tr><td><button data-accordion="988" class="accordion_t active">?</button></td>
+<td data-accordion-titel="988" class="accordion_t_titel">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="988" class="accordion_t_paneel" style="display: block">
+<b>Over deze pagina</b>
+<p>
+    Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
+    STOP ConsolidaiteInformatie modules die als invoer voor dit scenario dienen. Elk scenario
+    vertelt een verhaal, maar om het verhaal te begrijpen is het niet voldoende om alleen
+    passief door deze pagina te lezen.
+</p>
+<p>
+    De pagina is opgedeeld in secties die gescheiden zijn door grijze balken zoals de
+    balk boven deze tekst. Sommige secties zijn geopend, anderen beginnen gesloten. De
+    geopende secties vertellen de hoofdlijnen van het verhaal, de gesloten secties bevatten
+    aanvullende informatie (zoals deze sectie). De XML van een STOP module met resultaten
+    van de consolidatie wordt ook als gesloten sectie getoond omdat de modules nogal omvangrijk
+    kunnen worden. Afhankelijk van het scenario kunnen bepaalde secties wel of niet aanwezig zijn.
+</p>
+<p>
+    <span class="leestip"></span> Lees eerst de pagina een keer door om globaal bekend te raken met de soort
+    informatie die de pagina biedt. Kijk daarna per sectie in detail naar de resultaten.
+</p>
+<p>
+    In elke sectie staat een uitleg over de informatie waar op ingezoomd wordt en de functie ervan.
+    De tekst vormt maar een deel van het verhaal. Meestal worden ook tabellen, diagrammen en/of
+    bedieningselementen getoond. Beweeg met de muis over de diagrammen en symbolen in de tabellen
+    voor hints. Klik op een tabelrij, bedieningselement of een element in een
+    diagram om de informatie te zien die met dat element geassocieerd is. en groot deel van de
+    resultaten van de consolidatie zijn alleen op deze manier te ontdekken. De inhoud van sommige
+    secties hangt af of verschijnt pas als in een voorgaande sectie een tabelrij of diagramelement
+    is aangeklikt. De tekst en daarmee lengte van de een sectie kan enorm toenemen door
+    de interactie met een andere sectie.
+</p>
+<p>
+    <span class="leestip"></span> Klik in alle tabellen en diagrammen om de volledige resultaten van de
+    geautomatiseerde consolidatie te verkennen.
+</p>
+<p>
+    <span class="leestip"></span> Sluit bij het onderzoeken van de resultaten van een sectie alle secties die
+    daar niet mee samenhangen.
+</p>
+<p>
+    Drie type interacties hebben een effect op de hele pagina: selectie van een uitwisseling,
+    van een toestand en van een tijdreisfilter.
+</p>
+<table>
+    <tr>
+        <td style="background-color: #eee; padding: 18px; text-align: center; font-size: 18pt; ">&#128228;</td>
+        <td>
+            Rechtsboven in de pagina staat de selector van uitwisselingen. Elk scenario bestaat
+            uit een reeks uitwisselingen die samen het verhaal vertellen. Mijlpalen in het scenario
+            zijn benoemd; klik op de naam om de stand van de consolidatie na die uitwisseling te zien.
+            Klik op de knop links in de selector om een beschrijving van de mijlpaal te zien. Via
+            de lijst en pijlen kan ook op volgorde heen en weer door alle uitwisselingen gelopen
+            worden. Bij de selectie van een uitwisseling worden de resultaten in alle secties
+            aangepast.
+        </td>
+    </tr>
+</table>
+<p>
+    <span class="leestip"></span> Ga naar de eerste sectie, het overzicht van versiebeheer, en loop tenminste
+    door de mijlpalen om een indruk te krijgen van het verloop van het scenario.
+</p>
+<p>
+    In tabellen en diagrammen worden toestanden getoond, Klik daarop om een toestand te selecteren
+    en aanvullende informatie over de toestand te zien. Klik nog eens op een geselecteerde toestand
+    om de toestand te deselecteren. Als in de ene sectie een toestand geselecteerd wordt, dan wordt
+    dezelfde toestand ook in alle andere secties geselecteerd waar de toestand getoond wordt.
+</p>
+<p>
+    <span class="leestip"></span> De meeste informatie over toestanden is alleen in te zien door op een toestand
+    te klikken. Doe dat vooral!
+</p>
+<p>
+    <span class="leestip"></span> Selecteer een toestand in de ene sectie en ga dan naar de andere sectie om inzicht
+    te krijgen de samenhang van de verschillende resultaten van de geautomatiseerde consolidatie.
+</p>
+<p>
+    Het tijdreisfilter is een filtering van de complete toestanden. Dat wordt in een latere sectie uitgelegd.
+</p>
+<table>
+    <tr>
+        <td><button class=".accordion_t">?</button></td>
+        <td>
+            Een sectie begint met een uitleg over de nut en noodzaak van de toegelichte STOP informatie.
+            Bij het verkennen van de informatie uit de verschillende secties kan de toelichting in de
+            weg zitten. Door op het vraagteken te klikken kan de toelichting verborgen en later
+            weer geopend worden.
+        </td>
+    </tr>
+</table>
+
+</td></tr></table>
+
+<p>Er is 
+een foutmelding
+; klik op <i>Uitvoering van de applicatie</i> om deze te bekijken</p>
+<button data-accordion="989" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="989" class="accordion_h_paneel">
+<p>
+    Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
+    het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
+    past dezelfde validaties toe die in STOP zijn beschreven. Afgezien daarvan valt in deze sectie
+    niets over STOP te leren.
+</p>
+
+<!-- checkboxElement id moet overeenkomen "toon_" plus log-level waarde. -->
+<input id="toon_fout" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_fout">Toon FOUT meldingen </label>
+<input id="toon_letop" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_letop">Toon LeT OP meldingen </label>
+<input id="toon_info" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_info">Toon INFO meldingen </label>
+<input id="toon_detail" type="checkbox" class="meldingen_checkbox" /><label for="toon_detail">Toon alle (detail)meldingen in gedetailleerd overzicht</label>
+<div id="log_detail">
+
+<table id="meldingen_tabel">
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\03 GIO Verkeerde was\simulatie\02-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\03 GIO Verkeerde was\simulatie\12-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\03 GIO Verkeerde was\simulatie\22-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\03 GIO Verkeerde was\simulatie\25-BG-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Deze applicatie kan alleen ConsolidatieInformatie modules met verschillende gemaaktOp verwerken; 2020-09-26T09:00:00Z komt meerdere keren voor</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Fouten en waarschuwingen: geen verwachte resultaten beschikbaar</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Versiebeheerinformatie: geen verwachte resultaten beschikbaar</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Cumulatieve versieinformatie: geen verwachte resultaten beschikbaar</td></tr>
+</table>
+</div>
+<script type="text/javascript">
+    function Meldingen_Aanpassen(e) {
+        var show = e.srcElement.checked;
+        var container = document.querySelector("#meldingen_tabel");
+        var matches = container.querySelectorAll("tr.entry" + e.srcElement.id.slice(4));
+
+        for (var i = 0; i < matches.length; i++) {
+            matches[i].style.display = show ? '' : 'none';
+        }
+    }
+
+    document.querySelectorAll(".meldingen_checkbox").forEach((checkbox) => {
+        checkbox.addEventListener('change', Meldingen_Aanpassen);
+    });
+</script>
+
+</div>
+
+<div class="sectie_op"><h1>Publiceren</h1>
+<table><tr><td><button data-accordion="990" class="accordion_t active">?</button></td>
+<td data-accordion-titel="990" class="accordion_t_titel">&#8678;Over publiceren</td>
+<td data-accordion-paneel="990" class="accordion_t_paneel" style="display: block">
+<p>
+    Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
+    en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
+    niet van belang, maar kunnen gebruikt worden voor een alternatieve weergave van regelgeving als de
+    consolidatie (nog) niet is uitgevoerd.
+</p>
+
+</td></tr></table>
+
+<button data-accordion="991" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
+<div data-accordion-paneel="991" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="992" class="accordion_t active">?</button></td>
+<td data-accordion-titel="992" class="accordion_t_titel">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="992" class="accordion_t_paneel" style="display: block">
+<p>
+    Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
+    het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
+</p>
+<p>
+    <span class="leestip"></span> Klik op een rij in de tabel om een uitwisseling te selecteren.
+    Dat heeft hetzelfde effect als het kiezen van een uitwisseling via de selector (rechtsboven).
+</p>
+
+</td></tr></table>
+
+<p><table class="uw_overzicht"><tr><th>Naam</th><th>gemaaktOp</th><th>Publicatieblad</th><th>Beschrijving</th></tr>
+</table></p>
+</div>
+
+<button data-accordion="993" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="993" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="994" class="accordion_t active">?</button></td>
+<td data-accordion-titel="994" class="accordion_t_titel">&#8678;Over de module</td>
+<td data-accordion-paneel="994" class="accordion_t_paneel" style="display: block">
+<p>
+    Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
+</p>
+
+</td></tr></table>
+
+</div>
+
+</div>
+<div class="sectie_lv"><h1>Beschikbaar stellen</h1>
+<table><tr><td><button data-accordion="995" class="accordion_t active">?</button></td>
+<td data-accordion-titel="995" class="accordion_t_titel">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="995" class="accordion_t_paneel" style="display: block">
+<p>
+    De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
+    en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).
+    Een deel van de afleiding bestaat uit de geautomatiseerde consolidatie, waarbij de ontvangende systemen
+    uit de uitgewisselde consolidatie-informatie de geldende regelgeving destilleren.
+    De resultaten zijn uitgesplitst naar instrument (= regeling/informatieobject).
+</p>
+
+</td></tr></table>
+
+</div>
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+
+        function TogglePaneel() {
+            this.classList.toggle("active");
+            var panel = document.querySelector('[data-accordion-paneel="' + this.dataset.accordion + '"]');
+            var titel = document.querySelector('[data-accordion-titel="' + this.dataset.accordion + '"]');
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+                if (titel) {
+                    titel.style.display = "block";
+                }
+            } else {
+                panel.style.display = "block";
+                if (titel) {
+                    titel.style.display = "none";
+                }
+            }
+        }
+
+        function VerbergPanelen() {
+            document.querySelectorAll("[data-accordion]").forEach((elt) => {
+                elt.classList.remove("active");
+            });
+            document.querySelectorAll("[data-accordion-paneel]").forEach((elt) => {
+                elt.style.display = "none";
+            });
+            document.querySelectorAll("[data-accordion-titel]").forEach((elt) => {
+                elt.style.display = "block";
+            });
+        }
+
+        // Event handlers voor de accordion panelen (op te klikken stukjes van de pagina)
+        document.querySelectorAll("[data-accordion]").forEach((elt) => {
+            elt.addEventListener("click", TogglePaneel);
+        });
+        // Event handler voor het sluiten van alle accordion panelen
+        document.querySelectorAll("#accordion-sluiten").forEach((elt) => {
+            elt.addEventListener("click", VerbergPanelen);
+        });
+    });
+    
+</script>
+</body>
+</html>

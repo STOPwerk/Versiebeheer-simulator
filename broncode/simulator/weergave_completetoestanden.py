@@ -59,7 +59,7 @@ class Weergave_CompleteToestanden ():
 
         generator.VoegHtmlToe (einde)
         generator.LeesCssTemplate ('')
-        generator.VoegSlotScriptToe (generator.LeesJSTemplate ('', False).replace ('UNIEK_ID', maker.UniekId).replace ('WORK_ID', instrumentData.WorkId))
+        generator.VoegSlotScriptToe (generator.LeesJSTemplate ('', False).replace ('UNIEK_ID', maker._UniekId).replace ('WORK_ID', instrumentData.WorkId))
 
 #----------------------------------------------------------------------
 #
@@ -74,7 +74,7 @@ class Weergave_CompleteToestanden ():
         uniek_id int  Uniek nummer om kopieën van dit fragment in de pagina te onderscheiden
         instrumentData InstrumentData Extra informatie over het instrument uit de consolidatie
         """
-        self.UniekId = 'ct_o_' + str(uniek_id)
+        self._UniekId = 'ct_o_' + str(uniek_id)
         self._InstrumentData = instrumentData
         self._Selector = Weergave_Uitwisselingselector (instrumentData.WeergaveData.Scenario)
 
@@ -88,8 +88,9 @@ class Weergave_CompleteToestanden ():
         for uitwisseling in self._InstrumentData.Uitwisselingen:
             html += '<table' + self._Selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>\n'
             html += '<tr><th>Letter</th><th>Doel</th></tr>\n'
-            for doel, branchId in self._InstrumentData.WeergaveData.Branches (uitwisseling.DoelenCompleteToestanden):
-                html += '<tr><td>' + branchId + '</td><td>' + str(doel) + '</td></tr>'
+            if not uitwisseling.CompleteToestanden is None:
+                for doel, branchId in self._InstrumentData.WeergaveData.Branches (uitwisseling.DoelenCompleteToestanden):
+                    html += '<tr><td>' + branchId + '</td><td>' + str(doel) + '</td></tr>'
             html += '</table>'
         return html
 
@@ -98,7 +99,7 @@ class Weergave_CompleteToestanden ():
         html = '<table><tr><th colspan="2">Symbolen</th></tr>'
         html += '<tr><td>' + Weergave_Symbolen.Toestand_BekendeInhoud + '</td><td>Bekende inhoud</td></tr>'
         html += '<tr><td>' + Weergave_Symbolen.Toestand_OnbekendeInhoud + '</td><td>Onbekende inhoud</td></tr>'
-        html += '<tr><td>' + Weergave_Symbolen.Toestand_Uitgewerkt + '</td><td>Juridisch uitgewerkt</td></tr>'
+        html += '<tr><td>' + Weergave_Symbolen.Toestand_Uitgewerkt + '</td><td>Niet in werking</td></tr>'
         html += '<tr><td>' + Weergave_Symbolen.BenoemdeTijdreis + '</td><td>Toelichting beschikbaar</td></tr>'
         html += '<tr><td class="ct_o_t">#</td><td>In uitwisseling</td></tr>'
         html += '<tr><td class="ct_o_t uit">#</td><td>Uitgefilterd</td></tr>'
@@ -114,29 +115,32 @@ class Weergave_CompleteToestanden ():
     def _MaakToestandenHtml (self):
         html = ''
         for uitwisseling in self._InstrumentData.Uitwisselingen:
-            html += '<table class="ct_o_toestanden"' + self._Selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>'
-            html += '<tr><th data-' + self.UniekId + '_ts="o">ontvangenOp</th><th data-' + self.UniekId + '_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-' + self.UniekId + '_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr>'
+            if uitwisseling.CompleteToestanden is None:
+                html += '<div ' + self._Selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>Het instrument is nog niet in werking</div>'
+            else:
+                html += '<table class="ct_o_toestanden"' + self._Selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>'
+                html += '<tr><th data-' + self._UniekId + '_ts="o">ontvangenOp</th><th data-' + self._UniekId + '_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-' + self._UniekId + '_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr>'
 
-            for toestand in uitwisseling.CompleteToestanden.Toestanden:
-                if toestand.GemaaktOp <= uitwisseling.GemaaktOp and (toestand.OverschrevenOp is None or toestand.OverschrevenOp > uitwisseling.GemaaktOp):
-                    identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
-                    inhoud = uitwisseling.CompleteToestanden.ToestandInhoud[toestand.Inhoud]
+                for toestand in uitwisseling.CompleteToestanden.Toestanden:
+                    if toestand.GemaaktOp <= uitwisseling.GemaaktOp and (toestand.OverschrevenOp is None or toestand.OverschrevenOp > uitwisseling.GemaaktOp):
+                        identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
+                        inhoud = uitwisseling.CompleteToestanden.ToestandInhoud[toestand.Inhoud]
 
-                    html += ('<tr class="ct_o_t" data-' + self.UniekId + '_ti="{ti}" data-' + self.UniekId + '_tid="{tid}" data-' + self.UniekId + '_f="{tfi}"').format (ti=toestand.Identificatie, tid=toestand.UniekId, tfi=uitwisseling.ToestandTijdreisIndex(toestand)) + '>'
-                    html += '<td data-' + self.UniekId + '_ts="o">' + toestand.OntvangenOp + '</td><td data-' + self.UniekId + '_ts="b">' + toestand.BekendOp + '</td><td>' + toestand.JuridischWerkendVanaf + '</td><td data-' + self.UniekId + '_ts="g">' + toestand.GeldigVanaf + '</td>'
-                    html += '<td>#' + str(toestand.Identificatie) + '</td><td>' + ' '.join (letter for _, letter in self._InstrumentData.WeergaveData.Branches (identificatie.Inwerkingtredingsdoelen)) + '</td>'
-                    html += '<td>#' + str(toestand.Inhoud) + '</td><td class="s">'
-                    if inhoud.IsNietInWerking:
-                        html += Weergave_Symbolen.Toestand_Uitgewerkt
-                    elif inhoud.Instrumentversie is None:
-                        html += Weergave_Symbolen.Toestand_OnbekendeInhoud
-                    else:
-                        html += '<span title="' + inhoud.Instrumentversie + '">' + Weergave_Symbolen.Toestand_BekendeInhoud + '</span>'
-                    if toestand._Beschrijving:
-                        html += Weergave_Symbolen.BenoemdeTijdreis
-                    html += '</td></tr>\n'
+                        html += ('<tr class="ct_o_t" data-' + self._UniekId + '_ti="{ti}" data-' + self._UniekId + '_tid="{tid}" data-' + self._UniekId + '_f="{tfi}"').format (ti=toestand.Identificatie, tid=toestand._UniekId, tfi=uitwisseling.ToestandTijdreisIndex(toestand)) + '>'
+                        html += '<td data-' + self._UniekId + '_ts="o">' + toestand.OntvangenOp + '</td><td data-' + self._UniekId + '_ts="b">' + toestand.BekendOp + '</td><td>' + toestand.JuridischWerkendVanaf + '</td><td data-' + self._UniekId + '_ts="g">' + toestand.GeldigVanaf + '</td>'
+                        html += '<td>#' + str(toestand.Identificatie) + '</td><td>' + ' '.join (letter for _, letter in self._InstrumentData.WeergaveData.Branches (identificatie.Inwerkingtredingsdoelen)) + '</td>'
+                        html += '<td>#' + str(toestand.Inhoud) + '</td><td class="s">'
+                        if inhoud.IsNietInWerking:
+                            html += Weergave_Symbolen.Toestand_Uitgewerkt
+                        elif inhoud.Instrumentversie is None:
+                            html += Weergave_Symbolen.Toestand_OnbekendeInhoud
+                        else:
+                            html += '<span title="' + inhoud.Instrumentversie + '">' + Weergave_Symbolen.Toestand_BekendeInhoud + '</span>'
+                        if toestand._Beschrijving:
+                            html += Weergave_Symbolen.BenoemdeTijdreis
+                        html += '</td></tr>\n'
 
-            html += '</table>\n'
+                html += '</table>\n'
 
         return html
 
@@ -148,7 +152,7 @@ class Weergave_CompleteToestanden ():
             identificatie = completeToestanden.ToestandIdentificatie[toestand.Identificatie]
             inhoud = completeToestanden.ToestandInhoud[toestand.Inhoud]
 
-            html += '<div data-' + self.UniekId + '_t="' + str(toestand.UniekId) + '" class="ct_o_toestand">\n'
+            html += '<div data-' + self._UniekId + '_t="' + str(toestand._UniekId) + '" class="ct_o_toestand">\n'
 
             html += '<table>'
             html += '<tr><th colspan="3">Toestand</th></tr>'
@@ -158,7 +162,10 @@ class Weergave_CompleteToestanden ():
             html += '<tr><td>geldigVanaf</td><td colspan="2">' + toestand.GeldigVanaf + '</td></tr>'
             html += '<tr><th colspan="3">Identificatie</th></tr>'
             html += '<tr><td>Expression identificatie</td><td colspan="2">' + identificatie.ExpressionId + '</td></tr>'
-            html += '<tr><td rowspan="' + str(len (identificatie.Inwerkingtredingsdoelen)) + '">Inwerkingtredingsdoelen</td>' + '<tr>'.join ('<td>' + self._InstrumentData.WeergaveData.DoelLetter (doel) + '</td><td>' + str(doel) + '</td></tr>\n' for doel in identificatie.Inwerkingtredingsdoelen)
+            if len (identificatie.Inwerkingtredingsdoelen) == 0:
+                html += '<tr><td>Inwerkingtredingsdoelen</td><td colspan="2">-</td></tr>\n'
+            else:
+                html += '<tr><td rowspan="' + str(len (identificatie.Inwerkingtredingsdoelen)) + '">Inwerkingtredingsdoelen</td>' + '<tr>'.join ('<td>' + self._InstrumentData.WeergaveData.DoelLetter (doel) + '</td><td>' + str(doel) + '</td></tr>\n' for doel in identificatie.Inwerkingtredingsdoelen)
             html += '<tr><th colspan="3">Inhoud</th></tr>'
             if inhoud.IsNietInWerking:
                 html += '<tr><td></td><td colspan="2">Het instrument is niet in werking</td></tr>'

@@ -69,8 +69,10 @@ if len(directory_paden) == 0:
 #======================================================================
 from applicatie_meldingen import Meldingen
 from applicatie_scenario import Scenario
+import applicatie_versie
 
 log = Meldingen (True)
+log.Informatie ('<a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_versie.Applicatie_versie)
 
 if testen:
     log.Informatie ("Voer unit tests uit")

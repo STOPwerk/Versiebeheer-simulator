@@ -16,6 +16,7 @@
 
 from pickle import NONE
 from applicatie_scenario import Scenario
+import applicatie_versie
 from data_bg_project import ProjectActie
 from weergave_resultaat_data import WeergaveData
 from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
@@ -47,6 +48,7 @@ class Proces_Simulatie:
     def VoerUit (self):
         """Voer de simulatie uit"""
         try:
+            self.Scenario.Log.Informatie ('<a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_versie.Applicatie_versie)
             self.Scenario.Log.Informatie ("Voer de simulatie uit")
             self.Scenario.WeergaveData = WeergaveData (self.Scenario)
 
@@ -80,6 +82,7 @@ class Proces_Simulatie:
                 # Zit er een publicatie aan vast?
                 if self.Scenario.Opties.IsRevisie (consolidatieInformatie.GemaaktOp):
                     publicatieblad = None
+                    consolidatieInformatie.IsRevisie = True
                 else:
                     publicatiebladNummer += 1
                     publicatieblad = 'pb{:03d}'.format (publicatiebladNummer)
@@ -92,7 +95,7 @@ class Proces_Simulatie:
                 alleProefversies = {} # key = workId, value = lijst met proefversies
                 if self.Scenario.Opties.Proefversies or self.Scenario.Opties.ActueleToestanden or self.Scenario.Opties.CompleteToestanden:
                     # Doe de consolidatie alleen voor de geraakte instrumenten
-                    for workId in uitwisseling.InstrumentDoelen:
+                    for workId in sorted (uitwisseling.Instrumenten): # Sortering om zeker te zijn van iedere keer dezelfde volgorde van uitvoering
                         geconsolideerd = self.Scenario.GeconsolideerdeInstrument (workId)
                         geconsolideerd.MaakIdentificatie (self.Scenario.Log, self.Scenario.Versiebeheerinformatie)
 
@@ -118,12 +121,14 @@ class Proces_Simulatie:
                                 alleProefversies[workId] = proefversies
 
                         if self.Scenario.Opties.CompleteToestanden:
-                            self.Scenario.Log.Informatie ("Bepaal de complete toestanden voor " + workId)
-                            # In deze applicatie moeten de complete toestanden voor de actuele toestanden bepaald worden, want
-                            # de meldingen over het bepalen van de (complete) toestanden worden bewaard bij het eerste voorkomen 
-                            # van een toestand. In een productie-waardige applicatie kan ervoor gekozen worden alleen de actuele
-                            # toestanden te ondersteunen en deze stap over te slaan.
-                            MaakCompleteToestanden.VoerUit (self.Scenario.Log, geconsolideerd, uitwisseling.Uitwisseling.GemaaktOp, uitwisseling.Uitwisseling.OntvangenOp, uitwisseling.EersteBekendOp[workId])
+                            eersteBekendOp = uitwisseling.EersteBekendOp.get (workId)
+                            if not eersteBekendOp is None: # is None bij alleen doorgifte MaterieelUitgewerkt
+                                self.Scenario.Log.Informatie ("Bepaal de complete toestanden voor " + workId)
+                                # In deze applicatie moeten de complete toestanden voor de actuele toestanden bepaald worden, want
+                                # de meldingen over het bepalen van de (complete) toestanden worden bewaard bij het eerste voorkomen 
+                                # van een toestand. In een productie-waardige applicatie kan ervoor gekozen worden alleen de actuele
+                                # toestanden te ondersteunen en deze stap over te slaan.
+                                MaakCompleteToestanden.VoerUit (self.Scenario.Log, geconsolideerd, uitwisseling.Uitwisseling.GemaaktOp, uitwisseling.Uitwisseling.OntvangenOp, eersteBekendOp)
 
                         if self.Scenario.Opties.ActueleToestanden:
                             # De actuele toestanden zijn afleidbaar uit de complete toestanden. Een productie-waardige
@@ -148,7 +153,7 @@ class Proces_Simulatie:
                                 MaakActueleToestandenMetAnnotaties.VoerUit (geconsolideerd, self.Scenario.Annotaties, uitwisseling.Uitwisseling.GemaaktOp, volgendeGemaaktOp)
 
                 # Werk de data bij die nodig is voor de weergave
-                self.Scenario.WeergaveData.WerkBij (uitwisseling.Uitwisseling, uitwisseling.InstrumentDoelen.keys(), uitwisseling.Doelen, alleProefversies)
+                self.Scenario.WeergaveData.WerkBij (uitwisseling.Uitwisseling, uitwisseling.Instrumenten, uitwisseling.Doelen, alleProefversies)
 
         except Exception as e:
             self.Scenario.Log.Fout ("Potverdorie, een fout in de simulatie die niet voorzien werd: " + str(e))

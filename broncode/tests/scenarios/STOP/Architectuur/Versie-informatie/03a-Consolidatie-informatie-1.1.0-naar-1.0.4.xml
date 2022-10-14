@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- consolidatie-info zonder terugtrekking -->
+<ConsolidatieInformatie schemaversie="1.0.4"
+                        xmlns="https://standaarden.overheid.nl/stop/imop/data/">
+  <BeoogdeRegelgeving>
+    <BeoogdeRegeling>
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
+      </doelen>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1</instrumentVersie>
+      <eId>art_I</eId>
+    </BeoogdeRegeling>
+  </BeoogdeRegelgeving>
+  <Tijdstempels>
+    <Tijdstempel>
+      <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <datum>2020-02-01</datum>
+      <eId>art_II</eId>
+    </Tijdstempel>
+  </Tijdstempels>
+</ConsolidatieInformatie>

@@ -1,0 +1,24 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/gm9999/2020/REG00123": [
+            {
+                "BekendOp": "2020-02-13",
+                "JuridischUitgewerktOp": "2021-08-13",
+                "OntvangenOp": "2020-02-13",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-13",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG00123/nld@2020-01-20;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij"
+                        ],
+                        "JuridischWerkendTot": "2021-08-13",
+                        "JuridischWerkendVanaf": "2020-02-13",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

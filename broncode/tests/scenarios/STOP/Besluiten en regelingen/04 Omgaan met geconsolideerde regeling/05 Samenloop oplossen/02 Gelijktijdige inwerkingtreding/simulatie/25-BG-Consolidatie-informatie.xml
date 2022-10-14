@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@"
+  xmlns="https://standaarden.overheid.nl/stop/imop/data/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/
+  https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+  <gemaaktOp>2020-02-28T09:00:00Z</gemaaktOp>
+  <BeoogdeRegelgeving>
+    <BeoogdeRegeling>
+      <!-- koppeling van de regelingversie van <RegelingMutatie> aan beide doelen -->
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan</doel>
+        <doel>/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan</doel>
+      </doelen>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0001/nld@2020-03-03;4</instrumentVersie>
+      <!-- om aan te geven dat deze instrumentVersie de wijzigingen uit beide doelen bevat tot het gemaaktOp moment,
+           worden nu twee BasisVersies aangeleverd t.b.v. het oplossen van samenloop -->
+      <gemaaktOpBasisVan>
+        <Basisversie>
+          <doel>/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan</doel>
+          <gemaaktOp>2020-02-18T09:00:00Z</gemaaktOp>
+        </Basisversie>
+        <Basisversie>
+          <doel>/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan</doel>
+          <gemaaktOp>2020-02-28T09:00:00Z</gemaaktOp>
+        </Basisversie>
+      </gemaaktOpBasisVan>
+      <!-- geen eId, want er is geen besluit dat deze regelingversie instelt -->
+    </BeoogdeRegeling>
+  </BeoogdeRegelgeving>
+  <!-- geen Tijdstempels, BHKV weet al wanneer het doel in werking treed -->
+</ConsolidatieInformatie>

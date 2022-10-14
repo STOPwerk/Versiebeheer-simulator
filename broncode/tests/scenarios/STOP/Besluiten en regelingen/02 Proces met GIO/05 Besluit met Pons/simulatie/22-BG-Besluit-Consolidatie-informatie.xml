@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns="https://standaarden.overheid.nl/stop/imop/data/" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/ https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+  <gemaaktOp>2021-03-27T09:03:00Z</gemaaktOp>
+  <BeoogdeRegelgeving>
+    <BeoogdeRegeling>
+      <doelen>
+        <doel>/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan</doel>
+      </doelen>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0001/nld@2021-03-23;3</instrumentVersie>
+      <eId>art_I</eId>
+      <gemaaktOpBasisVan>
+        <Basisversie>
+            <doel>/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied</doel>
+            <gemaaktOp>2020-06-20T09:03:00Z</gemaaktOp>
+        </Basisversie>
+      </gemaaktOpBasisVan>
+    </BeoogdeRegeling>
+    <BeoogdInformatieobject>
+      <doelen>
+        <doel>/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan</doel>
+      </doelen>
+      <instrumentVersie>/join/id/regdata/gm9999/2021/gio993859462/nld@2021-03-23;1</instrumentVersie>
+      <eId>!wijziging#cmp_A__content_o_1__list_1__item_1__ref_o_1</eId>
+    </BeoogdInformatieobject>
+  </BeoogdeRegelgeving>
+  <Intrekkingen>
+    <Intrekking>
+      <doel>/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan</doel>
+      <instrument>/join/id/regdata/gm9999/2019/gio993859238</instrument>
+      <eId>!wijziging#cmp_A__content_o_1__list_1__item_1__ref_o_1_inst2</eId>
+      <gemaaktOpBasisVan>
+        <Basisversie>
+            <doel>/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied</doel>
+            <gemaaktOp>2020-06-20T09:03:00Z</gemaaktOp>
+        </Basisversie>
+      </gemaaktOpBasisVan>
+    </Intrekking>
+  </Intrekkingen>
+  <Tijdstempels>
+    <Tijdstempel>
+      <doel>/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <datum>2021-05-01</datum>
+      <eId>art_II</eId>
+    </Tijdstempel>
+  </Tijdstempels>
+</ConsolidatieInformatie>

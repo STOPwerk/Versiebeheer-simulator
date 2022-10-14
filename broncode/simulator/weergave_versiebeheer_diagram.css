@@ -34,12 +34,26 @@
     user-select: none;
 }
 
-.vbd_th_mo { /* momentopname in legenda */
+.vbd_tu { /* materieel/juridisch uitgewerkte "toestand" */
+    fill: #ffffff;
+    stroke: #cccccc;
+}
+
+.vbd_l_tu { /* label in materieel/juridisch uitgewerkte "toestand" */
+    user-select: none;
+}
+
+.vbd_th_mo { /* momentopname uit publicatie in legenda */
     background-color: #dae8fc;
     border: 1px solid #6c8ebf;
 }
 
-.vbd_mo { /* momentopname */
+.vbd_mo_v { /* verbinding tussen momentopnamen */
+    fill: #dae8fc;
+    stroke: #6c8ebf;
+}
+
+.vbd_mo { /* momentopname uit publicatie */
     fill: #dae8fc;
     stroke: #6c8ebf;
 }
@@ -98,6 +112,63 @@
     .vbd_l_mo.nvt { /* label in momentopname niet in toestand */
         display: none;
     }
+
+.vbd_th_mor { /* momentopname uit revisie in legenda */
+    background-color: #fff2cc;
+    border: 1px solid #d6b656;
+}
+
+.vbd_mor_v { /* verbinding tussen momentopnamen */
+    fill: #fff2cc;
+    stroke: #d6b656;
+}
+
+.vbd_mor { /* momentopname uit revisie */
+    fill: #fff2cc;
+    stroke: #d6b656;
+}
+
+    .vbd_mor.geselecteerd { /* geselecteerde momentopname */
+        stroke-width: 3;
+    }
+
+    .vbd_mor.nvt { /* momentopname niet in toestand */
+        fill: #ffffff;
+        stroke: #666666;
+    }
+
+    .vbd_mor.vw { /* momentopname verwerkt in toestand/instrumentversie */
+        fill: #d5e8d4;
+        stroke: #82b366;
+    }
+
+    .vbd_mor.ts { /* (tbv toestand) momentopname die andere tegenspreekt */
+        fill: #e1d5e7;
+        stroke: #9673a6;
+    }
+
+    .vbd_mor.tv { /* (tbv toestand) te verwerken momentopname */
+        fill: #ffe6cc;
+        stroke: #d79b00;
+    }
+
+    .vbd_mor.to { /* (tbv toestand) te ontvlechten momentopname */
+        fill: #f8cecc;
+        stroke: #6c8ebf;
+    }
+
+.vbd_l_mor { /* label in momentopname */
+    user-select: none;
+}
+
+    .vbd_l_mor.nvt { /* label in momentopname niet in toestand */
+        display: none;
+    }
+
+.vbd_mot_v { /* verbinding tussen momentopnamen */
+    fill: #dae8fc;
+    stroke: #6c8ebf;
+}
 
 .vbd_mot { /* momentopname voor terugtrekking */
     fill: #ffffff;
@@ -160,11 +231,6 @@
 
 .vbd_ntc.to { /* Nog te consolideren tekst (tabel): te ontvlechten momentopname */
     background-color: #f8cecc;
-}
-
-.vbd_mov { /* verbinding tussen momentopnamen */
-    fill: #dae8fc;
-    stroke: #6c8ebf;
 }
 
 .vbd_txt { /* Label van branch / gemaaktOp */

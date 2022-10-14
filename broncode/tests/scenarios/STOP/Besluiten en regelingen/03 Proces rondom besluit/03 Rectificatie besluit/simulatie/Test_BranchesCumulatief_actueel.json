@@ -1,0 +1,48 @@
+{
+    "Testresultaat - Cumulatieve versieinformatie": {
+        "/akn/nl/act/gm9999/2020/REG0001": {
+            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-01-21T09:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-01-21T09:03:00Z"
+                },
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-01-21T15:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-01-21T15:03:00Z"
+                }
+            ]
+        },
+        "/join/id/regdata/gm9999/2019/gio993859238": {
+            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-01-21T09:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-01-21T09:03:00Z"
+                },
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-01-21T15:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-01-21T15:03:00Z"
+                }
+            ]
+        }
+    }
+}

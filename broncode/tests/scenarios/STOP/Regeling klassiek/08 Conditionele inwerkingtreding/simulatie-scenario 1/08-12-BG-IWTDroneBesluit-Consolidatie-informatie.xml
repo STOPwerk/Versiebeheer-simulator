@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns="https://standaarden.overheid.nl/stop/imop/data/" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/ https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+  <gemaaktOp>2022-12-06T09:09:00Z</gemaaktOp>
+  <Tijdstempels>
+    <Tijdstempel>
+      <!-- tijdstempel voor Regeling op afstand bestuurde luchtvaartuigen -->
+      <doel>/join/id/proces/mnre1034/2022/InstellingRABLV</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <datum>2023-01-01</datum>
+      <eId>!iwtregeling#art_I</eId>
+    </Tijdstempel>
+    <Tijdstempel>
+      <!-- tijdstempel voor conditionele wijziging -->
+      <doel>/join/id/proces/mnre1034/2022/ConditioneleWijzigingVoorbeeldregeling</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <datum>2023-01-01</datum>
+      <eId>!iwtregeling#art_I</eId>
+    </Tijdstempel>
+  </Tijdstempels>
+</ConsolidatieInformatie>

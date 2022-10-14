@@ -1,0 +1,11 @@
+{
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//01 Proces van aanleveren tm consolidatie//01 Nieuwe regeling met iwt\">01 01 Nieuwe regeling met iwt</a>.</p><p>In dit voorbeeld wordt middels een besluit de eerste versie van een nieuwe regeling bekend gemaakt. Het besluit bevat ook een inwerkingtredingsdatum.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Initi\u00c3\u00able versie",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling, met inwerkingtredingsdatum."
+        }
+    ],
+    "Procesopties": true
+}

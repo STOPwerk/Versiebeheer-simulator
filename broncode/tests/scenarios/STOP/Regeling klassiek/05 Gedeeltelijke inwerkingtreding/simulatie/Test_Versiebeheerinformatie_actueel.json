@@ -1,0 +1,84 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/mnre1034/2012/RBOV": {
+                "BekendOp": [
+                    "2012-06-25",
+                    "2014-06-18"
+                ],
+                "Branches": {
+                    "/join/id/proces/mnre1034/2012/InstellingRBOV": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2012-06-25",
+                                "Doelen": [
+                                    "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                                ],
+                                "ExpressionId": "/akn/nl/act/mnre1034/2012/RBOV/nld@2012-06-14;1",
+                                "GemaaktOp": "2012-06-25T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            },
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/mnre1034/2012/InstellingRBOV": "2012-06-25T09:03:00Z"
+                                },
+                                "BekendOp": "2014-06-18",
+                                "Doelen": [
+                                    "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                                ],
+                                "ExpressionId": "/akn/nl/act/mnre1034/2012/RBOV/nld@2015-01-01;2",
+                                "GemaaktOp": "2014-06-18T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                ]
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/mnre1034/2012/InstellingRBOV": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2014-06-18",
+                        "Doel": "/join/id/proces/mnre1034/2012/InstellingRBOV",
+                        "GemaaktOp": "2014-06-18T09:03:00Z",
+                        "JuridischWerkendVanaf": "2015-01-01"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2012-06-25",
+                "GemaaktOp": "2012-06-25T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2012/RBOV/nld@2012-06-14;1"
+                    }
+                ],
+                "OntvangenOp": "2012-06-25"
+            },
+            {
+                "BekendOp": "2014-06-18",
+                "GemaaktOp": "2014-06-18T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2012/RBOV/nld@2015-01-01;2"
+                    }
+                ],
+                "OntvangenOp": "2014-06-18"
+            }
+        ]
+    }
+}

@@ -69,7 +69,7 @@
                 zoomIn.addEventListener('click', function () { instance.getPublicInstance().zoomIn() }, false)
                 zoomIn.addEventListener('touchstart', function () { instance.getPublicInstance().zoomIn() }, false)
 
-                var zoomInBackground = document.createElementNS(SvgUtils.svgNS, 'rect'); // TODO change these background space fillers to rounded rectangles so they look prettier
+                var zoomInBackground = document.createElementNS(SvgUtils.svgNS, 'rect'); // TO-DO change these background space fillers to rounded rectangles so they look prettier
                 zoomInBackground.setAttribute('x', '0');
                 zoomInBackground.setAttribute('y', '0');
                 zoomInBackground.setAttribute('width', '1500'); // larger than expected because the whole group is transformed to scale down
@@ -94,7 +94,7 @@
                 resetPanZoomControl.addEventListener('click', function () { instance.getPublicInstance().reset() }, false);
                 resetPanZoomControl.addEventListener('touchstart', function () { instance.getPublicInstance().reset() }, false);
 
-                var resetPanZoomControlBackground = document.createElementNS(SvgUtils.svgNS, 'rect'); // TODO change these background space fillers to rounded rectangles so they look prettier
+                var resetPanZoomControlBackground = document.createElementNS(SvgUtils.svgNS, 'rect'); // TO-DO change these background space fillers to rounded rectangles so they look prettier
                 resetPanZoomControlBackground.setAttribute('x', '2');
                 resetPanZoomControlBackground.setAttribute('y', '2');
                 resetPanZoomControlBackground.setAttribute('width', '182'); // larger than expected because the whole group is transformed to scale down
@@ -124,7 +124,7 @@
                 zoomOut.addEventListener('click', function () { instance.getPublicInstance().zoomOut() }, false);
                 zoomOut.addEventListener('touchstart', function () { instance.getPublicInstance().zoomOut() }, false);
 
-                var zoomOutBackground = document.createElementNS(SvgUtils.svgNS, 'rect'); // TODO change these background space fillers to rounded rectangles so they look prettier
+                var zoomOutBackground = document.createElementNS(SvgUtils.svgNS, 'rect'); // TO-DO change these background space fillers to rounded rectangles so they look prettier
                 zoomOutBackground.setAttribute('x', '0');
                 zoomOutBackground.setAttribute('y', '0');
                 zoomOutBackground.setAttribute('width', '1500'); // larger than expected because the whole group is transformed to scale down
@@ -1790,7 +1790,7 @@
 
             /**
              * Check if an event is a double click/tap
-             * TODO: For touch gestures use a library (hammer.js) that takes in account other events
+             * TO-DO: For touch gestures use a library (hammer.js) that takes in account other events
              * (touchmove and touchend). It should take in account tap duration and traveled distance
              *
              * @param  {Event}  evt

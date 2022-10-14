@@ -1,0 +1,54 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/pv29/2010/milieubeleidsplan0612": {
+                "BekendOp": [
+                    "2010-10-18"
+                ],
+                "Branches": {
+                    "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2010-10-18",
+                                "Doelen": [
+                                    "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan"
+                                ],
+                                "ExpressionId": "/akn/nl/act/pv29/2010/milieubeleidsplan0612/nld@2010-09-01;1",
+                                "GemaaktOp": "2010-10-18T09:01:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2010-10-18",
+                        "Doel": "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan",
+                        "GemaaktOp": "2010-10-18T09:01:00Z",
+                        "JuridischWerkendVanaf": "2010-10-10"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2010-10-18",
+                "GemaaktOp": "2010-10-18T09:01:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/pv29/2010/milieubeleidsplan0612/nld@2010-09-01;1"
+                    }
+                ],
+                "OntvangenOp": "2010-10-18"
+            }
+        ]
+    }
+}

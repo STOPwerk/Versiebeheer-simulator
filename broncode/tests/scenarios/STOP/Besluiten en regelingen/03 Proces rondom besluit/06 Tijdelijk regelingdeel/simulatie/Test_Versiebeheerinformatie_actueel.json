@@ -1,0 +1,83 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2020/REG00123": {
+                "BekendOp": [
+                    "2020-02-13"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-02-13",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG00123/nld@2020-01-20;1",
+                                "GemaaktOp": "2020-02-13T09:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2021/Intrekken_tijdelijkregelingdeel_Geitenhouderij": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij": "2020-02-13T09:00:00Z"
+                                },
+                                "BekendOp": "2020-02-13",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2021/Intrekken_tijdelijkregelingdeel_Geitenhouderij"
+                                ],
+                                "GemaaktOp": "2020-02-13T09:00:00Z",
+                                "IsIngetrokken": true,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij"
+                ]
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-02-13",
+                        "Doel": "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij",
+                        "GemaaktOp": "2020-02-13T09:00:00Z",
+                        "JuridischWerkendVanaf": "2020-02-13"
+                    }
+                ]
+            },
+            "/join/id/proces/gm9999/2021/Intrekken_tijdelijkregelingdeel_Geitenhouderij": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-02-13",
+                        "Doel": "/join/id/proces/gm9999/2021/Intrekken_tijdelijkregelingdeel_Geitenhouderij",
+                        "GemaaktOp": "2020-02-13T09:00:00Z",
+                        "JuridischWerkendVanaf": "2021-08-13"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2020-02-13",
+                "GemaaktOp": "2020-02-13T09:00:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG00123/nld@2020-01-20;1"
+                    }
+                ],
+                "OntvangenOp": "2020-02-13"
+            }
+        ]
+    }
+}

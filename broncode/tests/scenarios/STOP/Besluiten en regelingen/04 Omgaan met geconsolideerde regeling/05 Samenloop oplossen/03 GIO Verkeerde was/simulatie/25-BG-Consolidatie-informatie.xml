@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@"
+  xmlns="https://standaarden.overheid.nl/stop/imop/data/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/
+  https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+  <gemaaktOp>2020-09-26T09:00:00Z</gemaaktOp>
+  <BeoogdeRegelgeving>
+    <BeoogdeRegeling>
+      <!-- koppeling van de regelingversie van <RegelingMutatie> aan het doel-->
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/BebouwdekomVuurwerkverbodsgebied</doel>
+      </doelen>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0001/nld@2020-10-15;4</instrumentVersie>
+      <!-- om aan te geven dat deze instrumentVersie de wijzigingen uit een ander doel bevat tot een bepaald moment,
+           wordt een BasisVersie en een VervlochtenVersie toegevoegd t.b.v. het oplossen van samenloop -->
+      <gemaaktOpBasisVan>
+        <Basisversie>
+          <doel>/join/id/proces/gm9999/2020/BebouwdekomVuurwerkverbodsgebied</doel>
+          <gemaaktOp>2020-09-26T09:00:00Z</gemaaktOp>
+        </Basisversie>
+        <VervlochtenVersie>
+          <doel>/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied</doel>
+          <gemaaktOp>2020-06-20T09:00:00Z</gemaaktOp>
+        </VervlochtenVersie>
+      </gemaaktOpBasisVan>
+      <!-- geen eId, want er is geen besluit dat deze regelingversie instelt -->
+    </BeoogdeRegeling>
+    <BeoogdInformatieobject>
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/BebouwdekomVuurwerkverbodsgebied</doel>
+      </doelen>
+      <instrumentVersie>/join/id/regdata/gm9999/2019/gio993859238/nld@2020-10-15;4</instrumentVersie>
+      <!-- om aan te geven dat deze GIOVersie de wijzigingen uit een ander doel bevat tot een bepaald moment,
+           wordt een BasisVersie en een VervlochtenVersie toegevoegd t.b.v. het oplossen van samenloop -->
+      <gemaaktOpBasisVan>
+        <Basisversie>
+          <doel>/join/id/proces/gm9999/2020/BebouwdekomVuurwerkverbodsgebied</doel>
+          <gemaaktOp>2020-09-26T09:00:00Z</gemaaktOp>
+        </Basisversie>
+        <VervlochtenVersie>
+          <doel>/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied</doel>
+          <gemaaktOp>2020-06-20T09:00:00Z</gemaaktOp>
+        </VervlochtenVersie>
+      </gemaaktOpBasisVan>
+      <!-- geen eId, want er is geen besluit dat deze regelingversie instelt -->
+    </BeoogdInformatieobject>
+  </BeoogdeRegelgeving>
+  <!-- geen Tijdstempels, BHKV weet al wanneer het doel in werking treed -->
+</ConsolidatieInformatie>

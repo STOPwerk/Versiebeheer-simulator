@@ -15,6 +15,7 @@
 import os.path
 
 from applicatie_scenario import Scenario
+import applicatie_versie
 from stop_naamgeving import Naamgeving
 from weergave_actueletoestanden import Weergave_ActueleToestanden
 from weergave_annotaties import Weergave_Annotaties
@@ -102,7 +103,7 @@ class ResultaatGenerator (WebpaginaGenerator):
         # Algemene informatie over de pagina en het scenario
         #
         #--------------------------------------------------------------
-        self.VoegHtmlToe ('<p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.</p>')
+        self.VoegHtmlToe ('<p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_versie.Applicatie_versie + '</p>')
 
         self.VoegHtmlToe ('<div id="intro">')
         if self.Scenario.Opties.Beschrijving:
@@ -205,13 +206,13 @@ class ResultaatGenerator (WebpaginaGenerator):
         data = {}
         for instrument in sorted (self.Scenario.Versiebeheerinformatie.Instrumenten.values (), key = lambda x: x.WorkId):
             instrumentData = self.Scenario.WeergaveData.InstrumentData.get (instrument.WorkId)
-            if not instrumentData is None and len (instrumentData.Uitwisselingen) > 0 and hasattr (instrumentData.Uitwisselingen[-1], 'CompleteToestanden'):
+            if not instrumentData is None and len (instrumentData.Uitwisselingen) > 0 and hasattr (instrumentData.Uitwisselingen[-1], 'CompleteToestanden') and not instrumentData.Uitwisselingen[-1].CompleteToestanden is None:
                 for toestand in instrumentData.Uitwisselingen[-1].CompleteToestanden.Toestanden:
                     toestandData = data.get (toestand.Identificatie)
                     if toestandData is None:
                         data[toestand.Identificatie] = toestandData = {}
 
                     if not toestand.GemaaktOp in toestandData:
-                        toestandData[toestand.GemaaktOp] = toestand.UniekId
+                        toestandData[toestand.GemaaktOp] = toestand._UniekId
 
         return ',\n'.join (str(d) + ': [' + ', '.join ('["' + g + '", ' + str (u) + ']' for g, u in sorted (gu.items(), key = lambda x: x[0])) + ']' for d, gu in data.items ())

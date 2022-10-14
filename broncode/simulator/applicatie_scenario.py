@@ -12,6 +12,7 @@
 #
 #======================================================================
 
+from typing import Dict, List
 import json
 import os.path
 import xml.etree.ElementTree as ET
@@ -24,6 +25,7 @@ from data_lv_annotatie import Annotatie
 from data_lv_consolidatie import GeconsolideerdInstrument
 from data_lv_versiebeheerinformatie import Versiebeheerinformatie
 from stop_consolidatieinformatie import ConsolidatieInformatie
+from weergave_data_toestanden import Toestandidentificatie
 
 #======================================================================
 #
@@ -113,16 +115,14 @@ class Scenario:
         # Verzameling van meldingen specifiek voor dit proces
         self.Log = Meldingen (False)
         # Ingelezen annotaties
-        # Lijst met instanties van Annotatie
-        self.Annotaties = []
+        self.Annotaties : List[Annotatie] = []
         # Ingelezen consolidatie-informatie modules
-        # Lijst met instanties van ConsolidatieInformatieBron, gesorteerd op gemaaktOp
-        self.ConsolidatieInformatie = []
+        # Lijst gesorteerd op gemaaktOp
+        self.ConsolidatieInformatie : List[Scenario.ConsolidatieInformatieBron] = []
         # Ingelezen projecten
-        # Lijst met instanties van Project
-        self.Projecten = []
+        self.Projecten : List[Project] = []
         # Geeft aan of de bestanden in het pad samen de invoer voor een scenario vormen
-        self.IsScenario = False
+        self.IsScenario = None
         # Geeft aan of de invoer voor het scenario valide is
         self.IsValide = True
         #--------------------------------------------------------------
@@ -136,8 +136,8 @@ class Scenario:
         # Het interne datamodel met versiebeheerinformatie
         self.Versiebeheerinformatie = Versiebeheerinformatie ()
         # Informatie over de consolidatie van de instrumenten
-        # key = workId van niet-geconsolideerd instrument, value = instantie van GeconsolideerdInstrument
-        self.GeconsolideerdeInstrumenten = {}
+        # key = workId van niet-geconsolideerd instrument
+        self.GeconsolideerdeInstrumenten : Dict[str,GeconsolideerdInstrument] = {}
         # Data benodigd voor de weergave die gedurende het proces verzameld wordt
         # Instantie van WeergaveData
         self.WeergaveData = None
@@ -145,8 +145,7 @@ class Scenario:
         self._InstrumentVolgnummer = 1
         # Toestanden van alle geconsolideerde instrumenten; volgorde is niet van belang.
         # Dit wordt niet per instrument bijgehouden om een unieke ID over alle elementen te verkrijgen voor de weergave
-        # Lijst van instanties van ToestandIdentificatie
-        self._ToestandIdentificatie = []
+        self._ToestandIdentificatie : List[Toestandidentificatie] = []
 
     #------------------------------------------------------------------
     # Bron van de consolidatie-informatie
@@ -184,47 +183,25 @@ class Scenario:
         """Onderzoek of een directory een scenario bevat"""
         self.ApplicatieLog.Detail ("Onderzoek de aanwezigheid van een scenario in '" + self.Pad + "'")
 
-        def _IsScenario ():
-            if not self.IsScenario:
-                self.ApplicatieLog.Informatie ("Scenario gevonden in '" + self.Pad + "'")
-                self.IsScenario = True
+        def _IsScenario (inderdaad):
+            if self.IsScenario is None or self.IsScenario != inderdaad:
+                if inderdaad:
+                    self.ApplicatieLog.Informatie ("Scenario gevonden in '" + self.Pad + "'")
+                else:
+                    self.ApplicatieLog.Informatie ("Bestanden in '" + self.Pad + "' zijn geen invoer voor een scenario")
+                self.IsScenario = inderdaad
 
         annotatiesPerWorkId = {} # key = workId, value = {} met key = naam, value = instantie van Annotatie 
         projectenPerCode = {} # key = project code, value = instantie van Project
         instrumenten = set() # Instrumenten (work-identificaties) in consolidatie-informatie
         bronPerGemaaktOp = {} # key = gemaaktOp, value = ConsolidatieInformatieBron
-        for root, dirs, files in os.walk (self.Pad):
+        for root, _, files in os.walk (self.Pad):
+
             for file in files:
                 # Probeer elk xml/json bestand in te lezen
-                pad = os.path.join (root, file)
-                fileType = os.path.splitext (pad)[1]
-                if fileType == '.xml':
-                    # Dit moet een ConsolidatieInformatie module zijn
-                    try:
-                        xml = ET.parse (pad).getroot ()
-                    except Exception as e:
-                        self.ApplicatieLog.Fout ("Bestand '" + pad + "' bevat geen valide XML: " + str(e))
-                        continue
-                    if not ConsolidatieInformatie.IsConsolidatieInformatieBestand (xml):
-                        self.ApplicatieLog.Detail ("Bestand '" + pad + "' bevat geen ConsolidatieInformatie maar " + xml.tag)
-                        continue
-
-                    if not self.IsScenario:
-                        self.ApplicatieLog.Informatie ("Scenario gevonden in '" + self.Pad + "'")
-                        self.IsScenario = True
-                    consolidatieInformatie = ConsolidatieInformatie.LeesXml (self.Log, pad, xml)
-                    if consolidatieInformatie and consolidatieInformatie.IsValide:
-                        if consolidatieInformatie.GemaaktOp in bronPerGemaaktOp:
-                            self.Log.Fout ("Deze applicatie kan alleen ConsolidatieInformatie modules met verschillende gemaaktOp verwerken; " + consolidatieInformatie.GemaaktOp + " komt meerdere keren voor")
-                            self.IsValide = False
-                        else:
-                            bronPerGemaaktOp[consolidatieInformatie.GemaaktOp] = Scenario.ConsolidatieInformatieBron(consolidatieInformatie, None)
-                            for beoogdeVersie in consolidatieInformatie.BeoogdeVersies:
-                                instrumenten.add (beoogdeVersie.WorkId)
-                    else:
-                        self.IsValide = False
-
-                elif fileType == '.json':
+                fileType = os.path.splitext (file)[1]
+                if fileType == '.json':
+                    pad = os.path.join (root, file)
                     # Lees eerst de json in
                     try:
                         with open (pad, "r", encoding = "utf-8") as jsonBestand:
@@ -237,7 +214,7 @@ class Scenario:
                         # Kijk eerst of het een annotatie is
                         annotatie = Annotatie.LeesJson (self.ApplicatieLog, pad, data)
                         if annotatie:
-                            _IsScenario ()
+                            _IsScenario (True)
                             if annotatie._IsValide:
                                 apw = annotatiesPerWorkId.get (annotatie.WorkId)
                                 if apw is None:
@@ -254,7 +231,7 @@ class Scenario:
                         # Kijk dan of het een project is
                         project = Project.LeesJson (self.ApplicatieLog, pad, data)
                         if project:
-                            _IsScenario ()
+                            _IsScenario (True)
                             if project._IsValide:
                                 if project.Code in projectenPerCode:
                                     self.Log.Fout ("Meerdere specificaties voor een project gevonden met dezelfde code '" + project.Code + "'")
@@ -268,7 +245,7 @@ class Scenario:
                         # Kijk als laatste of het opties zijn
                         opties = ProcesOpties.LeesJson (self.ApplicatieLog, pad, data)
                         if opties:
-                            _IsScenario ()
+                            _IsScenario (opties.SimulatorScenario)
                             if opties.IsValide:
                                 if self.Opties is None:
                                     self.Opties = opties
@@ -277,7 +254,40 @@ class Scenario:
                                     self.IsValide = False
                             else:
                                 self.IsValide = False
+                            if not opties.SimulatorScenario:
+                                break
                             continue
+
+            if not self.Opties is None and self.Opties.SimulatorScenario == False:
+                break
+
+            for file in files:
+                # Probeer elk xml/json bestand in te lezen
+                pad = os.path.join (root, file)
+                fileType = os.path.splitext (pad)[1]
+                if fileType == '.xml':
+                    # Dit moet een ConsolidatieInformatie module zijn
+                    try:
+                        xml = ET.parse (pad).getroot ()
+                    except Exception as e:
+                        self.ApplicatieLog.Fout ("Bestand '" + pad + "' bevat geen valide XML: " + str(e))
+                        continue
+                    if not ConsolidatieInformatie.IsConsolidatieInformatieBestand (xml):
+                        self.ApplicatieLog.Detail ("Bestand '" + pad + "' bevat geen ConsolidatieInformatie maar " + xml.tag)
+                        continue
+
+                    _IsScenario (True)
+                    consolidatieInformatie = ConsolidatieInformatie.LeesXml (self.Log, pad, xml)
+                    if consolidatieInformatie and consolidatieInformatie.IsValide:
+                        if consolidatieInformatie.GemaaktOp in bronPerGemaaktOp:
+                            self.Log.Fout ("Deze applicatie kan alleen ConsolidatieInformatie modules met verschillende gemaaktOp verwerken; " + consolidatieInformatie.GemaaktOp + " komt meerdere keren voor")
+                            self.IsValide = False
+                        else:
+                            bronPerGemaaktOp[consolidatieInformatie.GemaaktOp] = Scenario.ConsolidatieInformatieBron(consolidatieInformatie, None)
+                            for beoogdeVersie in consolidatieInformatie.BeoogdeVersies:
+                                instrumenten.add (beoogdeVersie.WorkId)
+                    else:
+                        self.IsValide = False
 
             if not self.IsScenario:
                 self.ApplicatieLog.Detail ("Geen scenario gevonden in '" + self.Pad + "'")

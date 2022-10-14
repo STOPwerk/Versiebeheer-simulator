@@ -1,0 +1,17 @@
+{
+    "Testresultaat - Cumulatieve versieinformatie": {
+        "/akn/nl/act/mnre1034/2012/RBOV": {
+            "/join/id/proces/mnre1034/2012/InstellingRBOV": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/mnre1034/2012/InstellingRBOV": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2012-06-25T09:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2012-06-25T09:03:00Z"
+                }
+            ]
+        }
+    }
+}

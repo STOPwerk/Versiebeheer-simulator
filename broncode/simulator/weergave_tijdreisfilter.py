@@ -49,11 +49,14 @@ class Weergave_Tijdreisfilter ():
         selector = Weergave_Uitwisselingselector (instrumentData.WeergaveData.Scenario)
         for uitwisseling in instrumentData.Uitwisselingen:
             generator.VoegHtmlToe ('<div' + selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>')
-            for code in uitwisseling.BeschikbareTijdreisfilters ():
-                module = uitwisseling.GefilterdeCompleteToestanden (code)
-                generator.VoegHtmlToe ('<div data-' + uniek_id + '_module="' + code + '">')
-                moduleMaker.VoegHtmlToe (module.ModuleXml ())
-                generator.VoegHtmlToe ('</div>')
+            if uitwisseling.CompleteToestanden is None:
+                generator.VoegHtmlToe ('Het instrument is nog niet in werking')
+            else:
+                for code in uitwisseling.BeschikbareTijdreisfilters ():
+                    module = uitwisseling.GefilterdeCompleteToestanden (code)
+                    generator.VoegHtmlToe ('<div data-' + uniek_id + '_module="' + code + '">')
+                    moduleMaker.VoegHtmlToe (module.ModuleXml ())
+                    generator.VoegHtmlToe ('</div>')
             generator.VoegHtmlToe ('</div>')
 
         generator.VoegHtmlToe (einde)

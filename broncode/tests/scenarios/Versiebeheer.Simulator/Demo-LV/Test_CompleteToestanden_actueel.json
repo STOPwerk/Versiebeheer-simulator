@@ -1,0 +1,1797 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/gm9999/2022/REG_A": {
+            "BekendOp": "2022-07-16",
+            "OntvangenOp": "2022-07-16",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01;2022-08-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-06-01;2022-08-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-05-01;2022-08-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging4"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-06-01;2",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-04-15",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-06-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-04-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging4",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk_rechter",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-16T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb011#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-16T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb011#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk_rechter",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-07-15T07:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb008#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenPublicaties": []
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-07-15T07:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb008#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-16T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb011#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-16T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb011#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-16T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb011#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk_rechter",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-07-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb008#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenPublicaties": []
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-07-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb008#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-16T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb011#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging4",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging4",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging4",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging4",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb008#art_I",
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-07-15T07:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb008#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb008#art_I"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-07-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb008#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb008#art_I"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb008#art_I"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb008#art_I"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "LaatstBekend": "2022-03-16T08:30:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb002#art_I",
+                                "https://www.officielebekendmakingen.nl/pb004#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-07-15T07:00:00Z",
+                                    "LaatstVerwerkt": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb010#eid_inhoud_onbekend"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging2",
+                        "/join/id/proces/gm9999/2022/Wijziging4",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging2",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstBekend": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb008#art_I"
+                            ],
+                            "TeVerwerkenPublicaties": []
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb008#art_I"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb008#art_I"
+                            ],
+                            "TeVerwerkenPublicaties": []
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging4",
+                                    "LaatstVerwerkt": "2022-06-01T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstVerwerkt": "2022-05-02T08:00:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I",
+                                "https://www.officielebekendmakingen.nl/pb007#eid_inhoud_onbekend",
+                                "https://www.officielebekendmakingen.nl/pb008#art_I"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingTerugwerkend",
+                                    "LaatstBekend": "2022-07-14T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb009#art_I"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging2",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstBekend": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb006#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstBekend": "2022-05-01T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
+                                    "LaatstBekend": "2022-05-02T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb005#art_I",
+                                "https://www.officielebekendmakingen.nl/pb006#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "LaatstBekend": "2022-03-16T08:30:00Z",
+                                    "LaatstVerwerkt": "2022-03-01T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-03-15T07:00:00Z"
+                                },
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
+                                    "LaatstBekend": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb003#art_I",
+                                "https://www.officielebekendmakingen.nl/pb004#art_I",
+                                "https://www.officielebekendmakingen.nl/pb005#art_I"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging",
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3en4",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                                    "LaatstBekend": "2022-03-15T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb003#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Wijziging2"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "LaatstBekend": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb002#art_I"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie2",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-07-16",
+                    "GeldigVanaf": "2022-07-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-16"
+                },
+                {
+                    "BekendOp": "2022-07-16",
+                    "GeldigVanaf": "2022-06-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-16"
+                },
+                {
+                    "BekendOp": "2022-07-16",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 2,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-16"
+                },
+                {
+                    "BekendOp": "2022-07-15",
+                    "GeldigVanaf": "2022-07-01",
+                    "Identificatie": 0,
+                    "Inhoud": 3,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-15",
+                    "GeldigVanaf": "2022-06-01",
+                    "Identificatie": 1,
+                    "Inhoud": 4,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-15",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 2,
+                    "Inhoud": 5,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-15",
+                    "GeldigVanaf": "2022-07-01",
+                    "Identificatie": 3,
+                    "Inhoud": 6,
+                    "JuridischWerkendVanaf": "2022-07-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-14",
+                    "GeldigVanaf": "2022-06-01",
+                    "Identificatie": 1,
+                    "Inhoud": 7,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-14",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 2,
+                    "Inhoud": 8,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-13",
+                    "GeldigVanaf": "2022-06-01",
+                    "Identificatie": 4,
+                    "Inhoud": 9,
+                    "JuridischWerkendVanaf": "2022-06-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-13",
+                    "GeldigVanaf": "2022-04-15",
+                    "Identificatie": 5,
+                    "Inhoud": 10,
+                    "JuridischWerkendVanaf": "2022-04-15",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-13",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 6,
+                    "Inhoud": 11,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-14",
+                    "GeldigVanaf": "2022-07-01",
+                    "Identificatie": 0,
+                    "Inhoud": 12,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-14"
+                },
+                {
+                    "BekendOp": "2022-07-14",
+                    "GeldigVanaf": "2022-06-01",
+                    "Identificatie": 1,
+                    "Inhoud": 13,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-14"
+                },
+                {
+                    "BekendOp": "2022-07-14",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 2,
+                    "Inhoud": 14,
+                    "JuridischWerkendVanaf": "2022-08-01",
+                    "OntvangenOp": "2022-07-14"
+                },
+                {
+                    "BekendOp": "2022-06-01",
+                    "GeldigVanaf": "2022-07-01",
+                    "Identificatie": 3,
+                    "Inhoud": 15,
+                    "JuridischWerkendVanaf": "2022-07-01",
+                    "OntvangenOp": "2022-06-01"
+                },
+                {
+                    "BekendOp": "2022-05-02",
+                    "GeldigVanaf": "2022-06-01",
+                    "Identificatie": 4,
+                    "Inhoud": 16,
+                    "JuridischWerkendVanaf": "2022-06-01",
+                    "OntvangenOp": "2022-05-02"
+                },
+                {
+                    "BekendOp": "2022-05-02",
+                    "GeldigVanaf": "2022-06-01",
+                    "Identificatie": 4,
+                    "Inhoud": 17,
+                    "JuridischWerkendVanaf": "2022-06-01",
+                    "OntvangenOp": "2022-05-02"
+                },
+                {
+                    "BekendOp": "2022-05-01",
+                    "GeldigVanaf": "2022-06-01",
+                    "Identificatie": 7,
+                    "Inhoud": 18,
+                    "JuridischWerkendVanaf": "2022-06-01",
+                    "OntvangenOp": "2022-05-01"
+                },
+                {
+                    "BekendOp": "2022-03-16",
+                    "GeldigVanaf": "2022-04-15",
+                    "Identificatie": 5,
+                    "Inhoud": 19,
+                    "JuridischWerkendVanaf": "2022-04-15",
+                    "OntvangenOp": "2022-03-16"
+                },
+                {
+                    "BekendOp": "2022-03-15",
+                    "GeldigVanaf": "2022-04-15",
+                    "Identificatie": 5,
+                    "Inhoud": 20,
+                    "JuridischWerkendVanaf": "2022-04-15",
+                    "OntvangenOp": "2022-03-15"
+                },
+                {
+                    "BekendOp": "2022-03-15",
+                    "GeldigVanaf": "2022-04-01",
+                    "Identificatie": 8,
+                    "Inhoud": 21,
+                    "JuridischWerkendVanaf": "2022-04-01",
+                    "OntvangenOp": "2022-03-15"
+                },
+                {
+                    "BekendOp": "2022-03-01",
+                    "GeldigVanaf": "2022-04-15",
+                    "Identificatie": 5,
+                    "Inhoud": 22,
+                    "JuridischWerkendVanaf": "2022-04-15",
+                    "OntvangenOp": "2022-03-01"
+                },
+                {
+                    "BekendOp": "2022-01-01",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 6,
+                    "Inhoud": 11,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-01-01"
+                }
+            ]
+        },
+        "/join/id/regdata/2022/IO_A": {
+            "BekendOp": "2022-07-13",
+            "OntvangenOp": "2022-07-15",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-04-15",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-04-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "IsNietInWerking": true
+                },
+                {
+                    "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;versie1",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;versie2",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-07-13",
+                    "GeldigVanaf": "2022-04-15",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-04-15",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-07-13",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-03-15",
+                    "GeldigVanaf": "2022-04-01",
+                    "Identificatie": 2,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-04-01",
+                    "OntvangenOp": "2022-03-15"
+                },
+                {
+                    "BekendOp": "2022-03-01",
+                    "GeldigVanaf": "2022-04-15",
+                    "Identificatie": 0,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2022-04-15",
+                    "OntvangenOp": "2022-03-01"
+                },
+                {
+                    "BekendOp": "2022-01-01",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-01-01"
+                }
+            ]
+        },
+        "/join/id/regdata/2022/IO_B": {
+            "BekendOp": "2022-07-15",
+            "OntvangenOp": "2022-07-15",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io3/nld@2022-04-01;2"
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io3/nld@2022-04-15",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io3/nld@2022-04-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "IsNietInWerking": true
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/2022/IO_B@2022;versie2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/join/id/regdata/2022/IO_B@2022;versie1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-07-13",
+                    "GeldigVanaf": "2022-04-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-04-01",
+                    "OntvangenOp": "2022-07-15"
+                },
+                {
+                    "BekendOp": "2022-03-16",
+                    "GeldigVanaf": "2022-04-15",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-04-15",
+                    "OntvangenOp": "2022-03-16"
+                },
+                {
+                    "BekendOp": "2022-03-15",
+                    "GeldigVanaf": "2022-04-01",
+                    "Identificatie": 2,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2022-04-01",
+                    "OntvangenOp": "2022-03-15"
+                }
+            ]
+        }
+    }
+}

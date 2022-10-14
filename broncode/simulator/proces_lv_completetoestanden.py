@@ -133,6 +133,29 @@ class MaakCompleteToestanden:
         # juridischWerkendVanaf en geldigVanaf (de omgekeerde volgorde van de toestanden)
         tijdreisIndex = [toestand.Toestand for toestand in reversed (self._NuBepaaldeToestanden)]
 
+        # Er zijn situaties waarbij er juridischWerkendVanaf/geldigVanaf datums zijn waarvoor de tijdreis
+        # niet bij een van de nieuwe toestanden terecht komt, maar wel bij een van de bestaande. Bijvoorbeeld als
+        # de inwerkingtreding van de initiële versie is uitgesteld of als het instellingsbesluit is vernietigd.
+        # Voeg in dat geval een extra toestand toe waarin de regeling nog niet in werking is.
+        if len (self._Consolidatie.CompleteToestanden.Toestanden) > 0:
+            jwvMinimaal = None
+            gvvMinimaal = None
+            for toestand in self._Consolidatie.CompleteToestanden.Toestanden:
+                if jwvMinimaal is None or jwvMinimaal > toestand.JuridischWerkendVanaf:
+                    jwvMinimaal = toestand.JuridischWerkendVanaf
+                if gvvMinimaal is None or gvvMinimaal > toestand.GeldigVanaf:
+                    gvvMinimaal = toestand.GeldigVanaf
+            if len (self._NuBepaaldeToestanden) == 0 or self._NuBepaaldeToestanden[0].Toestand.JuridischWerkendVanaf > jwvMinimaal or self._NuBepaaldeToestanden[0].Toestand.GeldigVanaf > gvvMinimaal:
+                # De nieuwe toestanden dekken niet hetzelfde deel van de geldigheid-datums af als de eerdere toestanden
+                extraToestand = MaakCompleteToestanden._BepaaldeToestand (Toestandidentificatie(), self._GemaaktOp, self._OntvangenOp, bekendOpNieuweToestanden, jwvMinimaal, gvvMinimaal)
+                extraToestand.Inhoud.IsNietInWerking = True
+                tijdreisIndex.append (extraToestand.Toestand)
+                # Voer de administratie uit om alle verwijzingen goed te krijgen
+                extraToestand.Toestand.Inhoud = self._Consolidatie.CompleteToestanden.ToestandInhoudIndex (extraToestand.Inhoud)
+                meldingen = []
+                extraToestand.Toestand.Identificatie = self._Consolidatie.MaakToestandExpressionId (extraToestand.Identificatie, extraToestand.Toestand.JuridischWerkendVanaf, extraToestand.Toestand.GeldigVanaf, meldingen)
+                extraToestand.Identificatie._Uitleg = [*meldingen]
+
         self._Consolidatie.CompleteToestanden.BekendOp = bekendOpNieuweToestanden
         completeToestanden = self._Consolidatie.CompleteToestanden.Toestanden
 
@@ -722,20 +745,20 @@ class _MaakToestanden (MaakToestanden):
         for teVerwerken in versie.TeVerwerkenDoelen:
             verantwoording = self._Consolidatie.JuridischeVerantwoording.Verantwoording[teVerwerken.Doel]
             for publicatie in verantwoording.Publicaties:
-                if publicatie.VoorInstrument:
+                if publicatie.WijzigtInhoud ():
                     if (teVerwerken.LaatstVerwerkt is None or teVerwerken.LaatstVerwerkt < publicatie.GemaaktOp) and publicatie.GemaaktOp <= teVerwerken.LaatstBekend:
-                        melding = Melding (Melding.Ernst_Informatie, 'Te verwerken publicatie voor (' + teVerwerken.Doel.Identificatie + ',@' + publicatie.GemaaktOp + '): ' + publicatie.UrlVoorInstrument ())
+                        melding = Melding (Melding.Ernst_Informatie, 'Te verwerken publicatie voor (' + teVerwerken.Doel.Identificatie + ',@' + publicatie.GemaaktOp + '): ' + publicatie.UrlVoorInhoud ())
                         melding._Stap = Weergave_Toestandbepaling.BepaalAanvullendePublicaties 
                         versie._Uitleg.append (melding)
-                        versie.TeVerwerkenPublicaties.add (publicatie.UrlVoorInstrument ())
+                        versie.TeVerwerkenPublicaties.add (publicatie.UrlVoorInhoud ())
 
         for teontvlechten in versie.TeOntvlechtenDoelen:
             verantwoording = self._Consolidatie.JuridischeVerantwoording.Verantwoording[teontvlechten.Doel]
             for publicatie in verantwoording.Publicaties:
-                if publicatie.VoorInstrument:
+                if publicatie.WijzigtInhoud ():
                     if publicatie.GemaaktOp <= teontvlechten.LaatstVerwerkt:
-                        melding = Melding (Melding.Ernst_Informatie, 'Te ontvlechten publicatie voor (' + teontvlechten.Doel.Identificatie + ',@' + publicatie.GemaaktOp + '): ' + publicatie.UrlVoorInstrument ())
+                        melding = Melding (Melding.Ernst_Informatie, 'Te ontvlechten publicatie voor (' + teontvlechten.Doel.Identificatie + ',@' + publicatie.GemaaktOp + '): ' + publicatie.UrlVoorInhoud ())
                         melding._Stap = Weergave_Toestandbepaling.BepaalAanvullendePublicaties 
                         versie._Uitleg.append (melding)
-                        versie.TeOntvlechtenPublicaties.add (publicatie.UrlVoorInstrument ())
+                        versie.TeOntvlechtenPublicaties.add (publicatie.UrlVoorInhoud ())
 

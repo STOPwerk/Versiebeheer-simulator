@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns="https://standaarden.overheid.nl/stop/imop/data/" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/ https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+  <gemaaktOp>2022-05-07T09:09:00Z</gemaaktOp>
+  <Tijdstempels>
+    <Tijdstempel>
+      <!-- tijdstempel voor onafhankelijke wijziging -->
+      <doel>/join/id/proces/mnre1034/2022/2eWijzigingVoorbeeldregeling</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <datum>2022-07-01</datum>
+      <eId>!iwtwijzigingsregeling#art_I</eId>
+    </Tijdstempel>
+  </Tijdstempels>
+</ConsolidatieInformatie>

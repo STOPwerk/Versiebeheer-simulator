@@ -18,6 +18,7 @@ from typing import List
 
 from data_doel import Doel
 from data_lv_toestanden import ToestandActueel as DataToestandActueel, ToestandCompleet as SataToestandCompleet
+from stop_actueletoestanden import ActueleToestanden as STOPActueleToestanden
 from stop_completetoestanden import Toestand as STOPToestand, OnvolledigeVersie as STOPOnvolledigeVersie
 from stop_toestand import NogTeConsolideren, Toestandidentificatie as STOPToestandidentificatie
 
@@ -54,6 +55,14 @@ class ConsolidatieprocesInformatie (NogTeConsolideren):
 #----------------------------------------------------------------------
 # Actuele toestanden
 #----------------------------------------------------------------------
+class ActueleToestanden (STOPActueleToestanden):
+
+    def __init__ (self):
+        super().__init__ ()
+        # Datum waarop de regeling of informatieobject als juridisch uitgewerkt wordt beschouwd.
+        # Alleen nodig voor weergave.
+        self.JuridischUitgewerktOp = None
+
 class ToestandActueel (DataToestandActueel):
 
     def __init__ (self):
@@ -65,7 +74,7 @@ class ToestandActueel (DataToestandActueel):
         # Voor de weergave wordt er een uniek nummer aan toegekend,
         # zodat verschillende weergaven (stukjes HTML) de toestand kunnen herkennen
         # en dezelfde toestand kunnen laten
-        self.UniekId = None
+        self._UniekId = None
         # Index van de toestand's identificatie; alleen nodig om UniekId toe te kennen
         self.Identificatie = None
 
@@ -158,7 +167,7 @@ class Toestand (STOPToestand):
         # Voor de weergave wordt er een uniek nummer aan toegekend,
         # zodat verschillende weergaven (stukjes HTML) de toestand kunnen herkennen
         # en dezelfde toestand kunnen laten
-        self.UniekId = None
+        self._UniekId = None
         # Annotatieversies die voor deze
         self._Annotaties = []
 

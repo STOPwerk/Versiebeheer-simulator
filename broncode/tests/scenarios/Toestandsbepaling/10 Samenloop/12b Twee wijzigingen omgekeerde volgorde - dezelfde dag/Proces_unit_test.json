@@ -1,0 +1,17 @@
+{
+    "Uitwisselingen": [
+        {
+            "naam": "Samenloop",
+            "gemaaktOp": "2022-05-01T07:00:00Z"
+        },
+        {
+            "naam": "Oplossing",
+            "gemaaktOp": "2022-05-01T08:30:00Z"
+        },
+        {
+            "naam": "Vooraf",
+            "gemaaktOp": "2022-03-01T07:00:00Z"
+        }
+    ],
+    "Procesopties": true
+}

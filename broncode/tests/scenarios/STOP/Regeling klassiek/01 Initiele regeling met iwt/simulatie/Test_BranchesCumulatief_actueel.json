@@ -1,0 +1,17 @@
+{
+    "Testresultaat - Cumulatieve versieinformatie": {
+        "/akn/nl/act/mnre1034/2020/VRACT": {
+            "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-07-14T09:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-07-14T09:03:00Z"
+                }
+            ]
+        }
+    }
+}

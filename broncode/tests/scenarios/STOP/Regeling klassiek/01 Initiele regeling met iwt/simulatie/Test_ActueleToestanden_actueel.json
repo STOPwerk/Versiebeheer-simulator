@@ -1,0 +1,22 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/mnre1034/2020/VRACT": [
+            {
+                "BekendOp": "2020-07-14",
+                "OntvangenOp": "2020-07-14",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/land/2021/regeling1/nld@2021-01-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2020/VRACT/nld@2020-03-12;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling"
+                        ],
+                        "JuridischWerkendVanaf": "2021-01-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

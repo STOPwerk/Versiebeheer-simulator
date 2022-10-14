@@ -60,8 +60,15 @@ class ConsolidatieInformatie:
         self.Tijdstempels : List[Tijdstempel] = []
         # Doorgeven van terugtrekking tijdstempels
         self.TijdstempelTerugtrekkingen: List[TerugtrekkingTijdstempel] = []
+        # Doorgeven van materieel uitgewerkte instrumentens
+        self.MaterieelUitgewerkt: List[MaterieelUitgewerkt] = []
         # Geeft aan of er fouten zijn gesignaleerd bij het inlezen van de module
         self.IsValide = True
+
+        # Geeft aan dat de consolidatie-informatie bij een revisie is gevoegd en niet bij een instrument dat gepubliceerd wordt.
+        # Dit volgt uit de context van de uitwisseling, niet uit de STOP module.
+        # In de simulator wordt het gezet vanuit de procesopties of vanuit de simulatie van de acties van het bevoegd gezag.
+        self.IsRevisie = False
 
     def ModuleXml (self):
         """Geef de XML voor deze STOP module
@@ -69,16 +76,18 @@ class ConsolidatieInformatie:
         xml = ['<ConsolidatieInformatie xmlns="' + ConsolidatieInformatie.DataNamespace + '">']
         xml.append ('\t<gemaaktOp>' + self.GemaaktOp + '</gemaaktOp>')
         perCollectie = {}
-        for lijst in [self.BeoogdeVersies, self.Terugtrekkingen, self.Intrekkingen, self.TerugtrekkingenIntrekking, self.Tijdstempels, self.TijdstempelTerugtrekkingen]:
+        for lijst in [self.BeoogdeVersies, self.Terugtrekkingen, self.Intrekkingen, self.TerugtrekkingenIntrekking, self.Tijdstempels, self.TijdstempelTerugtrekkingen, self.MaterieelUitgewerkt]:
             for ci in lijst:
                 collectie = ci.ModuleXmlInCollectie ()
                 if not collectie in perCollectie:
                     perCollectie[collectie] = []
                 perCollectie[collectie].extend (['\t\t' + line for line in ci.ModuleXmlElement (False)])
         for collectie in sorted (perCollectie):
-            xml.append ('\t<' + collectie + '>')
+            if collectie:
+                xml.append ('\t<' + collectie + '>')
             xml.extend (perCollectie[collectie])
-            xml.append ('\t</' + collectie + '>')
+            if collectie:
+                xml.append ('\t</' + collectie + '>')
         xml.append ('</ConsolidatieInformatie>')
         return xml
 
@@ -118,8 +127,9 @@ class ConsolidatieInformatie:
         def _VoegToe (lijst, element):
             if not element is None:
                 lijst.append (element)
-                if not module._BekendOp is None and not element._BekendOp is None and element._BekendOp > module._BekendOp:
-                    module._BekendOp = element._BekendOp
+                bekendOp = element.BekendOp ()
+                if not module._BekendOp is None and not bekendOp is None and bekendOp > module._BekendOp:
+                    module._BekendOp = bekendOp
 
         for elt in xml.findall ('.//{' + ConsolidatieInformatie.DataNamespace + '}BeoogdeRegeling'):
             _VoegToe (module.BeoogdeVersies, BeoogdeVersie.LeesXmlMetVersie (module, elt, True))
@@ -137,6 +147,10 @@ class ConsolidatieInformatie:
             _VoegToe (module.Tijdstempels, Tijdstempel.LeesXml (module, elt))
         for elt in xml.findall ('.//{' + ConsolidatieInformatie.DataNamespace + '}TerugtrekkingTijdstempel'):
             _VoegToe (module.TijdstempelTerugtrekkingen, TerugtrekkingTijdstempel.LeesXml (module, elt))
+        for elt in xml.findall ('.//{' + ConsolidatieInformatie.DataNamespace + '}MaterieelUitgewerkt'):
+            _VoegToe (module.MaterieelUitgewerkt, MaterieelUitgewerkt.LeesXml (module, elt, False))
+        for elt in xml.findall ('.//{' + ConsolidatieInformatie.DataNamespace + '}TerugtrekkingMaterieelUitgewerkt'):
+            _VoegToe (module.MaterieelUitgewerkt, MaterieelUitgewerkt.LeesXml (module, elt, True))
 
         if not module._BekendOp is None and module._BekendOp > module.OntvangenOp:
             module.Log.Informatie ("Bestand '" + module.Pad + "': bekendOp ligt in de toekomst - dat is alleen toegestaan in deze applicatie")
@@ -275,6 +289,16 @@ class VoorInstrumentEnTijdstempel:
         self.ConsolidatieInformatie = consolidatieInformatie
         # Tijdstip waarop de informatie in de publicatie bekend is geworden
         self._BekendOp = None
+        # eId in het besluit waar de regelingversie/wijziging/tijdstempel te vinden is
+        self.eId = None
+
+    def _LeesGemeenschappelijkeInformatie (self, module, xml):
+        """Lees eId"""
+        eId = module._VindElement (xml, "eId", False)
+        if not eId is None:
+            self.eId = eId.text
+        return self
+
 
     def BekendOp (self):
         """Tijdstip waarop de informatie in een publicatie bekend is geworden"""
@@ -324,26 +348,31 @@ class VoorInstrument (VoorInstrumentEnTijdstempel):
     def __init__(self, consolidatieInformatie, workId, doelen):
         super ().__init__ (consolidatieInformatie)
         self.WorkId = workId
+        # In deze simulator wordt doelen als array gebruikt ivm BeoogdeRegelgeving
+        # ook al is er maar 1 doel voor een intrekking of terugtrekking. Het maakt
+        # de code van de simulator eenvoudiger.
         if not doelen is None:
+            if not isinstance (doelen, list):
+                doelen = [doelen]
             doelen = [Doel.DoelInstantie (d) for d in doelen]
         self.Doelen : List[Doel] = doelen
         self.Basisversies : Dict[Doel,Momentopname] = {}
-        self.OntvlochtenVersies : Dict[Doel,Momentopname] = {}
-        self.VervlochtenVersies : Dict[Doel,Momentopname] = {}
 
-    def _LeesGemeenschappelijkeInformatie (self, module, xml, moetBestaan):
-        """Lees gemaaktOpBasisVan"""
+    def _LeesGemeenschappelijkeInformatie (self, module, xml, moetBestaan, alleenBasisversie):
+        """Lees eId en gemaaktOpBasisVan"""
+        super ()._LeesGemeenschappelijkeInformatie (module, xml)
         opBasisVan = module._VindElement (xml, "gemaaktOpBasisVan", moetBestaan)
         if not opBasisVan is None:
             elts = module._VindElementen (opBasisVan, "Basisversie", moetBestaan)
             if not elts is None:
                 self.Basisversies = VoorInstrument._LeesMomentopnamen (module, elts, "Basisversie")
-            elts = module._VindElementen (opBasisVan, "OntvlochtenVersie", False)
-            if not elts is None:
-                self.OntvlochtenVersies = VoorInstrument._LeesMomentopnamen (module, elts, "OntvlochtenVersie")
-            elts = module._VindElementen (opBasisVan, "VervlochtenVersie", False)
-            if not elts is None:
-                self.VervlochtenVersies = VoorInstrument._LeesMomentopnamen (module, elts, "VervlochtenVersie")
+            if not alleenBasisversie:
+                elts = module._VindElementen (opBasisVan, "OntvlochtenVersie", False)
+                if not elts is None:
+                    self.OntvlochtenVersies = VoorInstrument._LeesMomentopnamen (module, elts, "OntvlochtenVersie")
+                elts = module._VindElementen (opBasisVan, "VervlochtenVersie", False)
+                if not elts is None:
+                    self.VervlochtenVersies = VoorInstrument._LeesMomentopnamen (module, elts, "VervlochtenVersie")
         self._BekendOp = module._LeesBekendOp (xml)
         return self
 
@@ -379,16 +408,18 @@ class VoorInstrument (VoorInstrumentEnTijdstempel):
                 xml.append ("\t\t<doel>" + str(versie.Doel) + "</doel>")
                 xml.append ("\t\t<gemaaktOp>" + versie.GemaaktOp + "</gemaaktOp>")
                 xml.append ("\t</Basisversie>")
-            for versie in sorted (self.VervlochtenVersies.values (), key = lambda x: x.GemaaktOp + str(x.Doel)):
-                xml.append ("\t<VervlochtenVersie>")
-                xml.append ("\t\t<doel>" + str(versie.Doel) + "</doel>")
-                xml.append ("\t\t<gemaaktOp>" + versie.GemaaktOp + "</gemaaktOp>")
-                xml.append ("\t</VervlochtenVersie>")
-            for versie in sorted (self.OntvlochtenVersies.values (), key = lambda x: x.GemaaktOp + str(x.Doel)):
-                xml.append ("\t<OntvlochtenVersie>")
-                xml.append ("\t\t<doel>" + str(versie.Doel) + "</doel>")
-                xml.append ("\t\t<gemaaktOp>" + versie.GemaaktOp + "</gemaaktOp>")
-                xml.append ("\t</OntvlochtenVersie>")
+            if hasattr (self, 'VervlochtenVersies'):
+                for versie in sorted (self.VervlochtenVersies.values (), key = lambda x: x.GemaaktOp + str(x.Doel)):
+                    xml.append ("\t<VervlochtenVersie>")
+                    xml.append ("\t\t<doel>" + str(versie.Doel) + "</doel>")
+                    xml.append ("\t\t<gemaaktOp>" + versie.GemaaktOp + "</gemaaktOp>")
+                    xml.append ("\t</VervlochtenVersie>")
+            if hasattr (self, 'OntvlochtenVersies'):
+                for versie in sorted (self.OntvlochtenVersies.values (), key = lambda x: x.GemaaktOp + str(x.Doel)):
+                    xml.append ("\t<OntvlochtenVersie>")
+                    xml.append ("\t\t<doel>" + str(versie.Doel) + "</doel>")
+                    xml.append ("\t\t<gemaaktOp>" + versie.GemaaktOp + "</gemaaktOp>")
+                    xml.append ("\t</OntvlochtenVersie>")
             xml.append ("</gemaaktOpBasisVan>")
 
         return xml
@@ -400,6 +431,8 @@ class BeoogdeVersie (VoorInstrument):
 
     def __init__ (self, consolidatieInformatie, doelen, workId, expressionId):
         super ().__init__ (consolidatieInformatie, workId, doelen)
+        self.OntvlochtenVersies : Dict[Doel,Momentopname] = {}
+        self.VervlochtenVersies : Dict[Doel,Momentopname] = {}
         self.ExpressionId = expressionId
 
     @staticmethod
@@ -418,7 +451,7 @@ class BeoogdeVersie (VoorInstrument):
                     module.Log.Fout ("Bestand '" + module.Pad + "': expression identificatie '" + expressionId + "' past niet bij een informatieobject")
                     module.IsValide = False
                     return
-            return BeoogdeVersie (module, doelen, Naamgeving.WorkVan (expressionId), expressionId)._LeesGemeenschappelijkeInformatie (module, xml, False)
+            return BeoogdeVersie (module, doelen, Naamgeving.WorkVan (expressionId), expressionId)._LeesGemeenschappelijkeInformatie (module, xml, False, False)
         workId = module._LeesElement (xml, "instrument", False)
         if workId is None:
             module.Log.Fout ("Bestand '" + module.Pad + "': Instrument of Instrumentversie ontbreekt")
@@ -434,7 +467,7 @@ class BeoogdeVersie (VoorInstrument):
                     module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie '" + workId + "' past niet bij een informatieobject")
                     module.IsValide = False
                     return
-            return BeoogdeVersie (module, doelen, workId, None)._LeesGemeenschappelijkeInformatie (module, xml, False)
+            return BeoogdeVersie (module, doelen, workId, None)._LeesGemeenschappelijkeInformatie (module, xml, False, False)
 
     @staticmethod
     def LeesXmlZonderVersie (module, xml, isRegeling):
@@ -474,14 +507,14 @@ class Intrekking (VoorInstrument):
     @staticmethod
     def LeesXml (module, xml):
         """Lees Intrekking"""
-        doelen = module._LeesElementen (xml, "doelen", "doel")
+        doelen = module._LeesElement (xml, "doel")
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
                 module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
                 module.IsValide = False
                 return
-            return Intrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True)
+            return Intrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True, True)
 
     def ModuleXmlInCollectie (self):
         """Geeft de naam van de collectie in de STOP module waar dit element onderdeel van is.
@@ -509,7 +542,7 @@ class Terugtrekking (VoorInstrument):
     @staticmethod
     def LeesXml (module, xml, isRegeling):
         """Lees TerugtrekkingRegeling/TerugtrekkingInformatieobject/TerugtrekkingIntrekking"""
-        doelen = module._LeesElementen (xml, "doelen", "doel")
+        doelen = module._LeesElement (xml, "doel")
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if isRegeling:
@@ -522,7 +555,7 @@ class Terugtrekking (VoorInstrument):
                     module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een informatieobject")
                     module.IsValide = False
                     return
-            return Terugtrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True)
+            return Terugtrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True, True)
 
     def ModuleXmlInCollectie (self):
         """Geeft de naam van de collectie in de STOP module waar dit element onderdeel van is.
@@ -550,14 +583,14 @@ class TerugtrekkingIntrekking (VoorInstrument):
     @staticmethod
     def LeesXml (module, xml):
         """Lees TerugtrekkingRegeling/TerugtrekkingInformatieobject/TerugtrekkingIntrekking"""
-        doelen = module._LeesElementen (xml, "doelen", "doel")
+        doelen = module._LeesElement (xml, "doel")
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
                 module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een regeling")
                 module.IsValide = False
                 return
-            return TerugtrekkingIntrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, False)
+            return TerugtrekkingIntrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, False, True)
 
     def ModuleXmlInCollectie (self):
         """Geeft de naam van de collectie in de STOP module waar dit element onderdeel van is.
@@ -601,6 +634,7 @@ class VoorTijdstempel(VoorInstrumentEnTijdstempel):
                 module.Log.Fout ("Bestand '" + module.Pad + "': onbekende soortTijdstempel '" + soort + "'")
                 module.IsValide = False
         self._BekendOp = module._LeesBekendOp (xml)
+        super ()._LeesGemeenschappelijkeInformatie (module, xml)
 
 #----------------------------------------------------------------------
 # Tijdstempel
@@ -681,5 +715,69 @@ class TerugtrekkingTijdstempel(VoorTijdstempel):
         In deze applicatie alleen nodig voor weergave"""
         return ["<doel>" + str(self.Doel) + "</doel>",
                 "<soortTijdstempel>" + ("geldigVanaf" if self.IsGeldigVanaf else "juridischWerkendVanaf") + "</soortTijdstempel>"]
+        return xml
+
+#----------------------------------------------------------------------
+# MaterieelUitgewerkt
+#----------------------------------------------------------------------
+class MaterieelUitgewerkt:
+
+    def __init__(self, consolidatieInformatie, workId):
+        self.ConsolidatieInformatie = consolidatieInformatie
+        self.WorkId = workId
+        # Datum waarop het instrument materieel uitgewerkt is; is None voor terugtrekking.
+        self.Datum = None
+
+    def BekendOp (self):
+        """Tijdstip waarop de informatie in een publicatie bekend is geworden"""
+        return self.ConsolidatieInformatie._BekendOp
+
+    def OntvangenOp (self):
+        """Tijdstip waarop de informatie in een publicatie ontvangen is; kan niet voor bekendOp liggen"""
+        return self.ConsolidatieInformatie.OntvangenOp
+
+    @staticmethod
+    def LeesXml (module, xml, isTerugtrekking):
+        """Lees MaterieelUitgewerkt"""
+        workId = module._LeesElement (xml, "instrument", True)
+        if not workId is None:
+            if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
+                module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
+                module.IsValide = False
+        element = MaterieelUitgewerkt (module, workId)
+        if not isTerugtrekking:
+            datum = module._LeesElement (xml, "datum", True)
+            if not datum is None:
+                datum = datum[0:10]
+                if not ConsolidatieInformatie._DatumPatroon.match (datum):
+                    module.Log.Fout ("Bestand '" + module.Pad + "': datum '" + datum + "' is onherkenbaar")
+                    module.IsValide = False
+                else:
+                    element.Datum = datum
+        return element
+
+    def ModuleXmlInCollectie (self):
+        """Geeft de naam van de collectie in de STOP module waar dit element onderdeel van is.
+        In deze applicatie alleen nodig voor weergave"""
+        return 'Terugtrekkingen' if self.Datum is None else ''
+
+    def ModuleXmlElement (self, inclusiefImplicieteTijdstempels = True):
+        """Geeft de XML van het element in de STOP module, als lijst van regels.
+        In deze applicatie alleen nodig voor weergave
+        
+        Argumenten:
+        
+        inclusiefImplicieteTijdstempels bool  Geeft aan of ontvangenOp/bekendOp altijd opgenomen moeten worden (als comment)
+        """
+        naam = 'TerugtrekkingMaterieelUitgewerkt' if self.Datum is None else 'MaterieelUitgewerkt'
+        xml = ["<" + naam + ">"]
+        if inclusiefImplicieteTijdstempels:
+            # Alleen voor weergave; is geen onderdeel van het STOP schema!
+            xml.extend (['\t<!-- ontvangenOp: ' + self.OntvangenOp() + ' -->'
+                            '\t<bekendOp>' + self.BekendOp () + '</bekendOp>'])
+        xml.append ("\t<instrument>" + self.WorkId + "</instrument>")
+        if not self.Datum is None:
+            xml.append ("\t<datum>" + self.Datum + "</datum>")
+        xml.append ("</" + naam + ">")
         return xml
 

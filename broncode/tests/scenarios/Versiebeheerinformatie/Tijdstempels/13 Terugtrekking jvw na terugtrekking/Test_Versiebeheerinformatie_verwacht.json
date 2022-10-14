@@ -1,0 +1,72 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2022/REG_A": {
+                "BekendOp": [
+                    "2022-01-01",
+                    "2022-01-02"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2022/Instelling": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2022-01-01",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                                "GemaaktOp": "2022-01-01T07:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2022/Instelling"
+                ]
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/gm9999/2022/Instelling": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2022-01-01",
+                        "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                        "GemaaktOp": "2022-01-01T07:00:00Z",
+                        "JuridischWerkendVanaf": "2022-02-01"
+                    },
+                    {
+                        "BekendOp": "2022-01-02",
+                        "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                        "GemaaktOp": "2022-01-02T07:00:00Z"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2022-01-01",
+                "GemaaktOp": "2022-01-01T07:00:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1"
+                    }
+                ],
+                "OntvangenOp": "2022-01-01"
+            },
+            {
+                "BekendOp": "2022-01-02",
+                "GemaaktOp": "2022-01-02T07:00:00Z",
+                "OntvangenOp": "2022-01-02"
+            },
+            {
+                "GemaaktOp": "2022-01-03T07:00:00Z",
+                "OntvangenOp": "2022-01-03"
+            }
+        ]
+    }
+}

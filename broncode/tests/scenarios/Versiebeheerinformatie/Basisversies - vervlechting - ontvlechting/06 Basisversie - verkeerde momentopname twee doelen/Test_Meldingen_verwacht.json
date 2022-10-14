@@ -1,0 +1,10 @@
+[
+    {
+        "Ernst": "FOUT",
+        "Tekst": "BeoogdeRegeling voor (/join/id/proces/gm9999/2022/Instelling, @2022-01-04T07:00:00Z) en instrument /akn/nl/act/gm9999/2022/REG_A moet (/join/id/proces/gm9999/2022/Instelling, @2022-01-03T07:00:00Z) en niet (/join/id/proces/gm9999/2022/Instelling, @2022-01-01T07:00:00Z) als basisversie hebben"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "BeoogdeRegeling voor (/join/id/proces/gm9999/2022/Wijziging, @2022-01-04T07:00:00Z) en instrument /akn/nl/act/gm9999/2022/REG_A moet (/join/id/proces/gm9999/2022/Wijziging, @2022-01-03T07:00:00Z) en niet (/join/id/proces/gm9999/2022/Wijziging, @2022-01-02T07:00:00Z) als basisversie hebben"
+    }
+]

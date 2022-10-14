@@ -1,0 +1,128 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2022/REG_A": {
+                "BekendOp": [
+                    "2022-01-01",
+                    "2022-01-02"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2022/Instelling": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2022-01-01",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                                "GemaaktOp": "2022-01-01T07:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2022/Wijziging": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2022/Instelling": "2022-01-01T07:00:00Z"
+                                },
+                                "BekendOp": "2022-01-02",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2",
+                                "GemaaktOp": "2022-01-02T07:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false,
+                                "VervlochtenMet": {
+                                    "/join/id/proces/gm9999/2022/Wijziging3": "2022-01-02T07:00:00Z"
+                                }
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2022/Wijziging2": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2022/Wijziging": "2022-01-02T07:00:00Z"
+                                },
+                                "BekendOp": "2022-01-02",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging2"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v3",
+                                "GemaaktOp": "2022-01-02T07:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2022/Wijziging3": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2022/Wijziging2": "2022-01-02T07:00:00Z"
+                                },
+                                "BekendOp": "2022-01-02",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging3"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v4",
+                                "GemaaktOp": "2022-01-02T07:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false,
+                                "OntvlochtenMet": {
+                                    "/join/id/proces/gm9999/2022/Wijziging": "2022-01-02T07:00:00Z"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2022/Instelling"
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2022-01-01",
+                "GemaaktOp": "2022-01-01T07:00:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1"
+                    }
+                ],
+                "OntvangenOp": "2022-01-01"
+            },
+            {
+                "BekendOp": "2022-01-02",
+                "GemaaktOp": "2022-01-02T07:00:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2"
+                    },
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging2"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v3"
+                    },
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging3"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v4"
+                    }
+                ],
+                "OntvangenOp": "2022-01-02"
+            }
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "Testresultaat - Cumulatieve versieinformatie": {
+        "/akn/nl/act/gm9999/2020/REG0001": {
+            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-01-18T09:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-01-18T09:03:00Z"
+                }
+            ],
+            "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-01-18T09:03:00Z"
+                        },
+                        "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-01-18T09:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-01-18T09:03:00Z"
+                }
+            ]
+        }
+    }
+}

@@ -62,7 +62,7 @@ class CompleteToestanden:
                         '\t<Tijdreisindex>'])
             for idx, toestand in enumerate (self.Toestanden):
                 xml.extend (['\t\t' + x for x in toestand.ModuleXmlElement ()])
-            xml.append ('\t<Tijdreisindex>')
+            xml.append ('\t</Tijdreisindex>')
         xml.extend (['',
                      '</CompleteToestanden>'])
         return xml
@@ -116,7 +116,7 @@ class ToestandCompleet:
             xml.append ('\t</isTePresenterenAls>')
         if self.IsNietInWerking:
             xml.append ('\t<isNietInWerking/>')
-        xml.append ('<ToestandInhoud>')
+        xml.append ('</ToestandInhoud>')
         return xml
 
 class OnvolledigeVersie(NogTeConsolideren):
@@ -135,7 +135,7 @@ class OnvolledigeVersie(NogTeConsolideren):
                '\t<nogTeConsolideren>']
         xml.extend (['\t\t' + x for x in self._ModuleXmlAttributen ()])
         xml.extend (['\t</nogTeConsolideren>',
-                     '<OnvolledigeVersie>'])
+                     '</OnvolledigeVersie>'])
         return xml
 
 #----------------------------------------------------------------------
@@ -172,12 +172,12 @@ class Tijdreisfilter:
     def ModuleXmlElement (self):
         """Geeft de XML van dit element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        return ['<TijdreisFilter>',
+        return ['<Tijdreisfilter>',
                 '\t<soortTijdreis>' + (self.SoortTijdreis if self.SoortTijdreis else 'https://tijdre.is/42') + '</soortTijdreis>',
                 '\t<ontvangenOpAanwezig>' + ('true' if self.OntvangenOpAanwezig else 'false') + '</ontvangenOpAanwezig>',
                 '\t<bekendOpAanwezig>' + ('true' if self.BekendOpAanwezig else 'false') + '</bekendOpAanwezig>',
-                '\t<GeldigVanafAanwezig>' + ('true' if self.GeldigVanafAanwezig else 'false') + '</geldigVanafAanwezig>',
-                '</TijdreisFilter>']
+                '\t<geldigVanafAanwezig>' + ('true' if self.GeldigVanafAanwezig else 'false') + '</geldigVanafAanwezig>',
+                '</Tijdreisfilter>']
 
 #----------------------------------------------------------------------
 # Tijdstempels voor de toestanden

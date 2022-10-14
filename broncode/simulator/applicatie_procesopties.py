@@ -38,6 +38,8 @@ class ProcesOpties:
         # Benoemde tijdreizen in het scenario
         # Key = work-ID
         self.Tijdreizen : Dict[str,List[BenoemdeTijdreis]] = {}
+        # Geeft aan dat de map een scenario voor de simulator bevat
+        self.SimulatorScenario = True
         # Geeft aan dat de proefversies berekend moeten worden
         # Proefversies worden alleen berekend als annotaties obv versiebeheer onderdeel zijn van het scenario
         # self.Proefversies = False

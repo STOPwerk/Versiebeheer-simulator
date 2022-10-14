@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns="https://standaarden.overheid.nl/stop/imop/data/" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/ https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+  <gemaaktOp>2020-02-23T09:03:00Z</gemaaktOp>
+  <BeoogdeRegelgeving>
+    <BeoogdeRegeling>
+      <!-- koppeling van het doel aan de regelingversie van <RegelingMutatie>  -->
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan</doel>
+        <doel>/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan</doel>
+      </doelen>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0001/nld@2020-02-19;4</instrumentVersie>
+      <eId>art_I</eId>
+      <gemaaktOpBasisVan>
+        <Basisversie>
+            <doel>/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan</doel>
+            <gemaaktOp>2020-02-18T09:03:00Z</gemaaktOp>
+        </Basisversie>
+      </gemaaktOpBasisVan>
+    </BeoogdeRegeling>
+  </BeoogdeRegelgeving>
+  <Tijdstempels>
+    <Tijdstempel>
+      <doel>/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <datum>2020-03-01</datum>
+      <eId>art_II</eId>
+    </Tijdstempel>
+  </Tijdstempels>
+</ConsolidatieInformatie>

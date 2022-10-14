@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//01 Proces van aanleveren tm consolidatie//02 Wijziging in regeltekst\">01 02 Wijziging in regeltekst</a>.</p><p>In dit voorbeeld wordt de eerste versie van de regeling uit het vorige voorbeeld gewijzigd. Het wijzigingsbesluit bevat ook een inwerkingtredingsdatum.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Initi\u00c3\u00able versie",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling, met inwerkingtredingsdatum."
+        },
+        {
+            "naam": "Gewijzigde versie",
+            "gemaaktOp": "2020-02-18T09:03:00Z",
+            "beschrijving": "Wijzigingsbesluit van de regeling, met inwerkingtredingsdatum."
+        }
+    ],
+    "Procesopties": true
+}

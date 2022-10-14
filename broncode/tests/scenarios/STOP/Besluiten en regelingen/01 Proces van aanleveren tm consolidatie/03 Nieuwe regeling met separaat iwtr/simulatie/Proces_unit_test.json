@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//01 Proces van aanleveren tm consolidatie//03 Nieuwe regeling met separaat iwtr\">01 03 Nieuwe regeling met separaat iwtr</a>.</p><p>In dit voorbeeld wordt een initieel besluit met de eerste versie van een nieuwe regeling gepubliceerd. Het initiele besluit zelf bevat <i>geen</i> inwerkingtredingsdatum. De inwerkingtredingsdatum van de nieuwe regeling wordt met een apart tweede besluit bekend gemaakt.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Initi\u00c3\u00able versie",
+            "gemaaktOp": "2020-01-27T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling, zonder inwerkingtredingsdatum."
+        },
+        {
+            "naam": "Inwerkingtredingsbesluit",
+            "gemaaktOp": "2020-01-28T09:03:00Z",
+            "beschrijving": "Inwerkingtredingsbesluit met alleen de inwerkingtredingsdatum van de nieuwe regeling."
+        }
+    ],
+    "Procesopties": true
+}

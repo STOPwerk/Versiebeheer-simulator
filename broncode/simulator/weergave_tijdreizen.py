@@ -56,12 +56,12 @@ class Weergave_Tijdreizen ():
 
         generator.VoegHtmlToe ('</td></tr></table></td>') # Einde toestanden en legenda, start diagrammen
 
-        generator.VoegHtmlToe (maker._MaakDiagrammen(generator.LeesHtmlTemplate ('', False).replace ('UNIEK_ID', maker.UniekId)))
+        generator.VoegHtmlToe (maker._MaakDiagrammen(generator.LeesHtmlTemplate ('', False).replace ('UNIEK_ID', maker._UniekId)))
         generator.VoegHtmlToe ('</tr></table>')
 
         generator.VoegHtmlToe (einde)
         generator.LeesCssTemplate ('')
-        generator.VoegSlotScriptToe (generator.LeesJSTemplate ('', False).replace ('UNIEK_ID', maker.UniekId).replace ('WORK_ID', instrumentData.WorkId))
+        generator.VoegSlotScriptToe (generator.LeesJSTemplate ('', False).replace ('UNIEK_ID', maker._UniekId).replace ('WORK_ID', instrumentData.WorkId))
 
 #----------------------------------------------------------------------
 #
@@ -77,7 +77,7 @@ class Weergave_Tijdreizen ():
         instrument Instrument  Informatie over het instrument uit het versiebeheer.
         instrumentData InstrumentData Extra informatie over het instrument uit de consolidatie
         """
-        self.UniekId = 'ct_tr_' + str(uniek_id)
+        self._UniekId = 'ct_tr_' + str(uniek_id)
         self._Instrument = instrument
         self._InstrumentData = instrumentData
         self._CompleteToestanden = self._InstrumentData.Uitwisselingen[-1].CompleteToestanden
@@ -160,7 +160,7 @@ class Weergave_Tijdreizen ():
             if idxGemaaktOp > 0:
                 # Maak de regel voor eerdere uitwisselingen:
                 toestandenHtml += toestandHtml.format (attr = 'class="ct_tr_tk"' + self._Selector.AttributenToonIn (allegemaaktOp[0], toestand.GemaaktOp))
-            idAttr = ' data-{id}_ti="{ti}" data-{id}_tid="{tid}" data-{id}_ob_t="{ob}"'.format (id=self.UniekId, ti=toestand.Identificatie, tid=toestand.UniekId, ob=self._BeschikbaarheidCombi[toestand.OntvangenOp + ':' + toestand.BekendOp])
+            idAttr = ' data-{id}_ti="{ti}" data-{id}_tid="{tid}" data-{id}_ob_t="{ob}"'.format (id=self._UniekId, ti=toestand.Identificatie, tid=toestand._UniekId, ob=self._BeschikbaarheidCombi[toestand.OntvangenOp + ':' + toestand.BekendOp])
             if idxGemaaktOp < len (allegemaaktOp) - 1:
                 toestandenHtml += toestandHtml.format (attr = 'class="ct_tr_t uw"' + idAttr + self._Selector.AttributenToonIn (toestand.GemaaktOp, allegemaaktOp[idxGemaaktOp+1]))
                 if toestand.OverschrevenOp is None:
@@ -192,12 +192,12 @@ class Weergave_Tijdreizen ():
             bekendOp_X[bekendOp] = x
             x +=  Weergave_Tijdreizen._SvgKolomBreedte
 
-        svg = '<svg id="' + self.UniekId + '_ob_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 ' + str(svgBreedte) + ' ' + str(svgHoogte) + ' " version="1.1">\n'
+        svg = '<svg id="' + self._UniekId + '_ob_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 ' + str(svgBreedte) + ' ' + str(svgHoogte) + ' " version="1.1">\n'
 
-        svgFragment = '<rect x="{x}" y="0" width="{w}" height="{y}" class="ct_tr_dr{t}" data-' + self.UniekId + '_ob_e="{ob}" data-' + self.UniekId + '_obt="{obt}"><title>ontvangenOp={o}, bekendOp={b}</title></rect>\n'
+        svgFragment = '<rect x="{x}" y="0" width="{w}" height="{y}" class="ct_tr_dr{t}" data-' + self._UniekId + '_ob_e="{ob}" data-' + self._UniekId + '_obt="{obt}"><title>ontvangenOp={o}, bekendOp={b}</title></rect>\n'
         svgFragment += '<path d="M {x} {y} L {x} 0" class="ct_tr_dl{t}"/>\n'
         svgFragment += '<path d="M {x} {y} L ' + str(svgBreedte) + ' {y}" class="ct_tr_dl{t}"/>\n'
-        svgFragment += '<text x="{xt}" y="{yt}" class="ct_tr_dt_obt" data-' + self.UniekId + '_obt_g="{obt}">' + Weergave_Tijdreizen._BeschikbaarheidVoorGeldigheid + '</text>\n'
+        svgFragment += '<text x="{xt}" y="{yt}" class="ct_tr_dt_obt" data-' + self._UniekId + '_obt_g="{obt}">' + Weergave_Tijdreizen._BeschikbaarheidVoorGeldigheid + '</text>\n'
         for uitwisseling in self._InstrumentData.Uitwisselingen:
             getoond = set()
             bijdragen = []
@@ -243,18 +243,18 @@ class Weergave_Tijdreizen ():
             geldigVanaf_X[bekendOp] = x
             x +=  Weergave_Tijdreizen._SvgKolomBreedte
 
-        svg = '<svg id="' + self.UniekId + '_jg_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 ' + str(svgBreedte) + ' ' + str(svgHoogte) + ' " version="1.1">\n'
+        svg = '<svg id="' + self._UniekId + '_jg_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 ' + str(svgBreedte) + ' ' + str(svgHoogte) + ' " version="1.1">\n'
 
-        svgFragment = '<rect x="{x}" y="0" width="{w}" height="{y}" class="ct_tr_dr{t}" data-' + self.UniekId + '_ob_g={ob} data-' + self.UniekId + '_tid={tid} data-' + self.UniekId + '_ti={ti}><title>juridischWerkendVanaf={j}, geldigVanaf={g}</title></rect>\n'
-        svgFragment += '<path d="M {x} {y} L {x} 0" class="ct_tr_dl{t}" data-' + self.UniekId + '_ob_g="{ob}"/>\n'
-        svgFragment += '<path d="M {x} {y} L ' + str(svgBreedte) + ' {y}" class="ct_tr_dl{t}" data-' + self.UniekId + '_ob_g="{ob}"/>\n'
-        svgFragment += '<text x="{xt}" y="{yt}" class="ct_tr_dt" data-' + self.UniekId + '_ob_g={ob} data-' + self.UniekId + '_tid={tid} data-' + self.UniekId + '_ti={ti}>{inhoud}</text>\n'
+        svgFragment = '<rect x="{x}" y="0" width="{w}" height="{y}" class="ct_tr_dr{t}" data-' + self._UniekId + '_ob_g={ob} data-' + self._UniekId + '_tid={tid} data-' + self._UniekId + '_ti={ti}><title>juridischWerkendVanaf={j}, geldigVanaf={g}</title></rect>\n'
+        svgFragment += '<path d="M {x} {y} L {x} 0" class="ct_tr_dl{t}" data-' + self._UniekId + '_ob_g="{ob}"/>\n'
+        svgFragment += '<path d="M {x} {y} L ' + str(svgBreedte) + ' {y}" class="ct_tr_dl{t}" data-' + self._UniekId + '_ob_g="{ob}"/>\n'
+        svgFragment += '<text x="{xt}" y="{yt}" class="ct_tr_dt" data-' + self._UniekId + '_ob_g={ob} data-' + self._UniekId + '_tid={tid} data-' + self._UniekId + '_ti={ti}>{inhoud}</text>\n'
 
-        svgFragment_Uitgewerkt = '<rect x="' + str(startX) + '" y="0" width="' + str(svgBreedte-startX) + '" height="{y}" class="ct_tr_du{t}" data-' + self.UniekId + '_ob_g={ob} data-' + self.UniekId + '_tid={tid} data-' + self.UniekId + '_ti={ti}><title>juridischUitgewerktOp={j}</title></rect>\n'
-        svgFragment_Uitgewerkt += '<rect x="{x}" y="0" width="{w}" height="' + str(startY) + '" class="ct_tr_du{t}" data-' + self.UniekId + '_ob_g={ob} data-' + self.UniekId + '_tid={tid} data-' + self.UniekId + '_ti={ti}><title>juridischUitgewerktOp={j}</title></rect>\n'
-        svgFragment_Uitgewerkt += '<path d="M {x} {y} L {x} ' + str(startY) + '" class="ct_tr_dl{t}" data-' + self.UniekId + '_ob_g="{ob}"/>\n'
-        svgFragment_Uitgewerkt += '<path d="M ' + str(startX) + ' {y} L {x} {y}" class="ct_tr_dl{t}" data-' + self.UniekId + '_ob_g="{ob}"/>\n'
-        svgFragment_Uitgewerkt += '<text x="{xt}" y="{yt}" class="ct_tr_dt" data-' + self.UniekId + '_ob_g={ob} data-' + self.UniekId + '_tid={tid} data-' + self.UniekId + '_ti={ti}>{inhoud}</text>\n'
+        svgFragment_Uitgewerkt = '<rect x="' + str(startX) + '" y="0" width="' + str(svgBreedte-startX) + '" height="{y}" class="ct_tr_du{t}" data-' + self._UniekId + '_ob_g={ob} data-' + self._UniekId + '_tid={tid} data-' + self._UniekId + '_ti={ti}><title>juridischUitgewerktOp={j}</title></rect>\n'
+        svgFragment_Uitgewerkt += '<rect x="{x}" y="0" width="{w}" height="' + str(startY) + '" class="ct_tr_du{t}" data-' + self._UniekId + '_ob_g={ob} data-' + self._UniekId + '_tid={tid} data-' + self._UniekId + '_ti={ti}><title>juridischUitgewerktOp={j}</title></rect>\n'
+        svgFragment_Uitgewerkt += '<path d="M {x} {y} L {x} ' + str(startY) + '" class="ct_tr_dl{t}" data-' + self._UniekId + '_ob_g="{ob}"/>\n'
+        svgFragment_Uitgewerkt += '<path d="M ' + str(startX) + ' {y} L {x} {y}" class="ct_tr_dl{t}" data-' + self._UniekId + '_ob_g="{ob}"/>\n'
+        svgFragment_Uitgewerkt += '<text x="{xt}" y="{yt}" class="ct_tr_dt" data-' + self._UniekId + '_ob_g={ob} data-' + self._UniekId + '_tid={tid} data-' + self._UniekId + '_ti={ti}>{inhoud}</text>\n'
 
         for uitwisseling in self._InstrumentData.Uitwisselingen:
             svg += '<g ' + self._Selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>\n'
@@ -277,7 +277,7 @@ class Weergave_Tijdreizen ():
                     inhoud = '<title>' + inhoud.Instrumentversie + '</title>' + Weergave_Symbolen.Toestand_BekendeInhoud
                 identificatie = self._CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                 inhoud += ','.join (letter for _, letter in self._InstrumentData.WeergaveData.Branches (identificatie.Inwerkingtredingsdoelen))
-                svg += svgFragment.format (x=x, y=y, xt=xt, yt=yt, w=svgBreedte-x, ob=ob, j=toestand.JuridischWerkendVanaf, g=toestand.GeldigVanaf, t = ' uw' if toestand.GemaaktOp == uitwisseling.GemaaktOp else '', ti=toestand.Identificatie, tid=toestand.UniekId, inhoud=inhoud)
+                svg += svgFragment.format (x=x, y=y, xt=xt, yt=yt, w=svgBreedte-x, ob=ob, j=toestand.JuridischWerkendVanaf, g=toestand.GeldigVanaf, t = ' uw' if toestand.GemaaktOp == uitwisseling.GemaaktOp else '', ti=toestand.Identificatie, tid=toestand._UniekId, inhoud=inhoud)
 
             svg += '</g>'
 

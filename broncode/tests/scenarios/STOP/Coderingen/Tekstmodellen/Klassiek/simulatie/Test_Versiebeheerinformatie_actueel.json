@@ -1,0 +1,101 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/mnre1034/2020/VRACT": {
+                "BekendOp": [
+                    "2020-07-14"
+                ],
+                "Branches": {
+                    "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-07-14",
+                                "Doelen": [
+                                    "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling"
+                                ],
+                                "ExpressionId": "/akn/nl/act/mnre1034/2020/VRACT/nld@2020-03-12;1",
+                                "GemaaktOp": "2020-07-14T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling"
+                ]
+            },
+            "/akn/nl/act/mnre1034/2020/WIJZVRACT": {
+                "BekendOp": [
+                    "2021-05-21"
+                ],
+                "Branches": {
+                    "/join/id/proces/mnre1034/2021/WijzigingVoorbeeldregeling": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2021-05-21",
+                                "Doelen": [
+                                    "/join/id/proces/mnre1034/2021/WijzigingVoorbeeldregeling"
+                                ],
+                                "ExpressionId": "/akn/nl/act/mnre1034/2020/WIJZVRACT/nld@2021-05-10;1",
+                                "GemaaktOp": "2021-05-21T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-07-14",
+                        "Doel": "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling",
+                        "GemaaktOp": "2020-07-14T09:03:00Z",
+                        "JuridischWerkendVanaf": "2021-01-01"
+                    }
+                ]
+            },
+            "/join/id/proces/mnre1034/2021/WijzigingVoorbeeldregeling": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2021-05-21",
+                        "Doel": "/join/id/proces/mnre1034/2021/WijzigingVoorbeeldregeling",
+                        "GemaaktOp": "2021-05-21T09:03:00Z",
+                        "JuridischWerkendVanaf": "2021-01-01"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2020-07-14",
+                "GemaaktOp": "2020-07-14T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2020/VRACT/nld@2020-03-12;1"
+                    }
+                ],
+                "OntvangenOp": "2020-07-14"
+            },
+            {
+                "BekendOp": "2021-05-21",
+                "GemaaktOp": "2021-05-21T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/mnre1034/2021/WijzigingVoorbeeldregeling"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2020/WIJZVRACT/nld@2021-05-10;1"
+                    }
+                ],
+                "OntvangenOp": "2021-05-21"
+            }
+        ]
+    }
+}

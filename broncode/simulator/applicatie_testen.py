@@ -128,7 +128,7 @@ class UnitTests:
     def _BewaarEnTestResultaten (self):
         """Bewaar alle gegenereerde informatie als JSON."""
 
-        self._BewaarEnTestResultaat ("Fouten en waarschuwingen", self._MeldingenBasisPad, json.dumps (self._Scenario.Log.FoutenWaarschuwingen (), indent=4, cls=JsonClassEncoder, ensure_ascii=False))
+        self._BewaarEnTestResultaat ("Fouten en waarschuwingen", self._MeldingenBasisPad, json.dumps (self._Scenario.Log.FoutenWaarschuwingen (), indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False))
 
         # Maak JSON voor data
         versiebeheerinformatie = None
@@ -138,7 +138,7 @@ class UnitTests:
         completeToestanden = None
         annotaties = None
         if self._Scenario.Versiebeheerinformatie:
-            versiebeheerinformatie = json.dumps({ "Testresultaat - Versiebeheerinformatie" : self._Scenario.Versiebeheerinformatie }, indent=4, cls=JsonClassEncoder, ensure_ascii=False)
+            versiebeheerinformatie = json.dumps({ "Testresultaat - Versiebeheerinformatie" : self._Scenario.Versiebeheerinformatie }, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
             data = { "Testresultaat - Cumulatieve versieinformatie" : {
                 instr.WorkId : {
                     str (b.Doel) : [
@@ -150,24 +150,24 @@ class UnitTests:
                     for b in sorted (instr.Branches.values (), key = lambda x: x.Doel.Identificatie)
                 } for instr in sorted (self._Scenario.Versiebeheerinformatie.Instrumenten.values (), key = lambda x: x.WorkId)
             } }
-            branchesCumulatief = json.dumps(data, indent=4, cls=JsonClassEncoder, ensure_ascii=False)
+            branchesCumulatief = json.dumps(data, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
 
             if not self._Scenario.WeergaveData is None:
                 if self._Scenario.Opties.Proefversies:
                     data = { "Testresultaat - Proefversies" : { workId : [i.Proefversies for i in data.Uitwisselingen if hasattr (i, 'Proefversies') ] for workId,data in self._Scenario.WeergaveData.InstrumentData.items () if data.HeeftProefversies } }
-                    proefversies = json.dumps(data, indent=4, cls=JsonClassEncoder, ensure_ascii=False)
+                    proefversies = json.dumps(data, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
 
                 if self._Scenario.Opties.ActueleToestanden:
                     data = { "Testresultaat - ActueleToestanden" : { workId : [i.ActueleToestanden for i in data.Uitwisselingen] for workId,data in self._Scenario.WeergaveData.InstrumentData.items () if data.HeeftActueleToestanden } }
-                    actueleToestanden = json.dumps(data, indent=4, cls=JsonClassEncoder, ensure_ascii=False)
+                    actueleToestanden = json.dumps(data, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
 
                     if len (self._Scenario.Annotaties) > 0:
                         data = { "Testresultaat - Annotaties" : { workId :  JsonClassEncoder.NaarJsonableObject(data.Annotaties) for workId,data in self._Scenario.GeconsolideerdeInstrumenten.items () if not data.Annotaties is None } }
-                        annotaties = json.dumps(data, indent=4, cls=JsonClassEncoder, ensure_ascii=False)
+                        annotaties = json.dumps(data, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
 
                 if self._Scenario.Opties.CompleteToestanden:
                     data = { "Testresultaat - CompleteToestanden" : { workId : data.Uitwisselingen[-1].GefilterdeCompleteToestanden() for workId,data in self._Scenario.WeergaveData.InstrumentData.items () if data.HeeftCompleteToestanden } }
-                    completeToestanden = json.dumps(data, indent=4, cls=JsonClassEncoder, ensure_ascii=False)
+                    completeToestanden = json.dumps(data, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
 
         self._BewaarEnTestResultaat ("Versiebeheerinformatie", self._VersiebeheerinformatieBasisPad, versiebeheerinformatie)
         self._BewaarEnTestResultaat ("Cumulatieve versieinformatie", self._BranchesCumulatiefBasisPad, branchesCumulatief)

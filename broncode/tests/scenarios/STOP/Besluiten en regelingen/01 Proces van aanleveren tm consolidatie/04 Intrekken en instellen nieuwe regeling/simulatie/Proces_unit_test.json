@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//01 Proces van aanleveren tm consolidatie//04 Intrekken en instellen nieuwe regeling\">01 04 Intrekken en instellen nieuwe regeling</a>.</p><p>In dit voorbeeld wordt een bekendgemaakte en in werking getreden regeling ingetrokken (/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1) en vervangen door een nieuwe (gewijzigde) regeling(/akn/nl/act/gm9999/2020/REG0002/nld@2020-05-15;1).</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Initi\u00c3\u00able versie eerste regeling",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling, met inwerkingtredingsdatum."
+        },
+        {
+            "naam": "Vervangingsbesluit",
+            "gemaaktOp": "2020-06-02T09:03:00Z",
+            "beschrijving": "Vervangingsbesluit waarmee de actuele regeling wordt ingetrokken per 2020-07-01 en een nieuwe, gewijzigde regeling ook per 2020-07-01 wordt ingesteld."
+        }
+    ],
+    "Procesopties": true
+}

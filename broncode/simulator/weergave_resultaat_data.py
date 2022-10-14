@@ -226,7 +226,7 @@ class InstrumentUitwisseling:
         workId string  Work-id van het instrument waarvoor de gegevens bewaard moeten worden
         proefversies Proefversie[] lijst met proefversies, of None als ze er niet zijn
         """
-        self.UniekId = uniekId
+        self._UniekId = uniekId
         self._Uitwisseling = uitwisseling
         self.InstrumentData = instrumentData
         self.GemaaktOp = uitwisseling.GemaaktOp
@@ -235,6 +235,13 @@ class InstrumentUitwisseling:
             if u.GemaaktOp == self.GemaaktOp:
                 self.Naam = u.Naam
                 break
+        # Actuele toestanden resulterend na verwerking van de uitwisseling
+        self.ActueleToestanden = None
+        # Complete toestanden resulterend na verwerking van de uitwisseling
+        self.CompleteToestanden = None
+        # Geheugen voor de resultaten van de tijdreisfilters
+        # Key = code voor tijdreis, value = instantie van Filtervoorschrift
+        self._CompleteToestanden = None
         # GemaaktOp van de volgende uitwisseling
         self.VolgendeGemaaktOp = None
 
@@ -259,7 +266,7 @@ class InstrumentUitwisseling:
 
         bewaarJuridischeVerantwoording = False
 
-        if not consolidatie.CompleteToestanden is None:
+        if not consolidatie.CompleteToestanden is None and len (consolidatie.CompleteToestanden.Toestanden) > 0:
             instrumentData.HeeftCompleteToestanden = True
 
             # In deze applicatie wordt de selectie van toestanden voor weergave op basis van 
@@ -277,9 +284,6 @@ class InstrumentUitwisseling:
             for identificatie in consolidatie.CompleteToestanden.ToestandIdentificatie:
                 for doel in identificatie.Inwerkingtredingsdoelen:
                     self.DoelenCompleteToestanden.add (doel)
-            # Geheugen voor de resultaten van de tijdreisfilters
-            # Key = code voor tijdreis, value = instantie van Filtervoorschrift
-            self._CompleteToestanden = None
 
             # Deel unieke nummers uit
             voorIdentificatie = set() # Index van toestand identificatie waarvoor al een nieuw ActueleToestandUniekId is uitgedeeld
@@ -287,24 +291,24 @@ class InstrumentUitwisseling:
                 if toestand.GemaaktOp != self.GemaaktOp:
                     break
                 self.InstrumentData.WeergaveData._LaatsteUniekId += 1
-                toestand.UniekId = self.InstrumentData.WeergaveData._LaatsteUniekId
+                toestand._UniekId = self.InstrumentData.WeergaveData._LaatsteUniekId
                 if not toestand.Identificatie in voorIdentificatie:
                     # Maak dit de corresponderende toestand voor de actuele toestanden
                     voorIdentificatie.add (toestand.Identificatie)
-                    self.InstrumentData.WeergaveData._ActueleToestandUniekId[toestand.Identificatie] = toestand.UniekId
+                    self.InstrumentData.WeergaveData._ActueleToestandUniekId[toestand.Identificatie] = toestand._UniekId
         else:
             self.InstrumentData.WeergaveData._ActueleToestandUniekId = {} # Als complete toestanden niet uitgerekend worden, dan weten we niet of twee actuele toestanden dezelfde inhoud hebben
 
-        if not consolidatie.ActueleToestanden is None:
+        if not consolidatie.ActueleToestanden is None and len (consolidatie.ActueleToestanden.Toestanden) > 0:
             instrumentData.HeeftActueleToestanden = True
             self.ActueleToestanden = consolidatie.ActueleToestanden
             bewaarJuridischeVerantwoording = True
             # Deel unieke nummers uit
             for toestand in self.ActueleToestanden.Toestanden:
-                toestand.UniekId = self.InstrumentData.WeergaveData._ActueleToestandUniekId.get (toestand.Identificatie)
-                if toestand.UniekId is None:
+                toestand._UniekId = self.InstrumentData.WeergaveData._ActueleToestandUniekId.get (toestand.Identificatie)
+                if toestand._UniekId is None:
                     self.InstrumentData.WeergaveData._LaatsteUniekId += 1
-                    toestand.UniekId = self.InstrumentData.WeergaveData._LaatsteUniekId
+                    toestand._UniekId = self.InstrumentData.WeergaveData._LaatsteUniekId
 
         if bewaarJuridischeVerantwoording:
             self.JuridischeVerantwoording = consolidatie.JuridischeVerantwoording.ModuleXml ()
@@ -321,7 +325,7 @@ class InstrumentUitwisseling:
 
         filterIndex = '|'
         for code, selectie in self._CompleteToestanden.items ():
-            if not toestand.UniekId in selectie.ToestandIndex:
+            if not toestand._UniekId in selectie.ToestandIndex:
                 # filterIndex geeft aan waar de toestand niet in voorkomt
                 filterIndex += code + '|'
 

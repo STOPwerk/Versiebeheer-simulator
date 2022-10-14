@@ -1,0 +1,62 @@
+{
+  "FileVersion": 2,
+  "Id": "a00fa148-8f87-4637-aea6-1a4774de7551",
+  "Items": [
+    {
+      "Id": "78eef5f8-a7d7-4a5a-a3f3-153b7cf92bb6",
+      "Command": "-m logs -a "
+    },
+    {
+      "Id": "c02acdeb-200a-4c61-98a8-10d33b16af8a",
+      "Command": "\"..\\Ontwikkeling-STOP\\STOP\\voorbeelden\\\""
+    },
+    {
+      "Id": "d3922d72-aa65-4920-b410-4ba1735575bc",
+      "Command": "-t \"tests\\scenarios\\Toestandsbepaling\\10 Samenloop\\30 Intrekking voor wijziging\""
+    },
+    {
+      "Id": "c4c0be50-af00-4507-b09a-9bf87023179a",
+      "Command": "-t tests\\scenarios"
+    },
+    {
+      "Id": "8c84319e-2a9e-4e3e-ab08-dbbfaee92162",
+      "Command": "-t voorbeelden\\Demo"
+    },
+    {
+      "Id": "31207cf7-2cc3-496e-bb5f-548a9e92ad3c",
+      "Command": "-t \"tests\\scenarios\\Projecten\\Project bij BG\\01 Enkel project geen ontwerp\""
+    },
+    {
+      "Id": "c3b16407-655d-4113-841b-acc25f6e8217",
+      "Command": "-t tests\\scenarios\\Versiebeheer.Simulator\\Demo-LV"
+    },
+    {
+      "Id": "c0a4224d-6bd2-4ffb-9780-70c5789ebf52",
+      "Command": "-t tests\\scenarios\\Toestandsbepaling"
+    },
+    {
+      "Id": "a136bde7-0967-450e-a6a6-202dccc08209",
+      "Command": "-t tests\\scenarios\\Versiebeheerinformatie"
+    },
+    {
+      "Id": "dba3677e-4b5e-4c59-addf-1a1d7abcfb39",
+      "Command": "-t tests\\scenarios\\STOP"
+    },
+    {
+      "Id": "9f405fff-0eca-4e26-8bcd-093c20e161e2",
+      "Command": "-t voorbeelden"
+    },
+    {
+      "Id": "36a9a323-64df-460a-b3a3-15cc83ab0534",
+      "Command": "voorbeelden tests\\scenarios\\Versiebeheer.Simulator"
+    },
+    {
+      "Id": "e6bbb0be-4334-47ac-8094-e8a6f8acceda",
+      "Command": "..\\Versiebeheer-simulator-STOP-voorbeelden\\STOP\\voorbeelden tests\\scenarios\\STOP"
+    },
+    {
+      "Id": "ed778382-d689-4ae1-beb0-db63433cac16",
+      "Command": "uitleveren . ..\\Versiebeheer-simulator"
+    }
+  ]
+}

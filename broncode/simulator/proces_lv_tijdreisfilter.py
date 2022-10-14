@@ -95,7 +95,7 @@ class Filter_CompleteToestanden:
                 laatsteJWV = toestand.JuridischWerkendVanaf
 
                 # Deze toestand moet meegenomen worden
-                resultaat.ToestandIndex.add (toestand.UniekId)
+                resultaat.ToestandIndex.add (toestand._UniekId)
 
                 if alleenActueleToestanden and laatsteJWV <= self._CompleteToestanden.OntvangenOp:
                     # De overige toestanden worden niet gevonden of zijn historisch
@@ -169,7 +169,7 @@ class Filter_CompleteToestanden:
 
                 if gedaan.IsToestandBereisbaar (geefTijdstempel (toestand), toestand.JuridischWerkendVanaf):
                     # Deze toestand moet meegenomen worden
-                    resultaat.ToestandIndex.add (toestand.UniekId)
+                    resultaat.ToestandIndex.add (toestand._UniekId)
 
         return resultaat
 
@@ -288,7 +288,7 @@ class Filter_CompleteToestanden:
                 if not key in gedaan:
                     # Deze toestand moet meegenomen worden
                     gedaan.add (key)
-                    resultaat.ToestandIndex.add (toestand.UniekId)
+                    resultaat.ToestandIndex.add (toestand._UniekId)
 
         return resultaat
 
@@ -322,7 +322,7 @@ class Filter_CompleteToestanden:
                     elif laatsteOntvangenOp != toestand.OntvangenOp:
                         break
                 # Deze toestand moet meegenomen worden
-                resultaat.ToestandIndex.add (toestand.UniekId)
+                resultaat.ToestandIndex.add (toestand._UniekId)
 
         return resultaat
 
@@ -388,7 +388,7 @@ class Filter_CompleteToestanden:
                 # Nu verder als bij Ex-Nunc
                 if gedaan.IsToestandBereisbaar (toestand.OntvangenOp, toestand.JuridischWerkendVanaf):
                     # Deze toestand moet meegenomen worden
-                    resultaat.ToestandIndex.add (toestand.UniekId)
+                    resultaat.ToestandIndex.add (toestand._UniekId)
 
         return resultaat
 
@@ -419,7 +419,7 @@ class Filter_CompleteToestanden:
         vertaalInhoud = {} # key = oorspronkelijke index, value = nieuwe index
 
         for toestand in self._CompleteToestanden.Toestanden:
-            if toestand.GemaaktOp <= self._GemaaktOp and toestand.UniekId in voorschrift.ToestandIndex:
+            if toestand.GemaaktOp <= self._GemaaktOp and toestand._UniekId in voorschrift.ToestandIndex:
                 # Deze toestand moet meegenomen worden, maar met andere waarden
                 nieuw = Toestand ()
                 module.Toestanden.append (nieuw)

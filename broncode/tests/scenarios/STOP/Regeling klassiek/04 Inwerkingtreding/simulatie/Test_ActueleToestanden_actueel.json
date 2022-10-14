@@ -1,0 +1,23 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/mnre1034/2012/RBOV": [
+            null,
+            {
+                "BekendOp": "2014-03-06",
+                "OntvangenOp": "2014-03-06",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/land/2014/regeling1/nld@2014-07-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2012/RBOV/nld@2012-06-14;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                        ],
+                        "JuridischWerkendVanaf": "2014-07-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/gm9999/2022/REG_A": [
+            {
+                "BekendOp": "2022-01-01",
+                "OntvangenOp": "2022-01-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendVanaf": "2022-02-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            null
+        ],
+        "/join/id/regdata/2022/IO_A": [
+            {
+                "BekendOp": "2022-01-01",
+                "OntvangenOp": "2022-01-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;versie1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendVanaf": "2022-02-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            null
+        ]
+    }
+}

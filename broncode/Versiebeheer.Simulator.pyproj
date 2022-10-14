@@ -1,0 +1,200 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>a00fa148-8f87-4637-aea6-1a4774de7551</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>simulator\applicatie.py</StartupFile>
+    <SearchPath>tests\code</SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>Versiebeheer.Simulator</Name>
+    <RootNamespace>Versiebeheer.Simulator</RootNamespace>
+    <InterpreterId>Global|PythonCore|3.9</InterpreterId>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>-t tests\scenarios</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <TestFramework>unittest</TestFramework>
+    <UnitTestPattern>test_*.py</UnitTestPattern>
+    <UnitTestRootDirectory>tests\code</UnitTestRootDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="README.md" />
+    <Content Include="simulator\applicatie_meldingen_einde.html" />
+    <Content Include="simulator\applicatie_meldingen_start.html" />
+    <Content Include="simulator\weergave_annotaties.css" />
+    <Content Include="simulator\weergave_annotaties.js" />
+    <Content Include="simulator\weergave_annotaties_help.html" />
+    <Content Include="simulator\weergave_proefversies.css" />
+    <Content Include="simulator\weergave_proefversies.js" />
+    <Content Include="simulator\weergave_proefversies_help.html" />
+    <Content Include="simulator\weergave_actueletoestanden_help.html" />
+    <Content Include="simulator\weergave_resultaat_Applicatie.js" />
+    <Content Include="simulator\weergave_resultaat_help_meldingen.html" />
+    <Content Include="simulator\weergave_resultaat_help_sectie_op.html" />
+    <Content Include="simulator\weergave_resultaat_help_sectie_bg.html" />
+    <Content Include="simulator\weergave_resultaat_help_sectie_lv.html" />
+    <Content Include="simulator\weergave_tijdreisfilter.js" />
+    <Content Include="simulator\weergave_tijdreisfilter.html" />
+    <Content Include="simulator\weergave_tijdreisfilter_help_stopmodule.html" />
+    <Content Include="simulator\weergave_tijdreisfilter_help_filter.html" />
+    <Content Include="simulator\weergave_completetoestanden_help.html" />
+    <Content Include="simulator\weergave_completetoestanden.css" />
+    <Content Include="simulator\weergave_completetoestanden.js" />
+    <Content Include="simulator\weergave_resultaat_help_pagina.html" />
+    <Content Include="simulator\weergave_tijdreizen.html" />
+    <Content Include="simulator\weergave_tijdreizen_help.html" />
+    <Content Include="simulator\weergave_tijdreizen.css" />
+    <Content Include="simulator\weergave_tijdreizen.js" />
+    <Content Include="simulator\weergave_toestandbepaling_actueletoestanden.js" />
+    <Content Include="simulator\weergave_toestandbepaling_help_stap3_4.html" />
+    <Content Include="simulator\weergave_toestandbepaling_help_stap7_instrumentversie.html" />
+    <Content Include="simulator\weergave_toestandbepaling_help_stap7_toestand.html" />
+    <Content Include="simulator\weergave_toestandbepaling_help_stap5_6.html" />
+    <Content Include="simulator\weergave_toestandbepaling_help_actueletoestand.html" />
+    <Content Include="simulator\weergave_toestandbepaling_completetoestanden.js" />
+    <Content Include="simulator\weergave_toestandbepaling_completetoestanden.css" />
+    <Content Include="simulator\weergave_consolidatieinformatie_help.html" />
+    <Content Include="simulator\weergave_projecten_help.html" />
+    <Content Include="simulator\weergave_projecten.css" />
+    <Content Include="simulator\weergave_uitwisselingen_help.html" />
+    <Content Include="simulator\weergave_uitwisselingen.css" />
+    <Content Include="simulator\weergave_uitwisselingselector.html" />
+    <Content Include="simulator\weergave_uitwisselingselector.css" />
+    <Content Include="simulator\weergave_uitwisselingselector.js" />
+    <Content Include="simulator\weergave_versiebeheer_legenda.html" />
+    <Content Include="simulator\weergave_versiebeheer_diagram.js" />
+    <Content Include="simulator\weergave_versiebeheer_diagram.css" />
+    <Content Include="simulator\weergave_versiebeheer.js" />
+    <Content Include="simulator\weergave_versiebeheer_help_toestanden.html" />
+    <Content Include="simulator\weergave_versiebeheer_help_versiebeheer.html" />
+    <Content Include="simulator\weergave_webpagina_svg-pan-zoom.js" />
+    <Content Include="simulator\weergave_versiebeheer.html" />
+    <Content Include="simulator\weergave_webpagina_einde.html" />
+    <Content Include="simulator\weergave_webpagina_start.html" />
+    <Content Include="tests\code\README.md" />
+    <Content Include="tests\scenarios\README.md" />
+    <Content Include="tools\README.md" />
+    <Content Include="Versiebeheer.Simulator.pyproj.vsspell" />
+    <Content Include="tests\scenarios\voer_alle_testen_uit.bat" />
+    <Content Include="tests\scenarios\voer_alle_testen_uit.sh" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="simulator\applicatie.py" />
+    <Compile Include="simulator\applicatie_meldingen.py" />
+    <Compile Include="simulator\applicatie_versie.py" />
+    <Compile Include="simulator\data_bg_project.py" />
+    <Compile Include="simulator\data_bg_versiebeheer.py" />
+    <Compile Include="simulator\data_lv_actueleannotaties.py" />
+    <Compile Include="simulator\data_lv_proefversies.py" />
+    <Compile Include="simulator\proces_bg_consolidatieinformatie.py" />
+    <Compile Include="simulator\proces_bg_projectacties.py" />
+    <Compile Include="simulator\proces_lv_actueleannotaties.py" />
+    <Compile Include="simulator\proces_lv_branchescumulatief.py" />
+    <Compile Include="simulator\stop_documentatie.py" />
+    <Compile Include="simulator\stop_momentopname.py" />
+    <Compile Include="simulator\weergave_annotaties.py" />
+    <Compile Include="simulator\weergave_data_toestanden.py" />
+    <Compile Include="simulator\applicatie_uitvoeren.py" />
+    <Compile Include="simulator\applicatie_testen.py" />
+    <Compile Include="simulator\data_lv_consolidatie.py" />
+    <Compile Include="simulator\data_doel.py" />
+    <Compile Include="simulator\applicatie_procesopties.py" />
+    <Compile Include="simulator\weergave_data_proefversies.py" />
+    <Compile Include="simulator\applicatie_scenario.py" />
+    <Compile Include="simulator\data_lv_toestanden.py" />
+    <Compile Include="simulator\proces_lv_actueletoestanden.py" />
+    <Compile Include="simulator\proces_lv_completetoestanden.py" />
+    <Compile Include="simulator\proces_lv_proefversies.py" />
+    <Compile Include="simulator\proces_lv_tijdreisfilter.py" />
+    <Compile Include="simulator\proces_lv_toestanden.py" />
+    <Compile Include="simulator\proces_lv_versiebeheerinformatie.py" />
+    <Compile Include="simulator\stop_actueletoestanden.py" />
+    <Compile Include="simulator\data_lv_annotatie.py" />
+    <Compile Include="simulator\stop_completetoestanden.py" />
+    <Compile Include="simulator\stop_consolidatieidentificatie.py" />
+    <Compile Include="simulator\stop_juridischeverantwoording.py" />
+    <Compile Include="simulator\stop_proefversies.py" />
+    <Compile Include="simulator\stop_toestand.py" />
+    <Compile Include="simulator\weergave_actueletoestanden.py" />
+    <Compile Include="simulator\weergave_proefversies.py" />
+    <Compile Include="simulator\weergave_projecten.py" />
+    <Compile Include="simulator\weergave_tijdreisfilter.py" />
+    <Compile Include="simulator\weergave_completetoestanden.py" />
+    <Compile Include="simulator\weergave_resultaat.py" />
+    <Compile Include="simulator\weergave_resultaat_data.py" />
+    <Compile Include="simulator\weergave_stopmodule.py" />
+    <Compile Include="simulator\weergave_symbolen.py" />
+    <Compile Include="simulator\weergave_tijdreizen.py" />
+    <Compile Include="simulator\weergave_toestandbepaling.py" />
+    <Compile Include="simulator\weergave_consolidatieinformatie.py" />
+    <Compile Include="simulator\weergave_uitwisselingen.py" />
+    <Compile Include="simulator\weergave_uitwisselingselector.py" />
+    <Compile Include="simulator\weergave_versiebeheer.py" />
+    <Compile Include="simulator\weergave_versiebeheer_diagram.py" />
+    <Compile Include="simulator\weergave_webpagina.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="simulator\proces_simulatie.py" />
+    <Compile Include="simulator\stop_consolidatieinformatie.py" />
+    <Compile Include="simulator\stop_naamgeving.py" />
+    <Compile Include="simulator\data_lv_versiebeheerinformatie.py" />
+    <Compile Include="tests\code\test_applicatie_meldingen.py" />
+    <Compile Include="tests\code\test_data_bg_project.py" />
+    <Compile Include="tests\code\test_data_lv_consolidatie.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\code\test_data_doel.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\code\test_data_lv_annotatie.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\code\test_applicatie_procesopties.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\code\test_init.py" />
+    <Compile Include="tests\code\test_weergave_webpagina.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\code\test_applicatie_testen.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\code\test_stop_consolidatieinformatie.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\code\test_stop_naamgeving.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tools\maak_download_zip.py" />
+    <Compile Include="tools\voorbeelden_naar_unittests.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="simulator\" />
+    <Folder Include="tests\" />
+    <Folder Include="tools\" />
+    <Folder Include="tests\code\" />
+    <Folder Include="tests\scenarios\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.9" />
+    <InterpreterReference Include="Global|VisualStudio|Python" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

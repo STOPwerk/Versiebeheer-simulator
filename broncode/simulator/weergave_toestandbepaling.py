@@ -35,7 +35,7 @@ class Weergave_Toestandbepaling ():
         uitlegStappen = { }
 
         # Maak de toelichtingen
-        einde = generator.StartSectie ('Bepaling van de actuele toestanden', True)
+        einde = generator.StartSectie ('Bepaling van de actuele toestand', True)
 
         einde_t = generator.StartToelichting ('Toelichting op de inhoud van deze sectie')
         generator.LeesHtmlTemplate ('help_actueletoestand')
@@ -112,7 +112,7 @@ class Weergave_Toestandbepaling ():
                     if toestand.GemaaktOp != uitwisseling.GemaaktOp:
                         continue
 
-                    generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand.UniekId) + '">')
+                    generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand._UniekId) + '">')
                     generator.VoegHtmlToe ('<p>Dit is een beschrijving van de bepaling van de complete toestand die in het tijdreisoverzicht staat vermeld als::<table>')
                     generator.VoegHtmlToe ('<tr><td>identificatie</td><td>#' + str(toestand.Identificatie) + '</td></tr>')
                     generator.VoegHtmlToe ('<tr><td>inhoud</td><td>' + ('-' if toestand.Inhoud is None else '#' + str(toestand.Inhoud) + '') + '</td></tr>')
@@ -137,7 +137,7 @@ class Weergave_Toestandbepaling ():
                     inhoud = uitwisseling.CompleteToestanden.ToestandInhoud[toestand.Inhoud]
                     maker = Weergave_Toestandbepaling (generator, uniekId, uitwisseling, True, uitlegStappen)
 
-                    generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand.UniekId) + '">')
+                    generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand._UniekId) + '">')
                     maker._VindToestandenHtml (identificatie, inhoud, toestand, identificatie._Uitleg, inhoud._Consolidatieproces)
                     generator.VoegHtmlToe ('</div>')
 
@@ -155,7 +155,7 @@ class Weergave_Toestandbepaling ():
                     identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                     maker = Weergave_Toestandbepaling (generator, uniekId, uitwisseling, True, uitlegStappen)
 
-                    generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand.UniekId) + '">')
+                    generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand._UniekId) + '">')
                     maker._BepaalInhoudHtml (inhoud, inhoud._Consolidatieproces)
                     generator.VoegHtmlToe ('</div>')
 
@@ -173,14 +173,14 @@ class Weergave_Toestandbepaling ():
                         continue
                     identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                     if not inhoud.OnvolledigeVersies is None:
-                        generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand.UniekId) + '" class="ctb_versies">')
+                        generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand._UniekId) + '" class="ctb_versies">')
                         generator.VoegHtmlToe ('<p>Een groot deel van de resterende analyse is uitgevoerd voor zowel de toestand als voor bekende instrumentversies. Laat de resultaten zien voor:<ul>')
 
-                        sectieId = uniekId + '_' + str(toestand.UniekId)
+                        sectieId = uniekId + '_' + str(toestand._UniekId)
 
                         diagramOpties = _OnvolledigeVersieDiagram (sectieId, instrument, uitwisseling, toestand.BekendOp)
                         diagram = DiagramGenerator.VoerUit (diagramOpties)
-                        diagramInfo[toestand.UniekId] = (sectieId, diagramOpties, diagram)
+                        diagramInfo[toestand._UniekId] = (sectieId, diagramOpties, diagram)
 
                         generator.VoegHtmlToe ('<li>' + diagramOpties.NogTeConsoliderenToggle (identificatie, inhoud._Consolidatieproces, '0', True) + 'Toestand</li>')
                         for idx, versie in enumerate (inhoud.OnvolledigeVersies):
@@ -198,9 +198,9 @@ class Weergave_Toestandbepaling ():
                         continue
                     inhoud = uitwisseling.CompleteToestanden.ToestandInhoud[toestand.Inhoud]
                     if not inhoud.OnvolledigeVersies is None:
-                        sectieId, diagramOpties, diagram = diagramInfo[toestand.UniekId]
+                        sectieId, diagramOpties, diagram = diagramInfo[toestand._UniekId]
 
-                        generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand.UniekId) + '">')
+                        generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand._UniekId) + '">')
 
                         generator.VoegHtmlToe ('<div class="ctb_diagram">' + diagram.SVG + '</div>')
                         diagram.VoegOndersteuningToe (generator)
@@ -220,11 +220,11 @@ class Weergave_Toestandbepaling ():
                         continue
                     identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                     maker = Weergave_Toestandbepaling (generator, uniekId, uitwisseling, True, uitlegStappen)
-                    generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand.UniekId) + '">')
+                    generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand._UniekId) + '">')
                     if inhoud.OnvolledigeVersies is None:
                         generator.VoegHtmlToe (maker._ValideerInhoudHtml (inhoud._Consolidatieproces, True))
                     else:
-                        sectieId, diagramOpties, diagram = diagramInfo[toestand.UniekId]
+                        sectieId, diagramOpties, diagram = diagramInfo[toestand._UniekId]
                         generator.VoegHtmlToe ('<div data-' + sectieId + '="0">')
                         maker._ValideerInhoudHtml (inhoud._Consolidatieproces, True)
                         maker._BepaalAlternatieven (inhoud._Consolidatieproces)
@@ -253,9 +253,9 @@ class Weergave_Toestandbepaling ():
                         continue
                     identificatie = uitwisseling.CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                     if not inhoud.OnvolledigeVersies is None:
-                        sectieId, diagramOpties, diagram = diagramInfo[toestand.UniekId]
+                        sectieId, diagramOpties, diagram = diagramInfo[toestand._UniekId]
 
-                        generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand.UniekId) + '">')
+                        generator.VoegHtmlToe ('<div data-' + uniekId + '_tid="' + str(toestand._UniekId) + '">')
 
                         generator.VoegHtmlToe ('<div data-' + sectieId + '="0">')
                         generator.VoegHtmlToe (diagramOpties.NogTeConsoliderenInformatie (identificatie, inhoud._Consolidatieproces, '0'))

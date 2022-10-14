@@ -1,0 +1,309 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>20 Basisversie - circulair 2 momentopnamen</title>
+    <style>
+        body {
+            background-color: White;
+            color: Black;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 10pt;
+            line-height: 1.4em;
+        }
+
+        table {
+            background-color: White;
+            color: Black;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 10pt;
+            line-height: 1.4em;
+        }
+
+        .log {
+            width: 100%;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            a:visited {
+                color: blue;
+            }
+
+        .aslink {
+            color: blue;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+            .aslink:hover {
+                text-decoration: underline;
+            }
+
+
+        #meldingen_tabel {
+            border: 1px solid #808080;
+        }
+
+        .entry_detail {
+            color: #CCCCCC;
+        }
+
+            .entry_detail td {
+                color: #CCCCCC;
+            }
+
+        .level_fout {
+            color: #FFFFFF;
+            background-color: #FF0000;
+        }
+
+        .level_letop {
+            color: #FFFFFF;
+            background-color: #CC8800;
+        }
+
+        .main {
+            width: 70em;
+            overflow: auto;
+            white-space: pre-line;
+        }
+
+        .message_fout {
+            color: #FF0000;
+        }
+
+        .message_letop {
+            color: #880000;
+        }
+
+        .message_detail {
+            color: #CCCCCC;
+        }
+
+        .extra {
+            width: 200pt;
+            color: #CCCCCC;
+            overflow: auto;
+        }
+
+        .exception {
+            color: #CCCCCC;
+            font-family: Courier New, monospace;
+        }
+
+        .accordion_h {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 8px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            transition: 0.4s;
+        }
+
+            .accordion_h.active, .accordion_h:hover {
+                background-color: #ccc;
+            }
+
+        .accordion_h_paneel {
+            padding: 0 8px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .accordion_t {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 4px;
+            text-align: center;
+            border: 1px solid #000000;
+            outline: none;
+            transition: 0.4s;
+        }
+
+            .accordion_t.active {
+                background-color: #ccc;
+                padding: 10px;
+            }
+
+            .accordion_t:hover {
+                background-color: #ccc;
+            }
+
+        .accordion_t_paneel {
+            overflow: hidden;
+        }
+
+        .accordion_t_titel {
+            display: none;
+            overflow: hidden;
+            padding: 0 4px;
+        }
+
+        .leestip::after {
+            content: "\1F453";
+            # https://unicode-table.com/en/1F453/
+        }
+
+        .a_symbool_goed {
+            color: #82b366;
+            font-weight: bold;
+        }
+
+        .a_symbool_fout {
+            color: #b85450;
+            font-weight: bold;
+        }
+
+        .sectie_bg {
+            border-right: 1em solid #9673a6;
+            border-top: 3px solid #9673a6;
+        }
+
+            .sectie_bg h1 {
+                color: #9673a6;
+            }
+
+        .sectie_op {
+            border-right: 1em solid #6c8ebf;
+            border-top: 3px solid #6c8ebf;
+        }
+
+            .sectie_op h1 {
+                color: #6c8ebf;
+            }
+
+        .sectie_lv {
+            border-right: 1em solid #d79b00;
+            border-top: 3px solid #d79b00;
+        }
+
+            .sectie_lv h1 {
+                color: #d79b00;
+            }
+
+        .sectie_lv_alt1 {
+            border-right: 1em solid #ffe6cc;
+        }
+
+        .sectie_lv_alt2 {
+            border-right: 1em solid #d79b00;
+        }
+
+        
+    </style>
+
+    <script type="text/javascript">
+        
+    </script>
+</head>
+<body>
+<h1>20 Basisversie - circulair 2 momentopnamen</h1><p>Er is 
+een foutmelding
+; klik op <i>Uitvoering van de applicatie</i> om deze te bekijken</p>
+<button data-accordion="2555" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="2555" class="accordion_h_paneel">
+<!-- checkboxElement id moet overeenkomen "toon_" plus log-level waarde. -->
+<input id="toon_fout" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_fout">Toon FOUT meldingen </label>
+<input id="toon_letop" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_letop">Toon LeT OP meldingen </label>
+<input id="toon_info" checked="checked" type="checkbox" class="meldingen_checkbox" /><label for="toon_info">Toon INFO meldingen </label>
+<input id="toon_detail" type="checkbox" class="meldingen_checkbox" /><label for="toon_detail">Toon alle (detail)meldingen in gedetailleerd overzicht</label>
+<div id="log_detail">
+
+<table id="meldingen_tabel">
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\20 Basisversie - circulair 2 momentopnamen\01 Vooraf - Eerste versie eerste doel.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\20 Basisversie - circulair 2 momentopnamen\02 Test - 2 wijzigingen circulair basisversie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main"><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> (ontwikkelversie)</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Voer de simulatie uit</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Verwerk de consolidatie-informatie ontvangen op 2022-01-01 (@2022-01-01T07:00:00Z)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Instrumentversie per (/join/id/proces/gm9999/2022/Instelling @2022-01-01T07:00:00Z) is '/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1'</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Verwerk de consolidatie-informatie ontvangen op 2022-01-02 (@2022-01-02T07:00:00Z)</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Instrumentversie per (/join/id/proces/gm9999/2022/Wijziging @2022-01-02T07:00:00Z) is '/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2'</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Instrumentversie per (/join/id/proces/gm9999/2022/Wijziging2 @2022-01-02T07:00:00Z) is '/akn/nl/act/gm9999/2022/REG_A/nld@2022;v3'</td></tr>
+<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Consolidatie-informatie verwijst in een cirkel naar elkaar: BeoogdeRegeling voor (/join/id/proces/gm9999/2022/Wijziging, @2022-01-02T07:00:00Z), BeoogdeRegeling voor (/join/id/proces/gm9999/2022/Wijziging2, @2022-01-02T07:00:00Z)</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Fouten en waarschuwingen: resultaat (data) komt overeen met de verwachting</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Versiebeheerinformatie: resultaat (data) komt overeen met de verwachting</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Cumulatieve versieinformatie: resultaat (data) komt overeen met de verwachting</td></tr>
+</table>
+</div>
+<script type="text/javascript">
+    function Meldingen_Aanpassen(e) {
+        var show = e.srcElement.checked;
+        var container = document.querySelector("#meldingen_tabel");
+        var matches = container.querySelectorAll("tr.entry" + e.srcElement.id.slice(4));
+
+        for (var i = 0; i < matches.length; i++) {
+            matches[i].style.display = show ? '' : 'none';
+        }
+    }
+
+    document.querySelectorAll(".meldingen_checkbox").forEach((checkbox) => {
+        checkbox.addEventListener('change', Meldingen_Aanpassen);
+    });
+</script>
+
+</div>
+
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+
+        function TogglePaneel() {
+            this.classList.toggle("active");
+            var panel = document.querySelector('[data-accordion-paneel="' + this.dataset.accordion + '"]');
+            var titel = document.querySelector('[data-accordion-titel="' + this.dataset.accordion + '"]');
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+                if (titel) {
+                    titel.style.display = "block";
+                }
+            } else {
+                panel.style.display = "block";
+                if (titel) {
+                    titel.style.display = "none";
+                }
+            }
+        }
+
+        function VerbergPanelen() {
+            document.querySelectorAll("[data-accordion]").forEach((elt) => {
+                elt.classList.remove("active");
+            });
+            document.querySelectorAll("[data-accordion-paneel]").forEach((elt) => {
+                elt.style.display = "none";
+            });
+            document.querySelectorAll("[data-accordion-titel]").forEach((elt) => {
+                elt.style.display = "block";
+            });
+        }
+
+        // Event handlers voor de accordion panelen (op te klikken stukjes van de pagina)
+        document.querySelectorAll("[data-accordion]").forEach((elt) => {
+            elt.addEventListener("click", TogglePaneel);
+        });
+        // Event handler voor het sluiten van alle accordion panelen
+        document.querySelectorAll("#accordion-sluiten").forEach((elt) => {
+            elt.addEventListener("click", VerbergPanelen);
+        });
+    });
+    
+</script>
+</body>
+</html>

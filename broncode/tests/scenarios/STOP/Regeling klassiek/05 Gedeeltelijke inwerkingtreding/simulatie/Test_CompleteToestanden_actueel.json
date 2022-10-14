@@ -1,0 +1,38 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/mnre1034/2012/RBOV": {
+            "BekendOp": "2014-06-18",
+            "OntvangenOp": "2014-06-18",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/land/2015/regeling1/nld@2015-01-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Instrumentversie": "/akn/nl/act/mnre1034/2012/RBOV/nld@2015-01-01;2",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2014-06-18",
+                    "GeldigVanaf": "2015-01-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2015-01-01",
+                    "OntvangenOp": "2014-06-18"
+                }
+            ]
+        }
+    }
+}

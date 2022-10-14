@@ -1,0 +1,10 @@
+[
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Terugtrekking van versie (/join/id/proces/gm9999/2022/Intrekking @2022-01-02T07:00:00Z) voor /akn/nl/act/gm9999/2022/REG_A niet mogelijk: instrument is ingetrokken"
+    },
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Terugtrekking van versie (/join/id/proces/gm9999/2022/Intrekking @2022-01-02T07:00:00Z) voor /join/id/regdata/2022/IO_A niet mogelijk: instrument is ingetrokken"
+    }
+]

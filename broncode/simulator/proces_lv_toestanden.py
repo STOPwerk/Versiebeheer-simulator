@@ -83,6 +83,8 @@ class MaakToestanden:
         if not hasattr (self, '_Tijdstempels'):
             # Cache de resultaten
             self._Tijdstempels = []
+
+            initieelDoelInWerking = False
             # Onderzoek alle doelen
             for branch in self._Consolidatie.Instrument.Branches.values ():
 
@@ -113,10 +115,17 @@ class MaakToestanden:
                             # De momentopname correspondeert met een nieuwe versie voor het instrument
                             # De branch draagt dus bij aan toestanden
                             self._Tijdstempels.append ((branch.Doel, tijdstempelMomentopname))
+
+                            if branch.Doel in self._Consolidatie.Instrument.InitieleDoelen:
+                                initieelDoelInWerking = True
                     break
 
-            # Sorteer de tijdstempels
-            self._Tijdstempels.sort (key = lambda mo: mo[1].JuridischWerkendVanaf + (mo[1].JuridischWerkendVanaf if mo[1].GeldigVanaf is None else mo[1].GeldigVanaf))
+            if not initieelDoelInWerking:
+                # Als de initiële versie niet in werking is, dan geen enkele toestand van het instrument
+                self._Tijdstempels = []
+            else:
+                # Sorteer de tijdstempels
+                self._Tijdstempels.sort (key = lambda mo: mo[1].JuridischWerkendVanaf + (mo[1].JuridischWerkendVanaf if mo[1].GeldigVanaf is None else mo[1].GeldigVanaf))
 
         return self._Tijdstempels
 

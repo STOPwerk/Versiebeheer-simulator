@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="1.1.0"
+                        xmlns="https://standaarden.overheid.nl/stop/imop/data/">
+  <Terugtrekkingen>
+    <TerugtrekkingTijdstempel>
+      <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <eId>art_II</eId>
+    </TerugtrekkingTijdstempel>
+  </Terugtrekkingen>
+</ConsolidatieInformatie>

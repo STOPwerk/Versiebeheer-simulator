@@ -1,0 +1,45 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/mnre1034/2012/RBOV": {
+                "BekendOp": [
+                    "2012-06-25"
+                ],
+                "Branches": {
+                    "/join/id/proces/mnre1034/2012/InstellingRBOV": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2012-06-25",
+                                "Doelen": [
+                                    "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                                ],
+                                "ExpressionId": "/akn/nl/act/mnre1034/2012/RBOV/nld@2012-06-14;1",
+                                "GemaaktOp": "2012-06-25T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2012-06-25",
+                "GemaaktOp": "2012-06-25T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/mnre1034/2012/InstellingRBOV"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2012/RBOV/nld@2012-06-14;1"
+                    }
+                ],
+                "OntvangenOp": "2012-06-25"
+            }
+        ]
+    }
+}

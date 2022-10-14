@@ -310,6 +310,8 @@ class DiagramGenerator:
         self._ActieveDoelen = []
         # Geeft aan of er toestanden te zien zijn in het diagram
         self._HeeftActueleToestanden = False
+        # Geeft aan of/wanneer de regeling juridisch uitgewerkt is
+        self._JuridischUitgewerktOp = None
         # De kolommen van het diagram
         # Lijst van instanties van DiagramKolom
         self._Kolommen = []
@@ -352,6 +354,7 @@ class DiagramGenerator:
 
         # Maak de toestand elementen aan voor het diagram, nog zonder rij
         toestandVoorDoel = {} # key = doel, value = DiagramElement
+        toestandJuridischUitgewerkt = None
         toestandenKolom = None
         if self._ToonActueleToestanden:
             toestandenKolom = DiagramKolom (self._Kolommen)
@@ -362,6 +365,14 @@ class DiagramGenerator:
                     for doel in toestand.Inwerkingtredingsdoelen:
                         toestandVoorDoel[doel] = element
                     self._HeeftActueleToestanden = True
+                if self._HeeftActueleToestanden:
+                    # Maak elementen voor uitgewerkte status
+                    if not self._InstrumentData.ActueleToestanden.MaterieelUitgewerktOp is None:
+                        DiagramElement (Einddatum (self._InstrumentData.ActueleToestanden.MaterieelUitgewerktOp, False)).InKolom (toestandenKolom)
+                    if not self._InstrumentData.ActueleToestanden.JuridischUitgewerktOp is None:
+                        self._JuridischUitgewerktOp = self._InstrumentData.ActueleToestanden.JuridischUitgewerktOp
+                        toestandJuridischUitgewerkt = DiagramElement (Einddatum (self._InstrumentData.ActueleToestanden.JuridischUitgewerktOp, True)).InKolom (toestandenKolom)
+
 
         # Maak de elementen voor de versiebeheerinformatie
         rijPerGemaaktOp = {} # key = gemaaktOp, value = instantie van DiagramRij
@@ -389,6 +400,8 @@ class DiagramGenerator:
 
             self._Opties._AlleElementen[doel] = {}
             laatsteElement = None
+            isIngetrokken = False
+            isIngetrokkenDatum = False
             for gemaaktOp in sorted (momentopnamen.keys ()):
                 momentopnameInstrument, momentopnameTijdstempel = momentopnamen[gemaaktOp]
 
@@ -402,7 +415,17 @@ class DiagramGenerator:
                 element.Label = self._Opties.MomentopnameSymbool (element)
                 element.Toelichting = self._Opties.MomentopnameToelichting (element)
 
-            toestandElement = toestandVoorDoel.get (doel)
+                # Hou bij of dit correspondeert met de juridisch uitgewerkte status van het instrument
+                # Het doel/de doelen waarvoor de regeling is uitgewerkt staat nl niet in de actuele toestanden
+                if not momentopnameInstrument is None:
+                    isIngetrokken = momentopnameInstrument.IsIngetrokken
+                if not momentopnameTijdstempel is None and not momentopnameTijdstempel.JuridischWerkendVanaf is None:
+                    isIngetrokkenDatum = momentopnameTijdstempel.JuridischWerkendVanaf == self._JuridischUitgewerktOp
+
+            if isIngetrokken and isIngetrokkenDatum:
+                toestandElement = toestandJuridischUitgewerkt
+            else:
+                toestandElement = toestandVoorDoel.get (doel)
             if not toestandElement is None:
                 # Laatste element draagt bij aan de toestand
                 laatsteElement.NaarToestand = toestandElement
@@ -518,14 +541,14 @@ class DiagramGenerator:
             laatsteRijIndex = -1
             ingevoegdeRij = None
             for toestand in sorted (toestandenKolom.Elementen, key = lambda t:t.Bron.JuridischWerkendVanaf):
-                if toestand.Rij.Index < laatsteRijIndex:
+                if toestand.Rij is None or toestand.Rij.Index < laatsteRijIndex:
                     # Maak een extra rij voor deze toestand
                     if ingevoegdeRij is None:
                         laatsteRijIndex += 1
                         for rij in self._Rijen:
                             if rij.Index >= laatsteRijIndex:
                                 rij.Index += 1
-                        ingevoegdeRij = DiagramRij ("-")
+                        ingevoegdeRij = DiagramRij (None)
                         ingevoegdeRij.Index = laatsteRijIndex
                         self._Rijen.insert (laatsteRijIndex, ingevoegdeRij)
                     toestand.Rij = ingevoegdeRij
@@ -547,8 +570,11 @@ class DiagramGenerator:
         if toestandenKolom:
             # Maak nu pas de toelichting, nadat alle andere elementen zijn gemaakt en van een ID zijn voorzien
             for element in toestandenKolom.Elementen:
-                element.Label = self._Opties.ToestandSymbool (element.Bron)
-                element.Toelichting = self._Opties.ToestandToelichting (element, element.Bron)
+                if isinstance (element.Bron, Einddatum):
+                    element.Label = Weergave_Symbolen.Toestand_Uitgewerkt if element.Bron.IsJuridischUitgewerkt else Weergave_Symbolen.Toestand_MaterieelUitgewerkt
+                else:
+                    element.Label = self._Opties.ToestandSymbool (element.Bron)
+                    element.Toelichting = self._Opties.ToestandToelichting (element, element.Bron)
 
         return elementId
 
@@ -569,7 +595,7 @@ class DiagramGenerator:
 
         diagramHoogte int Totale hoogte van het diagram
         """
-        self.Breedte = DiagramGenerator._SvgDatumBreedte if self._HeeftActueleToestanden else 0
+        self.Breedte = DiagramGenerator._SvgDatumBreedte + DiagramGenerator._SvgHalveElementBreedte if self._HeeftActueleToestanden else 0
         for idx, kolom in enumerate (self._Kolommen):
             self.Breedte += DiagramGenerator._SvgHalveElementBreedte
             kolom._X = self.Breedte + DiagramGenerator._SvgHalveElementBreedte
@@ -622,28 +648,57 @@ class DiagramGenerator:
             # Elementen in de kolom
             svgFragment = '<rect x="{x}" y="{y}" width="' + str(DiagramGenerator._SvgElementBreedte) + '" height="' + str(DiagramGenerator._SvgElementHoogte) + '" rx="3" ry="3" class="vbd_{t}" data-' + self._Opties._DiagramId + '_e="{id}"{extra}></rect>\n'
             for elt in kolom.Elementen:
-                if len (elt._Verbonden) > 1 and elt._Verbonden[0] == elt:
-                    # Teken de verbinding
-                    self.SVG += '<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="3" ry="3" class="vbd_mov"></rect>\n'.format (x = elt._X, y = elt._Y, w = elt._Verbonden[-1]._X + DiagramGenerator._SvgElementBreedte - elt._X, h = DiagramGenerator._SvgElementHoogte)
-                # Teken het element
-                extra = ' data-' + self._Opties._DiagramId + '_ti="' + str(elt.Bron.Identificatie) + '" data-' + self._Opties._DiagramId + '_tid="' + str(elt.Bron.UniekId) + '"' if isActueleToestanden else ' data-' + self._Opties._DiagramId + '_mo="' + str(self._MomentopnameUniekId(elt.Bron, elt.TijdstempelsBron)) + '"'
-                elementType = ('mot' if (elt.Bron.IsTeruggetrokken if elt.Bron else elt.TijdstempelsBron.JuridischWerkendVanaf is None) else 'mo') if not isActueleToestanden else 'th ' + self._Opties._DiagramId + '_th' if elt.Bron.NietMeerActueel else 't'
-                if not elt.Toelichting is None:
-                    elementType += ' vbd_i'
+                # Basisnaam voor CSS classes
                 if isActueleToestanden:
-                    self.SVG += svgLabel.format (id= elt.Id, x = DiagramGenerator._SvgDatumBreedte/2, y = elt._Y + DiagramGenerator._SvgHalveElementHoogte, tekst = elt.Bron.JuridischWerkendVanaf, t = elementType, extra = extra)
-                self.SVG += svgFragment.format (id= elt.Id, x = elt._X, y = elt._Y, t = elementType, extra = extra)
-                if not elt.Label is None:
-                    self.SVG += svgLabel.format (id= elt.Id, x = elt._X + DiagramGenerator._SvgHalveElementBreedte, y = elt._Y + DiagramGenerator._SvgHalveElementHoogte, tekst = elt.Label, t = elementType, extra = extra)
+                    if isinstance (elt.Bron, Einddatum):
+                        elementType = 'tu'
+                    else:
+                        elementType = 'th ' + self._Opties._DiagramId + '_th' if elt.Bron.NietMeerActueel else 't'
+                else:
+                    if (elt.Bron.IsTeruggetrokken if elt.Bron else elt.TijdstempelsBron.JuridischWerkendVanaf is None):
+                        elementType = 'mot'
+                    elif (elt.Bron if elt.Bron else elt.TijdstempelsBron)._ConsolidatieInformatieElementen[0].ConsolidatieInformatie.IsRevisie:
+                        elementType = 'mor'
+                    else:
+                        elementType = 'mo'
+
+                # Teken het kader voor verbonden momentopnamen
+                if len (elt._Verbonden) > 1 and elt._Verbonden[0] == elt:
+                    # Teken de verbinding; dit betreft momentopnamen uit dezelfde uitwisselingen die bij elkaar horen
+                    self.SVG += '<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="3" ry="3" class="vbd_{et}_v"></rect>\n'.format (x = elt._X, y = elt._Y, w = elt._Verbonden[-1]._X + DiagramGenerator._SvgElementBreedte - elt._X, h = DiagramGenerator._SvgElementHoogte, et=elementType)
+                # Teken het element
+                if isActueleToestanden:
+                    if isinstance (elt.Bron, Einddatum):
+                        extra = ''
+                        self.SVG += svgLabel.format (id= elt.Id, x = DiagramGenerator._SvgDatumBreedte, y = elt._Y + DiagramGenerator._SvgHalveElementHoogte, tekst = elt.Bron.JuridischWerkendVanaf, t = elementType, extra = extra)
+                        self.SVG += svgFragment.format (id= elt.Id, x = elt._X, y = elt._Y, t = elementType, extra = extra)
+                        self.SVG += svgLabel.format (id= elt.Id, x = elt._X + DiagramGenerator._SvgHalveElementBreedte, y = elt._Y + DiagramGenerator._SvgHalveElementHoogte, tekst = elt.Label, t = elementType, extra = extra)
+                    else:
+                        extra = ' data-' + self._Opties._DiagramId + '_ti="' + str(elt.Bron.Identificatie) + '" data-' + self._Opties._DiagramId + '_tid="' + str(elt.Bron._UniekId) + '"'
+                        if not elt.Toelichting is None:
+                            elementType += ' vbd_i'
+                        self.SVG += svgLabel.format (id= elt.Id, x = DiagramGenerator._SvgDatumBreedte, y = elt._Y + DiagramGenerator._SvgHalveElementHoogte, tekst = elt.Bron.JuridischWerkendVanaf, t = elementType, extra = extra)
+                        self.SVG += svgFragment.format (id= elt.Id, x = elt._X, y = elt._Y, t = elementType, extra = extra)
+                        if not elt.Label is None:
+                            self.SVG += svgLabel.format (id= elt.Id, x = elt._X + DiagramGenerator._SvgHalveElementBreedte, y = elt._Y + DiagramGenerator._SvgHalveElementHoogte, tekst = elt.Label, t = elementType, extra = extra)
+                else:
+                    extra = ' data-' + self._Opties._DiagramId + '_mo="' + str(self._MomentopnameUniekId(elt.Bron, elt.TijdstempelsBron)) + '"'
+                    if not elt.Toelichting is None:
+                        elementType += ' vbd_i'
+                    self.SVG += svgFragment.format (id= elt.Id, x = elt._X, y = elt._Y, t = elementType, extra = extra)
+                    if not elt.Label is None:
+                        self.SVG += svgLabel.format (id= elt.Id, x = elt._X + DiagramGenerator._SvgHalveElementBreedte, y = elt._Y + DiagramGenerator._SvgHalveElementHoogte, tekst = elt.Label, t = elementType, extra = extra)
 
         # Teken de gemaaktOp datums
         svgFragment = '<path d="M ' + str(self.Breedte - DiagramGenerator._SvgTijdstipBreedte) + ' {y0} L ' + str(self.Breedte - DiagramGenerator._SvgTijdstipBreedte) + ' {y1}" class="vbd_line_uw"/>\n<text x="' + str(self.Breedte) + '" y="{y}" dominant-baseline="middle" text-anchor="end" class="vbd_txt">{tekst}<title>{tijd}</title></text>\n'
         for rij in self._Rijen:
-            self.SVG += svgFragment.format (y0 = rij._Y0, y1 = rij._Y1, y = (rij._Y0 + rij._Y1) / 2, tekst = rij.GemaaktOp[0:10] + "..", tijd = rij.GemaaktOp)
+            if not rij.GemaaktOp is None:
+                self.SVG += svgFragment.format (y0 = rij._Y0, y1 = rij._Y1, y = (rij._Y0 + rij._Y1) / 2, tekst = rij.GemaaktOp[0:10] + "..", tijd = rij.GemaaktOp)
 
         # Teken de branch lijnen
         for idx, kolom in enumerate (self._Kolommen):
             isActueleToestanden = idx == 0 and self._HeeftActueleToestanden
+            toestandenUitgewerkt = None # False voor materieel, True voor juridisch uitgewerkt
             svgFragment = '<path d="M ' + str(kolom._X) + ' {y0} L ' + str(kolom._X) + ' {y1}" class="vbd_line_{c}"/>\n'
             y0 = None
             teken = False
@@ -653,10 +708,23 @@ class DiagramGenerator:
                     # Verbinding tussen elementen
                     self.SVG += svgFragment.format (y0 = y0, y1 = y1 + DiagramGenerator._SvgElementHoogte, c = lineType)
                 y0 = y1
-                lineType = 'b' if not isActueleToestanden else 'th ' + self._Opties._DiagramId + '_th' if elt.Bron.NietMeerActueel else 't'
-                teken = isActueleToestanden or not (elt.Bron.IsTeruggetrokken if elt.Bron else elt.TijdstempelsBron.JuridischWerkendVanaf is None)
+                if isActueleToestanden:
+                    if isinstance (elt.Bron, Einddatum):
+                        if elt.Bron.IsJuridischUitgewerkt:
+                            toestandenUitgewerkt = True
+                        elif toestandenUitgewerkt is None:
+                            toestandenUitgewerkt = False
+                            lineType = 'st'
+                    elif toestandenUitgewerkt is None:
+                        lineType = 'th ' + self._Opties._DiagramId + '_th' if elt.Bron.NietMeerActueel else 't'
+                    teken = not toestandenUitgewerkt
+                else:
+                    lineType = 'b'
+                    teken = not (elt.Bron.IsTeruggetrokken if elt.Bron else elt.TijdstempelsBron.JuridischWerkendVanaf is None)
             if teken:
-                self.SVG += svgFragment.format (y0 = y0, y1 = y0 - 3*DiagramGenerator._SvgHalveElementHoogte, c = 's' + lineType)
+                if not isActueleToestanden:
+                    lineType = 's' + lineType
+                self.SVG += svgFragment.format (y0 = y0, y1 = y0 - 3*DiagramGenerator._SvgHalveElementHoogte, c = lineType)
 
         # Teken de basisversies
         relatie_pt_yp = 7 # punt van de punt tov lijn
@@ -758,11 +826,12 @@ class DiagramGenerator:
             self.DoelenHTML += '<tr><td colspan="2"><input type="checkbox" class="' + self._Opties._DiagramId + '_toon_th"/> de niet meer geldende toestanden in grijs.</td></tr>\n'
         self.DoelenHTML += '</table>'
 
-        self.LegendaHTML = '<table><tr>' + ('<th class="vbd_th_t">&nbsp;</th><th>Toestanden</th>' if self._HeeftActueleToestanden else '') + '<th class="vbd_th_mo">&nbsp;</th><th>Momentopnamen</th></tr>'
-        self.LegendaHTML += '<tr>' + ('<td>' + Weergave_Symbolen.Toestand_BekendeInhoud + '</td><td>Bekende inhoud</td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Instrument_Versie + '</td><td>Beoogde instrumentversie</td></tr>'
-        self.LegendaHTML += '<tr>' + ('<td>' + Weergave_Symbolen.Toestand_OnbekendeInhoud + '</td><td>Onbekende inhoud</td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Instrument_OnbekendeVersie + '</td><td>Nieuwe instrumentversie is onbekend</td></tr>'
-        self.LegendaHTML += '<tr>' + ('<td>' + Weergave_Symbolen.Toestand_MeerdereVersies + '</td><td>Meerdere versies</td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Instrument_Intrekking + '</td><td>Intrekking</td></tr>'
-        self.LegendaHTML += '<tr>' + ('<td></td><td></td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Tijdstempel_Waarde + '</td><td>Tijdstempel(s)</td></tr>'
+        self.LegendaHTML = '<table><tr>' + ('<th class="vbd_th_t">&nbsp;</th><th>Toestanden</th>' if self._HeeftActueleToestanden else '') + '<th class="vbd_th_mo">&nbsp;</th><th>Momentopnamen (publicatie)</th></tr>'
+        self.LegendaHTML += '<tr>' + ('<td>' + Weergave_Symbolen.Toestand_BekendeInhoud + '</td><td>Bekende inhoud</td>' if self._HeeftActueleToestanden else '') + '<th class="vbd_th_mor">&nbsp;</th><th>Momentopnamen (revisie)</th></tr>'
+        self.LegendaHTML += '<tr>' + ('<td>' + Weergave_Symbolen.Toestand_OnbekendeInhoud + '</td><td>Onbekende inhoud</td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Instrument_Versie + '</td><td>Beoogde instrumentversie</td></tr>'
+        self.LegendaHTML += '<tr>' + ('<td>' + Weergave_Symbolen.Toestand_MeerdereVersies + '</td><td>Meerdere versies</td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Instrument_OnbekendeVersie + '</td><td>Nieuwe instrumentversie is onbekend</td></tr>'
+        self.LegendaHTML += '<tr>' + ('<td>' + Weergave_Symbolen.Toestand_MaterieelUitgewerkt + '</td><td>Materieel uitgewerkt</td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Tijdstempel_Waarde + '</td><td>Tijdstempel(s)</td></tr>'
+        self.LegendaHTML += '<tr>' + ('<td>' + Weergave_Symbolen.Toestand_Uitgewerkt + '</td><td>Juridisch uitgewerkt</td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Instrument_Intrekking + '</td><td>Intrekking</td></tr>'
         self.LegendaHTML += '<tr>' + ('<td></td><td></td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Instrument_Terugtrekking + '</td><td>Instrument wijzigt niet meer</td></tr>'
         self.LegendaHTML += '<tr>' + ('<td></td><td></td>' if self._HeeftActueleToestanden else '') + '<td>' + Weergave_Symbolen.Tijdstempel_Terugtrekking + '</td><td>Tijdstempels geschrapt</td></tr>'
         self.LegendaHTML += '</table>'
@@ -773,7 +842,7 @@ class DiagramGenerator:
                 if elt.Toelichting:
                     if idx == 0 and self._HeeftActueleToestanden:
                         # Globaal ID van de toestand (identificatie en versie)
-                        extradata = ' data-' + self._Opties._DiagramId + '_tid="' + str(elt.Bron.UniekId) + '" data-' + self._Opties._DiagramId + '_ti="' + str(elt.Bron.Identificatie) + '"'
+                        extradata = ' data-' + self._Opties._DiagramId + '_tid="' + str(elt.Bron._UniekId) + '" data-' + self._Opties._DiagramId + '_ti="' + str(elt.Bron.Identificatie) + '"'
                     else:
                         # Lokaal ID van de momentopname
                         extradata = ' data-' + self._Opties._DiagramId + '_mo="' + str(self._MomentopnameUniekId (elt.Bron, elt.TijdstempelsBron)) + '"'
@@ -818,9 +887,9 @@ class DiagramRij:
         self.Elementen = []
         # Het aantal horizontale banen waarin de rij opgedeeld moet worden zodat verbanden 
         # tussen de elementen netjes getekend kunnen worden
-        self.AantalBanen = 1
+        self.AantalBanen = 0 if gemaaktOp is None else 1
         # Het aantal horizontale banen waarin de momentopnamen zitten
-        self.AantalMOBanen = 1
+        self.AantalMOBanen = 0 if gemaaktOp is None else 1
         # Boven- en ondergrens in y van het gebied waar elementen afgebeeld zijn
         self._Y0 = 0
         self._Y1 = 0
@@ -831,7 +900,7 @@ class DiagramElement:
         """Maak een leeg element rij voor het diagram
 
         Argumenten:
-        bron ToestandActueel of Momentopname
+        bron ToestandActueel of Momentopname of een Einddatum
         """
         self.Bron = bron
         # Bron van de tijdstempels, als die in deze momentopname wijzigen
@@ -900,3 +969,13 @@ class DiagramElement:
         self.Rij = rij
         rij.Elementen.append (self)
         return self
+
+class Einddatum:
+
+    def __init__(self, datum, isJuridischUitgewerpt):
+        # Datum waarop het instrument is uitgewerkt
+        self.JuridischWerkendVanaf = datum
+        # Geeft aan dat het een juridisch einde is
+        self.IsJuridischUitgewerkt = isJuridischUitgewerpt
+        # Maak programmeren eenvoudiger: simuleer ToestandActueel
+        self.NietMeerActueel = False

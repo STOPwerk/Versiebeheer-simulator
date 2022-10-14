@@ -1,0 +1,55 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/gm9999/2020/REG00123": {
+            "BekendOp": "2020-02-13",
+            "OntvangenOp": "2020-02-13",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2021-08-13",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2021/Intrekken_tijdelijkregelingdeel_Geitenhouderij"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-13",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "IsNietInWerking": true
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG00123/nld@2020-01-20;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-02-13",
+                    "GeldigVanaf": "2021-08-13",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2021-08-13",
+                    "OntvangenOp": "2020-02-13"
+                },
+                {
+                    "BekendOp": "2020-02-13",
+                    "GeldigVanaf": "2020-02-13",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2020-02-13",
+                    "OntvangenOp": "2020-02-13"
+                }
+            ]
+        }
+    }
+}

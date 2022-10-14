@@ -123,9 +123,11 @@ class _VersiebeheerDiagram (DiagramGeneratorOpties):
                     perCollectie[collectie] = []
                 perCollectie[collectie].extend (['\t\t' + line for line in ci.ModuleXmlElement ()])
         for collectie in sorted (perCollectie):
-            xml.append ('\t<' + collectie + '>')
+            if collectie:
+                xml.append ('\t<' + collectie + '>')
             xml.extend (perCollectie[collectie])
-            xml.append ('\t</' + collectie + '>')
+            if collectie:
+                xml.append ('\t</' + collectie + '>')
         xml.append ('</ConsolidatieInformatie>')
         html += Weergave_STOPModule.MaakHtml (xml) + '</p>'
         return html

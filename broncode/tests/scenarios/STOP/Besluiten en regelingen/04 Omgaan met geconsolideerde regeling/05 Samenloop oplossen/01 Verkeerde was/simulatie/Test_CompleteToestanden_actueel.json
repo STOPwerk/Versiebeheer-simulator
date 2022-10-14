@@ -1,0 +1,59 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/gm9999/2020/REG0001": {
+            "BekendOp": "2020-02-18",
+            "OntvangenOp": "2020-02-18",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-03-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-28;2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-02-18",
+                    "GeldigVanaf": "2020-03-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2020-03-01",
+                    "OntvangenOp": "2020-02-18"
+                },
+                {
+                    "BekendOp": "2020-01-21",
+                    "GeldigVanaf": "2020-02-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2020-02-01",
+                    "OntvangenOp": "2020-01-21"
+                }
+            ]
+        }
+    }
+}

@@ -126,7 +126,7 @@ class Weergave_Proefversies ():
             eindeRij = ''
             if not info[0] is None:
                 aantalRijen = str(1 if len (info[0].Annotaties) == 0 else len (info[0].Annotaties))
-                html += '<td rowspan="' + aantalRijen + '"><input type="radio" name="' + self._DiagramId + '_' + self._InstrumentData.UniekId + '" data-' + self._DiagramId + '_select="' + self._InstrumentData._Uitwisseling.GemaaktOp + ';' + info[0]._UniekId + '" id="' + self._DiagramId + '_' + info[0]._UniekId + '"></td>'
+                html += '<td rowspan="' + aantalRijen + '"><input type="radio" name="' + self._DiagramId + '_' + self._InstrumentData._UniekId + '" data-' + self._DiagramId + '_select="' + self._InstrumentData._Uitwisseling.GemaaktOp + ';' + info[0]._UniekId + '" id="' + self._DiagramId + '_' + info[0]._UniekId + '"></td>'
                 html += '<td rowspan="' + aantalRijen + '"><label for="' + self._DiagramId + '_' + info[0]._UniekId + '">' + info[0].Instrumentversie + '</label></td>'
 
                 diagramOpties, diagram = self._Diagram (info[0])

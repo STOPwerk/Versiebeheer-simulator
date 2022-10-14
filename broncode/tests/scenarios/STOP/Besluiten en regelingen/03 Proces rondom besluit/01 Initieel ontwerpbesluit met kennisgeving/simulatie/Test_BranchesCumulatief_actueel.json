@@ -1,0 +1,17 @@
+{
+    "Testresultaat - Cumulatieve versieinformatie": {
+        "/akn/nl/act/pv30/2020/omgevingsverordening": {
+            "/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2020-02-17T09:03:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2020-02-17T09:03:00Z"
+                }
+            ]
+        }
+    }
+}

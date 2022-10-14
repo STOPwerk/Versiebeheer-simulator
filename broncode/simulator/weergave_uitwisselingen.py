@@ -40,7 +40,7 @@ class Weergave_Uitwisselingen:
             if benoemd is None:
                 generator.VoegHtmlToe ('<td></td>')
             else:
-                generator.VoegHtmlToe ('<td>' + benoemd.Beschrijving + '</td>')
+                generator.VoegHtmlToe ('<td>' + ('' if benoemd.Beschrijving is None else benoemd.Beschrijving) + '</td>')
             generator.VoegHtmlToe ('</tr>')
 
         generator.VoegHtmlToe ('</table></p>')

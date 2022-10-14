@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Versiebeheer.Simulator", "Versiebeheer.Simulator.pyproj", "{A00FA148-8F87-4637-AEA6-1A4774DE7551}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED6D49FC-DEED-4C0B-A2AC-4636EFBDB3D7}"
+	ProjectSection(SolutionItems) = preProject
+		Versiebeheer.Simulator.sln.vsspell = Versiebeheer.Simulator.sln.vsspell
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A00FA148-8F87-4637-AEA6-1A4774DE7551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00FA148-8F87-4637-AEA6-1A4774DE7551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {421E6513-4800-4E5F-9647-785F5C633E35}
+	EndGlobalSection
+EndGlobal

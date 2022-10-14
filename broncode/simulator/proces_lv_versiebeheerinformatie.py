@@ -21,7 +21,7 @@
 from applicatie_meldingen import Melding
 from data_lv_versiebeheerinformatie import Versiebeheerinformatie, Uitwisseling, UitgewisseldeInstrumentversie, Instrument, Branch, MomentopnameInstrument, MomentopnameTijdstempels
 from proces_lv_branchescumulatief import AccumuleerBranchInformatie
-from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Terugtrekking, Intrekking, TerugtrekkingIntrekking, VoorTijdstempel, Tijdstempel, TerugtrekkingTijdstempel
+from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Terugtrekking, Intrekking, TerugtrekkingIntrekking, VoorTijdstempel, Tijdstempel, TerugtrekkingTijdstempel, MaterieelUitgewerkt
 from stop_juridischeverantwoording import JuridischeVerantwoording, Verantwoording, Publicatie
 from weergave_symbolen import Weergave_Symbolen
 
@@ -263,13 +263,10 @@ class UitwisselingInformatie:
         # de complete toestanden opnieuw berekend worden.
         # key = work-Id, value = datum (string)
         self.EersteBekendOp = {}
-        # De instrumenten waarvoor de consolidatie verandert, en de doelen
-        # waar het om gaat. De instrumenten zijn nodig om te weten welke consolidaties
-        # uitgevoerd moeten worden. De doelen zijn in deze applicatie nodig om de 
-        # juridische verantwoording bij te werken - dat zal in een productie-waardige
-        # applicatie op een andere manier gebeuren.
-        # key = work-id, value = set van doelen
-        self.InstrumentDoelen = {}
+        # De instrumenten waarvoor de consolidatie verandert. De instrumenten zijn nodig om 
+        # te weten welke consolidaties uitgevoerd moeten worden.
+        # Set van work-id
+        self.Instrumenten = set ()
         # De doelen waarvoor consolidatie-informatie is uitgewisseld
         # Lijst met instanties van Doel
         self.Doelen = set()
@@ -356,6 +353,11 @@ class WerkVersiebeheerinformatieBij:
         for element in consolidatieInformatie.Tijdstempels:
             self._VerwerkTijdstempelElement (VerwerkTijdstempel (element), True)
 
+        # Verwerk materieel uitgewerkt
+        for element in consolidatieInformatie.MaterieelUitgewerkt:
+            self._VerwerkMaterieelUitgewerkt (element)
+
+
 #----------------------------------------------------------------------
 # Hulpmethoden om consolidatie-informatie `voor een instrument te verwerken
 #----------------------------------------------------------------------
@@ -374,7 +376,7 @@ class WerkVersiebeheerinformatieBij:
                     nieuweMomentopname.Branch.Momentopnamen.append (nieuweMomentopname.Momentopname)
 
                     bekendOp = verwerk.VoorInstrument.BekendOp ()
-                    self._VoegInstrumentDoelenToe (self.Versiebeheerinformatie.Instrumenten[verwerk.VoorInstrument.WorkId], doel, bekendOp, True)
+                    self._VoegInstrumentDoelenToe (self.Versiebeheerinformatie.Instrumenten[verwerk.VoorInstrument.WorkId], doel, bekendOp, True, verwerk.VoorInstrument.eId)
 
                     self.Resultaat.Doelen.add (doel)
                     if self.Resultaat.Uitwisseling.BekendOp is None or bekendOp > self.Resultaat.Uitwisseling.BekendOp:
@@ -390,20 +392,20 @@ class WerkVersiebeheerinformatieBij:
 
         Resultaat is een NieuweMomentopname of None
         """
-        if voorInstrument.WorkId in self.Versiebeheerinformatie.Instrumenten:
-            instrument = self.Versiebeheerinformatie.Instrumenten[voorInstrument.WorkId]
-        elif maakBranchAlsNietBestaat:
-            self.Versiebeheerinformatie.Instrumenten[voorInstrument.WorkId] = instrument = Instrument (self.Versiebeheerinformatie, voorInstrument.WorkId)
-        else:
-            self._Log.Fout (voorInstrument.ModuleXmlNaam () + " voor onbekend instrument " + voorInstrument.WorkId + " @" + voorInstrument.ConsolidatieInformatie.GemaaktOp)
-            self.Resultaat.IsValide = False
-            return
+        instrument = self.Versiebeheerinformatie.Instrumenten.get (voorInstrument.WorkId)
+        if instrument is None:
+            if maakBranchAlsNietBestaat:
+                self.Versiebeheerinformatie.Instrumenten[voorInstrument.WorkId] = instrument = Instrument (self.Versiebeheerinformatie, voorInstrument.WorkId)
+            else:
+                self._Log.Fout (voorInstrument.ModuleXmlNaam () + " voor onbekend instrument " + voorInstrument.WorkId + " @" + voorInstrument.ConsolidatieInformatie.GemaaktOp)
+                self.Resultaat.IsValide = False
+                return
         bekendOp = voorInstrument.BekendOp ()
         instrument.BekendOp.add (bekendOp)
 
-        if doel in instrument.Branches:
+        branch = instrument.Branches.get (doel)
+        if not branch is None:
             # Voeg momentopname toe aan bestaande branch
-            branch = instrument.Branches[doel]
             laatste = branch.Momentopnamen[-1]
 
             if laatste.GemaaktOp == voorInstrument.ConsolidatieInformatie.GemaaktOp:
@@ -435,10 +437,14 @@ class WerkVersiebeheerinformatieBij:
             nieuw = MomentopnameInstrument (branch, voorInstrument)
 
             if len (voorInstrument.Basisversies) == 0:
-                for branch in instrument.Branches.values ():
-                    if len (branch.Momentopnamen) > 0 and len (branch.Momentopnamen[0]._ConsolidatieInformatieElementen[0].Basisversies) == 0:
-                        self._Log.Fout ("Instrument " + voorInstrument.WorkId + ": zowel " + voorInstrument.ModuleXmlNaam () + " voor (" + str(doel) + ", @" + voorInstrument.ConsolidatieInformatie.GemaaktOp + ") en als " + branch.Momentopnamen[0]._ConsolidatieInformatieElementen[0].ModuleXmlNaam () + " voor (" + str(doel) + ", @" + branch.Momentopnamen[0].GemaaktOp + ") zijn initiële uitwisselingen voor het instrument (zonder basisversies)")
-                        self.Resultaat.IsValide = False
+                if instrument.InitieleDoelen is None:
+                    instrument.InitieleDoelen = voorInstrument.Doelen
+                elif not doel in instrument.InitieleDoelen:
+                    for anderDoel in instrument.InitieleDoelen:
+                        andereBranch = instrument.Branches.get (anderDoel)
+                        if not andereBranch is None:
+                            self._Log.Fout ("Instrument " + voorInstrument.WorkId + ": zowel " + voorInstrument.ModuleXmlNaam () + " voor (" + str(doel) + ", @" + voorInstrument.ConsolidatieInformatie.GemaaktOp + ") en als " + andereBranch.Momentopnamen[0]._ConsolidatieInformatieElementen[0].ModuleXmlNaam () + " voor (" + str(andereBranch.Doel) + ", @" + andereBranch.Momentopnamen[0].GemaaktOp + ") zijn initiële uitwisselingen voor het instrument (zonder basisversies)")
+                    self.Resultaat.IsValide = False
             else:
                 if doel in voorInstrument.Basisversies:
                     self._Log.Fout (voorInstrument.ModuleXmlNaam () + " voor (" + str(doel) + ", @" + voorInstrument.ConsolidatieInformatie.GemaaktOp + ") en instrument " + voorInstrument.WorkId + " mag geen basisversie hebben voor hetzelfde doel maar heeft als basisversie (" + str(doel) + ", @" + voorInstrument.Basisversies[doel].GemaaktOp + ")")
@@ -478,7 +484,7 @@ class WerkVersiebeheerinformatieBij:
                         branch = instrument.Branches[verwerk.VoorTijdstempel.Doel]
                         if len (branch.Momentopnamen) > 0 and not branch.Momentopnamen[-1].IsTeruggetrokken:
                             instrument.BekendOp.add (bekendOp)
-                            self._VoegInstrumentDoelenToe (instrument, verwerk.VoorTijdstempel.Doel, bekendOp, False)
+                            self._VoegInstrumentDoelenToe (instrument, verwerk.VoorTijdstempel.Doel, bekendOp, False, verwerk.VoorTijdstempel.eId)
 
     def _MomentOpnameVoorTijdstempels (self, voorTijdstempel : VoorTijdstempel, maakAlsDoelNietBestaat):
         """Geef de momentopname voor de tijdstempels
@@ -521,16 +527,43 @@ class WerkVersiebeheerinformatieBij:
         return (branch, nieuw, True)
 
 #----------------------------------------------------------------------
+# Hulpmethode om indicatie van materieel uitgewerkt te verwerken
+#----------------------------------------------------------------------
+    def _VerwerkMaterieelUitgewerkt (self, element : MaterieelUitgewerkt):
+        """Verwerk een element uit de ConsolidatieInformatie dat de materieel uitgewerkt status aangeeft
+        
+        Argumenten:
+        element MaterieelUitgewerkt  Informatie uit de consolidatie informatie
+        """
+        instrument = self.Versiebeheerinformatie.Instrumenten.get (element.WorkId)
+        if instrument is None:
+            self._Log.Fout ("MaterieelUitgewerkt voor onbekend instrument " + element.WorkId + " @" + element.ConsolidatieInformatie.GemaaktOp)
+            self.Resultaat.IsValide = False
+            return
+        if element.Datum is None:
+            if instrument.MaterieelUitgewerkt is None:
+                self._Log.Waarschuwing ("Instrument " + element.WorkId + " is niet materieel uitgewerkt; geen wijziging @" + element.ConsolidatieInformatie.GemaaktOp)
+                return
+            self._Log.Detail ("Instrument " + element.WorkId + " is niet meer materieel uitgewerkt @" + element.ConsolidatieInformatie.GemaaktOp)
+        else:
+            if instrument.MaterieelUitgewerkt == element.Datum:
+                self._Log.Waarschuwing ("Instrument " + element.WorkId + " is al materieel uitgewerkt per " + element.Datum + "; geen wijziging @" + element.ConsolidatieInformatie.GemaaktOp)
+                return
+            self._Log.Detail ("Instrument " + element.WorkId + " is materieel uitgewerkt per " + element.Datum + " @" + element.ConsolidatieInformatie.GemaaktOp)
+
+        instrument.MaterieelUitgewerkt = element.Datum
+        self.Resultaat.Instrumenten.add (instrument.WorkId)
+        if self.Resultaat.Uitwisseling.BekendOp is None or element.BekendOp() > self.Resultaat.Uitwisseling.BekendOp:
+            self.Resultaat.Uitwisseling.BekendOp = element.BekendOp()
+
+#----------------------------------------------------------------------
 # Hulpmethoden om het resultaat bij te werken
 #----------------------------------------------------------------------
-    def _VoegInstrumentDoelenToe (self, instrument, doel, bekendOp, voorInstrument):
+    def _VoegInstrumentDoelenToe (self, instrument, doel, bekendOp, isInhoud, eId):
         """Werk de administratie bij dat er voor dit instrument voor dit doel
         en deze bekendOp datum iets is gebeurd.
         """
-        doelen = self.Resultaat.InstrumentDoelen.get (instrument.WorkId)
-        if doelen is None:
-            self.Resultaat.InstrumentDoelen[instrument.WorkId] = doelen = set()
-        doelen.add (doel)
+        self.Resultaat.Instrumenten.add (instrument.WorkId)
 
         instrument.BekendOp.add (bekendOp)
         eersteBekendOp = self.Resultaat.EersteBekendOp.get (instrument.WorkId)
@@ -548,10 +581,13 @@ class WerkVersiebeheerinformatieBij:
                 verantwoording.Publicaties.append (Publicatie ())
                 verantwoording.Publicaties[0].Publicatieblad = self._Publicatieblad
                 verantwoording.Publicaties[0].GemaaktOp = self.Resultaat.Uitwisseling.GemaaktOp
-            if voorInstrument:
-                verantwoording.Publicaties[0].VoorInstrument = True
+
+            if isInhoud:
+                verantwoording.Publicaties[0].eIdInhoud = 'eid_inhoud_onbekend' if eId is None else eId
             else:
-                verantwoording.Publicaties[0].VoorTijdstempels = True
+                # Deze simulator werkt niet goed als de twee soorten tijdstempels andere eId hebben
+                # Dan wordt de eerste gekozen
+                verantwoording.Publicaties[0].eIdTijdstempels = 'eid_tijdstempel_onbekend' if eId is None else eId
 
 
 #----------------------------------------------------------------------
@@ -637,21 +673,23 @@ class WerkVersiebeheerinformatieBij:
                         self._Log.Fout ('Teruggetrokken branch (' + str(versie.Doel) + ',@' + verwijzing.GemaaktOp + ') mag geen basisversie zijn voor de branch(es) ' + ', '.join (str(d) for d in nieuweMomentopname.Momentopname.Doelen) + ", @" + nieuweMomentopname.Momentopname.GemaaktOp)
                         self.Resultaat.IsValide = False
 
-        for versie in voorInstrument.VervlochtenVersies.values():
-            verwijzing = self._ZoekMomentopname (nieuweMomentopname.Instrument, voorInstrument, nieuweMomentopname.Branch.Doel, versie, "VervlochtenVersies", verwerkteDoelen)
-            if not verwijzing is None:
-                nieuweMomentopname.Momentopname.VervlochtenMet[versie.Doel] = verwijzing
-                verwerkteDoelen[versie.Doel] = VerwerkteMomentopname ("VervlochtenVersies", verwijzing, False)
-                if verwijzing.IsTeruggetrokken:
-                    # Een ingetrokken basisversie is niet toegestaan als vervlochten versie
-                    self._Log.Fout ('Teruggetrokken branch (' + str(versie.Doel) + ',@' + verwijzing.GemaaktOp + ') mag niet vervlochten worden met een andere branch (' + str(nieuweMomentopname.Momentopname.Branch.Doel) + ", @" + nieuweMomentopname.Momentopname.GemaaktOp + ')')
-                    self.Resultaat.IsValide = False
+        if hasattr (voorInstrument, 'VervlochtenVersies'):
+            for versie in voorInstrument.VervlochtenVersies.values():
+                verwijzing = self._ZoekMomentopname (nieuweMomentopname.Instrument, voorInstrument, nieuweMomentopname.Branch.Doel, versie, "VervlochtenVersies", verwerkteDoelen)
+                if not verwijzing is None:
+                    nieuweMomentopname.Momentopname.VervlochtenMet[versie.Doel] = verwijzing
+                    verwerkteDoelen[versie.Doel] = VerwerkteMomentopname ("VervlochtenVersies", verwijzing, False)
+                    if verwijzing.IsTeruggetrokken:
+                        # Een ingetrokken basisversie is niet toegestaan als vervlochten versie
+                        self._Log.Fout ('Teruggetrokken branch (' + str(versie.Doel) + ',@' + verwijzing.GemaaktOp + ') mag niet vervlochten worden met een andere branch (' + str(nieuweMomentopname.Momentopname.Branch.Doel) + ", @" + nieuweMomentopname.Momentopname.GemaaktOp + ')')
+                        self.Resultaat.IsValide = False
 
-        for versie in voorInstrument.OntvlochtenVersies.values():
-            verwijzing = self._ZoekMomentopname (nieuweMomentopname.Instrument, voorInstrument, nieuweMomentopname.Branch.Doel, versie, "OntvlochtenVersies", verwerkteDoelen)
-            if not verwijzing is None:
-                nieuweMomentopname.Momentopname.OntvlochtenMet[versie.Doel] = verwijzing
-                verwerkteDoelen[versie.Doel] = VerwerkteMomentopname ("OntvlochtenVersies", verwijzing, False)
+        if hasattr (voorInstrument, 'OntvlochtenVersies'):
+            for versie in voorInstrument.OntvlochtenVersies.values():
+                verwijzing = self._ZoekMomentopname (nieuweMomentopname.Instrument, voorInstrument, nieuweMomentopname.Branch.Doel, versie, "OntvlochtenVersies", verwerkteDoelen)
+                if not verwijzing is None:
+                    nieuweMomentopname.Momentopname.OntvlochtenMet[versie.Doel] = verwijzing
+                    verwerkteDoelen[versie.Doel] = VerwerkteMomentopname ("OntvlochtenVersies", verwijzing, False)
 
 
     def _ZoekMomentopname (self, instrument : Instrument, voorInstrument : VoorInstrument, doel, verwijzing, collectieType, verwerkteDoelen):

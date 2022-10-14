@@ -29,6 +29,10 @@
 #
 #======================================================================
 
+from typing import Dict, List
+
+from data_doel import Doel
+
 #======================================================================
 #
 # Datamodel voor versiebeheerinformatie: per uitwisseling, 
@@ -44,18 +48,18 @@ class Versiebeheerinformatie:
     def __init__ (self):
         """Maak een lege instantie van alle versiebeheerinformatie"""
         # Gegevens over de uitwisselingen
-        self.Uitwisselingen = []
+        self.Uitwisselingen : List[Uitwisseling] = []
         # Versiebeheer per instrument
-        # key = workId, value = instantie van Instrument
-        self.Instrumenten = {}
+        # key = workId
+        self.Instrumenten : Dict[str,Instrument] = {}
         # Versiebeheer van tijdstempels
-        # key = instantie van Doel, value = instantie van Branch met instanties van MomentopnameTijdstempels
-        self.Tijdstempels = {}
+        # key = instantie van Doel, value = branch met instanties van MomentopnameTijdstempels
+        self.Tijdstempels : Dict[Doel,Branch] = {}
         # De applicatie gebruikt de proefversie voor een instrumentversie
         # ook als instrumentversiehistorie in een ToestandCompleet
         # Om snel de proefversies te kunnen vinden wordt een index bijgehouden.
         # key = instrumentversie, value = instantie van UitgewisseldeInstrumentversie
-        self._UitwisselingInstrumentversie = {}
+        self._UitwisselingInstrumentversie : Dict[str,UitgewisseldeInstrumentversie] = {}
         # Doelen die al gebruikt zijn voor een van de instrumenten
         # Wordt in deze applicatie als een set bijgehouden om de verwerking van
         # de consolidatie-informatie te versnellen.
@@ -84,7 +88,7 @@ class Uitwisseling:
         self.GemaaktOp = gemaaktOp
         # Informatie over de nieuwe instrumentversies die in deze uitwisseling worden meegegeven
         # Lijst van instanties van UitgewisseldeInstrumentversie
-        self.Instrumentversies = []
+        self.Instrumentversies : List[UitgewisseldeInstrumentversie] = []
         # Datum dat de inhoud van de uitwisseling publiek bekend is, te gebruiken als
         # bekendOp datum in de STOP context modules die door de uitwisseling ontstaan.
         self.BekendOp = None
@@ -98,7 +102,7 @@ class Uitwisseling:
 
 class UitgewisseldeInstrumentversie:
 
-    def __init__ (self, uitwisseling, instrument, doelen, instrumentversie):
+    def __init__ (self, uitwisseling : Uitwisseling, instrument, doelen : List[Doel], instrumentversie):
         """Maak een nieuwe instantie aan
 
         Argumenten
@@ -129,7 +133,7 @@ class UitgewisseldeInstrumentversie:
 #----------------------------------------------------------------------
 class Instrument:
 
-    def __init__ (self, versiebeheerinformatie, workId):
+    def __init__ (self, versiebeheerinformatie : Versiebeheerinformatie, workId):
         """Maak versiebeheerinformatie aan voor een instrument
         
         Argumenten:
@@ -139,13 +143,18 @@ class Instrument:
         self._Versiebeheerinformatie = versiebeheerinformatie
         self.WorkId = workId
         # De branches waarvoor het instrument gewijzigd wordt
-        # key is instantie van Doel, value is instantie van instantie van Branch met instanties van MomentopnameInstrument
-        self.Branches = {}
+        # value is branch met instanties van MomentopnameInstrument
+        self.Branches : Dict[Doel,Branch] = {}
         # Als tijdreizen op bekendOp datum ondersteund wordt en er wordt consolidatie-informatie
         # uitgewisseld met een minimale bekendOp datum, dan moet de consolidatie voor die datum
         # en alle latere bekendOp datums gedaan worden. In deze applicatie wordt bijgehouden welke
         # bekendOp datums zijn voorgekomen.
         self.BekendOp = set()
+        # Datum waarop het instrument is uitgewerkt
+        self.MaterieelUitgewerkt = None
+        # Doelen waarvoor de initiële versie van het instrument is gegeven.
+        # Het instrument kan alleen in werking zijn als een van deze doelen in werking is
+        self.InitieleDoelen = None
 
 #----------------------------------------------------------------------
 # Branch: alles wat op een enkele branch gebeurt en relevant is voor
@@ -155,7 +164,7 @@ class Instrument:
 #----------------------------------------------------------------------
 class Branch:
 
-    def __init__ (self, doel):
+    def __init__ (self, doel : Doel):
         """Maak een lege branch aan
         
         Argumenten:
@@ -206,7 +215,7 @@ class MomentopnameTijdstempels(Momentopname):
         """
         super().__init__ (branch, voorTijdstempel)
 
-        self.Doel = voorTijdstempel.Doel
+        self.Doel : Doel = voorTijdstempel.Doel
         if len (branch.Momentopnamen) == 0:
             # Geeft de waarde voor de JuridischWerkendVanaf tijdstempel
             self.JuridischWerkendVanaf = None
@@ -232,17 +241,13 @@ class MomentopnameInstrument (Momentopname):
         """
         super().__init__ (branch, voorInstrument)
         # Alle doelen waarvoor deze momentopname tegelijk een wijziging voor het instrument aangeeft
-        # Lijst met instanties van Doel
-        self.Doelen = voorInstrument.Doelen
+        self.Doelen : List[Doel] = voorInstrument.Doelen
         # De verwijzing(en) naar de momentopname waar de branch op gebaseerd is
-        # key = doel, value = instantie van Momentopname
-        self.Basisversies = {}
+        self.Basisversies : Dict[Doel,Momentopname] = {}
         # De verwijzing(en) naar de momentopname die ontvlochten zijn in deze momentopname
-        # key = doel, value = instantie van Momentopname
-        self.OntvlochtenMet = {}
+        self.OntvlochtenMet : Dict[Doel,Momentopname] = {}
         # De verwijzing(en) naar de momentopname die vervlochten is in deze momentopname
-        # key = doel, value = instantie van Momentopname
-        self.VervlochtenMet = {}
+        self.VervlochtenMet : Dict[Doel,Momentopname] = {}
 
         if len (branch.Momentopnamen) == 0:
             # De expressionId van de instrumentversie, indien bekend.

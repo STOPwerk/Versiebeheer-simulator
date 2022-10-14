@@ -105,10 +105,10 @@ class Publicatie:
         self.GemaaktOp = None
         # Identificatie/nummer van de uitgave van het publicatieblad
         self.Publicatieblad = None
-        # Inhoud van de publicaties
-        # In deze applicatie is deze informatie niet beschikbaar, doe net alsof.
-        self.VoorInstrument = False
-        self.VoorTijdstempels = False
+        # Geeft aan waar de inhoud van de publicatie staat
+        self.eIdInhoud = None
+        # Geeft aan waar de tijdstempel-informatie staat
+        self.eIdTijdstempels = None
 
     def ModuleXmlElement (self):
         """Geeft de XML van de STOP module, als lijst van regels.
@@ -118,19 +118,22 @@ class Publicatie:
                 '\t<url>https://www.officielebekendmakingen.nl/' + self.Publicatieblad + '</url>',
                 '\t<gemaaktOp>' + self.GemaaktOp + '</gemaaktOp>',
                 '\t<bladwijzers>']
-        if self.VoorInstrument:
-            xml.extend (['\t<Bladwijzer>', 
-                         '\t\t<relevantVoor>inhoud</relevantVoor>',
-                         '\t\t<url>https://www.officielebekendmakingen.nl/' + self.Publicatieblad + '#eId_inhoud</url>',
-                         '\t</Bladwijzer>'])
-        if self.VoorTijdstempels:
-            xml.extend (['\t<Bladwijzer>', 
-                         '\t\t<relevantVoor>juridischeWerking</relevantVoor>',
-                         '\t\t<url>https://www.officielebekendmakingen.nl/' + self.Publicatieblad + '#eId_tijdstempels</url>',
-                         '\t</Bladwijzer>'])
+        if self.eIdInhoud:
+            xml.extend (['\t\t<Bladwijzer>', 
+                         '\t\t\t<relevantVoor>inhoud</relevantVoor>',
+                         '\t\t\t<url>https://www.officielebekendmakingen.nl/' + self.Publicatieblad + '#' + self.eIdInhoud + '</url>',
+                         '\t\t</Bladwijzer>'])
+        if self.eIdTijdstempels:
+            xml.extend (['\t\t<Bladwijzer>', 
+                         '\t\t\t<relevantVoor>juridischeWerking</relevantVoor>',
+                         '\t\t\t<url>https://www.officielebekendmakingen.nl/' + self.Publicatieblad + '#' + self.eIdTijdstempels + '</url>',
+                         '\t\t</Bladwijzer>'])
         xml.extend (['\t/<bladwijzers>',
                      '</JuridischeBronpublicatie>'])
         return xml
 
-    def UrlVoorInstrument (self):
-        return 'https://www.officielebekendmakingen.nl/' + self.Publicatieblad + '#eId_inhoud'
+    def WijzigtInhoud (self):
+        return not self.eIdInhoud is None
+
+    def UrlVoorInhoud (self):
+        return 'https://www.officielebekendmakingen.nl/' + self.Publicatieblad + '#' + self.eIdInhoud

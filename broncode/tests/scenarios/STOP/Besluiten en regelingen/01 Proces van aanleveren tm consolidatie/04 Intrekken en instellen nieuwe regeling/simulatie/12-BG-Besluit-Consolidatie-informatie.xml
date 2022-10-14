@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns="https://standaarden.overheid.nl/stop/imop/data/" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/ https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+  <gemaaktOp>2020-06-02T09:03:00Z</gemaaktOp>
+  <BeoogdeRegelgeving>
+    <BeoogdeRegeling>
+      <doelen><doel>/join/id/proces/gm9999/2020/VervangenOmgevingsplan</doel></doelen>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0002/nld@2020-05-15;1</instrumentVersie>
+      <eId>art_II</eId>
+    </BeoogdeRegeling>
+  </BeoogdeRegelgeving>
+  <Intrekkingen>
+    <Intrekking>
+      <doel>/join/id/proces/gm9999/2020/VervangenOmgevingsplan</doel>
+      <instrument>/akn/nl/act/gm9999/2020/REG0001</instrument>
+      <eId>art_I</eId>
+      <gemaaktOpBasisVan>
+        <!-- basisversie is de aanlevering van voorbeeld 01 Nieuwe regeling met IWT -->
+        <Basisversie>
+            <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
+            <gemaaktOp>2020-01-21T09:03:00Z</gemaaktOp>
+        </Basisversie>
+      </gemaaktOpBasisVan>
+    </Intrekking>
+  </Intrekkingen>
+  <Tijdstempels>
+    <!-- Intrekking en instelling gebruiken hetzelfde doel -->
+    <Tijdstempel>
+      <doel>/join/id/proces/gm9999/2020/VervangenOmgevingsplan</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <datum>2020-07-01</datum>
+      <eId>art_I</eId>
+    </Tijdstempel>
+  </Tijdstempels>
+</ConsolidatieInformatie>

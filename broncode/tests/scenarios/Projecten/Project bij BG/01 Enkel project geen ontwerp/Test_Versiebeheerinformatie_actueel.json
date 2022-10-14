@@ -1,0 +1,45 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2022/REG_A": {
+                "BekendOp": [
+                    "2022-02-01"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2022/Instelling": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2022-02-01",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                                "GemaaktOp": "2022-02-01T07:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2022/Instelling"
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2022-02-01",
+                "GemaaktOp": "2022-02-01T07:00:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1"
+                    }
+                ],
+                "OntvangenOp": "2022-02-01"
+            }
+        ]
+    }
+}
