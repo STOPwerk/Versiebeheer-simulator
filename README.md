@@ -11,7 +11,7 @@ De simulator is een Python script dat toegepast wordt op een set invoerbestanden
 
 - [Download](download.zip) de simulator en pak het zip bestand uit. Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_simulator_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken. Alternatief is om deze repository te klonen en de eigen voorbeelden aan de `voorbeelden` map toe te voegen.
 
-- Lees de [documentatie](./wiki) waarin staat hoe de invoerbestanden gemaakt moeten worden.
+- Lees de [documentatie](../../wiki) waarin staat hoe de invoerbestanden gemaakt moeten worden.
 
 - Bekijk de [voorbeelden](voorbeelden) om inspiratie op te doen. De simulator is ook gebruikt voor een deel van de [STOP 2.0 voorbeelden](https://standaarden.overheid.nl/stop/voorbeelden/2.0.0/) ([preview](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/)).
 

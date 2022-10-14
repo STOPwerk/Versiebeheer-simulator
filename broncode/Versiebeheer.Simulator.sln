@@ -7,6 +7,7 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Versiebeheer.Simulator", "V
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED6D49FC-DEED-4C0B-A2AC-4636EFBDB3D7}"
 	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
 		Versiebeheer.Simulator.sln.vsspell = Versiebeheer.Simulator.sln.vsspell
 	EndProjectSection
 EndProject
