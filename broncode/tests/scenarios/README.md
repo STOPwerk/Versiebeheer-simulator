@@ -21,7 +21,7 @@ Voor het overnemen van STOP voorbeelden is de aanname dat de kloon van de Versie
 Voor het overnemen van voorbeelden voor de simulator:
 * Voer `kopieer_voorbeelden.bat` uit.
 * Voer de simulator uit via het `voer_alle_testen_uit.bat`/`voer_alle_testen_uit.sh` script.
-* Controleer dat de uitkomst van de overgenomen testscenario's correct is. Hernoem (indien nodig) de `Test_*_actueel.json` bestanden naar `Test_*_verwacht.json`
+* Controleer dat de uitkomst van de overgenomen testscenario's correct is. Hernoem (indien nodig) de `Test_*_actueel.json` bestanden naar `Test_*_verwacht.json`. In [PowerRename](https://learn.microsoft.com/en-us/windows/powertoys/powerrename): hernoem regular expression `Test_([a-zA-Z]+)_actueel.json` naar `Test_$1_verwacht.json` (filename + extension).
 * Commit/push de resultaten
 
 Bij het overnemen van de scenario's wordt [tools/voorbeelden_naar_unittests.py](../../tools/voorbeelden_naar_unittests.py) gebruikt. Dat script kopieert alleen nieuwe en bestaande bestanden, maar verwijdert geen bestanden. Als dat wel nodig is, moet dat met de hand gebeuren.

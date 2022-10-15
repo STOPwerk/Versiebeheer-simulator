@@ -16,7 +16,7 @@
 
 from pickle import NONE
 from applicatie_scenario import Scenario
-import applicatie_versie
+import applicatie_configuratie
 from data_bg_project import ProjectActie
 from weergave_resultaat_data import WeergaveData
 from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
@@ -48,7 +48,7 @@ class Proces_Simulatie:
     def VoerUit (self):
         """Voer de simulatie uit"""
         try:
-            self.Scenario.Log.Informatie ('<a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_versie.Applicatie_versie)
+            self.Scenario.Log.Informatie ('<a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_configuratie.Applicatie_versie)
             self.Scenario.Log.Informatie ("Voer de simulatie uit")
             self.Scenario.WeergaveData = WeergaveData (self.Scenario)
 

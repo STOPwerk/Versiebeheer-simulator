@@ -7,6 +7,8 @@
 #
 #======================================================================
 
+import applicatie_configuratie
+
 class VervangSTOPCodumentatieURL:
 
     @staticmethod
@@ -16,6 +18,6 @@ class VervangSTOPCodumentatieURL:
         return html
 
     _TeVervangen = {
-        '@@@DOCUMENTATIE_URL@@@': 'https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/',
-        '@@@REPOSITORY_URL@@@': 'https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/'
+        '@@@DOCUMENTATIE_URL@@@': applicatie_configuratie.STOP_Documentatie_Url,
+        '@@@REPOSITORY_URL@@@': applicatie_configuratie.STOP_Repository_Url
     }

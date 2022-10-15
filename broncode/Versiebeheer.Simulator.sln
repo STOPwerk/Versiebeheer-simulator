@@ -11,6 +11,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Versiebeheer.Simulator.sln.vsspell = Versiebeheer.Simulator.sln.vsspell
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "uitleveren", "uitleveren", "{AC303DEE-C03D-4BF4-AF61-337A7FF23C49}"
+	ProjectSection(SolutionItems) = preProject
+		uitleveren\configuratie.json = uitleveren\configuratie.json
+		uitleveren\publiceer.bat = uitleveren\publiceer.bat
+		uitleveren\README.md = uitleveren\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "download", "download", "{86A9BB6F-E055-4705-B124-85EB0EF6DA83}"
+	ProjectSection(SolutionItems) = preProject
+		uitleveren\download\LEESMIJ.txt = uitleveren\download\LEESMIJ.txt
+		uitleveren\download\voer_simulator_uit_voor_mijn_voorbeelden.bat = uitleveren\download\voer_simulator_uit_voor_mijn_voorbeelden.bat
+		uitleveren\download\voer_simulator_uit_voor_mijn_voorbeelden.sh = uitleveren\download\voer_simulator_uit_voor_mijn_voorbeelden.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{01512893-CBAB-4E48-8947-DE923AB841FB}"
+	ProjectSection(SolutionItems) = preProject
+		uitleveren\templates\LICENSE = uitleveren\templates\LICENSE
+		uitleveren\templates\README.md = uitleveren\templates\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +42,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AC303DEE-C03D-4BF4-AF61-337A7FF23C49} = {ED6D49FC-DEED-4C0B-A2AC-4636EFBDB3D7}
+		{86A9BB6F-E055-4705-B124-85EB0EF6DA83} = {AC303DEE-C03D-4BF4-AF61-337A7FF23C49}
+		{01512893-CBAB-4E48-8947-DE923AB841FB} = {AC303DEE-C03D-4BF4-AF61-337A7FF23C49}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {421E6513-4800-4E5F-9647-785F5C633E35}
