@@ -1,5 +1,20 @@
 # Uitleveren
 
+## Voorbereiding
+
+- Werk de bestanden in [download](download) bij indien nodig. Gebruik geen subdirectories. Bij de release worden deze bestanden samen met een lege `mijn voorbeelden` directory en de simulator in [download.zip](../../download.zip) gezet.
+
+- Werk de bestanden in [templates](templates) bij indien nodig. Deze worden naar de [root](../../) van de repository gekopieerd. Hierin worden vervangen:
+    - @@@VERSIE@@@ door de versie van de release
+    - @@@STOP_Documentatie_Url@@@ door de URL van de STOP documentatie van de juiste versie van STOP
+    - @@@STOP_Voorbeelden_Url@@@ door de URL van de STOP voorbeelden van de juiste versie van STOP
+
+- Werk [configuratie.json](configuratie.json) bij indien nodig.
+
+- Commit en push alle wijzigingen naar de _development_ branch.
+
+## Uitvoering
+
 Deze repository is de ontwikkelrepository voor de versiebeheersimulator. Bij het uitleveren wordt een deel van de bestanden uit deze repository overgezet naar een publieke repository. Dat wordt gedaan met het tools\uitlevering_naar_publieke_repo.py script uit het Python project.
 
 Ter voorbereiding:
@@ -20,4 +35,3 @@ Het python script maakt ook een downloadbare versie van de simulator in de vorm 
 
 Daarnaast worden alle bestanden uit de `bestanden` map en submappen recursief gekopieerd, waarbij de bestanden uit de `bestanden` map in de root van de publieke repository gezet worden. Als een bestand in de publieke repository al bestaat wordt het overschreven. Eerder gekopieerde bestanden die nu niet meer in de `bestanden` map staan worden niet weggehaald.
 
-  

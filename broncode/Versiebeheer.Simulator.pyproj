@@ -12,7 +12,7 @@
     <RootNamespace>Versiebeheer.Simulator</RootNamespace>
     <InterpreterId>Global|PythonCore|3.9</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-t tests\scenarios</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t tests\scenarios</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>
@@ -90,7 +90,7 @@
   <ItemGroup>
     <Compile Include="simulator\applicatie.py" />
     <Compile Include="simulator\applicatie_meldingen.py" />
-    <Compile Include="simulator\applicatie_versie.py" />
+    <Compile Include="simulator\applicatie_configuratie.py" />
     <Compile Include="simulator\data_bg_project.py" />
     <Compile Include="simulator\data_bg_versiebeheer.py" />
     <Compile Include="simulator\data_lv_actueleannotaties.py" />
@@ -174,7 +174,7 @@
     <Compile Include="tests\code\test_stop_naamgeving.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tools\maak_download_zip.py" />
+    <Compile Include="tools\maak_release_artefacts.py" />
     <Compile Include="tools\voorbeelden_naar_unittests.py" />
   </ItemGroup>
   <ItemGroup>
