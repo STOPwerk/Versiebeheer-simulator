@@ -8,7 +8,8 @@ echo.
 goto Pause
 
 :Start
-git commit -m "Release @@@VERSIE@@@"
+echo on
+git commit -a -m "Release @@@VERSIE@@@"
 if errorlevel 1 goto Pause
 
 git config user.mail "frank.robijn@koop.overheid.nl"
@@ -21,7 +22,7 @@ git pull
 if errorlevel 1 goto Pause
 git merge --squash -m "Release @@@VERSIE@@@" development
 if errorlevel 1 goto Pause
-git commit -m "Release @@@VERSIE@@@"
+git commit -a -m "Release @@@VERSIE@@@"
 if errorlevel 1 goto Pause
 rem git push --all
 if errorlevel 1 goto Pause

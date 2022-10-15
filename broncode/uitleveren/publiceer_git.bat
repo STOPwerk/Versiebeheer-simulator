@@ -8,10 +8,8 @@ echo.
 goto Pause
 
 :Start
-echo geen git
-exit /b 1
-git commit -m "Release 2022-10-15 13:03:32"
-git push
+echo on
+git commit -a -m "Release 2022-10-15 13:25:40"
 if errorlevel 1 goto Pause
 
 git config user.mail "frank.robijn@koop.overheid.nl"
@@ -22,11 +20,11 @@ git switch main
 if errorlevel 1 goto Pause
 git pull
 if errorlevel 1 goto Pause
-git merge --squash -m "Release 2022-10-15 13:03:32" development
+git merge --squash -m "Release 2022-10-15 13:25:40" development
 if errorlevel 1 goto Pause
-git commit -m "Release 2022-10-15 13:03:32"
+git commit -a -m "Release 2022-10-15 13:25:40"
 if errorlevel 1 goto Pause
-git push
+rem git push --all
 if errorlevel 1 goto Pause
 
 git config --unset user.mail
@@ -35,6 +33,6 @@ git switch development
 
 if errorlevel 0 goto End
 :Pause
-exit 1
+exit /b 1
 
 :End
