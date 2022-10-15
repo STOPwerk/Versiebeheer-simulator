@@ -45,3 +45,4 @@ if errorlevel 0 goto End
 pause
 
 :End
+del /q publiceer_git.bat
