@@ -100,7 +100,7 @@ class MaakActueleToestandenMetAnnotaties:
         # versiebeheer
         #
         #--------------------------------------------------------------
-        nieuweToestanden = { a : [] for a in  self._Annotaties if a.ViaVersiebeheer } # Alle nieuwe toestanden voor de versiebeheer-annotaties
+        nieuweToestanden = { a : [] for a in  self._Annotaties if a.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer } # Alle nieuwe toestanden voor de versiebeheer-annotaties
         for toestand in actueleToestanden:
             if toestand.Instrumentversie is None:
                 # Geen instrumentversie, dan ook geen bekende annotatieversies
@@ -109,7 +109,7 @@ class MaakActueleToestandenMetAnnotaties:
                     lijst.append (ExTuncToestand (self._GemaaktOp, toestand.JuridischWerkendVanaf, versie))
             else:
                 # Er moet altijd een uitspraak over een annotatieversie gedaan kunnen worden, tenzij de annotatie nog niet bestaodn
-                versies = { a : ActueleAnnotatieVersie (None, "Annotatie bestaat nog niet.") for a in  self._Annotaties if a.ViaVersiebeheer } # Alle nieuwe versies voor de versiebeheer=annotaties
+                versies = { a : ActueleAnnotatieVersie (None, "Annotatie bestaat nog niet.") for a in  self._Annotaties if a.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer } # Alle nieuwe versies voor de versiebeheer=annotaties
                 for proefversie in self._Consolidatie.Proefversies:
                     # Zoek de proefversie op
                     if proefversie.Instrumentversie == toestand.Instrumentversie:
@@ -140,29 +140,30 @@ class MaakActueleToestandenMetAnnotaties:
         #
         #--------------------------------------------------------------
         for annotatie in self._Annotaties:
-            nieuweToestanden = {} # De nieuwe toestanden voor de annotatie. Key = tijdstip, value = toestanden met oplopende JWV
-            for versie in annotatie.Versies:
-                # Annotatieversies kunnen op elk moment in het verleden (dus voor self._GemaaktOp) uitgewisseld zijn
-                if (self._VolgendeGemaaktOp is None or versie.Tijdstip () < self._VolgendeGemaaktOp):
-                    # Alle doelen moeten matchen
-                    doelen = '\n'.join (d.Identificatie for d in versie.Doelen)
-                    # Op deze plaats speelt het ex-tunc aanname een rol. Alle annotatieversies die in dit tijdinterval binnenkomen
-                    # mogen niet meer voor een historische toestand zijn, en moeten dus bij een actuele toestand horen.
-                    for toestand in actueleToestanden:
-                        if doelen == '\n'.join (d.Identificatie for d in toestand.Inwerkingtredingsdoelen):
-                            # Het tijdstip mag niet eerder zijn dan self._GemaaktOp, want voor dat tijdstip waren de actuele toestanden misschien anders
-                            # en hoorde deze versie misschien niet bij een toestand. Als dat wel zo is, dan wordt de ExTuncToestand niet toegevoegd aan de tijdlijn
-                            # omdat het niet tot een andere uitkomst van tijdreizen leidt.
-                            tijdstip = versie.Tijdstip () if versie.Tijdstip () >= self._GemaaktOp else self._GemaaktOp
-                            lijst = nieuweToestanden.get (tijdstip)
-                            if lijst is None:
-                                nieuweToestanden[tijdstip] = lijst = []
-                            lijst.append (ExTuncToestand (tijdstip, toestand.JuridischWerkendVanaf, ActueleAnnotatieVersie ([versie], None)))
-                            break
+            if annotatie.Synchronisatie == Annotatie._Synchronisatie_Toestand:
+                nieuweToestanden = {} # De nieuwe toestanden voor de annotatie. Key = tijdstip, value = toestanden met oplopende JWV
+                for versie in annotatie.Versies:
+                    # Annotatieversies kunnen op elk moment in het verleden (dus voor self._GemaaktOp) uitgewisseld zijn
+                    if (self._VolgendeGemaaktOp is None or versie.Tijdstip () < self._VolgendeGemaaktOp):
+                        # Alle doelen moeten matchen
+                        doelen = '\n'.join (d.Identificatie for d in versie.Doelen)
+                        # Op deze plaats speelt het ex-tunc aanname een rol. Alle annotatieversies die in dit tijdinterval binnenkomen
+                        # mogen niet meer voor een historische toestand zijn, en moeten dus bij een actuele toestand horen.
+                        for toestand in actueleToestanden:
+                            if doelen == '\n'.join (d.Identificatie for d in toestand.Inwerkingtredingsdoelen):
+                                # Het tijdstip mag niet eerder zijn dan self._GemaaktOp, want voor dat tijdstip waren de actuele toestanden misschien anders
+                                # en hoorde deze versie misschien niet bij een toestand. Als dat wel zo is, dan wordt de ExTuncToestand niet toegevoegd aan de tijdlijn
+                                # omdat het niet tot een andere uitkomst van tijdreizen leidt.
+                                tijdstip = versie.Tijdstip () if versie.Tijdstip () >= self._GemaaktOp else self._GemaaktOp
+                                lijst = nieuweToestanden.get (tijdstip)
+                                if lijst is None:
+                                    nieuweToestanden[tijdstip] = lijst = []
+                                lijst.append (ExTuncToestand (tijdstip, toestand.JuridischWerkendVanaf, ActueleAnnotatieVersie ([versie], None)))
+                                break
 
-            for tijdstip in sorted (nieuweToestanden.keys ()):
-                nieuweToestanden[tijdstip].sort (key = lambda t: t.JuridischWerkendVanaf)
-                MaakActueleToestandenMetAnnotaties._VoegToestandenToe (self._Consolidatie.Annotaties.VoorToestandViaDoelen[annotatie], nieuweToestanden[tijdstip], MaakActueleToestandenMetAnnotaties._IsAnnotatieVersieGelijkAan)
+                for tijdstip in sorted (nieuweToestanden.keys ()):
+                    nieuweToestanden[tijdstip].sort (key = lambda t: t.JuridischWerkendVanaf)
+                    MaakActueleToestandenMetAnnotaties._VoegToestandenToe (self._Consolidatie.Annotaties.VoorToestandViaDoelen[annotatie], nieuweToestanden[tijdstip], MaakActueleToestandenMetAnnotaties._IsAnnotatieVersieGelijkAan)
 
 
         #--------------------------------------------------------------
@@ -173,45 +174,46 @@ class MaakActueleToestandenMetAnnotaties:
         #
         #--------------------------------------------------------------
         for annotatie in self._Annotaties:
-            # Kijk per tijdstip wat de beste match qua annotaties is
-            # Dit algoritme is niet erg efficiënt: voor alle tijdstippen worden alle actuele toestanden 
-            # opnieuw van een annotatie voorzien, ook al is (voor tijdstippen na self._GemaaktOp) ook 
-            # wel te zien dat een toestand niet geraakt wordt door de annotatieversie die op dat tijdstip 
-            # wordt uitgewisseld. Omdat het bij deze applicatie altijd om kleine aantallen toestanden en 
-            # annotatieversies gaat, wordt hier voor eenvoud van de code gekozen.
-            tijdstippen = set([self._GemaaktOp])
-            for versie in annotatie.Versies:
-                if versie.Tijdstip () > self._GemaaktOp and (self._VolgendeGemaaktOp is None or versie.Tijdstip () < self._VolgendeGemaaktOp):
-                    tijdstippen.add (versie.Tijdstip ())
+            if annotatie.Synchronisatie == Annotatie._Synchronisatie_Doel:
+                # Kijk per tijdstip wat de beste match qua annotaties is
+                # Dit algoritme is niet erg efficiënt: voor alle tijdstippen worden alle actuele toestanden 
+                # opnieuw van een annotatie voorzien, ook al is (voor tijdstippen na self._GemaaktOp) ook 
+                # wel te zien dat een toestand niet geraakt wordt door de annotatieversie die op dat tijdstip 
+                # wordt uitgewisseld. Omdat het bij deze applicatie altijd om kleine aantallen toestanden en 
+                # annotatieversies gaat, wordt hier voor eenvoud van de code gekozen.
+                tijdstippen = set([self._GemaaktOp])
+                for versie in annotatie.Versies:
+                    if versie.Tijdstip () > self._GemaaktOp and (self._VolgendeGemaaktOp is None or versie.Tijdstip () < self._VolgendeGemaaktOp):
+                        tijdstippen.add (versie.Tijdstip ())
 
-            for totEnMet in sorted (tijdstippen):
-                nieuweToestanden = [] # De nieuwe toestanden voor de annotatie.
+                for totEnMet in sorted (tijdstippen):
+                    nieuweToestanden = [] # De nieuwe toestanden voor de annotatie.
 
-                # Kijk per actuele toestand wat de passende versie(s) zijn
-                for toestand in actueleToestanden:
-                    gevondenVersies = [] # Versies die passen bij de toestand
-                    for versie in reversed (annotatie.Versies): # aflopende volgorde van tijdstempels
-                        # Annotatieversies kunnen op elk moment in het verleden (dus voor self._GemaaktOp) uitgewisseld zijn
-                        if versie.Tijdstip () <= totEnMet:
-                            if len (set (versie.Doelen) & set (toestand.Inwerkingtredingsdoelen)) == len (versie.Doelen):
-                                # Alle doelen van de versie komen voor in de iwt-doelen van de toestand
-                                # Gebruik deze versie tenzij er al een andere versie is gevonden voor dezelfde doelen
-                                gebruiken = True
-                                for gevonden in gevondenVersies:
-                                    if len (set (versie.Doelen) & set (gevonden.Doelen)) == len (versie.Doelen):
-                                        # Alle doelen van de versie zijn onderdeel van de doelen van de gevonden versie
-                                        gebruiken = False
-                                        break
-                                if gebruiken:
-                                    gevondenVersies.append (versie)
+                    # Kijk per actuele toestand wat de passende versie(s) zijn
+                    for toestand in actueleToestanden:
+                        gevondenVersies = [] # Versies die passen bij de toestand
+                        for versie in reversed (annotatie.Versies): # aflopende volgorde van tijdstempels
+                            # Annotatieversies kunnen op elk moment in het verleden (dus voor self._GemaaktOp) uitgewisseld zijn
+                            if versie.Tijdstip () <= totEnMet:
+                                if len (set (versie.Doelen) & set (toestand.Inwerkingtredingsdoelen)) == len (versie.Doelen):
+                                    # Alle doelen van de versie komen voor in de iwt-doelen van de toestand
+                                    # Gebruik deze versie tenzij er al een andere versie is gevonden voor dezelfde doelen
+                                    gebruiken = True
+                                    for gevonden in gevondenVersies:
+                                        if len (set (versie.Doelen) & set (gevonden.Doelen)) == len (versie.Doelen):
+                                            # Alle doelen van de versie zijn onderdeel van de doelen van de gevonden versie
+                                            gebruiken = False
+                                            break
+                                    if gebruiken:
+                                        gevondenVersies.append (versie)
 
-                    if len (gevondenVersies) > 0:
-                        # Er is/zijn annotatieversies voor de toestand
-                        nieuweToestanden.append (ExTuncToestand (totEnMet, toestand.JuridischWerkendVanaf, ActueleAnnotatieVersie (gevondenVersies, "Annotatieversie kan niet eenduidig bepaald worden" if len (gevondenVersies) > 1 else None)))
+                        if len (gevondenVersies) > 0:
+                            # Er is/zijn annotatieversies voor de toestand
+                            nieuweToestanden.append (ExTuncToestand (totEnMet, toestand.JuridischWerkendVanaf, ActueleAnnotatieVersie (gevondenVersies, "Annotatieversie kan niet eenduidig bepaald worden" if len (gevondenVersies) > 1 else None)))
 
-                # Voeg de nieuwe toestanden toe (als dat nodig is)
-                nieuweToestanden.sort (key = lambda t: t.JuridischWerkendVanaf)
-                MaakActueleToestandenMetAnnotaties._VoegToestandenToe (self._Consolidatie.Annotaties.VoorDoel[annotatie], nieuweToestanden, MaakActueleToestandenMetAnnotaties._IsAnnotatieVersieGelijkAan)
+                    # Voeg de nieuwe toestanden toe (als dat nodig is)
+                    nieuweToestanden.sort (key = lambda t: t.JuridischWerkendVanaf)
+                    MaakActueleToestandenMetAnnotaties._VoegToestandenToe (self._Consolidatie.Annotaties.VoorDoel[annotatie], nieuweToestanden, MaakActueleToestandenMetAnnotaties._IsAnnotatieVersieGelijkAan)
 
 
 #----------------------------------------------------------------------

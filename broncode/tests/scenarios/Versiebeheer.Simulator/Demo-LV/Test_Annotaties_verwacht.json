@@ -11,8 +11,7 @@
                             "/join/id/proces/gm9999/2022/Instelling"
                         ],
                         "JuridischWerkendVanaf": "2022-02-01",
-                        "NietMeerActueel": false,
-                        "UniekId": 20
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -25,8 +24,7 @@
                             "/join/id/proces/gm9999/2022/Wijziging"
                         ],
                         "JuridischWerkendVanaf": "2022-04-15",
-                        "NietMeerActueel": false,
-                        "UniekId": 30
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -40,8 +38,7 @@
                         ],
                         "JuridischWerkendTot": "2022-04-15",
                         "JuridischWerkendVanaf": "2022-04-01",
-                        "NietMeerActueel": false,
-                        "UniekId": 47
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -60,8 +57,7 @@
                                 "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
                                 "LaatstBekend": "2022-03-15T07:00:00Z"
                             }
-                        ],
-                        "UniekId": 46
+                        ]
                     },
                     {
                         "Basisversiedoelen": [
@@ -75,8 +71,7 @@
                             "/join/id/proces/gm9999/2022/Wijziging"
                         ],
                         "JuridischWerkendVanaf": "2022-04-15",
-                        "NietMeerActueel": false,
-                        "UniekId": 61
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -85,14 +80,13 @@
                             "/join/id/proces/gm9999/2022/Wijziging2"
                         ],
                         "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-06-01",
-                        "Identificatie": 7,
+                        "Identificatie": 8,
                         "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1",
                         "Inwerkingtredingsdoelen": [
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1"
                         ],
                         "JuridischWerkendVanaf": "2022-06-01",
-                        "NietMeerActueel": false,
-                        "UniekId": 71
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -101,7 +95,7 @@
                             "/join/id/proces/gm9999/2022/Wijziging2"
                         ],
                         "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-06-01;2",
-                        "Identificatie": 8,
+                        "Identificatie": 9,
                         "Inwerkingtredingsdoelen": [
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
@@ -117,8 +111,7 @@
                                 "Doel": "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2",
                                 "LaatstBekend": "2022-05-02T07:00:00Z"
                             }
-                        ],
-                        "UniekId": 76
+                        ]
                     },
                     {
                         "Basisversiedoelen": [
@@ -127,15 +120,14 @@
                             "/join/id/proces/gm9999/2022/Wijziging2"
                         ],
                         "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-06-01;2",
-                        "Identificatie": 8,
+                        "Identificatie": 9,
                         "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie-gelijk1en2",
                         "Inwerkingtredingsdoelen": [
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
                         ],
                         "JuridischWerkendVanaf": "2022-06-01",
-                        "NietMeerActueel": false,
-                        "UniekId": 81
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -146,14 +138,13 @@
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
                         ],
                         "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01",
-                        "Identificatie": 9,
+                        "Identificatie": 10,
                         "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5",
                         "Inwerkingtredingsdoelen": [
                             "/join/id/proces/gm9999/2022/Wijziging4"
                         ],
                         "JuridischWerkendVanaf": "2022-07-01",
-                        "NietMeerActueel": false,
-                        "UniekId": 86
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -165,14 +156,13 @@
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
                         ],
                         "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01;2022-08-01",
-                        "Identificatie": 12,
+                        "Identificatie": 13,
                         "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk",
                         "Inwerkingtredingsdoelen": [
                             "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
                         ],
                         "JuridischWerkendVanaf": "2022-08-01",
-                        "NietMeerActueel": false,
-                        "UniekId": 91
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -182,15 +172,14 @@
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
                         ],
                         "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01",
-                        "Identificatie": 9,
+                        "Identificatie": 10,
                         "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie5rechter",
                         "Inwerkingtredingsdoelen": [
                             "/join/id/proces/gm9999/2022/Wijziging4"
                         ],
                         "JuridischWerkendTot": "2022-08-01",
                         "JuridischWerkendVanaf": "2022-07-01",
-                        "NietMeerActueel": false,
-                        "UniekId": 101
+                        "NietMeerActueel": false
                     },
                     {
                         "Basisversiedoelen": [
@@ -201,7 +190,7 @@
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
                         ],
                         "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01;2022-08-01",
-                        "Identificatie": 12,
+                        "Identificatie": 13,
                         "Inwerkingtredingsdoelen": [
                             "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
                         ],
@@ -218,8 +207,7 @@
                                 "LaatstBekend": "2022-07-15T07:00:00Z",
                                 "LaatstVerwerkt": "2022-06-01T07:00:00Z"
                             }
-                        ],
-                        "UniekId": 98
+                        ]
                     },
                     {
                         "Basisversiedoelen": [
@@ -230,14 +218,13 @@
                             "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
                         ],
                         "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01;2022-08-01",
-                        "Identificatie": 12,
+                        "Identificatie": 13,
                         "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie6twk_rechter",
                         "Inwerkingtredingsdoelen": [
                             "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
                         ],
                         "JuridischWerkendVanaf": "2022-08-01",
-                        "NietMeerActueel": false,
-                        "UniekId": 124
+                        "NietMeerActueel": false
                     }
                 ],
                 "Toestanden": [
@@ -309,86 +296,6 @@
                 ]
             },
             "UitProefversies": {
-                "Pons": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Uitleg": "Geen instrumentversie voor de toestand, dus ook geen bekende annotatieversie."
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                    ],
-                                    "GemaaktOp": "2022-05-02T08:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
-                                    ],
-                                    "GemaaktOp": "2022-07-14T07:00:00Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 3,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-16T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-15T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 3,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-14T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-02T08:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-02T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-04-15",
-                            "Tijdstip": "2022-03-16T08:30:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-04-15",
-                            "Tijdstip": "2022-03-15T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T07:00:00Z"
-                        }
-                    ]
-                },
                 "RegelingMetadata": {
                     "ToestandInhoud": [
                         {
@@ -575,194 +482,9 @@
                             "Tijdstip": "2022-01-01T08:31:57Z"
                         }
                     ]
-                },
-                "Pons": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                    ],
-                                    "GemaaktOp": "2022-05-02T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                    ],
-                                    "GemaaktOp": "2022-05-02T08:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
-                                    ],
-                                    "GemaaktOp": "2022-07-14T07:00:00Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 3,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-14T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-02T08:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-02T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T07:00:00Z"
-                        }
-                    ]
-                },
-                "RegelingMetadata": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging"
-                                    ],
-                                    "GemaaktOp": "2022-03-16T08:30:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging4"
-                                    ],
-                                    "GemaaktOp": "2022-06-01T07:00:00Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-07-01",
-                            "Tijdstip": "2022-06-01T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-04-15",
-                            "Tijdstip": "2022-03-16T08:30:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T07:00:00Z"
-                        }
-                    ]
                 }
             },
             "VoorToestandViaDoelen": {
-                "Afgeleide non-STOP gegevens": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "UitgewisseldOp": "2022-01-01T08:31:57Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1"
-                                    ],
-                                    "UitgewisseldOp": "2022-05-01T19:14:18Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                    ],
-                                    "UitgewisseldOp": "2022-05-03T16:59:30Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
-                                    ],
-                                    "UitgewisseldOp": "2022-07-10T10:42:42Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 3,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-14T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-03T16:59:30Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-01T19:14:18Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T08:31:57Z"
-                        }
-                    ]
-                },
                 "Pons": {
                     "ToestandInhoud": [
                         {
@@ -771,7 +493,7 @@
                                     "Doelen": [
                                         "/join/id/proces/gm9999/2022/Instelling"
                                     ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
+                                    "UitgewisseldOp": "2022-01-01T07:00:00Z"
                                 }
                             ]
                         },
@@ -782,7 +504,7 @@
                                         "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
                                         "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
                                     ],
-                                    "GemaaktOp": "2022-05-02T08:00:00Z"
+                                    "UitgewisseldOp": "2022-05-02T08:00:00Z"
                                 }
                             ]
                         },
@@ -792,7 +514,7 @@
                                     "Doelen": [
                                         "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
                                     ],
-                                    "GemaaktOp": "2022-07-14T07:00:00Z"
+                                    "UitgewisseldOp": "2022-07-14T07:00:00Z"
                                 }
                             ]
                         }
@@ -807,57 +529,6 @@
                             "Inhoud": 1,
                             "JuridischWerkendVanaf": "2022-06-01",
                             "Tijdstip": "2022-05-02T08:00:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T07:00:00Z"
-                        }
-                    ]
-                },
-                "RegelingMetadata": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging"
-                                    ],
-                                    "GemaaktOp": "2022-03-16T08:30:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging4"
-                                    ],
-                                    "GemaaktOp": "2022-06-01T07:00:00Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-07-01",
-                            "Tijdstip": "2022-06-01T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-04-15",
-                            "Tijdstip": "2022-03-16T08:30:00Z"
                         },
                         {
                             "Inhoud": 0,

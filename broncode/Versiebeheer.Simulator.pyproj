@@ -12,7 +12,7 @@
     <RootNamespace>Versiebeheer.Simulator</RootNamespace>
     <InterpreterId>Global|PythonCore|3.9</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t tests\scenarios</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t tests\scenarios\Annotaties</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>

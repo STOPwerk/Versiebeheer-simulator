@@ -1,0 +1,19 @@
+{
+    "Annotatie": "Pons",
+	"Synchronisatie": "Toestand",
+	"Instrument": "/akn/nl/act/gm9999/2022/REG_A",
+    "Uitwisselingen": [{
+            "UitgewisseldOp": "2022-01-01T07:00:00Z",
+            "Doelen": ["/join/id/proces/gm9999/2022/Instelling"],
+            "Beschrijving": "Initiële versie van de annotatie."
+        }, {
+            "UitgewisseldOp": "2022-05-01T07:00:00Z",
+            "Doelen": ["/join/id/proces/gm9999/2022/Wijziging2"],
+            "Beschrijving": "Versie voor de eerste van de gelijktijdige wijzigingen."
+        }, {
+            "UitgewisseldOp": "2022-06-01T07:00:00Z",
+            "Doelen": ["/join/id/proces/gm9999/2022/Wijziging2", "/join/id/proces/gm9999/2022/Wijziging3"],
+            "Beschrijving": "Annotatie voor de toestand die volgt uit de twee gelijktijdig in werking tredende besluiten."
+        }
+    ]
+}

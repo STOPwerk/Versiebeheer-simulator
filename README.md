@@ -1,6 +1,6 @@
 # Versiebeheer-simulator
 
-Huidige versie: `2022-10-15 13:41:46`.
+Huidige versie: `2022-10-16 18:48:44`.
 
 ## Wat is het?
 Simulator die laat zien hoe het [STOP](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/)-versiebeheer gebruikt kan worden in de keten van adviesbureaus, bevoegd gezagen, landelijke voorzieningen en hun afnemers.
@@ -11,7 +11,7 @@ De simulator is een Python script dat toegepast wordt op een set invoerbestanden
 
 - Zorg dat Python geïnstalleerd is. Dat is op Unix en MacOS meestal het geval. Voor Windows kan de laatste versie van Python [hier](https://www.python.org/downloads/) gedownload worden.
 
-- [Download](download.zip) de simulator en pak het zip bestand uit. Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_simulator_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken. Alternatief is om deze repository te klonen en de eigen voorbeelden aan de `voorbeelden` map toe te voegen.
+- [Download](download.zip) de simulator en pak het zip bestand uit. Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_simulator_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken.
 
 - Lees de [documentatie](../../wiki) waarin staat hoe de invoerbestanden gemaakt moeten worden.
 

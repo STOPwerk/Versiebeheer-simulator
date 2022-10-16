@@ -1,0 +1,13 @@
+{
+    "Uitwisselingen": [
+        {
+            "naam": "Gelijktijdige iwt",
+            "gemaaktOp": "2022-06-01T07:00:00Z"
+        },
+        {
+            "naam": "Opeenvolgende toestanden",
+            "gemaaktOp": "2022-05-01T07:00:00Z"
+        }
+    ],
+    "Procesopties": true
+}

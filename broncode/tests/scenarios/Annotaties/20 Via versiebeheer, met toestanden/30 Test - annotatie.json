@@ -1,0 +1,14 @@
+{
+    "Annotatie": "RegelingMetadata",
+	"Instrument": "/akn/nl/act/gm9999/2022/REG_A",
+	"Uitwisselingen": [{
+            "GemaaktOp": "2022-01-01T07:00:00Z",
+            "Doelen": ["/join/id/proces/gm9999/2022/Instelling"],
+            "Beschrijving": "Initiële versie van de metadata."
+        }, {
+            "GemaaktOp": "2022-05-01T07:00:00Z",
+            "Doelen": ["/join/id/proces/gm9999/2022/Wijziging2"],
+            "Beschrijving": "Gewijzigde versie van de metadata."
+        }
+    ]
+}

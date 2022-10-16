@@ -11,15 +11,6 @@
                     ],
                     "Annotaties": [
                         {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
-                        {
                             "Naam": "RegelingMetadata",
                             "Versie": {
                                 "Doelen": [
@@ -55,15 +46,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -101,15 +83,6 @@
                     ],
                     "Annotaties": [
                         {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
-                        {
                             "Naam": "RegelingMetadata",
                             "Versie": {
                                 "Doelen": [
@@ -145,15 +118,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -202,15 +166,6 @@
                     ],
                     "Annotaties": [
                         {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
-                        {
                             "Naam": "RegelingMetadata",
                             "Versie": {
                                 "Doelen": [
@@ -257,15 +212,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                ],
-                                "GemaaktOp": "2022-05-02T07:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -334,16 +280,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                ],
-                                "GemaaktOp": "2022-05-02T08:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": false
@@ -414,16 +350,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                ],
-                                "GemaaktOp": "2022-05-02T08:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -510,15 +436,6 @@
                     ],
                     "Annotaties": [
                         {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
-                                ],
-                                "GemaaktOp": "2022-07-14T07:00:00Z"
-                            }
-                        },
-                        {
                             "Naam": "RegelingMetadata",
                             "Versie": {
                                 "Doelen": [
@@ -592,16 +509,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                ],
-                                "GemaaktOp": "2022-05-02T08:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -688,15 +595,6 @@
                     ],
                     "Annotaties": [
                         {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
-                                ],
-                                "GemaaktOp": "2022-07-14T07:00:00Z"
-                            }
-                        },
-                        {
                             "Naam": "RegelingMetadata",
                             "Versie": {
                                 "Doelen": [
@@ -723,15 +621,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -769,15 +658,6 @@
                     ],
                     "Annotaties": [
                         {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
-                        {
                             "Naam": "RegelingMetadata",
                             "Versie": {
                                 "Doelen": [
@@ -814,15 +694,6 @@
                     ],
                     "Annotaties": [
                         {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
-                        {
                             "Naam": "RegelingMetadata",
                             "Versie": {
                                 "Doelen": [
@@ -858,15 +729,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -941,16 +803,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                ],
-                                "GemaaktOp": "2022-05-02T08:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -990,15 +842,6 @@
                     ],
                     "Annotaties": [
                         {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
-                        {
                             "Naam": "RegelingMetadata",
                             "Versie": {
                                 "Doelen": [
@@ -1034,15 +877,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/Instelling"
-                                ],
-                                "GemaaktOp": "2022-01-01T07:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {
@@ -1117,16 +951,6 @@
                         }
                     ],
                     "Annotaties": [
-                        {
-                            "Naam": "Pons",
-                            "Versie": {
-                                "Doelen": [
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                    "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                ],
-                                "GemaaktOp": "2022-05-02T08:00:00Z"
-                            }
-                        },
                         {
                             "Naam": "RegelingMetadata",
                             "Versie": {

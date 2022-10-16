@@ -36,9 +36,7 @@
 	</BeoogdeRegelgeving>
 	<Intrekkingen>
 		<Intrekking>
-			<doelen>
-				<doel>/join/id/proces/gm9999/2022/Wijziging</doel>
-			</doelen>
+			<doel>/join/id/proces/gm9999/2022/Wijziging</doel>
 			<instrument>/join/id/regdata/2022/IO_A</instrument>
 			<eId>!wijziging#cmp_A__content_o_1__list_1__item_1__ref_o_1</eId>
 			<gemaaktOpBasisVan>

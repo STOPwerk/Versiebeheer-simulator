@@ -41,18 +41,25 @@ class Annotatie:
         self.Naam = None
         # WorkId van het instrument waar de annotatie bijhoort
         self.WorkId = None
-        # Geeft aan of een annotatie meedraait in het versiebeheer
-        self.ViaVersiebeheer = None
+        # Geeft aan hoe de annotatie gesynchroniseerd wordt met de regelgeving
+        self.Synchronisatie = None
         # De versies van de annotatie
         # Lijst van instanties van:
-        # - AnnotatieMomentopname voor ViaVersiebeheer = True, gesorteerd op gemaaktOp (oplopend)
-        # - AnnotatieUitwisseling voor ViaVersiebeheer = False, gesorteerd op ontvangenOp (oplopend)
+        # - AnnotatieMomentopname voor synchronisatie via versiebeheer, gesorteerd op gemaaktOp (oplopend)
+        # - AnnotatieUitwisseling voor andere synchronisatie, gesorteerd op ontvangenOp (oplopend)
         self.Versies = []
         # Geeft aan of er fouten zijn gesignaleerd bij het inlezen van de specificatie
         self._IsValide = True
         # Elke annotatie krijgt een nummer (voor weergave) op alfabetische volgorde van de naam
         # Het nummer wordt per work gegeven
         self._Nummer = None
+
+    # Annotatie draait mee in het versiebeheer
+    _Synchronisatie_Versiebeheer = 'P'
+    # Annotatie gekoppeld aan iwt-doelen van de toestand
+    _Synchronisatie_Toestand = 'T'
+    # Annotatie gekoppeld aan een wijzigingsproject, aan van de iwt-doelen van de toestand
+    _Synchronisatie_Doel = 'W'
 
 #----------------------------------------------------------------------
 # Inlezen specificatie
@@ -77,6 +84,17 @@ class Annotatie:
         if not isinstance (annotatie.Naam, str):
             log.Fout ("Bestand '" + pad + "': 'Annotatie' moet als waarde een string hebben")
             annotatie._IsValide = False
+
+        if "Synchronisatie" in data:
+            if data["Synchronisatie"] == 'Toestand':
+                annotatie.Synchronisatie = Annotatie._Synchronisatie_Toestand
+            elif data["Synchronisatie"] == 'Doel':
+                annotatie.Synchronisatie = Annotatie._Synchronisatie_Doel
+            else:
+                log.Fout ("Bestand '" + pad + "': 'Synchronisatie' moet als waarde 'Doel' of 'Toestand' hebben")
+                annotatie._IsValide = False
+        else:
+            annotatie.Synchronisatie = Annotatie._Synchronisatie_Versiebeheer
 
         if not "Instrument" in data or not isinstance (data["Instrument"], str):
             log.Fout ("Bestand '" + pad + "': 'Instrument' moet aanwezig zijn en als waarde een string hebben")
@@ -103,20 +121,7 @@ class Annotatie:
                     log.Fout ("Bestand '" + pad + "': element van 'Uitwisselingen' moet een object zijn")
                     annotatie._IsValide = False
                 else:
-                    if annotatie.ViaVersiebeheer is None:
-                        if "GemaaktOp" in spec:
-                            annotatie.ViaVersiebeheer = True
-                            if "UitgewisseldOp" in spec:
-                                log.Fout ("Bestand '" + pad + "': 'GemaaktOp' en 'UitgewisseldOp' kunnen niet samen voorkomen")
-                                annotatie._IsValide = False
-                        elif "UitgewisseldOp" in spec:
-                            annotatie.ViaVersiebeheer = False
-                        else:
-                            log.Fout ("Bestand '" + pad + "': 'GemaaktOp' of 'UitgewisseldOp' moet voor een uitwisseling opgegeven worden")
-                            annotatie._IsValide = False
-                            continue
-
-                    if annotatie.ViaVersiebeheer:
+                    if annotatie.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer:
                         if not "GemaaktOp" in spec:
                             log.Fout ("Bestand '" + pad + "': 'GemaaktOp' moet bij alle uitwisselingen voorkomen")
                             annotatie._IsValide = False

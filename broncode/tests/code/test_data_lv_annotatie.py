@@ -28,7 +28,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
 }''','''{
     "Naam": "test",
     "WorkId": "/akn/nl/act/gm9999/2022/reg001",
-    "ViaVersiebeheer": true,
+    "Synchronisatie": "P",
     "Versies": [
         {
             "Doelen": [
@@ -52,7 +52,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
 }''','''{
     "Naam": "test",
     "WorkId": "/join/id/regdata/2022/io001",
-    "ViaVersiebeheer": true,
+    "Synchronisatie": "P",
     "Versies": [
         {
             "Doelen": [
@@ -82,6 +82,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
     def test_Minimaal_UitgewisseldOp(self):
         self._Test_LeesJson ('''{
     "Annotatie": "test",
+    "Synchronisatie": "Doel",
     "Instrument": "/akn/nl/act/gm9999/2022/reg001",
     "Uitwisselingen": [
         { "UitgewisseldOp": "2022-05-25T07:00:00Z", "Doelen": [ "doel1" ], "Beschrijving": "Initieel" }
@@ -89,7 +90,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
 }''','''{
     "Naam": "test",
     "WorkId": "/akn/nl/act/gm9999/2022/reg001",
-    "ViaVersiebeheer": false,
+    "Synchronisatie": "W",
     "Versies": [
         {
             "Doelen": [
@@ -104,6 +105,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
     def test_Uitgebreid_UitgwisseldOp(self):
         self._Test_LeesJson ('''{
     "Annotatie": "test",
+    "Synchronisatie": "Toestand",
     "Instrument": "/join/id/regdata/2022/io001",
     "Uitwisselingen": [
         { "UitgewisseldOp": "2022-05-25T07:00:00Z", "Doelen": [ "doel1" ], "Beschrijving": "Initieel" },
@@ -113,7 +115,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
 }''','''{
     "Naam": "test",
     "WorkId": "/join/id/regdata/2022/io001",
-    "ViaVersiebeheer": false,
+    "Synchronisatie": "T",
     "Versies": [
         {
             "Doelen": [
@@ -201,7 +203,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
     "Instrument": "/akn/nl/act/gm9999/2022/reg001"
 }''',None)
 
-    def test_FoutUitwisselingenLeef(self):
+    def test_FoutUitwisselingenLeeg(self):
         self._Test_LeesJson ('''{
     "Annotatie": "test",
     "Instrument": "/akn/nl/act/gm9999/2022/reg001",
@@ -264,6 +266,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
     def test_Fout_UitgewisseldOp(self):
         self._Test_LeesJson ('''{
     "Annotatie": "test",
+    "Synchronisatie": "Toestand",
     "Instrument": "/akn/nl/act/gm9999/2022/reg001",
     "Uitwisselingen": [
         { "UitgewisseldOp": 42, "Doelen": [ "doel1" ], "Beschrijving": "test" }
@@ -273,6 +276,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
     def test_Fout_UitgewisseldOpOngeldig(self):
         self._Test_LeesJson ('''{
     "Annotatie": "test",
+    "Synchronisatie": "Toestand",
     "Instrument": "/akn/nl/act/gm9999/2022/reg001",
     "Uitwisselingen": [
         { "UitgewisseldOp": "2022-05-25", "Doelen": [ "doel1" ], "Beschrijving": "test" }
@@ -282,6 +286,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
     def test_Fout_WelNietUitgewisseldOp(self):
         self._Test_LeesJson ('''{
     "Annotatie": "test",
+    "Synchronisatie": "Toestand",
     "Instrument": "/akn/nl/act/gm9999/2022/reg001",
     "Uitwisselingen": [
         { "Doelen": [ "doel1" ], "Beschrijving": "test" },
@@ -292,6 +297,7 @@ class Test_data_lv_annotatie(unittest.TestCase):
     def test_Fout_UitgewisseldOpDubbel(self):
         self._Test_LeesJson ('''{
     "Annotatie": "test",
+    "Synchronisatie": "Toestand",
     "Instrument": "/akn/nl/act/gm9999/2022/reg001",
     "Uitwisselingen": [
         { "UitgewisseldOp": "2022-05-25T07:00:00Z", "Doelen": [ "doel1" ], "Beschrijving": "test" },
@@ -299,7 +305,18 @@ class Test_data_lv_annotatie(unittest.TestCase):
     ]
 }''',None)
 
-    def test_Fout_GemaaktOpUitgewisseldOp(self):
+    def test_Fout_GemaaktOpIpvUitgewisseldOp(self):
+        self._Test_LeesJson ('''{
+    "Annotatie": "test",
+    "Synchronisatie": "Toestand",
+    "Instrument": "/akn/nl/act/gm9999/2022/reg001",
+    "Uitwisselingen": [
+        { "GemaaktOp": "2022-04-25T07:00:00Z", "Doelen": [ "doel1" ], "Beschrijving": "test" },
+        { "UitgewisseldOp": "2022-05-25T07:00:00Z", "Doelen": [ "doel2" ], "Beschrijving": "test" }
+    ]
+}''',None)
+
+    def test_Fout_UitgewisseldOpIpvGemaaktOp(self):
         self._Test_LeesJson ('''{
     "Annotatie": "test",
     "Instrument": "/akn/nl/act/gm9999/2022/reg001",

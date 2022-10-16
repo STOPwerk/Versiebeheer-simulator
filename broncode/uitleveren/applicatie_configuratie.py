@@ -4,7 +4,7 @@
 #
 #======================================================================
 
-Applicatie_versie = "versie d.d. 2022-10-15 13:41:46"
+Applicatie_versie = "versie d.d. 2022-10-16 18:48:44"
 
 STOP_Documentatie_Url = "https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/"
 STOP_Repository_Url = "https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/"

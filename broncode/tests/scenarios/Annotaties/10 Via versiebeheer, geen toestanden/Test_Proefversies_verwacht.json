@@ -1,0 +1,114 @@
+{
+    "Testresultaat - Proefversies": {
+        "/akn/nl/act/gm9999/2022/REG_A": [
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-01T07:00:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "GemaaktOp": "2022-01-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie2"
+                }
+            ],
+            [
+                {
+                    "Annotatiebronnen": [
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "GemaaktOp": "2022-03-01T07:00:00Z",
+                                    "Vanaf": "2022-05-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging2",
+                            "TotEnMet": "2022-05-01T07:00:00Z"
+                        },
+                        {
+                            "AnnotatiesOvernemenVan": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                                    "GemaaktOp": "2022-01-01T07:00:00Z",
+                                    "Vanaf": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                            "TotEnMet": "2022-03-01T07:00:00Z"
+                        },
+                        {
+                            "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                            "TotEnMet": "2022-01-01T07:00:00Z"
+                        }
+                    ],
+                    "Annotaties": [
+                        {
+                            "Naam": "RegelingMetadata",
+                            "Versie": {
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging2"
+                                ],
+                                "GemaaktOp": "2022-05-01T07:00:00Z"
+                            }
+                        }
+                    ],
+                    "Doelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging2"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie3"
+                }
+            ]
+        ]
+    }
+}
