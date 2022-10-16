@@ -38,7 +38,7 @@ class MaakProefversies:
         proefversies = []
         for instrumentversie in uitwisseling.Instrumentversies:
             # Maak alleen proefversies als er annotaties zijn voor dit instrument die van versiebeheer gebruik maken
-            instrumentAnnotaties = [a for a in annotaties if a.WorkId == instrumentversie._Instrument.WorkId and a.ViaVersiebeheer]
+            instrumentAnnotaties = [a for a in annotaties if a.WorkId == instrumentversie._Instrument.WorkId and a.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer]
             if len(instrumentAnnotaties) > 0:
                 # Maak de proefversie met de annotaties tot en met deze uitwisseling
                 maker = MaakProefversies (instrumentversie)

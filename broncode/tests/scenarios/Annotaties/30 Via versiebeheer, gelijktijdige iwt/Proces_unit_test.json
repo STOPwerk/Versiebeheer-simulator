@@ -1,0 +1,18 @@
+{
+    "Uitwisselingen": [
+        {
+            "naam": "Test: onbekende annotatieversie",
+            "gemaaktOp": "2022-05-01T08:30:00Z",
+			"revisie": true
+        },
+        {
+            "naam": "Vooraf",
+            "gemaaktOp": "2022-03-01T07:00:00Z"
+        },
+        {
+            "naam": "Test: samenloop",
+            "gemaaktOp": "2022-05-01T07:00:00Z"
+        }
+    ],
+    "Procesopties": true
+}

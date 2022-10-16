@@ -184,7 +184,7 @@ class ResultaatGenerator (WebpaginaGenerator):
             if instrumentData.HeeftProefversies:
                 Weergave_Proefversies.VoegToe (self, instrument, instrumentData)
 
-            if instrumentData.HeeftAnnotaties:
+            if instrumentData.HeeftAnnotaties and instrumentData.HeeftActueleToestanden:
                 Weergave_Annotaties.VoegToe (self, instrumentData)
 
             if instrumentData.HeeftCompleteToestanden:

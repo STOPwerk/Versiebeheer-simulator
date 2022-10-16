@@ -3,90 +3,84 @@
   "Beschrijving": "<p>Demonstratie van de werking van projectmatig werken gezien vanuit het bevoegd gezag</p>",
   "Acties": [
     {
-      "SoortActie": "Intern",
-      "GemaaktOp": "2022-02-01T07:00:00Z",
+      "SoortActie": "Download",
+      "UitgevoerdOp": "2022-02-01T07:00:00Z",
       "Beschrijving": "Bij de start van een nieuw project wordt uitgegaan van een versie van de regelgeving die al bekendgemaakt is en voor dit project in werking zal treden. In dit geval de huidig geldende regelgeving.",
-      "Branches": [
-        {
-          "Doel": "/join/id/proces/gm9999/2022/Project",
-          "GebaseerdOp": "2022-02-01",
-          "Instrumentversies": [
-            { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1" },
-            { "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;versie1" },
-            { "Instrumentversie": "/join/id/regdata/2022/IO_B@2022;versie1" }
-          ]
-        }
+      "Doel": "/join/id/proces/gm9999/2022/Project",
+      "GebaseerdOp": "2022-02-01",
+      "Instrumenten": [
+        "/akn/nl/act/gm9999/2022/REG_A",
+        "/join/id/regdata/2022/IO_A",
+        "/join/id/regdata/2022/IO_B"
       ]
     },
     {
-      "SoortActie": "Ontwerpbesluit",
-      "GemaaktOp": "2022-04-01T07:00:00Z",
+      "SoortActie": "Wijziging",
+      "UitgevoerdOp": "2022-02-15T08:00:00Z",
+      "Beschrijving": "Wijziging aangebracht door adviesbureau",
+      "Doel": "/join/id/proces/gm9999/2022/Project",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1_versie1" },
+        { "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;P1_versie1" },
+        { "Instrumentversie": "/join/id/regdata/2022/IO_B@2022;versie1" }
+      ]
+    },
+    {
+      "SoortActie": "Uitwisseling",
+      "UitgevoerdOp": "2022-03-01T08:00:00Z",
+      "Beschrijving": "Adviesbureau levert aan bevoegd gezag",
+      "Doel": "/join/id/proces/gm9999/2022/Project"
+    },
+    {
+      "SoortActie": "Overnemen gewijzigde regelgeving",
+      "UitgevoerdOp": "2022-03-31T08:00:00Z",
       "Beschrijving": "Het ontwerpbesluit wordt opgesteld als wijziging ten opzichte van de op dat moment geldende regelgeving. Zowel de regeling als een van de GIO's zijn gewijzigd.",
-	  "GenereerConsolidatieInformatie": false,
-      "Branches": [
-        {
-          "Doel": "/join/id/proces/gm9999/2022/Project",
-          "XGebaseerdOp": "2022-03-15",
-          "XInstrumentversies": [
-            { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1_ontwerpversie1" },
-            { "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;P1_ontwerpversie1" },
-            { "Instrumentversie": "/join/id/regdata/2022/IO_B@2022;versie1" }
-          ],
-          "Instrumentversies": [
-            { "OnbekendeVersie": "/akn/nl/act/gm9999/2022/REG_A" },
-            { "OnbekendeVersie": "/join/id/regdata/2022/IO_A" },
-            { "OnbekendeVersie": "/join/id/regdata/2022/IO_B" }
-          ]
-        }
+      "Doel": "/join/id/proces/gm9999/2022/Project",
+      "GeldigOp": "2022-03-15",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1_ontwerpversie1" },
+        { "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;P1_ontwerpversie1" },
+        { "Instrumentversie": "/join/id/regdata/2022/IO_B@2022;versie1" }
       ]
     },
     {
-      "SoortActie": "Intern",
-      "GemaaktOp": "2022-05-15T07:00:00Z",
-      "Beschrijving": "Een concept van het definitieve besluit wordt opgesteld en wordt ter vaststelling aangeboden. De regeling is aangepast, de ene GIO is niet meer gewijzigd maar de andere is vervangen.",
-      "Branches": [
-        {
-          "Doel": "/join/id/proces/gm9999/2022/Project",
-          "GebaseerdOp": "2022-08-01",
-          "Instrumentversies": [
-            { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1_versie2" },
-            { "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;versie1" },
-            { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_B" },
-            { "Instrumentversie": "/join/id/regdata/2022/IO_C@2022;P1_versie1" }
-          ],
-          "JuridischWerkendVanaf": "2022-08-02"
-        }
-      ]
+      "SoortActie": "Publicatie",
+      "SoortPublicatie": "Ontwerpbesluit",
+      "UitgevoerdOp": "2022-04-01T07:00:00Z",
+      "Beschrijving": "Het ontwerpbesluit wordt gepubliceerd.",
+      "Doelen": [ "/join/id/proces/gm9999/2022/Project" ]
     },
     {
-      "SoortActie": "Besluit",
-      "GemaaktOp": "2022-06-02T07:00:00Z",
-      "Beschrijving": "De definitieve versie van het besluit wordt na vaststelling klaargemaakt voor publicatie door de laatste wijzigingen in de regeling las basisversie te nemen.",
-	  "GenereerConsolidatieInformatie": false,
-      "Branches": [
-        {
-          "Doel": "/join/id/proces/gm9999/2022/Project",
-          "Instrumentversies": [
-            { "OnbekendeVersie": "/akn/nl/act/gm9999/2022/REG_A" },
-            { "OnbekendeVersie": "/join/id/regdata/2022/IO_A" },
-            { "OnbekendeVersie": "/join/id/regdata/2022/IO_B" },
-            { "OnbekendeVersie": "/join/id/regdata/2022/IO_C" }
-          ]
-        }
+      "SoortActie": "Wijzigen",
+      "UitgevoerdOp": "2022-05-14T08:00:00Z",
+      "Beschrijving": "Een concept van het definitieve besluit wordt opgesteld.",
+      "Doel": "/join/id/proces/gm9999/2022/Project",
+      "GebaseerdOp": "2022-08-01",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1_versie2" },
+        { "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;versie1" },
+        { "Instrumentversie": "/join/id/regdata/2022/IO_B@2022;P1_versie2" }
       ],
-      "XBranches": [
-        {
-          "Doel": "/join/id/proces/gm9999/2022/Project",
-          "GebaseerdOp": "2022-06-01T07:00:00Z",
-          "Instrumentversies": [
-            { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1_versie3" },
-            { "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;versie2" },
-            { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_B" },
-            { "Instrumentversie": "/join/id/regdata/2022/IO_C@2022;P1_versie1" }
-          ],
-          "JuridischWerkendVanaf": "2022-08-02"
-        }
+      "JuridischWerkendVanaf": "2022-08-02"
+    },
+    {
+      "SoortActie": "Overnemen gewijzigde regelgeving",
+      "UitgevoerdOp": "2022-05-15T08:00:00Z",
+      "Beschrijving": "In het concept van het definitieve besluit worden de wijzigingen verwerkt. De regeling is aangepast, de ene GIO is niet meer gewijzigd maar de andere is vervangen.",
+      "Doel": "/join/id/proces/gm9999/2022/Project",
+      "GeldigOp": "2022-08-01",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1_versie3" },
+        { "Instrumentversie": "/join/id/regdata/2022/IO_A@2022;versie1" },
+        { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_B" },
+        { "Instrumentversie": "/join/id/regdata/2022/IO_C@2022;P1_versie1" }
       ]
+    },
+    {
+      "SoortActie": "Publicatie",
+      "SoortPublicatie": "Besluit",
+      "UitgevoerdOp": "2022-06-02T07:00:00Z",
+      "Beschrijving": "De definitieve versie van het besluit wordt na vaststelling gepubliceerd."
     }
   ]
 }

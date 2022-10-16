@@ -54,12 +54,12 @@ class ActueleToestandenMetAnnotaties:
         self.ActueleToestanden = ExTuncTijdlijn ()
         # De annotatieversies die via proefversies aan de actuele toestand gekoppeld kunnen worden
         # Key = Annotatie, value = ExTuncTijdlijn
-        self.UitProefversies = { a : ExTuncTijdlijn () for a in annotaties if a.ViaVersiebeheer }
+        self.UitProefversies = { a : ExTuncTijdlijn () for a in annotaties if a.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer }
         # De annotatieversies die aan de hand van de inwerkingtredingsdoelen van de actuele toestand 
         # gekoppeld worden, waarbij een annotatieversie voor die specifieke toestand bedoeld moet zijn.
         # Key = Annotatie, value = ExTuncTijdlijn
-        self.VoorToestandViaDoelen = { a : ExTuncTijdlijn () for a in annotaties }
+        self.VoorToestandViaDoelen = { a : ExTuncTijdlijn () for a in annotaties if a.Synchronisatie == Annotatie._Synchronisatie_Toestand }
         # De annotatieversies die aan de hand van de inwerkingtredingsdoelen van de actuele toestand 
         # gekoppeld worden, waarbij een annotatieversie voor een specifiek doel bedoeld is.
         # Key = Annotatie, value = ExTuncTijdlijn
-        self.VoorDoel = { a : ExTuncTijdlijn () for a in annotaties }
+        self.VoorDoel = { a : ExTuncTijdlijn () for a in annotaties if a.Synchronisatie == Annotatie._Synchronisatie_Doel }

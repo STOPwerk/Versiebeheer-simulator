@@ -7,6 +7,8 @@
 #
 #======================================================================
 
+from typing import Annotated
+from data_lv_annotatie import Annotatie
 from weergave_resultaat_data import InstrumentData
 from weergave_symbolen import Weergave_Symbolen
 from weergave_uitwisselingselector import Weergave_Uitwisselingselector
@@ -84,6 +86,7 @@ class Weergave_Annotaties ():
         self._InstrumentData = instrumentData
         self._Selector = Weergave_Uitwisselingselector (self._InstrumentData.WeergaveData.Scenario)
         self._Annotaties = list (sorted ([a for a in self._InstrumentData.WeergaveData.Scenario.Annotaties if a.WorkId == self._InstrumentData.WorkId], key = lambda a:a.Naam))
+        self._Synchronisatie = set ([a.Synchronisatie for a in self._Annotaties])
         self._ActueleToestandenMetAnnotarties = self._InstrumentData.WeergaveData.Scenario.GeconsolideerdeInstrument (self._InstrumentData.WorkId).Annotaties
         self._Tabelrijen = [] # Alle rijen in de tabel met toestanden, index 0 = bovenste rij
         self._Tabelkolommen = [] # Alle kolommen in de tabel met toestanden, index 0 = linker kolom
@@ -103,19 +106,23 @@ class Weergave_Annotaties ():
     def _MaakDoelenHtml (self):
         html = ''
         for uitwisseling in reversed (self._InstrumentData.Uitwisselingen):
-            html += '<table' + self._Selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>\n'
-            html += '<tr><th>Letter</th><th>Doel</th></tr>\n'
-            for doel, branchId in self._InstrumentData.WeergaveData.Branches (uitwisseling.DoelenCompleteToestanden):
-                html += '<tr><td>' + branchId + '</td><td>' + str(doel) + '</td></tr>'
-            html += '</table>'
+            if hasattr (uitwisseling, 'DoelenCompleteToestanden'):
+                html += '<table' + self._Selector.AttributenToonIn (uitwisseling.GemaaktOp, uitwisseling.VolgendeGemaaktOp) + '>\n'
+                html += '<tr><th>Letter</th><th>Doel</th></tr>\n'
+                for doel, branchId in self._InstrumentData.WeergaveData.Branches (uitwisseling.DoelenCompleteToestanden):
+                    html += '<tr><td>' + branchId + '</td><td>' + str(doel) + '</td></tr>'
+                html += '</table>'
         return html
 
     def _MaakBepalingHtml (self):
         
         html = '<table><tr><th colspan="2">Wijze van synchronisatie</th></tr>'
-        html += '<tr><th>' + Weergave_Annotaties._Bepaling_P + '</th><td>' + Weergave_Annotaties._Bepaling_P_Toelichting + '</td></tr>'
-        html += '<tr><th>' + Weergave_Annotaties._Bepaling_T + '</th><td>' + Weergave_Annotaties._Bepaling_T_Toelichting + '</td></tr>'
-        html += '<tr><th>' + Weergave_Annotaties._Bepaling_W + '</th><td>' + Weergave_Annotaties._Bepaling_W_Toelichting + '</td></tr>'
+        if Annotatie._Synchronisatie_Versiebeheer in self._Synchronisatie:
+            html += '<tr><th>' + Weergave_Annotaties._Bepaling_P + '</th><td>' + Weergave_Annotaties._Bepaling_P_Toelichting + '</td></tr>'
+        if Annotatie._Synchronisatie_Toestand in self._Synchronisatie:
+            html += '<tr><th>' + Weergave_Annotaties._Bepaling_T + '</th><td>' + Weergave_Annotaties._Bepaling_T_Toelichting + '</td></tr>'
+        if Annotatie._Synchronisatie_Doel in self._Synchronisatie:
+            html += '<tr><th>' + Weergave_Annotaties._Bepaling_W + '</th><td>' + Weergave_Annotaties._Bepaling_W_Toelichting + '</td></tr>'
         html += '</table>'
         return html
 
@@ -146,19 +153,23 @@ class Weergave_Annotaties ():
     def _MaakTijdijnSelector (self):
         html = '<p>Toon tijdlijn voor <input type="radio" name="' + self.DiagramId + '_selector" value="-1" id="' + self.DiagramId + '_selector_alles"><label for="' + self.DiagramId + '_selector_alles">alles</label>, '
         html += '<input type="radio" name="' + self.DiagramId + '_selector" value="0" id="' + self.DiagramId + '_selector_at"><label for="' + self.DiagramId + '_selector_at">actuele toestanden</label> of: '
-        html += '<table><tr><th>Nummer</th><th>Annotatie</th><th>' + Weergave_Annotaties._Bepaling_P + '</th><th>' + Weergave_Annotaties._Bepaling_T + '</th><th>' + Weergave_Annotaties._Bepaling_W + '</th><tr>'
+        html += '<table><tr><th>Nummer</th><th>Annotatie</th>'
+        if Annotatie._Synchronisatie_Versiebeheer in self._Synchronisatie:
+            html += '<th>' + Weergave_Annotaties._Bepaling_P + '</th>'
+        if Annotatie._Synchronisatie_Toestand in self._Synchronisatie:
+            html += '<th>' + Weergave_Annotaties._Bepaling_T + '</th>'
+        if Annotatie._Synchronisatie_Doel in self._Synchronisatie:
+            html += '<th>' + Weergave_Annotaties._Bepaling_W + '</th>'
+        html += '<tr>'
         kolom = 0
         for idx, a in enumerate (self._Annotaties):
             html += '<tr><th>' + str(idx+1) + '</th><td>' + a.Naam + '</td>'
-            if a.ViaVersiebeheer:
-                kolom += 1
-                html += '<td><input type="radio" name="' + self.DiagramId + '_selector" value="' + str(kolom) + '"></td>'
-            else:
-                html += '<td></td>'
-            kolom += 1
-            html += '<td><input type="radio" name="' + self.DiagramId + '_selector" value="' + str(kolom) + '"></td>'
-            kolom += 1
-            html += '<td><input type="radio" name="' + self.DiagramId + '_selector" value="' + str(kolom) + '"></td>'
+            for s in [Annotatie._Synchronisatie_Versiebeheer, Annotatie._Synchronisatie_Toestand, Annotatie._Synchronisatie_Doel]:
+                if a.Synchronisatie == s:
+                    kolom += 1
+                    html += '<td><input type="radio" name="' + self.DiagramId + '_selector" value="' + str(kolom) + '"></td>'
+                elif s in self._Synchronisatie:
+                    html += '<td></td>'
             html += '</tr>'
         html += '</table>'
         html += self._MaakBepalingHtml ()
@@ -174,7 +185,7 @@ class Weergave_Annotaties ():
     def _MaakToestandenHtml (self):
         html = '<table class="at_a_toestanden"><tr><th>uitgewisseld op</th><th>juridischWerkendVanaf</th>'
         for kolom in self._Tabelkolommen:
-            css = ' class="s' + ('2' if kolom.StartAnnotatie else '') + '"'
+            css = ' class="s2"'
             html += '<th' + (' colspan="' + str(kolom.Subkolommen) + '"' if kolom.Subkolommen > 1 else '') + css + '>' + kolom.KolomTitel + "</th>"
         html += '</tr>'
 
@@ -185,7 +196,7 @@ class Weergave_Annotaties ():
                     data_tijdlijnen = ' data-' + self.DiagramId + '_k="|' + '|'.join (str(i) for i in rij.Elementen.keys ()) + '|" data-' + self.DiagramId + '_tr="' + rij.Index + '" data-' + self.DiagramId + '_r="|' + rij.Index + '|"'
                     uitwisselingHtml += '<tr {attr}><td' + data_tijdlijnen + '>' + rij.UitgewisseldOp + '</td><td' + data_tijdlijnen + '>' + rij.JuridischWerkendVanaf + '</td>'
                     for idx, kolom in enumerate (self._Tabelkolommen):
-                        css = ' class="s' + ('2' if kolom.StartAnnotatie else '') + '"'
+                        css = ' class="s2"'
                         elt = rij.Elementen.get (idx)
                         if elt is None:
                             uitwisselingHtml += '<td' + (' colspan="' + str(kolom.Subkolommen) + '"' if kolom.Subkolommen > 1 else '') + css + '></td>'
@@ -221,8 +232,7 @@ class Weergave_Annotaties ():
                     html += '<tr><td>Instrumentversie</td><td colspan="2">' + (elt.ActueleToestand.Instrumentversie if elt.ActueleToestand.Instrumentversie else 'Onbekend') + '</td></tr>'
 
                 else:
-                    if kolom.StartAnnotatie:
-                        html += '<tr class="at_a_toelichting_sep"><th>Annotatie</th><td>' + str(self._Annotaties.index (kolom.Annotatie)+1) + '</td><td>' + kolom.Annotatie.Naam + '</td></tr>'
+                    html += '<tr class="at_a_toelichting_sep"><th>Annotatie</th><td>' + str(self._Annotaties.index (kolom.Annotatie)+1) + '</td><td>' + kolom.Annotatie.Naam + '</td></tr>'
                     html += '<tr><td></td><th colspan="2">' + kolom.Titel + '</th></tr>'
                     if not elt.AnnotatieVersie.Uitleg is None:
                         html += '<tr><td></td><td>' + elt.Tekst + '</td><td>' + elt.AnnotatieVersie.Uitleg + '</td></tr>'
@@ -250,7 +260,7 @@ class Weergave_Annotaties ():
             _TabelRij.VoegToe (tabelrijen, toestand).Elementen[len(self._Tabelkolommen)] = elt
         self._Tabelkolommen.append (_TabelKolom ("Toestand", "Actuele toestand", 2))
 
-        def _AnnotatieToestanden (annotatie, tijdlijn, tabeltitel, titel, startAnnotatie):
+        def _AnnotatieToestanden (annotatie, tijdlijn, tabeltitel, titel):
             """Voeg een tijdlijn voor een van de bepalingen van een annotatie toe"""
             if not tijdlijn is None:
                 for toestand in tijdlijn.Toestanden:
@@ -265,15 +275,16 @@ class Weergave_Annotaties ():
                     elt.AnnotatieVersie = versie
                     _TabelRij.VoegToe (tabelrijen, toestand).Elementen[len(self._Tabelkolommen)] = elt
                 kolom = _TabelKolom (tabeltitel, titel)
-                kolom.StartAnnotatie = startAnnotatie
                 kolom.Annotatie = annotatie
                 self._Tabelkolommen.append (kolom)
 
         for idx, annotatie in enumerate (self._Annotaties):
-            if annotatie.ViaVersiebeheer:
-                _AnnotatieToestanden (annotatie, self._ActueleToestandenMetAnnotarties.UitProefversies.get (annotatie), str(idx+1) + ' ' + Weergave_Annotaties._Bepaling_P, Weergave_Annotaties._Bepaling_P_Toelichting, True)
-            _AnnotatieToestanden (annotatie, self._ActueleToestandenMetAnnotarties.VoorToestandViaDoelen.get (annotatie), str(idx+1) + ' ' + Weergave_Annotaties._Bepaling_T, Weergave_Annotaties._Bepaling_T_Toelichting, not annotatie.ViaVersiebeheer)
-            _AnnotatieToestanden (annotatie, self._ActueleToestandenMetAnnotarties.VoorDoel.get (annotatie), str(idx+1) + ' ' + Weergave_Annotaties._Bepaling_W, Weergave_Annotaties._Bepaling_W_Toelichting, False)
+            if annotatie.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer:
+                _AnnotatieToestanden (annotatie, self._ActueleToestandenMetAnnotarties.UitProefversies.get (annotatie), str(idx+1) + ' ' + Weergave_Annotaties._Bepaling_P, Weergave_Annotaties._Bepaling_P_Toelichting)
+            elif annotatie.Synchronisatie == Annotatie._Synchronisatie_Toestand:
+                _AnnotatieToestanden (annotatie, self._ActueleToestandenMetAnnotarties.VoorToestandViaDoelen.get (annotatie), str(idx+1) + ' ' + Weergave_Annotaties._Bepaling_T, Weergave_Annotaties._Bepaling_T_Toelichting)
+            elif annotatie.Synchronisatie == Annotatie._Synchronisatie_Doel:
+                _AnnotatieToestanden (annotatie, self._ActueleToestandenMetAnnotarties.VoorDoel.get (annotatie), str(idx+1) + ' ' + Weergave_Annotaties._Bepaling_W, Weergave_Annotaties._Bepaling_W_Toelichting)
 
         # Sorteer de rijen
         for tijdstip in reversed (sorted (tabelrijen.keys ())):
@@ -312,8 +323,6 @@ class _TabelKolom:
         self.Titel = titel
         # Aantal subkolommen waarin de kolom is opgedeeld
         self.Subkolommen = subkolommen
-        # Geeft aan dat de kolom de start is van de uitkomsten voor een annotatieversie
-        self.StartAnnotatie = False
         # Annotatie, als de kolom voor een annotatie is gemaakt
         self.Annotatie = None
 

@@ -40,9 +40,7 @@
 	<Terugtrekkingen>
 		<TerugtrekkingRegeling>
 			<bekendOp>2022-07-13</bekendOp>
-			<doelen>
-				<doel>/join/id/proces/gm9999/2022/Wijziging2</doel>
-			</doelen>
+			<doel>/join/id/proces/gm9999/2022/Wijziging2</doel>
 			<instrument>/akn/nl/act/gm9999/2022/REG_A</instrument>
 			<gemaaktOpBasisVan>
 				<Basisversie>
@@ -53,9 +51,7 @@
 		</TerugtrekkingRegeling>
 		<TerugtrekkingIntrekking>
 			<bekendOp>2022-07-13</bekendOp>
-			<doelen>
-				<doel>/join/id/proces/gm9999/2022/Wijziging2</doel>
-			</doelen>
+			<doel>/join/id/proces/gm9999/2022/Wijziging2</doel>
 			<instrument>/join/id/regdata/2022/IO_A</instrument>
 			<gemaaktOpBasisVan>
 				<Basisversie>
@@ -66,9 +62,7 @@
 		</TerugtrekkingIntrekking>
 		<TerugtrekkingInformatieobject>
 			<bekendOp>2022-07-13</bekendOp>
-			<doelen>
-				<doel>/join/id/proces/gm9999/2022/Wijziging2</doel>
-			</doelen>
+			<doel>/join/id/proces/gm9999/2022/Wijziging2</doel>
 			<instrument>/join/id/regdata/2022/IO_B</instrument>
 			<gemaaktOpBasisVan>
 				<Basisversie>

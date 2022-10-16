@@ -362,5 +362,5 @@ class Scenario:
                 for idx, a in enumerate (sorted (annotaties.values(), key = lambda a: a.Naam)):
                     a._Nummer = idx + 1
                     self.Annotaties.append (a)
-                    if a.ViaVersiebeheer:
+                    if a.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer:
                         self.Opties.Proefversies = True

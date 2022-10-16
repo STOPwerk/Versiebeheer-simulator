@@ -296,86 +296,6 @@
                 ]
             },
             "UitProefversies": {
-                "Pons": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Uitleg": "Geen instrumentversie voor de toestand, dus ook geen bekende annotatieversie."
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                    ],
-                                    "GemaaktOp": "2022-05-02T08:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
-                                    ],
-                                    "GemaaktOp": "2022-07-14T07:00:00Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 3,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-16T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-15T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 3,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-14T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-02T08:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-02T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-04-15",
-                            "Tijdstip": "2022-03-16T08:30:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-04-15",
-                            "Tijdstip": "2022-03-15T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T07:00:00Z"
-                        }
-                    ]
-                },
                 "RegelingMetadata": {
                     "ToestandInhoud": [
                         {
@@ -562,194 +482,9 @@
                             "Tijdstip": "2022-01-01T08:31:57Z"
                         }
                     ]
-                },
-                "Pons": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                    ],
-                                    "GemaaktOp": "2022-05-02T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                    ],
-                                    "GemaaktOp": "2022-05-02T08:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
-                                    ],
-                                    "GemaaktOp": "2022-07-14T07:00:00Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 3,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-14T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-02T08:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-02T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T07:00:00Z"
-                        }
-                    ]
-                },
-                "RegelingMetadata": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging"
-                                    ],
-                                    "GemaaktOp": "2022-03-16T08:30:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging4"
-                                    ],
-                                    "GemaaktOp": "2022-06-01T07:00:00Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-07-01",
-                            "Tijdstip": "2022-06-01T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-04-15",
-                            "Tijdstip": "2022-03-16T08:30:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T07:00:00Z"
-                        }
-                    ]
                 }
             },
             "VoorToestandViaDoelen": {
-                "Afgeleide non-STOP gegevens": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "UitgewisseldOp": "2022-01-01T08:31:57Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1"
-                                    ],
-                                    "UitgewisseldOp": "2022-05-01T19:14:18Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
-                                        "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
-                                    ],
-                                    "UitgewisseldOp": "2022-05-03T16:59:30Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
-                                    ],
-                                    "UitgewisseldOp": "2022-07-10T10:42:42Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 3,
-                            "JuridischWerkendVanaf": "2022-08-01",
-                            "Tijdstip": "2022-07-14T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-03T16:59:30Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-06-01",
-                            "Tijdstip": "2022-05-01T19:14:18Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T08:31:57Z"
-                        }
-                    ]
-                },
                 "Pons": {
                     "ToestandInhoud": [
                         {
@@ -758,7 +493,7 @@
                                     "Doelen": [
                                         "/join/id/proces/gm9999/2022/Instelling"
                                     ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
+                                    "UitgewisseldOp": "2022-01-01T07:00:00Z"
                                 }
                             ]
                         },
@@ -769,7 +504,7 @@
                                         "/join/id/proces/gm9999/2022/WijzigingGelijktijdig1",
                                         "/join/id/proces/gm9999/2022/WijzigingGelijktijdig2"
                                     ],
-                                    "GemaaktOp": "2022-05-02T08:00:00Z"
+                                    "UitgewisseldOp": "2022-05-02T08:00:00Z"
                                 }
                             ]
                         },
@@ -779,7 +514,7 @@
                                     "Doelen": [
                                         "/join/id/proces/gm9999/2022/WijzigingTerugwerkend"
                                     ],
-                                    "GemaaktOp": "2022-07-14T07:00:00Z"
+                                    "UitgewisseldOp": "2022-07-14T07:00:00Z"
                                 }
                             ]
                         }
@@ -794,57 +529,6 @@
                             "Inhoud": 1,
                             "JuridischWerkendVanaf": "2022-06-01",
                             "Tijdstip": "2022-05-02T08:00:00Z"
-                        },
-                        {
-                            "Inhoud": 0,
-                            "JuridischWerkendVanaf": "2022-02-01",
-                            "Tijdstip": "2022-01-01T07:00:00Z"
-                        }
-                    ]
-                },
-                "RegelingMetadata": {
-                    "ToestandInhoud": [
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Instelling"
-                                    ],
-                                    "GemaaktOp": "2022-01-01T07:00:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging"
-                                    ],
-                                    "GemaaktOp": "2022-03-16T08:30:00Z"
-                                }
-                            ]
-                        },
-                        {
-                            "Versies": [
-                                {
-                                    "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging4"
-                                    ],
-                                    "GemaaktOp": "2022-06-01T07:00:00Z"
-                                }
-                            ]
-                        }
-                    ],
-                    "Toestanden": [
-                        {
-                            "Inhoud": 2,
-                            "JuridischWerkendVanaf": "2022-07-01",
-                            "Tijdstip": "2022-06-01T07:00:00Z"
-                        },
-                        {
-                            "Inhoud": 1,
-                            "JuridischWerkendVanaf": "2022-04-15",
-                            "Tijdstip": "2022-03-16T08:30:00Z"
                         },
                         {
                             "Inhoud": 0,

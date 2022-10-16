@@ -23,6 +23,10 @@
       "Command": "-t voorbeelden\\Demo"
     },
     {
+      "Id": "4bd01b47-6916-4b38-afa0-c1a8c5bfa40d",
+      "Command": "-t tests\\scenarios\\Annotaties"
+    },
+    {
       "Id": "31207cf7-2cc3-496e-bb5f-548a9e92ad3c",
       "Command": "-t \"tests\\scenarios\\Projecten\\Project bij BG\\01 Enkel project geen ontwerp\""
     },
