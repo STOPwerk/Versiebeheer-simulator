@@ -18,7 +18,7 @@ git switch main
 @if errorlevel 1 goto Pause
 git pull
 @if errorlevel 1 goto Pause
-git merge --squash -m "Release @@@VERSIE@@@" development
+git merge --strategy-option theirs --squash -m "Release @@@VERSIE@@@" development
 @if errorlevel 1 goto Pause
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
