@@ -21,7 +21,7 @@ goto Pause
 
 :Start
 if "A%1" == "A" goto MijnVoorbeelden
-python.exe simulator\applicatie.py --meldingen logs --alle %1
+python.exe simulator\applicatie.py --meldingen logs --alle %1 %2 %3 %4 %5 %6 %7 %8 %9
 goto Check_Error
 :MijnVoorbeelden
 python.exe simulator\applicatie.py --meldingen logs --alle "mijn voorbeelden"
