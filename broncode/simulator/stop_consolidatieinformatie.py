@@ -391,15 +391,21 @@ class VoorInstrument (VoorInstrumentEnTijdstempel):
     def _ModuleXmlElement (self):
         """Geeft de XML van het element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        return ["<doelen>",
-                *["\t<doel>" + str(doel) + "</doel>" for doel in self.Doelen],
-                "</doelen>",
-                *[x for x in self._ModuleXmlAttrinuten ()],
+        return [*[x for x in self._ModuleXmlAttrinuten ()],
                 *self._GemeenschappelijkeInformatieXml ()]
+
+    def _DoelenXml (self, isEnkelvoudig):
+        """Geeft de XML voor de doelen. In deze applicatie alleen nodig voor weergave."""
+        if isEnkelvoudig:
+            return ["<doel>" + str(self.Doelen[0]) + "</doel>"]
+        else:
+            return ["<doelen>",
+                *["\t<doel>" + str(doel) + "</doel>" for doel in self.Doelen],
+                "</doelen>"]
 
     def _GemeenschappelijkeInformatieXml (self):
         """Geeft de XML van de gemeenschappelijke informatie in het element in de STOP module, als lijst van regels.
-        In deze applicatie alleen nodig voor weergave"""
+        In deze applicatie alleen nodig voor weergave."""
         xml = []
         if len (self.Basisversies) > 0 or len (self.OntvlochtenVersies) > 0 or len (self.VervlochtenVersies) > 0:
             xml.append ("<gemaaktOpBasisVan>")
@@ -494,7 +500,8 @@ class BeoogdeVersie (VoorInstrument):
     def _ModuleXmlAttrinuten (self):
         """Geeft de XML van de attributen van het element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        return ["<instrument>" + self.WorkId + "</instrument>" if self.ExpressionId is None else "<instrumentVersie>" + self.ExpressionId + "</instrumentVersie>"]
+        return [*[x for x in self._DoelenXml (False)],
+                "<instrument>" + self.WorkId + "</instrument>" if self.ExpressionId is None else "<instrumentVersie>" + self.ExpressionId + "</instrumentVersie>"]
 
 #----------------------------------------------------------------------
 # Intrekking (Regeling / Informatieobject)
@@ -529,7 +536,8 @@ class Intrekking (VoorInstrument):
     def _ModuleXmlAttrinuten (self):
         """Geeft de XML van de attributen van het element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        return ["<instrument>" + self.WorkId + "</instrument>"]
+        return [*[x for x in self._DoelenXml (True)],
+                "<instrument>" + self.WorkId + "</instrument>"]
 
 #----------------------------------------------------------------------
 # TerugtrekkingRegeling / TerugtrekkingInformatieobject
@@ -570,7 +578,8 @@ class Terugtrekking (VoorInstrument):
     def _ModuleXmlAttrinuten (self):
         """Geeft de XML van de attributen van het element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        return ["<instrument>" + self.WorkId + "</instrument>"]
+        return [*[x for x in self._DoelenXml (True)],
+                "<instrument>" + self.WorkId + "</instrument>"]
 
 #----------------------------------------------------------------------
 # TerugtrekkingIntrekking
@@ -605,7 +614,8 @@ class TerugtrekkingIntrekking (VoorInstrument):
     def _ModuleXmlAttrinuten (self):
         """Geeft de XML van de attributen van het element in de STOP module, als lijst van regels.
         In deze applicatie alleen nodig voor weergave"""
-        return ["<instrument>" + self.WorkId + "</instrument>"]
+        return [*[x for x in self._DoelenXml (True)],
+                "<instrument>" + self.WorkId + "</instrument>"]
 
 #----------------------------------------------------------------------
 # Basisklasse voor Tijdstempel / TerugtrekkingTijdstempel
