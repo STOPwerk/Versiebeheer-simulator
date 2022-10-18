@@ -326,15 +326,15 @@
                             "Versies": [
                                 {
                                     "Doelen": [
-                                        "/join/id/proces/gm9999/2022/Wijziging"
-                                    ],
-                                    "GemaaktOp": "2022-03-16T08:30:00Z"
-                                },
-                                {
-                                    "Doelen": [
                                         "/join/id/proces/gm9999/2022/Instelling"
                                     ],
                                     "GemaaktOp": "2022-01-01T07:00:00Z"
+                                },
+                                {
+                                    "Doelen": [
+                                        "/join/id/proces/gm9999/2022/Wijziging"
+                                    ],
+                                    "GemaaktOp": "2022-03-16T08:30:00Z"
                                 }
                             ]
                         },
