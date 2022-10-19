@@ -7,7 +7,6 @@
 #
 #======================================================================
 
-from typing import Annotated
 from data_lv_annotatie import Annotatie
 from weergave_resultaat_data import InstrumentData
 from weergave_symbolen import Weergave_Symbolen
