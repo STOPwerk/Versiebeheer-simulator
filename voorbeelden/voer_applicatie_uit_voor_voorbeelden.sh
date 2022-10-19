@@ -24,4 +24,4 @@ then
 	fi
 fi
 
-"$SCRIPT_PYTHON" ../simulator/applicatie.py --meldingen logs --alle .
+"$SCRIPT_PYTHON" ../broncode/simulator/applicatie.py --meldingen logs --alle .

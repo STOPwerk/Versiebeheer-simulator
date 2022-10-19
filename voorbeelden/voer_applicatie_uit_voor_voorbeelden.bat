@@ -20,7 +20,7 @@ echo.
 goto Pause
 
 :Start
-python.exe ..\simulator\applicatie.py --meldingen logs --alle .
+python.exe ..\broncode\simulator\applicatie.py --meldingen logs --alle .
 if errorlevel 1 goto Pause
 if errorlevel 0 goto End
 
