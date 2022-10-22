@@ -20,7 +20,7 @@
 #
 #======================================================================
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from data_doel import Doel
 from data_bg_project import Project, ProjectActie, Instrumentversie
 
@@ -94,6 +94,8 @@ class ProjectactieResultaat:
         self._Projectactie : ProjectActie = projectactie
         # Degene die de actie heeft uitgevoerd: adviesbureau of bevoegd gezag
         self.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_BevoegdGezag
+        # Parameters en data voor de actie; alleen voor weergave
+        self.Data : List[Tuple[str,List[str]]] = []
         # Alleen voor weergave: de STOP module(s) die in de keten uitgewisseld worden
         self.Uitgewisseld : List[UitgewisseldeSTOPModule] = []
 
@@ -174,7 +176,7 @@ class MomentopnameInstrument:
         self._Branch = branch
         self._WorkId = workId
         # ExpressionId van de instrumentversie
-        # Als IsJuridischUitgewerkt True of IsTeruggetrokken is, dan is de waarde None. Anders is het de waarde
+        # Als IsJuridischUitgewerkt True of IsTeruggetrokken True is, dan is de waarde None. Anders is het de waarde
         # zoals opgegeven of (als er geen waarde is opgegeven) de waarde afgeleid van de uitgangssituatie.
         # Als de ExpressionId in dat geval None is gaat het om een onbekende versie.
         self.ExpressionId = None
@@ -226,17 +228,17 @@ class MomentopnameInstrument:
         if self.IsJuridischUitgewerkt:
             return '-'
         if not self.IsTeruggetrokken:
-            return '?' if self.ExpressionId is None else self.ExpressionId
+            return self.WorkId + ': onbekend' if self.ExpressionId is None else self.ExpressionId
         if self.Uitgangssituatie is None:
             # Initiële versie
             return None
         if self.Uitgangssituatie[0].Momentopname.ExpressionId is None:
             # Onbekende versie of misschien ook wel geen eenduidige versie
-            return '?'
+            return self.WorkId + ': onbekend?'
         if len (self.Uitgangssituatie) > 1:
             if len (set (v.Momentopname.ExpressionId for v in self.Uitgangssituatie)) > 1:
                 # Geen eenduidige versie
-                return '?'
+                return self.WorkId + ': ?'
         return self.Uitgangssituatie[0].Momentopname.ExpressionId
 
     def IsGepubliceerd (self, gemaaktOp : str, isConceptOfOntwerp : bool):
@@ -311,7 +313,7 @@ class MomentopnameTijdstempels:
         """
         self._Branch.PubliekeTijdstempels = self
         # Maak een nieuwe momentopname voor de volgende wijzigingen
-        nieuweVersie = MomentopnameTijdstempels (self._Doel)
+        nieuweVersie = MomentopnameTijdstempels (self._Branch)
         nieuweVersie.JuridischWerkendVanaf = self.JuridischWerkendVanaf
         nieuweVersie.GeldigVanaf = self.GeldigVanaf
         self._Branch.InterneTijdstempels = nieuweVersie

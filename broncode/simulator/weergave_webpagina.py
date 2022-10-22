@@ -167,7 +167,7 @@ class WebpaginaGenerator:
         id = str(WebpaginaGenerator._AccordionPaneel)
         active = ' active' if startOpen else ''
         block = ' style="display: block"' if startOpen else ' style="display: none"'
-        nietblock = ' style="display: none"' if not startOpen else ''
+        nietblock = ' style="display: none"' if startOpen else ' style="display: block"'
         self._Html += '<table><tr><td><button data-accordion="' + id + '" class="accordion_t' + active + '">?</button></td>\n'
         self._Html += '<td data-accordion-titel="' + id + '" class="accordion_t_titel"''' + nietblock + '>&#8678;' + titel + '</td>\n'
         self._Html += '<td data-accordion-paneel="' + id + '" class="accordion_t_paneel"''' + block + '>\n'

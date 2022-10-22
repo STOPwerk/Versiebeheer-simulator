@@ -65,8 +65,8 @@ class ProjectactieUitvoering:
             if not uitvoerder.VoerUit (actie):
                 return (False, None, None)
             uitvoerder._Versiebeheer.Projectacties.append (uitvoerder._Resultaat)
-            if len (uitvoerder._Resultaat.Uitgewisseld) > 0 and isinstance (uitvoerder._Resultaat.Uitgewisseld[0], ConsolidatieInformatie):
-                return (True, uitvoerder._Resultaat.Uitgewisseld[0], uitvoerder._Resultaat)
+            if len (uitvoerder._Resultaat.Uitgewisseld) > 0 and isinstance (uitvoerder._Resultaat.Uitgewisseld[0].Module, ConsolidatieInformatie):
+                return (True, uitvoerder._Resultaat.Uitgewisseld[0].Module, uitvoerder._Resultaat)
             return (True, None, uitvoerder._Resultaat)
 
     # Constructors om de uitvoerders van de acties te maken op basis van de SoortActie
@@ -294,6 +294,25 @@ class ProjectactieUitvoering:
 
         return succes
 
+    def _RapporteerBranch (self, branch : Branch):
+        """Voeg de interne staat van de branch toe; alleen voor weergave"""
+        versies = []
+        vervallen = []
+        for workId in sorted (branch.InterneInstrumentversies):
+            momentopname = branch.InterneInstrumentversies[workId]
+            if momentopname.IsJuridischUitgewerkt:
+                vervallen.append (workId)
+            else:
+                versies.append (momentopname.ActueleExpressionId ())
+        if len (versies) > 0:
+            self._Resultaat.Data.append (('Versies', versies))
+        if len (vervallen) > 0:
+            self._Resultaat.Data.append (('Vervallen', vervallen))
+        if not branch.InterneTijdstempels.JuridischWerkendVanaf is None:
+            self._Resultaat.Data.append (('In werking op', [branch.InterneTijdstempels.JuridischWerkendVanaf]))
+            if not branch.InterneTijdstempels.GeldigVanaf is None:
+                self._Resultaat.Data.append (('Terugwerkend tot', [branch.InterneTijdstempels.GeldigVanaf]))
+
 #======================================================================
 #
 # Implementatie van de specifieke acties
@@ -329,6 +348,7 @@ class _VoerUit_NieuwDoel (ProjectactieUitvoering):
         self._Projectstatus.Branches[actie.Doel] = branch
         branch._ViaProject = True
         branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
+        self._Resultaat.Data.append (('Doel', [actie.Doel]))
 
         if not actie.GebaseerdOp_Doel is None:
             # Het project is een expliciete aftakking van het opgegeven doel.
@@ -337,6 +357,7 @@ class _VoerUit_NieuwDoel (ProjectactieUitvoering):
                 self._LogFout ("onbekend doel: '" + str(actie.GebaseerdOp_Doel) + "'")
                 return False
             branch.Uitgangssituatie_Doel = basisBranch
+            self._Resultaat.Data.append (('Branch van', [actie.GebaseerdOp_Doel]))
             for workId in actie.Instrumenten:
                 # Maak de momentopname voor dit instrument
                 momentopname = MomentopnameInstrument (branch, workId)
@@ -347,6 +368,7 @@ class _VoerUit_NieuwDoel (ProjectactieUitvoering):
 
         elif not actie.GebaseerdOp_GeldigOp is None:
             # Ga uit van de geldende regelgeving volgens de interne administratie
+            self._Resultaat.Data.append (('Uitgangssituatie d.d.', [actie.actie.GebaseerdOp_GeldigOp]))
             for workId in actie.Instrumenten:
                 momentopname = MomentopnameInstrument (branch, workId)
                 momentopname.Uitgangssituatie = self._VindMomentopnameGeldigOp (workId, actie.GebaseerdOp_GeldigOp)
@@ -358,6 +380,9 @@ class _VoerUit_NieuwDoel (ProjectactieUitvoering):
             for workId in actie.Instrumenten:
                 # Maak de instrumentversies aan met een onbekende versie
                 branch.InterneInstrumentversies[workId] = MomentopnameInstrument (branch, workId)
+
+        if succes:
+            self._RapporteerBranch (branch)
 
         return succes
 
@@ -390,12 +415,14 @@ class _VoerUit_Download (ProjectactieUitvoering):
         branch = self._Projectstatus.ExterneBranches.get (actie.Doel)
         self._Projectstatus.ExterneBranches[actie.Doel] = branch = Branch (actie.Doel)
         branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_Adviesbureau
+        self._Resultaat.Data.append (('Doel', [actie.Doel]))
 
         # Gebruik als STOP-module de momentopnames die de downloadservice meelevert
         module = DownloadserviceModules ()
         self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (module, ProjectactieResultaat._Uitvoerder_LVBB, branch.Uitvoerder))
 
         # Zoek de geldende versie op van elk van de instrumenten
+        self._Resultaat.Data.append (('Branch van', ['Geldig op ' + actie.GebaseerdOp_GeldigOp]))
         for workId in actie.Instrumenten:
             geconsolideerd = self._Scenario.GeconsolideerdeInstrument (workId)
             if geconsolideerd is None or geconsolideerd.ActueleToestanden is None:
@@ -437,6 +464,8 @@ class _VoerUit_Download (ProjectactieUitvoering):
             momentopname.Uitgangssituatie = [ MomentopnameVerwijzing (download_momentopname) ]
             branch.InterneInstrumentversies[workId] = momentopname
 
+        if succes:
+            self._RapporteerBranch (branch)
 
         return succes
 
@@ -465,6 +494,8 @@ class _VoerUit_Uitwisseling (ProjectactieUitvoering):
         if branch is None:
             self._LogFout ("onbekend doel '" + str(actie.Doel) + "'")
             return False
+        self._Resultaat.Data.append (('Doel', [actie.Doel]))
+
         self._Resultaat.UitgevoerdDoor = branch.Uitvoerder
         if branch.Uitvoerder == ProjectactieResultaat._Uitvoerder_Adviesbureau:
             #----------------------------------------------------------
@@ -567,6 +598,8 @@ class _VoerUit_Wijziging (ProjectactieUitvoering):
         if branch is None:
             self._LogFout ("onbekend doel '" + str(actie.Doel) + "'")
             return False
+        self._Resultaat.Data.append (('Doel', [actie.Doel]))
+
         self._Resultaat.UitgevoerdDoor = branch.Uitvoerder
         if branch.Uitvoerder == ProjectactieResultaat._Uitvoerder_Adviesbureau:
             if not self._NeemInstrumentversiesOver (branch, actie.Instrumentversies, False):
@@ -579,6 +612,8 @@ class _VoerUit_Wijziging (ProjectactieUitvoering):
             branch.InterneTijdstempels.JuridischWerkendVanaf = actie.JuridischWerkendVanaf
             branch.InterneTijdstempels.GeldigVanaf = actie.GeldigVanaf
 
+        if succes:
+            self._RapporteerBranch (branch)
         return succes
 
 #----------------------------------------------------------------------
@@ -613,7 +648,9 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
         # Lijst met alle elementen (en extra info) in de module
         elementen : List[_VoerUit_Publicatie._ElementMetRelaties] = []
 
-        for doel in sorted (actie.Doelen, key = lambda d: str(d)):
+        doelen = sorted (actie.Doelen, key = lambda d: str(d))
+        self._Resultaat.Data.append (('Doel', doelen))
+        for doel in doelen:
             branch = self._Branch (doel)
             if branch is None:
                 self._LogFout ("onbekend doel '" + str(doel) + "'")
@@ -647,16 +684,10 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
                     #--------------------------------------------------
                     if gepubliceerd.IsJuridischUitgewerkt:
                         element = _VoerUit_Publicatie._ElementMetRelaties (TerugtrekkingIntrekking (consolidatieInformatie, [branch._Doel], workId), basisversies)
-                        if consolidatieInformatie.TerugtrekkingenIntrekking is None:
-                            consolidatieInformatie.TerugtrekkingenIntrekking = [element.Element]
-                        else:
-                            consolidatieInformatie.TerugtrekkingenIntrekking.append (element.Element)
+                        consolidatieInformatie.TerugtrekkingenIntrekking.append (element.Element)
                     else:
                         element = _VoerUit_Publicatie._ElementMetRelaties (Terugtrekking (consolidatieInformatie, [branch._Doel], workId), basisversies)
-                        if consolidatieInformatie.Terugtrekkingen is None:
-                            consolidatieInformatie.Terugtrekkingen = [element.Element]
-                        else:
-                            consolidatieInformatie.Terugtrekkingen.append (element.Element)
+                        consolidatieInformatie.Terugtrekkingen.append (element.Element)
 
                 elif momentopname.IsJuridischUitgewerkt:
                     if not gepubliceerd is None and gepubliceerd.IsJuridischUitgewerkt:
@@ -666,10 +697,7 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
                     # Intrekking is nog niet gepubliceerd
                     #--------------------------------------------------
                     element = _VoerUit_Publicatie._ElementMetRelaties (Intrekking (consolidatieInformatie, [branch._Doel], workId), basisversies)
-                    if consolidatieInformatie.Intrekkingen is None:
-                        consolidatieInformatie.Intrekkingen = [element.Element]
-                    else:
-                        consolidatieInformatie.Intrekkingen.append (element.Element)
+                    consolidatieInformatie.Intrekkingen.append (element.Element)
 
                 else:
                     if not gepubliceerd is None and gepubliceerd.ExpressionId == momentopname.ExpressionId:
@@ -698,10 +726,7 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
                             basisversies = nieuweBasisversies
                     
                     element = _VoerUit_Publicatie._ElementMetRelaties (BeoogdeVersie (consolidatieInformatie, doelen, workId, momentopname.ExpressionId), basisversies)
-                    if consolidatieInformatie.BeoogdeVersies is None:
-                        consolidatieInformatie.BeoogdeVersies = [element.Element]
-                    else:
-                        consolidatieInformatie.BeoogdeVersies.append (element.Element)
+                    consolidatieInformatie.BeoogdeVersies.append (element.Element)
 
                     # TODO: vervlechtingen e.d.
 
@@ -717,6 +742,50 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
         for element in elementen:
             element.VoegRelatiesToe ()
         
+        # Voeg tijdstempels toe
+        for doel in doelen:
+            branch = self._Branch (doel)
+            if not branch.InterneTijdstempels.JuridischWerkendVanaf is None:
+                if branch.PubliekeTijdstempels.JuridischWerkendVanaf != branch.InterneTijdstempels.JuridischWerkendVanaf:
+                    #--------------------------------------------------
+                    # Tijdstempel is nog niet gepubliceerd
+                    #--------------------------------------------------
+                    element = Tijdstempel (consolidatieInformatie)
+                    element.Doel = doel
+                    element.Datum = branch.InterneTijdstempels.JuridischWerkendVanaf
+                    element.IsGeldigVanaf = False
+                    consolidatieInformatie.Tijdstempels.append (element)
+            elif not branch.PubliekeTijdstempels.JuridischWerkendVanaf is None:
+                #--------------------------------------------------
+                # Tijdstempel is teruggetrokken
+                #--------------------------------------------------
+                element = TerugtrekkingTijdstempel (consolidatieInformatie)
+                element.Doel = doel
+                element.IsGeldigVanaf = False
+                consolidatieInformatie.TijdstempelTerugtrekkingen.append ()
+
+            if not branch.InterneTijdstempels.GeldigVanaf is None:
+                if branch.PubliekeTijdstempels.GeldigVanaf != branch.InterneTijdstempels.GeldigVanaf:
+                    #--------------------------------------------------
+                    # Tijdstempel is nog niet gepubliceerd
+                    #--------------------------------------------------
+                    element = Tijdstempel (consolidatieInformatie)
+                    element.Doel = doel
+                    element.Datum = branch.InterneTijdstempels.GeldigVanaf
+                    element.IsGeldigVanaf = True
+                    consolidatieInformatie.Tijdstempels.append (element)
+            elif not branch.PubliekeTijdstempels.GeldigVanaf is None:
+                #--------------------------------------------------
+                # Tijdstempel is teruggetrokken
+                #--------------------------------------------------
+                element = TerugtrekkingTijdstempel (consolidatieInformatie)
+                element.Doel = doel
+                element.IsGeldigVanaf = True
+                consolidatieInformatie.TijdstempelTerugtrekkingen.append ()
+
+            # Markeer als gepubliceerd
+            branch.InterneTijdstempels.IsGepubliceerd ()
+
         return succes
  
     class _ElementMetRelaties:

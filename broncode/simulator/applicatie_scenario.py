@@ -353,7 +353,7 @@ class Scenario:
                         self.Projecten.append (projectOverig)
                     bron.Actie = ProjectActie (projectOverig)
                     bron.Actie.SoortActie = 'Publicatie'
-                    bron.Actie.Beschrijving = 'Zie de STOP ConsolidatieInformatie module voor details.'
+                    bron.Actie.Beschrijving = 'Zie de uitwisselingen in de keten voor details.'
                     bron.Actie.UitgevoerdOp = bron.Module.GemaaktOp
                     bron.Actie._IsUitwisseling = True
 
