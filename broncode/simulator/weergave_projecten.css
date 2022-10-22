@@ -17,12 +17,23 @@
             white-space: nowrap;
         }
 
+        .prj_overzicht td.c {
+            text-align: center;
+        }
+
     .prj_overzicht th {
         border: 1px solid #666666;
     }
 
+        .prj_overzicht th.nw {
+            white-space: nowrap;
+        }
+
+        .prj_overzicht th.c {
+            text-align: center;
+        }
+
     .prj_overzicht tr { /* projectactie in tabel */
-        cursor: pointer;
     }
 
         .prj_overzicht tr.top {
@@ -33,15 +44,24 @@
             border-bottom: 1px solid #666666;
         }
 
-        .prj_overzicht tr:hover {
-            background-color: #dae8fc;
+        .prj_overzicht tr[data-uw] { /* projectactie die ook een uitwisseling is */
+            cursor: pointer;
         }
+
+            .prj_overzicht tr[data-uw]:hover {
+                background-color: #dae8fc;
+            }
 
         .prj_overzicht tr.huidige-uw { /* geselecteerde projectactie die ook een uitwisseling is */
             background-color: #ffe6cc;
             border-left: 3px solid #000000;
             border-right: 3px solid #000000;
+            cursor: pointer;
         }
+
+            .prj_overzicht tr.huidige-uw:hover {
+                background-color: #dae8fc;
+            }
 
             .prj_overzicht tr.huidige-uw.top {
                 background-color: #ffe6cc;

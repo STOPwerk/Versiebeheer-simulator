@@ -69,7 +69,7 @@ class InstrumentversieInformatie:
                '\t<FRBRWork>' + str(self.Basisversie_Doel) + '</FRBRWork>']
         if not self.Basisversie_Doel is None:
             xml.extend (['\t<gemaaktOpBasisVan>',
-                         '\t\t<Basisversie>'
+                         '\t\t<Basisversie>',
                          '\t\t\t<doel>' + str(self.Basisversie_Doel) + '</doel>',
                          '\t\t\t<gemaaktOp>' + self.Basisversie_GemaaktOp + '</gemaaktOp>',
                          '\t\t</Basisversie>',

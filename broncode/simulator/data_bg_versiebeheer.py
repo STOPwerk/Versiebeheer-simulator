@@ -71,18 +71,35 @@ class Projectstatus:
         # De branches waar in het project aan gewerkt wordt door een adviesbureau
         self.ExterneBranches : Dict[Doel,Branch] = {}
 
+class UitgewisseldeSTOPModule:
+
+    def __init__(self, module, van: str, naar: str):
+        """Een STOP module die als onderdeel van de stap uitgewisseld wordt.
+        Alleen gebruikt voor weergave.
+        
+        Argumenten:
+
+        module object De STOP module(s) die voor deze actie uitgewisseld wordt
+                      Instantie van een klasse die de methode self.ModuleXml() implementeert
+        van str Ketenpartij die de module opstuurt
+        naar str Ketenpartij die de module ontvangt
+        """
+        self.Module = module
+        self.Van = van
+        self.Naar = naar
+
 class ProjectactieResultaat:
 
     def __init__(self, projectactie):
         self._Projectactie : ProjectActie = projectactie
         # Degene die de actie heeft uitgevoerd: adviesbureau of bevoegd gezag
         self.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_BevoegdGezag
-        # Alleen voor weergave: de STOP module(s) waarin consolidatie-informatie voor deze actie uitgewisseld wordt
-        # Instantie van een klasse die de methode self.ModuleXml() implementeert
-        self.STOPModule = None
+        # Alleen voor weergave: de STOP module(s) die in de keten uitgewisseld worden
+        self.Uitgewisseld : List[UitgewisseldeSTOPModule] = []
 
     _Uitvoerder_BevoegdGezag = 'Bevoegd gezag'
     _Uitvoerder_Adviesbureau = 'Adviesbureau'
+    _Uitvoerder_LVBB = 'LVBB'
 
 #======================================================================
 #

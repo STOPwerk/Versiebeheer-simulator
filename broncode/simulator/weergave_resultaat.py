@@ -22,6 +22,7 @@ from weergave_annotaties import Weergave_Annotaties
 from weergave_completetoestanden import Weergave_CompleteToestanden
 from weergave_consolidatieinformatie import Weergave_ConsolidatieInformatie
 from weergave_proefversies import Weergave_Proefversies
+from weergave_project_uitwisselingen import Weergave_Project_Uitwisselingen
 from weergave_projecten import Weergave_Projecten
 from weergave_resultaat_data import InstrumentData
 from weergave_tijdreisfilter import Weergave_Tijdreisfilter
@@ -135,6 +136,7 @@ class ResultaatGenerator (WebpaginaGenerator):
             self.VoegHtmlToe (einde)
 
             Weergave_Projecten.VoegToe (self, self.Scenario)
+            Weergave_Project_Uitwisselingen.VoegToe (self, self.Scenario)
 
             self.VoegHtmlToe ('</div>')
 

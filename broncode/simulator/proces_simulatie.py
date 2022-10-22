@@ -18,6 +18,7 @@ from pickle import NONE
 from applicatie_scenario import Scenario
 import applicatie_configuratie
 from data_bg_project import ProjectActie
+from data_bg_versiebeheer import ProjectactieResultaat, UitgewisseldeSTOPModule
 from weergave_resultaat_data import WeergaveData
 from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
 from proces_bg_projectacties import ProjectactieUitvoering
@@ -56,18 +57,20 @@ class Proces_Simulatie:
             for idx, consolidatieInformatieBron in enumerate (self.Scenario.ConsolidatieInformatie):
 
                 publicatieblad = None
+                actieResultaat = None
 
                 if not consolidatieInformatieBron.Module is None:
                     # Specificatie van consolidatie-informatie
                     consolidatieInformatie = consolidatieInformatieBron.Module
                     if self.Scenario.Opties.Versiebeheer:
                         # Verwerk dat in het versiebeheer van het bevoegd gezag
-                        if not ConsolidatieInformatieMaker.WerkBij (self.Scenario.Log, self.Scenario.Versiebeheer, consolidatieInformatie, consolidatieInformatieBron.Actie):
+                        isValide, actieResultaat = ConsolidatieInformatieMaker.WerkBij (self.Scenario.Log, self.Scenario.Versiebeheer, consolidatieInformatie, consolidatieInformatieBron.Actie)
+                        if not isValide:
                             # Er is iets fout gegaan
                             return
                 else:
                     # Project actie: voer de actie uit
-                    isValide, consolidatieInformatie = ProjectactieUitvoering.Voor (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
+                    isValide, consolidatieInformatie, actieResultaat = ProjectactieUitvoering.Voor (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
                     if not isValide:
                         # Er is iets fout gegaan
                         return
@@ -135,6 +138,9 @@ class Proces_Simulatie:
                             # applicatie die tijdreizen ondersteunt zal deze bepaling daarom niet uitvoeren.
                             self.Scenario.Log.Informatie ("Bepaal de actuele toestanden voor " + workId)
                             MaakActueleToestanden.VoerUit (self.Scenario.Log, geconsolideerd, uitwisseling.Uitwisseling.GemaaktOp, uitwisseling.Uitwisseling.OntvangenOp, uitwisseling.Uitwisseling.BekendOp)
+                            
+                            if not actieResultaat is None:
+                                actieResultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (geconsolideerd.ActueleToestanden, ProjectactieResultaat._Uitvoerder_LVBB, ProjectactieResultaat._Uitvoerder_BevoegdGezag))
 
                             if len (self.Scenario.Annotaties) > 0:
                                 # De volgendeGemaaktOp is in productie-waardige applicaties bij de verwerking op dit moment natuurlijk

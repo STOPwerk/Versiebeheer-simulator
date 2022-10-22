@@ -22,10 +22,10 @@
 #
 #======================================================================
 
-from typing import List
+from typing import Tuple
 
 from applicatie_meldingen import Meldingen
-from data_bg_versiebeheer import Versiebeheer, Branch, MomentopnameInstrument, ProjectactieResultaat
+from data_bg_versiebeheer import Versiebeheer, Branch, MomentopnameInstrument, ProjectactieResultaat, UitgewisseldeSTOPModule
 from data_bg_project import ProjectActie
 from stop_consolidatieinformatie import ConsolidatieInformatie
 
@@ -39,7 +39,7 @@ class ConsolidatieInformatieMaker:
 #
 #----------------------------------------------------------------------
     @staticmethod
-    def WerkBij (log: Meldingen, versiebeheer: Versiebeheer, consolidatieInformatie: ConsolidatieInformatie, actie: ProjectActie):
+    def WerkBij (log: Meldingen, versiebeheer: Versiebeheer, consolidatieInformatie: ConsolidatieInformatie, actie: ProjectActie) -> Tuple[bool, ProjectactieResultaat]:
         """Werk de BG-versiebeheerinformatie bij aan de hand van consolidatie-informatie.
 
         Argumenten:
@@ -50,14 +50,14 @@ class ConsolidatieInformatieMaker:
                                                        die als invoer voor het scenario is opgegeven
         actie ProjectActie  De actie die correspondeert met de consolidatie-informatie
 
-        Geeft aan of de verwerking goed is verlopen
+        Geeft aan of de verwerking goed is verlopen en het resultaat van de actie
         """
         resultaat = ProjectactieResultaat (actie)
-        resultaat.STOPModule = consolidatieInformatie
+        resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (consolidatieInformatie, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_LVBB))
         versiebeheer.Projectacties.append (resultaat)
 
         maker = ConsolidatieInformatieMaker (log, versiebeheer, consolidatieInformatie)
-        return maker._WerkVersiebeheerBij ()
+        return (maker._WerkVersiebeheerBij (), resultaat)
 
 #======================================================================
 #
@@ -168,9 +168,9 @@ class ConsolidatieInformatieMaker:
                 isValide = False
                 continue
             if tijdstempel.IsGeldigVanaf:
-                branch.Tijdstempels.GeldigVanaf = tijdstempel.Datum
+                branch.PubliekeTijdstempels.GeldigVanaf = tijdstempel.Datum
             else:
-                branch.Tijdstempels.JuridischWerkendVanaf = tijdstempel.Datum
+                branch.PubliekeTijdstempels.JuridischWerkendVanaf = tijdstempel.Datum
 
         for tijdstempel in self._ConsolidatieInformatie.TijdstempelTerugtrekkingen:
             branch = self._Versiebeheer.Branches.get (tijdstempel.Doel)
@@ -183,9 +183,9 @@ class ConsolidatieInformatieMaker:
                 isValide = False
                 continue
             if tijdstempel.IsGeldigVanaf:
-                branch.Tijdstempels.GeldigVanaf = None
+                branch.PubliekeTijdstempels.GeldigVanaf = None
             else:
-                branch.Tijdstempels.JuridischWerkendVanaf = None
-                branch.Tijdstempels.GeldigVanaf = None
+                branch.PubliekeTijdstempels.JuridischWerkendVanaf = None
+                branch.PubliekeTijdstempels.GeldigVanaf = None
 
         return isValide

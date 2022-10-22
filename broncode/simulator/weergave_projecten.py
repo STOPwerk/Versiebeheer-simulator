@@ -8,7 +8,6 @@
 #======================================================================
 
 from applicatie_scenario import Scenario
-from weergave_uitwisselingselector import Weergave_Uitwisselingselector
 from weergave_webpagina import WebpaginaGenerator
 
 class Weergave_Projecten:
@@ -35,8 +34,9 @@ class Weergave_Projecten:
         # Overzicht van de projectacties
         generator.VoegHtmlToe ('<p><table class="prj_overzicht"><tr>')
         alleActies = []
+        generator.VoegHtmlToe ('<th class="nw">Uitgevoerd op</th>')
         for idx, project in enumerate (scenario.Projecten):
-            generator.VoegHtmlToe ('<th>' + project.Code + '</th>')
+            generator.VoegHtmlToe ('<th class="c">' + project.Code + '</th>')
             for actie in project.Acties:
                 alleActies.append ((idx, actie))
         generator.VoegHtmlToe ('<th>Actie</th><th colspan="2">Beschrijving</th></td></tr>')
@@ -45,21 +45,21 @@ class Weergave_Projecten:
         for idx, actie in alleActies:
 
             beschrijving = [
-                '<td colspan="2">' + actie.Beschrijving + '</td>',
-                '<td class="nw">Uitgevoerd op:</td><td>' + actie.UitgevoerdOp + '</td>'
+                '<td colspan="2">' + actie.Beschrijving + '</td>'
             ]
 
             tr = '<tr' + (' data-uw="' + actie.UitgevoerdOp + '"' if actie._IsUitwisseling else '')
-            generator.VoegHtmlToe (tr + ' class="top">')
+            generator.VoegHtmlToe (tr + ' class="top"><td rowspan="' + str(len(beschrijving)) + '">' + actie.UitgevoerdOp + '</td>')
             for jdx in range (0, len (scenario.Projecten)):
-                generator.VoegHtmlToe ('<td rowspan="' + str(len(beschrijving)-1) + '">' + ('&#x2714;' if idx == jdx else '') + '</td>')
-            generator.VoegHtmlToe ('<td rowspan="' + str(len(beschrijving)-1) + '">' + actie.SoortActie + '</td>')
+                generator.VoegHtmlToe ('<td rowspan="' + str(len(beschrijving)) + '" class="c">' + ('&#x2714;' if idx == jdx else '') + '</td>')
+            generator.VoegHtmlToe ('<td rowspan="' + str(len(beschrijving)) + '">' + actie.SoortActie + '</td>')
 
             for jdx, regel in enumerate (beschrijving):
-                if jdx == len (beschrijving)-1:
-                    generator.VoegHtmlToe (tr + ' class="bottom">')
-                elif jdx > 0:
-                    generator.VoegHtmlToe (tr + '>')
+                if jdx > 0:
+                    if jdx == len (beschrijving)-1:
+                        generator.VoegHtmlToe (tr + ' class="bottom">')
+                    else:
+                        generator.VoegHtmlToe (tr + '>')
                 generator.VoegHtmlToe (regel + '</tr>')
 
         generator.VoegHtmlToe ('</table></p>')

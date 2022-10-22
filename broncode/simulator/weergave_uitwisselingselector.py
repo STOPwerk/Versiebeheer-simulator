@@ -17,7 +17,7 @@ class Weergave_Uitwisselingselector:
         scenario Scenario  Scenario waar de generator voor gemaakt wordt
         """
         # De gemaaktOp voor de beschikbare uitwisselingen
-        self._Waarden = [u.GemaaktOp for u in reversed (scenario.Versiebeheerinformatie.Uitwisselingen)]
+        self._Waarden = list(reversed (list(set([*[u.GemaaktOp for u in scenario.Versiebeheerinformatie.Uitwisselingen], *[b.GemaaktOp for b in scenario.Opties.Uitwisselingen]]))))
         # De titels voor de uitwisselingen
         # key = gemaaktOp, value = titel
         self._Optie = { w: w for w in self._Waarden }
@@ -34,7 +34,7 @@ class Weergave_Uitwisselingselector:
                 if benoemd.Beschrijving:
                     self._Beschrijving[benoemd.GemaaktOp] = benoemd.Beschrijving
                     self._HeeftBeschrijving = True
-        if len (self._Waarden) > 1:
+        if len (self._Waarden) > 0:
             # De waarde die als eerste getoond moet worden
             self._StartWaarde = self._Waarden[0] if len (self._Benoemd) == 0 else self._Benoemd[0].GemaaktOp
 
@@ -70,7 +70,7 @@ class Weergave_Uitwisselingselector:
         Argumenten:
         generator WebpaginaGenerator  Generator voor de webpagina
         """
-        if len (self._Waarden) <= 1:
+        if len (self._Waarden) < 1:
             return
         generator.LeesCssTemplate ("")
         html = generator.LeesHtmlTemplate ("", False)

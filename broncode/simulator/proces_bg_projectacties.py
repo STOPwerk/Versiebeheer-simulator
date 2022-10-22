@@ -14,11 +14,10 @@
 #
 #======================================================================
 
-from distutils.util import get_platform
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from applicatie_meldingen import Meldingen
-from data_bg_versiebeheer import Versiebeheer, Projectstatus, ProjectactieResultaat, Branch, MomentopnameInstrument, MomentopnameVerwijzing
+from data_bg_versiebeheer import Versiebeheer, Projectstatus, ProjectactieResultaat, Branch, MomentopnameInstrument, MomentopnameVerwijzing, UitgewisseldeSTOPModule
 from data_bg_project import ProjectActie, ProjectActie_NieuwDoel, ProjectActie_Download, ProjectActie_Uitwisseling, ProjectActie_Wijziging, ProjectActie_VerwerkingUitspraakRechter, ProjectActie_Publicatie, Instrumentversie
 from data_doel import Doel
 from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Intrekking, Terugtrekking, TerugtrekkingIntrekking, Tijdstempel, TerugtrekkingTijdstempel, Momentopname as CI_Momentopname
@@ -37,7 +36,7 @@ class ProjectactieUitvoering:
 #
 #----------------------------------------------------------------------
     @staticmethod
-    def Voor (log: Meldingen, scenario, actie: ProjectActie):
+    def Voor (log: Meldingen, scenario, actie: ProjectActie) -> Tuple[bool, ConsolidatieInformatie, ProjectactieResultaat]:
         """Voer de projectactie uit.
 
         Argumenten:
@@ -46,7 +45,7 @@ class ProjectactieUitvoering:
         versiebeheer Versiebeheer  Informatie over het versiebeheer zoals bevoegd gezag dat uitvoert.
         actie ProjectActie  De actie die in het project wordt uitgevoerd
 
-        Geeft (isValide,ConsolidatieInformatie) terug die volgt uit de actie.
+        Geeft (isValide,ConsolidatieInformatie, ProjectactieResultaat) terug die volgt uit de actie.
         """
 
         # Maak de uitvoerder van de actie aan
@@ -61,14 +60,14 @@ class ProjectactieUitvoering:
             if uitvoerder._Projectstatus is None:
                 uitvoerder._Versiebeheer.Projecten[actie._Project.Code] = uitvoerder._Projectstatus = Projectstatus (actie._Project)
             uitvoerder._Resultaat = ProjectactieResultaat (actie)
-            uitvoerder._Versiebeheer.Projectacties.append (uitvoerder._Resultaat)
 
             # Voer de actie uit en geef de resulterende ConsolidatieInformatie terug
             if not uitvoerder.VoerUit (actie):
-                return (False, None)
-            if not uitvoerder._Resultaat.STOPModule is None and isinstance (uitvoerder._Resultaat.STOPModule, ConsolidatieInformatie):
-                return (True, uitvoerder._Resultaat.STOPModule)
-            return (True, None)
+                return (False, None, None)
+            uitvoerder._Versiebeheer.Projectacties.append (uitvoerder._Resultaat)
+            if len (uitvoerder._Resultaat.Uitgewisseld) > 0 and isinstance (uitvoerder._Resultaat.Uitgewisseld[0], ConsolidatieInformatie):
+                return (True, uitvoerder._Resultaat.Uitgewisseld[0], uitvoerder._Resultaat)
+            return (True, None, uitvoerder._Resultaat)
 
     # Constructors om de uitvoerders van de acties te maken op basis van de SoortActie
     _Uitvoerders = {
@@ -393,7 +392,8 @@ class _VoerUit_Download (ProjectactieUitvoering):
         branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_Adviesbureau
 
         # Gebruik als STOP-module de momentopnames die de downloadservice meelevert
-        self._Resultaat.STOPModule = module = DownloadserviceModules ()
+        module = DownloadserviceModules ()
+        self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (module, ProjectactieResultaat._Uitvoerder_LVBB, branch.Uitvoerder))
 
         # Zoek de geldende versie op van elk van de instrumenten
         for workId in actie.Instrumenten:
@@ -403,7 +403,7 @@ class _VoerUit_Download (ProjectactieUitvoering):
                 succes = False
                 continue
             geldigeToestand = None
-            for toestand in geconsolideerd.ActueleToestanden:
+            for toestand in geconsolideerd.ActueleToestanden.Toestanden:
                 if not toestand.NietMeerActueel and toestand.JuridischWerkendVanaf <= actie.GebaseerdOp_GeldigOp and (toestand.JuridischWerkendTot is None or actie.GebaseerdOp_GeldigOp < toestand.JuridischWerkendTot):
                     geldigeToestand = toestand
                     break
@@ -475,7 +475,7 @@ class _VoerUit_Uitwisseling (ProjectactieUitvoering):
             if bgBranch is None:
                 # Door adviesbureau gedownload, neem branch over
                 self._Projectstatus.Branches[actie.Doel] = branch
-                branch.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_BevoegdGezag
+                branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
             else:
                 # Eerder door BG uitgeleverd, neem instrumentversies over
                 for workId, instrumentversie in branch.InterneInstrumentversies.items ():
@@ -494,7 +494,8 @@ class _VoerUit_Uitwisseling (ProjectactieUitvoering):
                     bgVersie.IsTeruggetrokken = instrumentversie.IsTeruggetrokken
 
             # Stel de momentopname voor de uitwisseling op
-            self._Resultaat.STOPModule = stop_mo = Momentopname ()
+            stop_mo = Momentopname ()
+            self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (stop_mo, ProjectactieResultaat._Uitvoerder_Adviesbureau, ProjectactieResultaat._Uitvoerder_BevoegdGezag))
             stop_mo.Doel = actie.Doel
             stop_mo.GemaaktOp = actie.UitgevoerdOp
             if bgBranch is None:
@@ -509,7 +510,7 @@ class _VoerUit_Uitwisseling (ProjectactieUitvoering):
                         instrumentversie.Basisversie_GemaaktOp = basisversie.GemaaktOp
                         instrumentversie.WorkId = workId
                         instrumentversie._ExpressionId = expressionId
-                        stop_mo.Instrumentversies[expressionId] = instrumentversie
+                        stop_mo.Instrumentversies.append (instrumentversie)
 
         else:
             #----------------------------------------------------------
@@ -536,7 +537,8 @@ class _VoerUit_Uitwisseling (ProjectactieUitvoering):
                     abBranch.InterneInstrumentversies[workId] = basisversie
 
             # Stel de momentopname voor de uitwisseling op
-            self._Resultaat.STOPModule = stop_mo = Momentopname ()
+            stop_mo = Momentopname ()
+            self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (stop_mo, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_Adviesbureau))
             stop_mo.Doel = actie.Doel
             stop_mo.GemaaktOp = actie.UitgevoerdOp
 
@@ -603,7 +605,8 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
         isConceptOfOntwerp = not actie.SoortPublicatie in ProjectActie_Publicatie._SoortPublicatie_GeenConceptOfOntwerp
 
         succes = True
-        self._Resultaat.STOPModule = consolidatieInformatie = ConsolidatieInformatie (self._Log, '(gemaakt voor projectactie)')
+        consolidatieInformatie = ConsolidatieInformatie (self._Log, '(gemaakt voor projectactie)')
+        self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (consolidatieInformatie, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_LVBB))
         consolidatieInformatie.GemaaktOp = actie.UitgevoerdOp
         consolidatieInformatie.OntvangenOp = consolidatieInformatie._BekendOp = actie.UitgevoerdOp[0:10]
 

@@ -19,7 +19,7 @@ import xml.etree.ElementTree as ET
 
 from applicatie_meldingen import Meldingen
 from applicatie_procesopties import ProcesOpties, BenoemdeUitwisseling
-from data_bg_project import Project, ProjectActie, ProjectActie_Publicatie, ProjectActie_Uitwisseling
+from data_bg_project import Project, ProjectActie, ProjectActie_Publicatie, ProjectActie_Uitwisseling, ProjectActie_Download
 from data_bg_versiebeheer import Versiebeheer
 from data_lv_annotatie import Annotatie
 from data_lv_consolidatie import GeconsolideerdInstrument
@@ -314,10 +314,18 @@ class Scenario:
                     else:
                         bronPerGemaaktOp[actie.UitgevoerdOp] = Scenario.ConsolidatieInformatieBron (None, actie)
                     isRevisie = True
+                    actieNaam = None
                     if isinstance (actie, ProjectActie_Publicatie):
                         isRevisie = actie.SoortPublicatie == ProjectActie_Publicatie._SoortPublicatie_Revisie
-                    elif not isinstance (actie, ProjectActie_Uitwisseling):
-                        # Alleen publicaties en uitwisselingen worden opgenomen in de lijst met uitwisselingen
+                        actieNaam = 'Uitwisseling (revisie)' if isRevisie else 'Publicatie (' + actie.SoortPublicatie + ')'
+                    elif isinstance (actie, ProjectActie_Download):
+                        # Ook downloads worden opgenomen in de lijst met uitwisselingen
+                        actieNaam = 'Download uit LVBB'
+                    elif isinstance (actie, ProjectActie_Uitwisseling):
+                        # Ook uitwisselingen worden opgenomen in de lijst met uitwisselingen
+                        actieNaam = 'Uitwisseling adviesbureau - BG'
+                    else:
+                        # Andere niet
                         continue
 
                     # Gebruik de actie als beschrijving indien aanwezig
@@ -329,7 +337,7 @@ class Scenario:
                     if not uwHeeftBeschrijving:
                         benoemd = BenoemdeUitwisseling ()
                         benoemd.GemaaktOp = actie.UitgevoerdOp 
-                        benoemd.Naam = actie._Project.Code + ': ' + actie.SoortActie
+                        benoemd.Naam = actie._Project.Code + ': ' + actieNaam
                         benoemd.Beschrijving = actie.Beschrijving
                         benoemd.IsRevisie = isRevisie
                         self.Opties.Uitwisselingen.append (benoemd)
