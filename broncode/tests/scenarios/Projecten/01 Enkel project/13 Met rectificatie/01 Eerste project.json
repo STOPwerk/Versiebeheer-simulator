@@ -1,0 +1,48 @@
+{
+  "Project": "P1",
+  "Beschrijving": "<p>Test: nioeuwe regeling met besluit en rectificatie</p>",
+  "Acties": [
+    {
+      "SoortActie": "Nieuw doel",
+      "Beschrijving": "Start van een project voor een nieuwe regeling",
+      "UitgevoerdOp": "2022-01-01T07:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Instelling",
+      "Instrumenten": [
+        "/akn/nl/act/gm9999/2022/REG_A"
+      ]
+    },
+    {
+      "SoortActie": "Wijziging",
+      "Beschrijving": "Finaliseren van de versie voor de nieuwe regeling",
+      "UitgevoerdOp": "2022-01-15T07:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Instelling",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;initieel" }
+      ],
+      "JuridischWerkendVanaf": "2022-03-01"
+    },
+    {
+      "SoortActie": "Publicatie",
+      "Beschrijving": "Bekendmaken van het besluit",
+      "UitgevoerdOp": "2022-02-01T07:00:00Z",
+      "Doelen": [ "/join/id/proces/gm9999/2022/Instelling" ],
+      "SoortPublicatie": "Besluit"
+    },
+    {
+      "SoortActie": "Wijziging",
+      "Beschrijving": "Fouten hersteld",
+      "UitgevoerdOp": "2022-02-15T17:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Instelling",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;rectificatie" }
+      ]
+    },
+    {
+      "SoortActie": "Publicatie",
+      "Beschrijving": "Publiceren van de rectificatie",
+      "UitgevoerdOp": "2022-02-16T07:00:00Z",
+      "Doelen": [ "/join/id/proces/gm9999/2022/Instelling" ],
+      "SoortPublicatie": "Rectificatie"
+    }
+  ]
+}

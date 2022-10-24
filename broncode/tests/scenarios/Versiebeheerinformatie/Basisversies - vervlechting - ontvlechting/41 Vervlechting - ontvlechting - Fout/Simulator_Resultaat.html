@@ -12,8 +12,6 @@
         }
 
         table {
-            background-color: White;
-            color: Black;
             font-family: Verdana, Geneva, sans-serif;
             font-size: 10pt;
             line-height: 1.4em;
@@ -314,12 +312,15 @@
     }
 
     .uw_overzicht tr { /* uitwisseling in tabel */
-        cursor: pointer;
     }
 
-        .uw_overzicht tr:hover {
-            background-color: #dae8fc;
+        .uw_overzicht tr[data-uw] { /* uitwisseling */
+            cursor: pointer;
         }
+
+            .uw_overzicht tr[data-uw]:hover {
+                background-color: #dae8fc;
+            }
 
         .uw_overzicht tr.huidige-uw { /* geselecteerde uitwisseling */
             background-color: #ffe6cc;
@@ -2728,10 +2729,10 @@ Applicatie = (function () {
                 <tr>
                     <td><button class="pijlknop" id="uitwisselingselector_vorige" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_links"></div></button></td>
                     <td><select id="uitwisselingselector_gemaaktOp"><option value="2022-01-05T07:00:00Z" selected>2022-01-05T07:00:00Z</option>
+<option value="2022-01-01T07:00:00Z">2022-01-01T07:00:00Z</option>
 <option value="2022-01-04T07:00:00Z">2022-01-04T07:00:00Z</option>
 <option value="2022-01-03T07:00:00Z">2022-01-03T07:00:00Z</option>
 <option value="2022-01-02T07:00:00Z">2022-01-02T07:00:00Z</option>
-<option value="2022-01-01T07:00:00Z">2022-01-01T07:00:00Z</option>
 </select></td>
                     <td><button class="pijlknop" id="uitwisselingselector_volgende" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_rechts"></div></button></td>
                 </tr>
@@ -2744,9 +2745,9 @@ Applicatie = (function () {
 </table>
 
 </div>
-<table><tr><td><button data-accordion="2824" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2824" class="accordion_t_titel">&#8678;Over deze pagina</td>
-<td data-accordion-paneel="2824" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="3031" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3031" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="3031" class="accordion_t_paneel" style="display: block">
 <b>Over deze pagina</b>
 <p>
     Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
@@ -2841,8 +2842,8 @@ Applicatie = (function () {
 <p>Er zijn 
 2 foutmeldingen
 ; klik op <i>Uitvoering van de applicatie</i> om deze te bekijken</p>
-<button data-accordion="2825" class="accordion_h">Uitvoering van de applicatie</button>
-<div data-accordion-paneel="2825" class="accordion_h_paneel">
+<button data-accordion="3032" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="3032" class="accordion_h_paneel">
 <p>
     Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
     het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
@@ -2858,11 +2859,11 @@ Applicatie = (function () {
 <div id="log_detail">
 
 <table id="meldingen_tabel">
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\01 Vooraf - Eerste versie.xml' bevat valide ConsolidatieInformatie</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\02 Vooraf - Twee wijzigingen.xml' bevat valide ConsolidatieInformatie</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\03 Vooraf - Extra wijzigingen.xml' bevat valide ConsolidatieInformatie</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\04 Vooraf - Ontvlechting - Vervlechting.xml' bevat valide ConsolidatieInformatie</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\05 Test - Gelijktijdig.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\01 Vooraf - Eerste versie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\02 Vooraf - Twee wijzigingen.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\03 Vooraf - Extra wijzigingen.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\04 Vooraf - Ontvlechting - Vervlechting.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheerinformatie\Basisversies - vervlechting - ontvlechting\41 Vervlechting - ontvlechting - Fout\05 Test - Gelijktijdig.xml' bevat valide ConsolidatieInformatie</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main"><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Voer de simulatie uit</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Verwerk de consolidatie-informatie ontvangen op 2022-01-01 (@2022-01-01T07:00:00Z)</td></tr>
@@ -2905,9 +2906,9 @@ Applicatie = (function () {
 </div>
 
 <div class="sectie_op"><h1>Publiceren</h1>
-<table><tr><td><button data-accordion="2826" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2826" class="accordion_t_titel">&#8678;Over publiceren</td>
-<td data-accordion-paneel="2826" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="3033" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3033" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
+<td data-accordion-paneel="3033" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
     en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
@@ -2917,11 +2918,11 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<button data-accordion="2827" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
-<div data-accordion-paneel="2827" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2828" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2828" class="accordion_t_titel">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="2828" class="accordion_t_paneel" style="display: block">
+<button data-accordion="3034" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
+<div data-accordion-paneel="3034" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="3035" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3035" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="3035" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
     het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
@@ -2962,18 +2963,18 @@ Applicatie = (function () {
 </table></p>
 </div>
 
-<button data-accordion="2829" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
-<div data-accordion-paneel="2829" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="2830" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2830" class="accordion_t_titel">&#8678;Over de module</td>
-<td data-accordion-paneel="2830" class="accordion_t_paneel" style="display: block">
+<button data-accordion="3036" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="3036" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="3037" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3037" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
+<td data-accordion-paneel="3037" class="accordion_t_paneel" style="display: block">
 <p>
     Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
 </p>
 
 </td></tr></table>
 
-<div  data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-02T07:00:00Z" >
+<div  data-u="2022-01-01T07:00:00Z" >
 <pre>
 &lt;ConsolidatieInformatie xmlns="https://standaarden.overheid.nl/stop/imop/data/"&gt;
   &lt;gemaaktOp&gt;2022-01-01T07:00:00Z&lt;/gemaaktOp&gt;
@@ -2989,7 +2990,7 @@ Applicatie = (function () {
 </pre>
 
 </div>
-<div  data-uv="2022-01-02T07:00:00Z" data-ut="2022-01-03T07:00:00Z" >
+<div  data-u="2022-01-02T07:00:00Z" >
 <pre>
 &lt;ConsolidatieInformatie xmlns="https://standaarden.overheid.nl/stop/imop/data/"&gt;
   &lt;gemaaktOp&gt;2022-01-02T07:00:00Z&lt;/gemaaktOp&gt;
@@ -3023,7 +3024,7 @@ Applicatie = (function () {
 </pre>
 
 </div>
-<div  data-uv="2022-01-03T07:00:00Z" data-ut="2022-01-04T07:00:00Z" >
+<div  data-u="2022-01-03T07:00:00Z" >
 <pre>
 &lt;ConsolidatieInformatie xmlns="https://standaarden.overheid.nl/stop/imop/data/"&gt;
   &lt;gemaaktOp&gt;2022-01-03T07:00:00Z&lt;/gemaaktOp&gt;
@@ -3057,7 +3058,7 @@ Applicatie = (function () {
 </pre>
 
 </div>
-<div  data-uv="2022-01-04T07:00:00Z" data-ut="2022-01-05T07:00:00Z" >
+<div  data-u="2022-01-04T07:00:00Z" >
 <pre>
 &lt;ConsolidatieInformatie xmlns="https://standaarden.overheid.nl/stop/imop/data/"&gt;
   &lt;gemaaktOp&gt;2022-01-04T07:00:00Z&lt;/gemaaktOp&gt;
@@ -3099,7 +3100,7 @@ Applicatie = (function () {
 </pre>
 
 </div>
-<div  data-uv="2022-01-05T07:00:00Z" >
+<div  data-u="2022-01-05T07:00:00Z" >
 <pre>
 &lt;ConsolidatieInformatie xmlns="https://standaarden.overheid.nl/stop/imop/data/"&gt;
   &lt;gemaaktOp&gt;2022-01-05T07:00:00Z&lt;/gemaaktOp&gt;
@@ -3130,9 +3131,9 @@ Applicatie = (function () {
 
 </div>
 <div class="sectie_lv"><h1>Beschikbaar stellen</h1>
-<table><tr><td><button data-accordion="2831" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2831" class="accordion_t_titel">&#8678;Over beschikbaar stellen</td>
-<td data-accordion-paneel="2831" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="3038" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3038" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="3038" class="accordion_t_paneel" style="display: block">
 <p>
     De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
     en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).
@@ -3144,11 +3145,11 @@ Applicatie = (function () {
 </td></tr></table>
 
 <h2>Regeling: /akn/nl/act/gm9999/2022/REG_A</h2>
-<button data-accordion="2832" class="accordion_h active"><h3>Versiebeheer</h3></button>
-<div data-accordion-paneel="2832" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2833" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2833" class="accordion_t_titel">&#8678;Toelichting op het gebruik van versiebeheer</td>
-<td data-accordion-paneel="2833" class="accordion_t_paneel" style="display: block">
+<button data-accordion="3039" class="accordion_h active"><h3>Versiebeheer</h3></button>
+<div data-accordion-paneel="3039" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="3040" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3040" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer</td>
+<td data-accordion-paneel="3040" class="accordion_t_paneel" style="display: block">
 <p>
     STOP kent een vorm van <a href="@@@Documentatie_Url@@@/versiebeheer_principes.html">versiebeheer</a> voor regelgeving.
     Daarbij wordt bij elke uitwisseling aangegeven hoe een uitgewisselde versie van een regeling of informatieobject zich verhoudt
@@ -3950,9 +3951,9 @@ Instrumentversie: /akn/nl/act/gm9999/2022/REG_A/nld@2022;gelijktijdig<br/>
     </tr>
 </table>
 
-<table><tr><td><button data-accordion="2834" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2834" class="accordion_t_titel">&#8678;Legenda</td>
-<td data-accordion-paneel="2834" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="3041" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3041" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="3041" class="accordion_t_paneel" style="display: block">
 <table>
     <tr><td><div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-02T07:00:00Z" ><table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr></table></div>

@@ -1,0 +1,48 @@
+{
+  "Project": "P1",
+  "Beschrijving": "<p>Test: wijziging opgesteld door adviesbureau tbv initiatiefnemer</p>",
+  "Acties": [
+    {
+      "SoortActie": "Download",
+      "Beschrijving": "Start van een project voor een nieuwe regeling",
+      "UitgevoerdOp": "2022-03-01T07:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Initiatief",
+      "GeldigOp": "2022-03-01",
+      "Instrumenten": [
+        "/akn/nl/act/gm9999/2022/REG_A"
+      ]
+    },
+    {
+      "SoortActie": "Wijziging",
+      "Beschrijving": "Finaliseren van de versie voor de nieuwe regeling",
+      "UitgevoerdOp": "2022-05-15T07:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Initiatief",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;initiatiefnemer" }
+      ]
+    },
+    {
+      "SoortActie": "Uitwisseling",
+      "Beschrijving": "Aanbieden aangepaste versie aan de gemeente",
+      "UitgevoerdOp": "2022-05-16T17:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Initiatief"
+    },
+    {
+      "SoortActie": "Wijziging",
+      "Beschrijving": "Finaliseren besluit ter vaststelling",
+      "UitgevoerdOp": "2022-06-01T15:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Initiatief",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;bg" }
+      ],
+      "JuridischWerkendVanaf": "2022-08-01"
+    },
+    {
+      "SoortActie": "Publicatie",
+      "Beschrijving": "Bekendmaken van het vaststellingsbesluit",
+      "UitgevoerdOp": "2022-06-02T07:00:00Z",
+      "Doelen": [ "/join/id/proces/gm9999/2022/Initiatief" ],
+      "SoortPublicatie": "Besluit"
+    }
+  ]
+}

@@ -12,8 +12,6 @@
         }
 
         table {
-            background-color: White;
-            color: Black;
             font-family: Verdana, Geneva, sans-serif;
             font-size: 10pt;
             line-height: 1.4em;
@@ -228,12 +226,15 @@
     }
 
     .uw_overzicht tr { /* uitwisseling in tabel */
-        cursor: pointer;
     }
 
-        .uw_overzicht tr:hover {
-            background-color: #dae8fc;
+        .uw_overzicht tr[data-uw] { /* uitwisseling */
+            cursor: pointer;
         }
+
+            .uw_overzicht tr[data-uw]:hover {
+                background-color: #dae8fc;
+            }
 
         .uw_overzicht tr.huidige-uw { /* geselecteerde uitwisseling */
             background-color: #ffe6cc;
@@ -370,9 +371,9 @@
 <h1>simulatie</h1><p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</p>
 <div id="intro">
 </div>
-<table><tr><td><button data-accordion="1149" class="accordion_t active">?</button></td>
-<td data-accordion-titel="1149" class="accordion_t_titel">&#8678;Over deze pagina</td>
-<td data-accordion-paneel="1149" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="1356" class="accordion_t active">?</button></td>
+<td data-accordion-titel="1356" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="1356" class="accordion_t_paneel" style="display: block">
 <b>Over deze pagina</b>
 <p>
     Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
@@ -467,8 +468,8 @@
 <p>Er is 
 een foutmelding
 ; klik op <i>Uitvoering van de applicatie</i> om deze te bekijken</p>
-<button data-accordion="1150" class="accordion_h">Uitvoering van de applicatie</button>
-<div data-accordion-paneel="1150" class="accordion_h_paneel">
+<button data-accordion="1357" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="1357" class="accordion_h_paneel">
 <p>
     Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
     het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
@@ -484,10 +485,10 @@ een foutmelding
 <div id="log_detail">
 
 <table id="meldingen_tabel">
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\02 Gelijktijdige inwerkingtreding\simulatie\02-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\02 Gelijktijdige inwerkingtreding\simulatie\12-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\02 Gelijktijdige inwerkingtreding\simulatie\22-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\02 Gelijktijdige inwerkingtreding\simulatie\25-BG-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\02 Gelijktijdige inwerkingtreding\simulatie\02-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\02 Gelijktijdige inwerkingtreding\simulatie\12-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\02 Gelijktijdige inwerkingtreding\simulatie\22-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\04 Omgaan met geconsolideerde regeling\05 Samenloop oplossen\02 Gelijktijdige inwerkingtreding\simulatie\25-BG-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
 <tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Deze applicatie kan alleen ConsolidatieInformatie modules met verschillende gemaaktOp verwerken; 2020-02-28T09:00:00Z komt meerdere keren voor</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Fouten en waarschuwingen: geen verwachte resultaten beschikbaar</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Versiebeheerinformatie: geen verwachte resultaten beschikbaar</td></tr>
@@ -513,9 +514,9 @@ een foutmelding
 </div>
 
 <div class="sectie_op"><h1>Publiceren</h1>
-<table><tr><td><button data-accordion="1151" class="accordion_t active">?</button></td>
-<td data-accordion-titel="1151" class="accordion_t_titel">&#8678;Over publiceren</td>
-<td data-accordion-paneel="1151" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="1358" class="accordion_t active">?</button></td>
+<td data-accordion-titel="1358" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
+<td data-accordion-paneel="1358" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
     en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
@@ -525,11 +526,11 @@ een foutmelding
 
 </td></tr></table>
 
-<button data-accordion="1152" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
-<div data-accordion-paneel="1152" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="1153" class="accordion_t active">?</button></td>
-<td data-accordion-titel="1153" class="accordion_t_titel">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="1153" class="accordion_t_paneel" style="display: block">
+<button data-accordion="1359" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
+<div data-accordion-paneel="1359" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="1360" class="accordion_t active">?</button></td>
+<td data-accordion-titel="1360" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="1360" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
     het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
@@ -545,11 +546,11 @@ een foutmelding
 </table></p>
 </div>
 
-<button data-accordion="1154" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
-<div data-accordion-paneel="1154" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="1155" class="accordion_t active">?</button></td>
-<td data-accordion-titel="1155" class="accordion_t_titel">&#8678;Over de module</td>
-<td data-accordion-paneel="1155" class="accordion_t_paneel" style="display: block">
+<button data-accordion="1361" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="1361" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="1362" class="accordion_t active">?</button></td>
+<td data-accordion-titel="1362" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
+<td data-accordion-paneel="1362" class="accordion_t_paneel" style="display: block">
 <p>
     Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
 </p>
@@ -560,9 +561,9 @@ een foutmelding
 
 </div>
 <div class="sectie_lv"><h1>Beschikbaar stellen</h1>
-<table><tr><td><button data-accordion="1156" class="accordion_t active">?</button></td>
-<td data-accordion-titel="1156" class="accordion_t_titel">&#8678;Over beschikbaar stellen</td>
-<td data-accordion-paneel="1156" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="1363" class="accordion_t active">?</button></td>
+<td data-accordion-titel="1363" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="1363" class="accordion_t_paneel" style="display: block">
 <p>
     De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
     en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).

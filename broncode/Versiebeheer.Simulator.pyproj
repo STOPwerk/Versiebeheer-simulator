@@ -12,7 +12,7 @@
     <RootNamespace>Versiebeheer.Simulator</RootNamespace>
     <InterpreterId>Global|PythonCore|3.9</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t tests\scenarios</CommandLineArguments>
+    <CommandLineArguments>-m logs -a  -t "tests\scenarios\Projecten"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>
@@ -37,6 +37,7 @@
     <Content Include="simulator\weergave_proefversies.js" />
     <Content Include="simulator\weergave_proefversies_help.html" />
     <Content Include="simulator\weergave_actueletoestanden_help.html" />
+    <Content Include="simulator\weergave_project_uitwisselingen_help.html" />
     <Content Include="simulator\weergave_resultaat_Applicatie.js" />
     <Content Include="simulator\weergave_resultaat_help_meldingen.html" />
     <Content Include="simulator\weergave_resultaat_help_sectie_op.html" />
@@ -125,6 +126,7 @@
     <Compile Include="simulator\stop_proefversies.py" />
     <Compile Include="simulator\stop_toestand.py" />
     <Compile Include="simulator\weergave_actueletoestanden.py" />
+    <Compile Include="simulator\weergave_project_uitwisselingen.py" />
     <Compile Include="simulator\weergave_proefversies.py" />
     <Compile Include="simulator\weergave_projecten.py" />
     <Compile Include="simulator\weergave_tijdreisfilter.py" />

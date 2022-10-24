@@ -1,0 +1,64 @@
+{
+  "Project": "P1",
+  "Beschrijving": "<p>Test: nieuwe regeling met voorontwerp, ontwerp- en vastgesteld besluit</p>",
+  "Acties": [
+    {
+      "SoortActie": "Nieuw doel",
+      "Beschrijving": "Start van een project voor een nieuwe regeling",
+      "UitgevoerdOp": "2022-01-01T07:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Instelling",
+      "Instrumenten": [
+        "/akn/nl/act/gm9999/2022/REG_A"
+      ]
+    },
+    {
+      "SoortActie": "Wijziging",
+      "Beschrijving": "Finaliseren van de eerste versie",
+      "UitgevoerdOp": "2022-01-15T07:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Instelling",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;voorontwerp" }
+      ]
+    },
+    {
+      "SoortActie": "Publicatie",
+      "Beschrijving": "Publiceren van het voorontwerp",
+      "UitgevoerdOp": "2022-02-01T07:00:00Z",
+      "Doelen": [ "/join/id/proces/gm9999/2022/Instelling" ],
+      "SoortPublicatie": "Voorontwerp"
+    },
+    {
+      "SoortActie": "Wijziging",
+      "Beschrijving": "Reacties verwerkt",
+      "UitgevoerdOp": "2022-05-15T17:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Instelling",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;ontwerp" }
+      ]
+    },
+    {
+      "SoortActie": "Publicatie",
+      "Beschrijving": "Bekendmaken van het ontwerpbesluit",
+      "UitgevoerdOp": "2022-06-01T07:00:00Z",
+      "Doelen": [ "/join/id/proces/gm9999/2022/Instelling" ],
+      "SoortPublicatie": "Ontwerpbesluit"
+    },
+    {
+      "SoortActie": "Wijziging",
+      "Beschrijving": "Zienswijzen verwerkt",
+      "UitgevoerdOp": "2022-08-15T17:00:00Z",
+      "Doel": "/join/id/proces/gm9999/2022/Instelling",
+      "Instrumentversies": [
+        { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;definitief" }
+      ],
+      "JuridischWerkendVanaf": "2022-10-01"
+    },
+    {
+      "SoortActie": "Publicatie",
+      "Beschrijving": "Bekendmaken van het vaststellingsbesluit",
+      "UitgevoerdOp": "2022-09-01T07:00:00Z",
+      "Doelen": [ "/join/id/proces/gm9999/2022/Instelling" ],
+      "SoortPublicatie": "Besluit"
+    }
+  ]
+}
