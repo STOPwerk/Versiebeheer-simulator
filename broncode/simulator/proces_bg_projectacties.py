@@ -17,8 +17,8 @@
 from typing import Dict, List, Tuple
 
 from applicatie_meldingen import Meldingen
-from data_bg_versiebeheer import Versiebeheer, Projectstatus, ProjectactieResultaat, Branch, MomentopnameInstrument, MomentopnameVerwijzing, UitgewisseldeSTOPModule
-from data_bg_project import ProjectActie, ProjectActie_NieuwDoel, ProjectActie_Download, ProjectActie_Uitwisseling, ProjectActie_Wijziging, ProjectActie_VerwerkingUitspraakRechter, ProjectActie_Publicatie, Instrumentversie
+from data_bg_versiebeheer import Versiebeheer, Projectstatus, ProjectactieResultaat, Branch, MomentopnameInstrument, MomentopnameVerwijzing, UitgewisseldeSTOPModule, UitgewisseldMaarNietViaSTOP
+from data_bg_project import ProjectActie, ProjectActie_NieuwDoel, ProjectActie_Download, ProjectActie_Uitwisseling, ProjectActie_Wijziging, ProjectActie_Publicatie, Instrumentversie
 from data_doel import Doel
 from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Intrekking, Terugtrekking, TerugtrekkingIntrekking, Tijdstempel, TerugtrekkingTijdstempel, Momentopname as CI_Momentopname
 from stop_momentopname import DownloadserviceModules, Momentopname, InstrumentversieInformatie
@@ -76,7 +76,6 @@ class ProjectactieUitvoering:
         ProjectActie._SoortActie_Uitwisseling: (lambda : _VoerUit_Uitwisseling()),
         ProjectActie._SoortActie_Wijziging: (lambda : _VoerUit_Wijziging()),
         #ProjectActie._SoortActie_BijwerkenUitgangssituatie: (lambda : _VoerUit_BijwerkenUitgangssituatie()),
-        #ProjectActie._SoortActie_VerwerkingUitspraakRechter: (lambda : _VoerUit_VerwerkingUitspraakRechter()),
         ProjectActie._SoortActie_Publicatie: (lambda : _VoerUit_Publicatie())
     }
 
@@ -254,14 +253,14 @@ class ProjectactieUitvoering:
                     self._LogInfo ("Terugtrekking van instrument '" + workId + "' genegeerd; instrument wordt niet beheerd als onderdeel van de branch voor doel '" + str(branch._Doel) + "'")
                     continue
                 # Dit mag alleen een initiële versie voor een nieuw instrument zijn (in deze simulator),
-                # want de simulator kan niet vanaf dit punt de uitgangssituatie voor het instrument bepalen.
+                # want de simulator kan niet vanaf dit punt de uitgangssituatie voor een bestaand instrument bepalen.
                 # Dat is in principe wel mogelijk, maar te complex voor deze software.
                 if workId in self._Versiebeheer.BekendeInstrumenten:
                     self._LogFout ("Bestaand instrument '" + workId + "' wordt niet beheerd als onderdeel van de branch voor doel '" + str(branch._Doel) + "'")
                     succes = False
                     continue
                 if instrumentversie.IsJuridischUitgewerkt:
-                    self._LogInfo ("Onbekend instrument '" + workId + "' kan niet ingetrokken worden voor doel '" + str(branch._Doel) + "'")
+                    self._LogInfo ("Nog niet bestaand instrument '" + workId + "' kan niet meteen al ingetrokken worden voor doel '" + str(branch._Doel) + "'")
                     succes = False
                     continue
                 if instrumentversie.ExpressionId is None:
@@ -609,8 +608,27 @@ class _VoerUit_Wijziging (ProjectactieUitvoering):
         else:
             if not self._NeemInstrumentversiesOver (branch, actie.Instrumentversies):
                 succes = False
-            branch.InterneTijdstempels.JuridischWerkendVanaf = actie.JuridischWerkendVanaf
-            branch.InterneTijdstempels.GeldigVanaf = actie.GeldigVanaf
+            gewijzigd = False
+            if not actie.JuridischWerkendVanaf is None:
+                if actie.JuridischWerkendVanaf == '-':
+                    if not branch.InterneTijdstempels.JuridischWerkendVanaf is None:
+                        gewijzigd = True
+                        branch.InterneTijdstempels.JuridischWerkendVanaf = None
+                        # GeldigVanaf kan niet bestaan zonder JuridischWerkendVanaf
+                        branch.InterneTijdstempels.GeldigVanaf = None
+                elif actie.JuridischWerkendVanaf != branch.InterneTijdstempels.JuridischWerkendVanaf:
+                    gewijzigd = True
+                    branch.InterneTijdstempels.JuridischWerkendVanaf = actie.JuridischWerkendVanaf
+            if not branch.InterneTijdstempels.JuridischWerkendVanaf is None and not actie.GeldigVanaf is None:
+                if actie.GeldigVanaf == '-':
+                    if not branch.InterneTijdstempels.GeldigVanaf is None:
+                        gewijzigd = True
+                        branch.InterneTijdstempels.GeldigVanaf = None
+                elif actie.GeldigVanaf != branch.InterneTijdstempels.GeldigVanaf:
+                    gewijzigd = True
+                    branch.InterneTijdstempels.GeldigVanaf = actie.GeldigVanaf
+            if gewijzigd:
+                branch.InterneTijdstempels.Versie += 1
 
         if succes:
             self._RapporteerBranch (branch)
@@ -636,6 +654,7 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
         """Neem wijzigingen uit een andere branch over
         """
         if not actie.SoortPublicatie in ProjectActie_Publicatie._SoortPublicatie_ViaSTOPVersiebeheer:
+            self._Resultaat.Uitgewisseld.append (UitgewisseldMaarNietViaSTOP ())
             return True
         isConceptOfOntwerp = not actie.SoortPublicatie in ProjectActie_Publicatie._SoortPublicatie_GeenConceptOfOntwerp
 
@@ -667,18 +686,22 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
 
                 # Bepaal de basisversie(s) voor een eventueel element in de consolidatie-informatie
                 basisversies = None
-                if gepubliceerd is None:
+                if not gepubliceerd is None:
+                    if gepubliceerd.Versie == momentopname.Versie:
+                        # De informatie is niet gewijzigd sinds de laatste publicatie
+                        # De informatie hoeft niet opgenomen te worden in deze publicatie/revisie
+                        continue
+                    # Basisversie is vorige publicatie/revisie
+                    basisversies = [gepubliceerd]
+                else:
+                    # Eerste publicatie, kies momentopname van laatstgebruikte uitgangssituatie
+                    # Die is None voor een initiële versie van een regeling/informatieobject
                     if not momentopname.Uitgangssituatie is None:
                         # Een van de basisversies is genoeg
                         basisversies = [momentopname.Uitgangssituatie[0].Momentopname]
-                elif not momentopname.BasisVoorWijziging is None:
-                    basisversies = [momentopname.BasisVoorWijziging]
 
                 # Bepaal de vermelding in de consolidatie-informatie
                 if momentopname.IsTeruggetrokken:
-                    if gepubliceerd is None or gepubliceerd.IsTeruggetrokken:
-                        # Geen wijziging dus geen vermelding nodig
-                        continue
                     #--------------------------------------------------
                     # Eerder gepubliceerde wijziging is teruggetrokken
                     #--------------------------------------------------
@@ -690,9 +713,6 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
                         consolidatieInformatie.Terugtrekkingen.append (element.Element)
 
                 elif momentopname.IsJuridischUitgewerkt:
-                    if not gepubliceerd is None and gepubliceerd.IsJuridischUitgewerkt:
-                        # Geen wijziging dus geen vermelding nodig
-                        continue
                     #--------------------------------------------------
                     # Intrekking is nog niet gepubliceerd
                     #--------------------------------------------------
@@ -700,9 +720,6 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
                     consolidatieInformatie.Intrekkingen.append (element.Element)
 
                 else:
-                    if not gepubliceerd is None and gepubliceerd.ExpressionId == momentopname.ExpressionId:
-                        # Geen wijziging dus geen vermelding nodig
-                        continue
                     #--------------------------------------------------
                     # Beoogde versie is nog niet gepubliceerd
                     #--------------------------------------------------
@@ -713,14 +730,11 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
                         doelen = []
                         nieuweBasisversies = []
                         for andereBranch in branch.TreedtGelijktijdigInWerkingMet:
-                            andereMO = branch.InterneInstrumentversies.get (workId)
-                            if andereMO is None:
-                                andereMO = branch.InterneInstrumentversies.get (workId)
+                            # Alleen eerder gepubliceerde doelen/versies kunnen als basisversie worden gebruikt
+                            andereMO = branch.PubliekeInstrumentversies.get (workId)
                             if not andereMO is None:
                                 doelen.append (andereBranch._Doel)
-                                if not andereMO.BasisVoorWijziging is None:
-                                    # De basisversie verwijst alleen naar eerder gepubliceerde versies
-                                    nieuweBasisversies.append (andereMO.BasisVoorWijziging)
+                                nieuweBasisversies.append (andereMO.BasisVoorWijziging)
                         if len (doelen) > 1:
                             # De versie is inderdaad van toepassing voor meerdere doelen
                             basisversies = nieuweBasisversies
@@ -745,46 +759,49 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
         # Voeg tijdstempels toe
         for doel in doelen:
             branch = self._Branch (doel)
-            if not branch.InterneTijdstempels.JuridischWerkendVanaf is None:
-                if branch.PubliekeTijdstempels.JuridischWerkendVanaf != branch.InterneTijdstempels.JuridischWerkendVanaf:
+            if branch.InterneTijdstempels.Versie != branch.PubliekeTijdstempels.Versie:
+                # Tijdstempels zijn gewijzigd
+                if not branch.InterneTijdstempels.JuridischWerkendVanaf is None:
+                    if branch.InterneTijdstempels.JuridischWerkendVanaf != branch.PubliekeTijdstempels.JuridischWerkendVanaf:
+                        #--------------------------------------------------
+                        # Tijdstempel heeft een (nieuwe) waarde
+                        #--------------------------------------------------
+                        element = Tijdstempel (consolidatieInformatie)
+                        element.Doel = doel
+                        element.Datum = branch.InterneTijdstempels.JuridischWerkendVanaf
+                        element.IsGeldigVanaf = False
+                        consolidatieInformatie.Tijdstempels.append (element)
+
+                    if not branch.InterneTijdstempels.GeldigVanaf is None and branch.InterneTijdstempels.GeldigVanaf != branch.PubliekeTijdstempels.GeldigVanaf:
+                        #--------------------------------------------------
+                        # Tijdstempel heeft een (nieuwe) waarde
+                        #--------------------------------------------------
+                        element = Tijdstempel (consolidatieInformatie)
+                        element.Doel = doel
+                        element.Datum = branch.InterneTijdstempels.GeldigVanaf
+                        element.IsGeldigVanaf = True
+                        consolidatieInformatie.Tijdstempels.append (element)
+
+                elif not branch.PubliekeTijdstempels.JuridischWerkendVanaf is None:
                     #--------------------------------------------------
-                    # Tijdstempel is nog niet gepubliceerd
+                    # Tijdstempel is teruggetrokken
                     #--------------------------------------------------
-                    element = Tijdstempel (consolidatieInformatie)
+                    element = TerugtrekkingTijdstempel (consolidatieInformatie)
                     element.Doel = doel
-                    element.Datum = branch.InterneTijdstempels.JuridischWerkendVanaf
                     element.IsGeldigVanaf = False
-                    consolidatieInformatie.Tijdstempels.append (element)
-            elif not branch.PubliekeTijdstempels.JuridischWerkendVanaf is None:
-                #--------------------------------------------------
-                # Tijdstempel is teruggetrokken
-                #--------------------------------------------------
-                element = TerugtrekkingTijdstempel (consolidatieInformatie)
-                element.Doel = doel
-                element.IsGeldigVanaf = False
-                consolidatieInformatie.TijdstempelTerugtrekkingen.append ()
+                    consolidatieInformatie.TijdstempelTerugtrekkingen.append ()
 
-            if not branch.InterneTijdstempels.GeldigVanaf is None:
-                if branch.PubliekeTijdstempels.GeldigVanaf != branch.InterneTijdstempels.GeldigVanaf:
+                if branch.InterneTijdstempels.GeldigVanaf is None and not branch.PubliekeTijdstempels.GeldigVanaf is None:
                     #--------------------------------------------------
-                    # Tijdstempel is nog niet gepubliceerd
+                    # Tijdstempel is teruggetrokken
                     #--------------------------------------------------
-                    element = Tijdstempel (consolidatieInformatie)
+                    element = TerugtrekkingTijdstempel (consolidatieInformatie)
                     element.Doel = doel
-                    element.Datum = branch.InterneTijdstempels.GeldigVanaf
                     element.IsGeldigVanaf = True
-                    consolidatieInformatie.Tijdstempels.append (element)
-            elif not branch.PubliekeTijdstempels.GeldigVanaf is None:
-                #--------------------------------------------------
-                # Tijdstempel is teruggetrokken
-                #--------------------------------------------------
-                element = TerugtrekkingTijdstempel (consolidatieInformatie)
-                element.Doel = doel
-                element.IsGeldigVanaf = True
-                consolidatieInformatie.TijdstempelTerugtrekkingen.append ()
+                    consolidatieInformatie.TijdstempelTerugtrekkingen.append (element)
 
-            # Markeer als gepubliceerd
-            branch.InterneTijdstempels.IsGepubliceerd ()
+                # Markeer als gepubliceerd
+                branch.InterneTijdstempels.IsGepubliceerd ()
 
         return succes
  

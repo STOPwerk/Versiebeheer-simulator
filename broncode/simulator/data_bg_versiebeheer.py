@@ -88,6 +88,19 @@ class UitgewisseldeSTOPModule:
         self.Van = van
         self.Naar = naar
 
+class UitgewisseldMaarNietViaSTOP:
+
+    def __init__(self):
+        """Geeft aan dat er wel informatie uitgewisseld wordt, maar niet via STOP
+        Alleen gebruikt voor weergave.
+        """
+        self.Module = self
+        self.Van = ProjectactieResultaat._Uitvoerder_BevoegdGezag
+        self.Naar = 'n.v.t.'
+
+    def ModuleXml (self):
+        return ['<!-- Informatie is niet in STOP uitgewisseld -->']
+
 class ProjectactieResultaat:
 
     def __init__(self, projectactie):
@@ -149,12 +162,12 @@ class Branch:
         # key = work-Id
         self.InterneInstrumentversies : Dict[str,MomentopnameInstrument] = {}
         # De actuele (interne, binnen de creatie-keten) waarden van de tijdstempels
-        self.InterneTijdstempels = MomentopnameTijdstempels (doel)
+        self.InterneTijdstempels = MomentopnameTijdstempels (self)
         # De laatst gepubliceerde stand van de instrumentversies
         # key = work-Id
         self.PubliekeInstrumentversies : Dict[str,MomentopnameInstrument] = {}
         # De laatst gepubliceerde waarden van de tijdstempels
-        self.PubliekeTijdstempels = MomentopnameTijdstempels (doel)
+        self.PubliekeTijdstempels = MomentopnameTijdstempels (self)
 
 #----------------------------------------------------------------------
 #
@@ -188,11 +201,6 @@ class MomentopnameInstrument:
         # De uitgangssituatie moet als was in een was-wordt RegelingMutatie gebruikt worden.
         # Dit is None voor een initiële versie.
         self.Uitgangssituatie : List[MomentopnameVerwijzing] = None
-        # Geeft aan wat de laatste momentopname (op deze branch) is voor dit instrument behorend bij 
-        # een vastgesteld besluit of vergelijkbare publicatie. Als dit None is, dan moet een wijziging
-        # in een besluit ten opzichte van de Uitgangssituatie geformuleerd worden. Zo niet, dan 
-        # ten opzichte van deze momentopname.
-        self.BasisVoorWijziging : 'MomentopnameInstrument' = None
         # Tijdstip van de laatste uitwisseling ter publicatie van de instrumentversie
         # Deze waarde is None als de MomentopnameInstrument deel is van de InterneInstrumentversies
         # op de branch, en niet None als onderdeel van PubliekeInstrumentversies
@@ -208,7 +216,8 @@ class MomentopnameInstrument:
         # Deze waarde is None als de MomentopnameInstrument deel is van de PubliekeInstrumentversies
         self.OntvlochtenMet : List['MomentopnameInstrument']
         # Versie geeft een indicatie van het aantal wijzigingen van het instrument op de branch.
-        # Wordt gebruikt bij verwijzingen naar deze momentopname om te borgen dat de inhoud van
+        # Wordt gebruikt om te detecteren of de inhoud van de momentopname is gewijzigd.
+        # Wordt ook gebruikt bij verwijzingen naar deze momentopname om te borgen dat de inhoud van
         # deze momentopname niet is gewijzigd sinds het aanmaken van de verwijzing. Preciezer: dat
         # als de verwijzing bij een publicatie wordt omgezet in een STOP-verwijzing, de STOP-verwijzing
         # naar inhoud verwijst die gelijk is aan de inhoud van de momentopname bij het aanmaken van de
@@ -264,11 +273,7 @@ class MomentopnameInstrument:
         nieuweVersie.IsJuridischUitgewerkt = self.IsJuridischUitgewerkt
         nieuweVersie.IsTeruggetrokken = self.IsTeruggetrokken
         nieuweVersie.Uitgangssituatie = self.Uitgangssituatie
-        nieuweVersie.BasisVoorWijziging = self.BasisVoorWijziging
         nieuweVersie.Versie = self.Versie
-        if not self.IsTeruggetrokken and not isConceptOfOntwerp:
-            nieuweVersie.BasisVoorWijziging = self
-
         self._Branch.InterneInstrumentversies[self._WorkId] = nieuweVersie
 
 class MomentopnameVerwijzing:
@@ -305,6 +310,9 @@ class MomentopnameTijdstempels:
         self.JuridischWerkendVanaf = None
         # De waarde van de geldigVanaf tijdstempel, of None als die niet gezet is.
         self.GeldigVanaf = None
+        # Versie geeft een indicatie van het aantal wijzigingen van het instrument op de branch.
+        # Wordt gebruikt om te detecteren of de inhoud van de momentopname is gewijzigd.
+        self.Versie = 0
 
     def IsGepubliceerd (self):
         """Markeert deze momentopname als gepubliceerd en maakt een nieuwe instantie die 
@@ -316,4 +324,5 @@ class MomentopnameTijdstempels:
         nieuweVersie = MomentopnameTijdstempels (self._Branch)
         nieuweVersie.JuridischWerkendVanaf = self.JuridischWerkendVanaf
         nieuweVersie.GeldigVanaf = self.GeldigVanaf
+        nieuweVersie.Versie = self.Versie
         self._Branch.InterneTijdstempels = nieuweVersie
