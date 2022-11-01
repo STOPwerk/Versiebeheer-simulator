@@ -292,6 +292,19 @@
     border-width: 8px 8px 8px 0px;
 }
 
+.bgvb_overzicht { /* Tabel */
+}
+
+    .bgvb_overzicht th {
+        white-space: nowrap;
+        vertical-align: top;
+        padding-right: 1em;
+    }
+
+    .bgvb_overzicht td {
+        vertical-align: top;
+    }
+
 .ct_o_toestanden { /* Tabel */
     border-collapse: collapse
 }
@@ -492,23 +505,26 @@
         text-align: center;
     }
 
-    .prj_overzicht tr[data-uw] { /* projectactie die ook een uitwisseling is */
+    .prj_overzicht tr[data-pa] { /* projectactie die selecteerbaar is */
         cursor: pointer;
     }
 
-        .prj_overzicht tr[data-uw]:hover {
+        .prj_overzicht tr[data-pa]:hover {
             background-color: #dae8fc;
         }
 
-    .prj_overzicht tr.huidige-uw { /* geselecteerde projectactie die ook een uitwisseling is */
-        background-color: #ffe6cc;
+    .prj_overzicht tr.huidige-pa { /* geselecteerde projectactie die geen uitwisseling is */
         border: 3px solid #000000;
         cursor: pointer;
     }
 
-        .prj_overzicht tr.huidige-uw:hover {
-            background-color: #dae8fc;
+        .prj_overzicht tr.huidige-pa.uw { /* geselecteerde projectactie die ook uitwisseling is */
+            background-color: #ffe6cc;
         }
+
+            .prj_overzicht tr.huidige-pa.uw:hover {
+                background-color: #dae8fc;
+            }
 
 table.prj_overzicht > tbody > tr > td {
     border: 1px solid #666666;
@@ -2870,7 +2886,7 @@ Applicatie = (function () {
         }));
     }
 
-    // Swelectie van momentopnamen
+    // Selectie van momentopnamen in het versiebeheer van LVBB
     Applicatie.SelecteerMomentopname = function (wid, mid) {
         window.dispatchEvent(new CustomEvent('momentopname', {
             detail: {
@@ -2901,6 +2917,15 @@ Applicatie = (function () {
                 Applicatie.SelecteerToestand(geselecteerdeToestand.Identificatie, uniekId);
             }
         }
+        // Uitwisselingen en projectacties delen dezelfde tijdlijn
+        window.dispatchEvent(new CustomEvent('projectactie', {
+            detail: gemaaktOp
+        }));
+    }
+
+    // Selectie van projectacties
+    Applicatie.SelecteerProjectactie = function (uitgevoerdOp) {
+        Applicatie.SelecteerUitwisseling(uitgevoerdOp);
     }
 
     // Initialisatie van een diagram
@@ -2954,8 +2979,8 @@ Applicatie = (function () {
             <table>
                 <tr>
                     <td><button class="pijlknop" id="uitwisselingselector_vorige" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_links"></div></button></td>
-                    <td><select id="uitwisselingselector_gemaaktOp"><option value="2022-06-01T07:00:00Z">2022-06-01T07:00:00Z P1: Publicatie (Besluit)</option>
-<option value="2022-02-01T07:00:00Z" selected>2022-02-01T07:00:00Z P1: Publicatie (Ontwerpbesluit)</option>
+                    <td><select id="uitwisselingselector_gemaaktOp"><option value="2022-02-01T07:00:00Z" selected>2022-02-01T07:00:00Z P1: Publicatie (Ontwerpbesluit)</option>
+<option value="2022-06-01T07:00:00Z">2022-06-01T07:00:00Z P1: Publicatie (Besluit)</option>
 </select></td>
                     <td><button class="pijlknop" id="uitwisselingselector_volgende" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_rechts"></div></button></td>
                 </tr>
@@ -2968,9 +2993,9 @@ Applicatie = (function () {
 </table>
 
 </div>
-<table><tr><td><button data-accordion="89" class="accordion_t active">?</button></td>
-<td data-accordion-titel="89" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
-<td data-accordion-paneel="89" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="97" class="accordion_t active">?</button></td>
+<td data-accordion-titel="97" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="97" class="accordion_t_paneel" style="display: block">
 <b>Over deze pagina</b>
 <p>
     Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
@@ -3062,8 +3087,8 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<button data-accordion="90" class="accordion_h">Uitvoering van de applicatie</button>
-<div data-accordion-paneel="90" class="accordion_h_paneel">
+<button data-accordion="98" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="98" class="accordion_h_paneel">
 <p>
     Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
     het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
@@ -3128,17 +3153,17 @@ Applicatie = (function () {
 </div>
 
 <p>
-<table><tr><td><button data-accordion="91" class="accordion_t active">?</button></td>
-<td data-accordion-titel="91" class="accordion_t_titel" style="display: none">&#8678;Geselecteerde uitwisseling</td>
-<td data-accordion-paneel="91" class="accordion_t_paneel" style="display: block">
-<div data-u="2022-06-01T07:00:00Z" >Getoond worden de resultaten na de uitwisseling: <b>P1: Publicatie (Besluit)</b><br/>Bekendmaken van het vaststellingsbesluit</div><div data-u="2022-02-01T07:00:00Z" >Getoond worden de resultaten na de uitwisseling: <b>P1: Publicatie (Ontwerpbesluit)</b><br/>Bekendmaken van het ontwerpbesluit</div>
+<table><tr><td><button data-accordion="99" class="accordion_t active">?</button></td>
+<td data-accordion-titel="99" class="accordion_t_titel" style="display: none">&#8678;Geselecteerde uitwisseling</td>
+<td data-accordion-paneel="99" class="accordion_t_paneel" style="display: block">
+<div data-u="2022-02-01T07:00:00Z" >Getoond worden de resultaten na de uitwisseling: <b>P1: Publicatie (Ontwerpbesluit)</b><br/>Bekendmaken van het ontwerpbesluit</div><div data-u="2022-06-01T07:00:00Z" >Getoond worden de resultaten na de uitwisseling: <b>P1: Publicatie (Besluit)</b><br/>Bekendmaken van het vaststellingsbesluit</div>
 </td></tr></table>
 
 </p>
 <div class="sectie_bg"><h1>Opstellen en consolideren</h1>
-<table><tr><td><button data-accordion="92" class="accordion_t active">?</button></td>
-<td data-accordion-titel="92" class="accordion_t_titel" style="display: none">&#8678;Over opstellen en consolideren</td>
-<td data-accordion-paneel="92" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="100" class="accordion_t active">?</button></td>
+<td data-accordion-titel="100" class="accordion_t_titel" style="display: none">&#8678;Over opstellen en consolideren</td>
+<td data-accordion-paneel="100" class="accordion_t_paneel" style="display: block">
 <p>
     Het opstellen van nieuwe versies van regelingen en informatieobjecten en het verwerken daarvan in besluiten
     is een zaak van het bevoegd gezag en haar partners. De applicatie gaat ervan uit dat dit in projecten gebeurt
@@ -3161,11 +3186,11 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<button data-accordion="93" class="accordion_h active">Overzicht van projectacties</button>
-<div data-accordion-paneel="93" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="94" class="accordion_t active">?</button></td>
-<td data-accordion-titel="94" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="94" class="accordion_t_paneel" style="display: block">
+<button data-accordion="101" class="accordion_h active"><h3>Overzicht van projectacties</h3></button>
+<div data-accordion-paneel="101" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="102" class="accordion_t active">?</button></td>
+<td data-accordion-titel="102" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="102" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle projecten en projectacties zien.
 </p>
@@ -3184,13 +3209,14 @@ Applicatie = (function () {
 <th class="c">P1</th>
 <th         >Actie</th>
 <th>Beschrijving</th></td></tr>
-<tr><td>2022-01-01T07:00:00Z</td>
+<tr data-pa="2022-01-01T07:00:00Z"
+><td>2022-01-01T07:00:00Z</td>
 <td class="c">&#x2714;</td>
 <td>Nieuw doel</td>
 <td>Start van een project voor een nieuwe regeling
-<table><tr><td><button data-accordion="95" class="accordion_t">?</button></td>
-<td data-accordion-titel="95" class="accordion_t_titel" style="display: block">&#8678;Details</td>
-<td data-accordion-paneel="95" class="accordion_t_paneel" style="display: none">
+<table><tr><td><button data-accordion="103" class="accordion_t">?</button></td>
+<td data-accordion-titel="103" class="accordion_t_titel" style="display: block">&#8678;Details</td>
+<td data-accordion-paneel="103" class="accordion_t_paneel" style="display: none">
 <table>
 <tr><td>Doel</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
 <tr><td>Versies</td><td>None</td></tr>
@@ -3198,13 +3224,14 @@ Applicatie = (function () {
 </td></tr></table>
 
 </td></tr>
-<tr><td>2022-01-15T07:00:00Z</td>
+<tr data-pa="2022-01-15T07:00:00Z"
+><td>2022-01-15T07:00:00Z</td>
 <td class="c">&#x2714;</td>
 <td>Wijziging</td>
 <td>Finaliseren van de versie voor de nieuwe regeling
-<table><tr><td><button data-accordion="96" class="accordion_t">?</button></td>
-<td data-accordion-titel="96" class="accordion_t_titel" style="display: block">&#8678;Details</td>
-<td data-accordion-paneel="96" class="accordion_t_paneel" style="display: none">
+<table><tr><td><button data-accordion="104" class="accordion_t">?</button></td>
+<td data-accordion-titel="104" class="accordion_t_titel" style="display: block">&#8678;Details</td>
+<td data-accordion-paneel="104" class="accordion_t_paneel" style="display: none">
 <table>
 <tr><td>Doel</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
 <tr><td>Versies</td><td>/akn/nl/act/gm9999/2022/REG_A/nld@2022;ontwerp</td></tr>
@@ -3212,26 +3239,29 @@ Applicatie = (function () {
 </td></tr></table>
 
 </td></tr>
-<tr data-uw="2022-02-01T07:00:00Z"><td>2022-02-01T07:00:00Z</td>
+<tr data-pa="2022-02-01T07:00:00Z"
+ class="uw"
+><td>2022-02-01T07:00:00Z</td>
 <td class="c">&#x2714;</td>
 <td>Publicatie</td>
 <td>Bekendmaken van het ontwerpbesluit
-<table><tr><td><button data-accordion="97" class="accordion_t">?</button></td>
-<td data-accordion-titel="97" class="accordion_t_titel" style="display: block">&#8678;Details</td>
-<td data-accordion-paneel="97" class="accordion_t_paneel" style="display: none">
+<table><tr><td><button data-accordion="105" class="accordion_t">?</button></td>
+<td data-accordion-titel="105" class="accordion_t_titel" style="display: block">&#8678;Details</td>
+<td data-accordion-paneel="105" class="accordion_t_paneel" style="display: none">
 <table>
 <tr><td>Doel</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
 </table>
 </td></tr></table>
 
 </td></tr>
-<tr><td>2022-05-15T17:00:00Z</td>
+<tr data-pa="2022-05-15T17:00:00Z"
+><td>2022-05-15T17:00:00Z</td>
 <td class="c">&#x2714;</td>
 <td>Wijziging</td>
 <td>Zienswijzen verwerkt
-<table><tr><td><button data-accordion="98" class="accordion_t">?</button></td>
-<td data-accordion-titel="98" class="accordion_t_titel" style="display: block">&#8678;Details</td>
-<td data-accordion-paneel="98" class="accordion_t_paneel" style="display: none">
+<table><tr><td><button data-accordion="106" class="accordion_t">?</button></td>
+<td data-accordion-titel="106" class="accordion_t_titel" style="display: block">&#8678;Details</td>
+<td data-accordion-paneel="106" class="accordion_t_paneel" style="display: none">
 <table>
 <tr><td>Doel</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
 <tr><td>Versies</td><td>/akn/nl/act/gm9999/2022/REG_A/nld@2022;definitief</td></tr>
@@ -3240,13 +3270,15 @@ Applicatie = (function () {
 </td></tr></table>
 
 </td></tr>
-<tr data-uw="2022-06-01T07:00:00Z"><td>2022-06-01T07:00:00Z</td>
+<tr data-pa="2022-06-01T07:00:00Z"
+ class="uw"
+><td>2022-06-01T07:00:00Z</td>
 <td class="c">&#x2714;</td>
 <td>Publicatie</td>
 <td>Bekendmaken van het vaststellingsbesluit
-<table><tr><td><button data-accordion="99" class="accordion_t">?</button></td>
-<td data-accordion-titel="99" class="accordion_t_titel" style="display: block">&#8678;Details</td>
-<td data-accordion-paneel="99" class="accordion_t_paneel" style="display: none">
+<table><tr><td><button data-accordion="107" class="accordion_t">?</button></td>
+<td data-accordion-titel="107" class="accordion_t_titel" style="display: block">&#8678;Details</td>
+<td data-accordion-paneel="107" class="accordion_t_paneel" style="display: none">
 <table>
 <tr><td>Doel</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
 </table>
@@ -3256,13 +3288,13 @@ Applicatie = (function () {
 </table></p>
 </div>
 
-<button data-accordion="100" class="accordion_h active">STOP modules: uitwisselingen in de keten</button>
-<div data-accordion-paneel="100" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="101" class="accordion_t active">?</button></td>
-<td data-accordion-titel="101" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="101" class="accordion_t_paneel" style="display: block">
+<button data-accordion="108" class="accordion_h active">STOP modules: uitwisselingen in de keten</button>
+<div data-accordion-paneel="108" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="109" class="accordion_t active">?</button></td>
+<td data-accordion-titel="109" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="109" class="accordion_t_paneel" style="display: block">
 <p>
-    Dit overzicht laat de STOP modules zien die voor de geselecteerde uitwisseling in de keten uitgewisseld worden.
+    Dit overzicht laat de STOP modules zien die voor de geselecteerde projectactie in de keten uitgewisseld worden.
 </p>
 
 </td></tr></table>
@@ -3341,11 +3373,148 @@ Applicatie = (function () {
 </div>
 </div>
 
+<button data-accordion="110" class="accordion_h active"><h3>Intern versiebeheer bevoegd gezag</h3></button>
+<div data-accordion-paneel="110" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="111" class="accordion_t active">?</button></td>
+<td data-accordion-titel="111" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="111" class="accordion_t_paneel" style="display: block">
+<p>
+    Dit overzicht laat de gegevens zien die in het interne versiebeheer van het bevoegd gezag bekend zijn na uitvoering van de projectactie.
+</p>
+
+</td></tr></table>
+
+<div data-pav="2022-01-01T07:00:00Z"
+ data-pat="2022-01-15T07:00:00Z"
+>
+
+<dl>
+<dt>Branch/doel: <b>/join/id/proces/gm9999/2022/Instelling</b></dt><dd><table class="bgvb_overzicht">
+<tr><th>Instrument</th><td>
+/akn/nl/act/gm9999/2022/REG_A<br>Onbekende instrumentversie
+<br>Ongewijzigd in deze branch
+</td></tr>
+</table></dd>
+</table>
+
+</div>
+
+<div data-pav="2022-01-15T07:00:00Z"
+ data-pat="2022-02-01T07:00:00Z"
+>
+
+<dl>
+<dt>Branch/doel: <b>/join/id/proces/gm9999/2022/Instelling</b></dt><dd><table class="bgvb_overzicht">
+<tr><th>Instrument</th><td>
+/akn/nl/act/gm9999/2022/REG_A/nld@2022;ontwerp
+</td></tr>
+</table></dd>
+</table>
+
+</div>
+
+<div data-pav="2022-02-01T07:00:00Z"
+ data-pat="2022-05-15T17:00:00Z"
+>
+
+<dl>
+<dt>Branch/doel: <b>/join/id/proces/gm9999/2022/Instelling</b></dt><dd><table class="bgvb_overzicht">
+<tr><th>Instrument</th><td>
+/akn/nl/act/gm9999/2022/REG_A/nld@2022;ontwerp
+</td></tr>
+</table></dd>
+</table>
+
+</div>
+
+<div data-pav="2022-05-15T17:00:00Z"
+ data-pat="2022-06-01T07:00:00Z"
+>
+
+<dl>
+<dt>Branch/doel: <b>/join/id/proces/gm9999/2022/Instelling</b></dt><dd><table class="bgvb_overzicht">
+<tr><th>Instrument</th><td>
+/akn/nl/act/gm9999/2022/REG_A/nld@2022;definitief
+</td></tr>
+<tr><th>Juridisch werkend vanaf</th><td>2022-07-01</td></tr>
+</table></dd>
+</table>
+
+</div>
+
+<div data-pav="2022-06-01T07:00:00Z"
+>
+
+<dl>
+<dt>Branch/doel: <b>/join/id/proces/gm9999/2022/Instelling</b></dt><dd><table class="bgvb_overzicht">
+<tr><th>Instrument</th><td>
+/akn/nl/act/gm9999/2022/REG_A/nld@2022;definitief
+</td></tr>
+<tr><th>Juridisch werkend vanaf</th><td>2022-07-01</td></tr>
+</table></dd>
+</table>
+
+</div>
+
+</div>
+
+<button data-accordion="112" class="accordion_h active">Overzicht consolidatie</button>
+<div data-accordion-paneel="112" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="113" class="accordion_t active">?</button></td>
+<td data-accordion-titel="113" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="113" class="accordion_t_paneel" style="display: block">
+<p>
+    Dit overzicht laat de status zien van de consolidatie na uitvoering van de projectactie.
+</p>
+
+</td></tr></table>
+
+<div data-pav="2022-01-01T07:00:00Z"
+ data-pat="2022-01-15T07:00:00Z"
+>
+
+<b>TODO</b>
+
+</div>
+
+<div data-pav="2022-01-15T07:00:00Z"
+ data-pat="2022-02-01T07:00:00Z"
+>
+
+<b>TODO</b>
+
+</div>
+
+<div data-pav="2022-02-01T07:00:00Z"
+ data-pat="2022-05-15T17:00:00Z"
+>
+
+<b>TODO</b>
+
+</div>
+
+<div data-pav="2022-05-15T17:00:00Z"
+ data-pat="2022-06-01T07:00:00Z"
+>
+
+<b>TODO</b>
+
+</div>
+
+<div data-pav="2022-06-01T07:00:00Z"
+>
+
+<b>TODO</b>
+
+</div>
+
+</div>
+
 </div>
 <div class="sectie_op"><h1>Publiceren</h1>
-<table><tr><td><button data-accordion="102" class="accordion_t active">?</button></td>
-<td data-accordion-titel="102" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
-<td data-accordion-paneel="102" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="114" class="accordion_t active">?</button></td>
+<td data-accordion-titel="114" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
+<td data-accordion-paneel="114" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
     en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
@@ -3355,11 +3524,11 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<button data-accordion="103" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
-<div data-accordion-paneel="103" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="104" class="accordion_t active">?</button></td>
-<td data-accordion-titel="104" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="104" class="accordion_t_paneel" style="display: block">
+<button data-accordion="115" class="accordion_h active"><h3>Overzicht van uitwisselingen en publicaties</h3></button>
+<div data-accordion-paneel="115" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="116" class="accordion_t active">?</button></td>
+<td data-accordion-titel="116" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="116" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
     het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
@@ -3385,11 +3554,11 @@ Applicatie = (function () {
 </table></p>
 </div>
 
-<button data-accordion="105" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
-<div data-accordion-paneel="105" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="106" class="accordion_t active">?</button></td>
-<td data-accordion-titel="106" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
-<td data-accordion-paneel="106" class="accordion_t_paneel" style="display: block">
+<button data-accordion="117" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="117" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="118" class="accordion_t active">?</button></td>
+<td data-accordion-titel="118" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
+<td data-accordion-paneel="118" class="accordion_t_paneel" style="display: block">
 <p>
     Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
 </p>
@@ -3445,9 +3614,9 @@ Applicatie = (function () {
 
 </div>
 <div class="sectie_lv"><h1>Beschikbaar stellen</h1>
-<table><tr><td><button data-accordion="107" class="accordion_t active">?</button></td>
-<td data-accordion-titel="107" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
-<td data-accordion-paneel="107" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="119" class="accordion_t active">?</button></td>
+<td data-accordion-titel="119" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="119" class="accordion_t_paneel" style="display: block">
 <p>
     De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
     en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).
@@ -3459,11 +3628,11 @@ Applicatie = (function () {
 </td></tr></table>
 
 <h2>Regeling: /akn/nl/act/gm9999/2022/REG_A</h2>
-<button data-accordion="108" class="accordion_h active"><h3>Versiebeheer en actuele toestanden</h3></button>
-<div data-accordion-paneel="108" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="109" class="accordion_t active">?</button></td>
-<td data-accordion-titel="109" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer en actuele toestanden</td>
-<td data-accordion-paneel="109" class="accordion_t_paneel" style="display: block">
+<button data-accordion="120" class="accordion_h active"><h3>Versiebeheer en actuele toestanden</h3></button>
+<div data-accordion-paneel="120" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="121" class="accordion_t active">?</button></td>
+<td data-accordion-titel="121" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer en actuele toestanden</td>
+<td data-accordion-paneel="121" class="accordion_t_paneel" style="display: block">
 <p>
     STOP kent een vorm van <a href="@@@Documentatie_Url@@@/versiebeheer_principes.html">versiebeheer</a> voor regelgeving.
     Daarbij wordt bij elke uitwisseling aangegeven hoe een uitgewisselde versie van een regeling of informatieobject zich verhoudt
@@ -3631,9 +3800,9 @@ Juridisch werkend vanaf: 2022-07-01<br/>
     </tr>
 </table>
 
-<table><tr><td><button data-accordion="110" class="accordion_t active">?</button></td>
-<td data-accordion-titel="110" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="110" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="122" class="accordion_t active">?</button></td>
+<td data-accordion-titel="122" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="122" class="accordion_t_paneel" style="display: block">
 <table>
     <tr><td><div data-uv="2022-02-01T07:00:00Z" data-ut="2022-06-01T07:00:00Z" ><table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr></table></div>
@@ -3650,11 +3819,11 @@ Juridisch werkend vanaf: 2022-07-01<br/>
 
 </div>
 
-<button data-accordion="111" class="accordion_h active">Bepaling van de actuele toestand</button>
-<div data-accordion-paneel="111" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="112" class="accordion_t active">?</button></td>
-<td data-accordion-titel="112" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de inhoud van deze sectie</td>
-<td data-accordion-paneel="112" class="accordion_t_paneel" style="display: block">
+<button data-accordion="123" class="accordion_h active">Bepaling van de actuele toestand</button>
+<div data-accordion-paneel="123" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="124" class="accordion_t active">?</button></td>
+<td data-accordion-titel="124" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de inhoud van deze sectie</td>
+<td data-accordion-paneel="124" class="accordion_t_paneel" style="display: block">
 <p>
     Klik in het diagram in de voorgaande sectie (of in een latere sectie van deze pagina) op een actuele toestand.
     Deze sectie laat dan zien hoe de toestand bepaald kan worden. De tekst loopt alle stappen langs die in de
@@ -3669,9 +3838,9 @@ Juridisch werkend vanaf: 2022-07-01<br/>
 </td></tr></table>
 
 <div class="atb_2" style="display: none;">
-<table><tr><td><button data-accordion="113" class="accordion_t active">?</button></td>
-<td data-accordion-titel="113" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
-<td data-accordion-paneel="113" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="125" class="accordion_t active">?</button></td>
+<td data-accordion-titel="125" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
+<td data-accordion-paneel="125" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-06-01T07:00:00Z" >
 <div data-atb_2_ti="0">
 <p><b>Stap 1. Bepaal relevante doelen en stel de toestanden samen.</b><br/>Voor deze toestand komt het erop neer te bepalen hoe de toestand eruit ziet voor JuridischWerkendVanaf = 2022-07-01 en een GeldigVanaf die rekening houdt met andere doelen die tegelijk juridische werking hebben.</p>
@@ -3683,9 +3852,9 @@ Juridisch werkend vanaf: 2022-07-01<br/>
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="114" class="accordion_t active">?</button></td>
-<td data-accordion-titel="114" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
-<td data-accordion-paneel="114" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="126" class="accordion_t active">?</button></td>
+<td data-accordion-titel="126" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
+<td data-accordion-paneel="126" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-06-01T07:00:00Z" >
 <div data-atb_2_ti="0">
 <p>
@@ -3705,9 +3874,9 @@ Juridisch werkend vanaf: 2022-07-01<br/>
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="115" class="accordion_t active">?</button></td>
-<td data-accordion-titel="115" class="accordion_t_titel" style="display: none">&#8678;5 - 6: Validatie kandidaat-instrumentversie</td>
-<td data-accordion-paneel="115" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="127" class="accordion_t active">?</button></td>
+<td data-accordion-titel="127" class="accordion_t_titel" style="display: none">&#8678;5 - 6: Validatie kandidaat-instrumentversie</td>
+<td data-accordion-paneel="127" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-06-01T07:00:00Z" >
 <div data-atb_2_ti="0">
 <p>
@@ -3734,11 +3903,11 @@ Juridisch werkend vanaf: 2022-07-01<br/>
 </div>
 </div>
 
-<button data-accordion="116" class="accordion_h">STOP module: ActueleToestanden</button>
-<div data-accordion-paneel="116" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="117" class="accordion_t active">?</button></td>
-<td data-accordion-titel="117" class="accordion_t_titel" style="display: none">&#8678;Toelichting</td>
-<td data-accordion-paneel="117" class="accordion_t_paneel" style="display: block">
+<button data-accordion="128" class="accordion_h">STOP module: ActueleToestanden</button>
+<div data-accordion-paneel="128" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="129" class="accordion_t active">?</button></td>
+<td data-accordion-titel="129" class="accordion_t_titel" style="display: none">&#8678;Toelichting</td>
+<td data-accordion-paneel="129" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie toont het overzicht van actuele toestanden in de vorm van de STOP module
     <a href="@@@Documentatie_Url@@@/go/go.html?id=xsd:cons:ActueleToestanden">ActueleToestanden</a>.
@@ -3772,11 +3941,11 @@ Juridisch werkend vanaf: 2022-07-01<br/>
 </div>
 </div>
 
-<button data-accordion="118" class="accordion_h active"><h3>Complete toestanden</h3></button>
-<div data-accordion-paneel="118" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="119" class="accordion_t active">?</button></td>
-<td data-accordion-titel="119" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van de complete toestanden</td>
-<td data-accordion-paneel="119" class="accordion_t_paneel" style="display: block">
+<button data-accordion="130" class="accordion_h active"><h3>Complete toestanden</h3></button>
+<div data-accordion-paneel="130" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="131" class="accordion_t active">?</button></td>
+<td data-accordion-titel="131" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van de complete toestanden</td>
+<td data-accordion-paneel="131" class="accordion_t_paneel" style="display: block">
 <p>
     Het overzicht van complete toestanden is bedoeld voor gebruik in software die de geconsolideerde regelgeving
     betrekt van de LVBB. Het overzicht van complete toestanden verschilt op twee punten van het overzicht van
@@ -3841,9 +4010,9 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </table>
 
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="120" class="accordion_t active">?</button></td>
-<td data-accordion-titel="120" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="120" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="132" class="accordion_t active">?</button></td>
+<td data-accordion-titel="132" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="132" class="accordion_t_paneel" style="display: block">
 <table><tr><td>
 <table data-uv="2022-02-01T07:00:00Z" data-ut="2022-06-01T07:00:00Z" >
 <tr><th>Letter</th><th>Doel</th></tr>
@@ -3865,11 +4034,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </td></tr></table>
 </div>
 
-<button data-accordion="121" class="accordion_h active">Tijdreisfilter</button>
-<div data-accordion-paneel="121" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="122" class="accordion_t active">?</button></td>
-<td data-accordion-titel="122" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het tijdreisfilter</td>
-<td data-accordion-paneel="122" class="accordion_t_paneel" style="display: block">
+<button data-accordion="133" class="accordion_h active">Tijdreisfilter</button>
+<div data-accordion-paneel="133" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="134" class="accordion_t active">?</button></td>
+<td data-accordion-titel="134" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het tijdreisfilter</td>
+<td data-accordion-paneel="134" class="accordion_t_paneel" style="display: block">
 <p>
     Het volledig overzicht van complete toestanden kan erg omvangrijk worden als een instrument vaak gewijzigd wordt.
     Bovendien zal niet elke afnemer van deze informatie behoefte hebben aan tijdreizen over alle vier de tijdassen.
@@ -3937,11 +4106,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 </div>
 
-<button data-accordion="123" class="accordion_h">STOP module: CompleteToestanden</button>
-<div data-accordion-paneel="123" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="124" class="accordion_t active">?</button></td>
-<td data-accordion-titel="124" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de STOP module</td>
-<td data-accordion-paneel="124" class="accordion_t_paneel" style="display: block">
+<button data-accordion="135" class="accordion_h">STOP module: CompleteToestanden</button>
+<div data-accordion-paneel="135" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="136" class="accordion_t active">?</button></td>
+<td data-accordion-titel="136" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de STOP module</td>
+<td data-accordion-paneel="136" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie laat de <a href="@@@Documentatie_Url@@@/go/go.html?id=xsd:cons:CompleteToestanden">CompleteToestanden</a> module
     zien voor het tijdreisfilter uit de vorige sectie. Als het tijdreisfilter de volledige selectie laat zien, dan komt de informatie
@@ -4506,11 +4675,11 @@ Het instrument is nog niet in werking
 </div>
 </div>
 
-<button data-accordion="125" class="accordion_h active">Bepaling van de complete toestand</button>
-<div data-accordion-paneel="125" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="126" class="accordion_t active">?</button></td>
-<td data-accordion-titel="126" class="accordion_t_titel" style="display: none">&#8678;Complete toestand</td>
-<td data-accordion-paneel="126" class="accordion_t_paneel" style="display: block">
+<button data-accordion="137" class="accordion_h active">Bepaling van de complete toestand</button>
+<div data-accordion-paneel="137" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="138" class="accordion_t active">?</button></td>
+<td data-accordion-titel="138" class="accordion_t_titel" style="display: none">&#8678;Complete toestand</td>
+<td data-accordion-paneel="138" class="accordion_t_paneel" style="display: block">
 <p>Hier wordt de bepaling van een complete toestand beschreven. Selecteer de te beschrijven toestand door een actuele toestand te selecteren of een toestand uit een van de overzichten van complete toestanden.</p>
 <div data-ctb_5_tid="3">
 <p>Dit is een beschrijving van de bepaling van de complete toestand die in het tijdreisoverzicht staat vermeld als::<table>
@@ -4525,9 +4694,9 @@ Het instrument is nog niet in werking
 </td></tr></table>
 
 <div class="ctb_5" style="display: none;">
-<table><tr><td><button data-accordion="127" class="accordion_t active">?</button></td>
-<td data-accordion-titel="127" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
-<td data-accordion-paneel="127" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="139" class="accordion_t active">?</button></td>
+<td data-accordion-titel="139" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
+<td data-accordion-paneel="139" class="accordion_t_paneel" style="display: block">
 <div data-ctb_5_tid="3">
 <p><b>Stap 1. Bepaal relevante doelen en stel de toestanden samen.</b><br/>(Deze stap is uitgevoerd bij de verwerking van uitwisseling 2022-06-01T07:00:00Z toen deze toestand voor het eerst gezien is)<br/>Voor deze toestand komt het erop neer te bepalen hoe de toestand eruit ziet voor JuridischWerkendVanaf = 2022-07-01 en GeldigVanaf = 2022-07-01. Deze applicatie bepaalt alle toestanden voor elke uitwisseling en bekendOp datum opnieuw. Of een toestand daadwerkelijk aan het overzicht van complete toestanden wordt toegevoegd wordt in de <i>Uitvoering van de applicatie</i> (boven aan de pagina) als detailmelding aangegeven.</p>
 <table><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Bepaal alle toestanden voor ontvangenOp = 2022-06-01 en bekendOp = 2022-06-01</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Eerste toestand, voor juridischWerkendVanaf 2022-07-01 en geldigVanaf 2022-07-01</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Doel /join/id/proces/gm9999/2022/Instelling is het inwerkingtredingsdoel van de nieuwe toestand</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Dit is de eerste toestand met deze tijdstempels: /akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01</td></tr></table>
@@ -4537,9 +4706,9 @@ Het instrument is nog niet in werking
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="128" class="accordion_t active">?</button></td>
-<td data-accordion-titel="128" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
-<td data-accordion-paneel="128" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="140" class="accordion_t active">?</button></td>
+<td data-accordion-titel="140" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
+<td data-accordion-paneel="140" class="accordion_t_paneel" style="display: block">
 <div data-ctb_5_tid="3">
 <p>
     De volgende stappen gaan over het vinden van de instrumentversie die de toestand
@@ -4559,9 +4728,9 @@ Het instrument is nog niet in werking
 
 <table><tr><td class="ctb_diagram_td">
 </td><td rowspan="2">
-<table><tr><td><button data-accordion="129" class="accordion_t active">?</button></td>
-<td data-accordion-titel="129" class="accordion_t_titel" style="display: none">&#8678;5 - 7: Validatie kandidaat-instrumentversie en alternatieve versies</td>
-<td data-accordion-paneel="129" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="141" class="accordion_t active">?</button></td>
+<td data-accordion-titel="141" class="accordion_t_titel" style="display: none">&#8678;5 - 7: Validatie kandidaat-instrumentversie en alternatieve versies</td>
+<td data-accordion-paneel="141" class="accordion_t_paneel" style="display: block">
 <div data-ctb_5_tid="3">
 <p>
     <b>Stap 5 en 6. Valideer de kandidaat-instrumentversie.</b><br />
@@ -4584,20 +4753,20 @@ Het instrument is nog niet in werking
 </td></tr></table>
 
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="130" class="accordion_t active">?</button></td>
-<td data-accordion-titel="130" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="130" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="142" class="accordion_t active">?</button></td>
+<td data-accordion-titel="142" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="142" class="accordion_t_paneel" style="display: block">
 </td></tr></table>
 
 </td></tr></table>
 </div>
 </div>
 
-<button data-accordion="131" class="accordion_h active"><h3>Tijdreizen</h3></button>
-<div data-accordion-paneel="131" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="132" class="accordion_t active">?</button></td>
-<td data-accordion-titel="132" class="accordion_t_titel" style="display: none">&#8678;Toelichting op tijdreizen</td>
-<td data-accordion-paneel="132" class="accordion_t_paneel" style="display: block">
+<button data-accordion="143" class="accordion_h active"><h3>Tijdreizen</h3></button>
+<div data-accordion-paneel="143" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="144" class="accordion_t active">?</button></td>
+<td data-accordion-titel="144" class="accordion_t_titel" style="display: none">&#8678;Toelichting op tijdreizen</td>
+<td data-accordion-paneel="144" class="accordion_t_paneel" style="display: block">
 <p>
     Vanaf dit onderdeel wordt dieper ingegaan op de bepaling van de complete toestanden. Tevens wordt
     ingegaan op het tijdreizen op basis van de complete toestanden. Daarbij wordt op een manier naar de
@@ -4649,9 +4818,9 @@ Het instrument is nog niet in werking
 <table><tr><td>
 <table class="ct_tr_toestanden"><tr><th>ontvangenOp</th><th>bekendOp</th><th>juridischWerkendVanaf</th><th>geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_tr_t uw" data-ct_tr_6_ti="0" data-ct_tr_6_tid="3" data-ct_tr_6_ob_t="1" data-uv="2022-06-01T07:00:00Z" ><td>2022-06-01</td><td>2022-06-01</td><td>2022-07-01</td><td>2022-07-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;definitief">&#128214;</span></td></tr></table>
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="133" class="accordion_t active">?</button></td>
-<td data-accordion-titel="133" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="133" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="145" class="accordion_t active">?</button></td>
+<td data-accordion-titel="145" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="145" class="accordion_t_paneel" style="display: block">
 <table><tr><td>
 <table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr></table>
@@ -4886,6 +5055,40 @@ Het instrument is nog niet in werking
 
 window.addEventListener('load', function () {
 
+    // Event handler om een projectactie te selecteren
+    function projecten_selecteer_pa(e) {
+        Applicatie.EnkeleTouchStartClick(e);
+        var src = e.srcElement;
+        while (typeof src !== 'undefined') {
+            var uitgevoerdOp = src.dataset['pa'];
+            if (typeof uitgevoerdOp !== 'undefined') {
+                /* Stuur globaal event uit */
+                Applicatie.SelecteerProjectactie(uitgevoerdOp);
+                break;
+            }
+            src = src.parentElement;
+        }
+    }
+    document.querySelectorAll("[data-pa]").forEach((elt) => {
+        Applicatie.AddTouchStartClickListener(elt, projecten_selecteer_pa);
+    });
+
+    // Reageer op projectactieselectie (globaal event)
+    function SelecteerProjectActie(e) {
+        // Selecteer in de tabel
+        document.querySelectorAll('[data-pa]').forEach((elt) => {
+            if (elt.dataset.pa == e.detail) {
+                elt.classList.add('huidige-pa');
+            } else {
+                elt.classList.remove('huidige-pa');
+            }
+        });
+    }
+    window.addEventListener('projectactie', SelecteerProjectActie)
+});
+
+window.addEventListener('load', function () {
+
     // Initialiseer het diagram als het in beeld komt
     Applicatie.InitialseerDiagram('vbh_1_svg');
 
@@ -5004,6 +5207,22 @@ window.addEventListener('load', function () {
         elt.addEventListener('click', ToonVerwerkteUitwisselingenAanUit);
     });
 
+});
+
+window.addEventListener('load', function () {
+
+    // Reageer op projectactieselectie (globaal event)
+    function SelecteerProjectActie(e) {
+        // Selecteer het resultaat
+        document.querySelectorAll("[data-pav]").forEach((elt) => {
+            if (elt.dataset.pav <= e.detail && (!elt.hasAttribute('data-pat') || e.detail < elt.dataset.pat)) {
+                elt.style.display = '';
+            } else {
+                elt.style.display = 'none';
+            }
+        });
+    }
+    window.addEventListener('projectactie', SelecteerProjectActie)
 });
 
 window.addEventListener('load', function () {
@@ -5185,10 +5404,21 @@ window.addEventListener('load', function () {
 
 window.addEventListener('load', function () {
 
-    // Zet de knoppen voor de vorige/volgende uitwisseling
-    function uitwisselingselector_button_status(elt) {
+    // Selecteer een uitwisseling op basis van de gemaaktOp datum
+    // De event handler toont/verbergt delen van de HTML aan de hand van de data-u* attributen
+    function SelecteerUitwisseling(e) {
+        var gemaaktOp = e.detail;
+
+        // Dropdown selectie
+        var elt = document.getElementById('uitwisselingselector_gemaaktOp');
+        elt.value = gemaaktOp;
+
+        // Volgende / vorige buttons
         var button = document.getElementById('uitwisselingselector_volgende')
-        if (elt.selectedIndex == 0) {
+        if (elt.selectedIndex == -1) {
+            button.dataset.uw = '';
+            button.disabled = true
+        } else if (elt.selectedIndex == 0) {
             button.dataset.uw = '';
             button.disabled = true
         } else {
@@ -5196,31 +5426,25 @@ window.addEventListener('load', function () {
             button.disabled = false
         }
         button = document.getElementById('uitwisselingselector_vorige')
-        if (elt.selectedIndex == elt.options.length - 1) {
+        if (elt.selectedIndex == -1) {
+            button.dataset.uw = '';
+            button.disabled = true
+        } else if (elt.selectedIndex == elt.options.length - 1) {
             button.dataset.uw = '';
             button.disabled = true
         } else {
             button.dataset.uw = elt.options[elt.selectedIndex + 1].value;
             button.disabled = false
         }
+
+        // Selectie van HTML elementen op basis van dataset waarden
         document.querySelectorAll("[data-uw]").forEach((button) => {
-            if (elt.value == button.dataset.uw) {
+            if (gemaaktOp == button.dataset.uw) {
                 button.classList.add('huidige-uw')
             } else {
                 button.classList.remove('huidige-uw')
             }
         });
-    }
-    uitwisselingselector_button_status(document.getElementById('uitwisselingselector_gemaaktOp'))
-
-    // Selecteer een uitwisseling op basis van de gemaaktOp datum
-    // De event handler toont/verbergt delen van de HTML aan de hand van de data-u* attributen
-    function uitwisselingselector_selecteer(gemaaktOp) {
-
-        // Dropdown selectie
-        var elt = document.getElementById('uitwisselingselector_gemaaktOp');
-        elt.value = gemaaktOp;
-        uitwisselingselector_button_status(elt)
 
         document.querySelectorAll("[data-u]").forEach((elt) => {
             if (elt.dataset.u == gemaaktOp) {
@@ -5236,6 +5460,11 @@ window.addEventListener('load', function () {
                 elt.style.display = 'none';
             }
         });
+    }
+    window.addEventListener('uitwisseling', SelecteerUitwisseling)
+
+    // Stuur het globale event uit
+    function uitwisselingselector_selecteer(gemaaktOp) {
         /* Stuur globaal event uit */
         Applicatie.SelecteerUitwisseling(gemaaktOp);
     }
