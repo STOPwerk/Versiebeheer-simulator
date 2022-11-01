@@ -45,7 +45,7 @@ class Weergave_Uitwisselingselector:
         Argumenten:
         gemaaktOp string  Tijdstip van de uitwisseling waarvan dit element de resultaten toont
         """
-        if len (self._Waarden) <= 1:
+        if len (self._Waarden) == 0:
             return ''
         # style="display: none" werkt niet altijd goed, doe de startsituatie via javascript
         return ' data-u="' + gemaaktOp + '" '
@@ -58,7 +58,7 @@ class Weergave_Uitwisselingselector:
         gemaaktOpVanaf string  Tijdstip van de eerste uitwisseling waarvoor dit element de resultaten toont
         gemaaktOpTot string  Tijdstip van de eerste uitwisseling waarvoor dit element de resultaten niet meer toont
         """
-        if len (self._Waarden) <= 1:
+        if len (self._Waarden) == 0:
             return ''
         # style="display: none" werkt niet altijd goed, doe de startsituatie via javascript
         return ' data-uv="' + gemaaktOpVanaf + ('" data-ut="' + gemaaktOpTot if gemaaktOpTot else '') + '" '

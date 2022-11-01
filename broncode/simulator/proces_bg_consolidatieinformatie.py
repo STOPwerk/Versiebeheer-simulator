@@ -1,6 +1,6 @@
 #======================================================================
 #
-# verwerken van consolidatie-informatie in het versiebeheer van het
+# Verwerken van consolidatie-informatie in het versiebeheer van het
 # bevoegd gezag.
 #
 #======================================================================
@@ -25,8 +25,9 @@
 from typing import Tuple
 
 from applicatie_meldingen import Meldingen
-from data_bg_versiebeheer import Versiebeheer, Branch, MomentopnameInstrument, ProjectactieResultaat, UitgewisseldeSTOPModule
 from data_bg_project import ProjectActie
+from data_bg_projectvoortgang import Projectvoortgang, ProjectactieResultaat, UitgewisseldeSTOPModule, Branch
+from data_bg_versiebeheer import MomentopnameInstrument
 from stop_consolidatieinformatie import ConsolidatieInformatie
 
 class ConsolidatieInformatieMaker:
@@ -39,13 +40,13 @@ class ConsolidatieInformatieMaker:
 #
 #----------------------------------------------------------------------
     @staticmethod
-    def WerkBij (log: Meldingen, versiebeheer: Versiebeheer, consolidatieInformatie: ConsolidatieInformatie, actie: ProjectActie) -> Tuple[bool, ProjectactieResultaat]:
+    def WerkBij (log: Meldingen, voortgang: Projectvoortgang, consolidatieInformatie: ConsolidatieInformatie, actie: ProjectActie) -> Tuple[bool, ProjectactieResultaat]:
         """Werk de BG-versiebeheerinformatie bij aan de hand van consolidatie-informatie.
 
         Argumenten:
 
         log Meldingen  Verzameling van meldingen over de uitvoering van het scenario
-        versiebeheer Versiebeheer  Informatie over het versiebeheer zoals bevoegd gezag dat uitvoert.
+        voortgang Projectvoortgang  Informatie over de projectvoortgang en het versiebeheer zoals bevoegd gezag dat uitvoert.
         consolidatieInformatie ConsolidatieInformatie  De consolidatie-informatie voor een uitwisseling 
                                                        die als invoer voor het scenario is opgegeven
         actie ProjectActie  De actie die correspondeert met de consolidatie-informatie
@@ -54,9 +55,9 @@ class ConsolidatieInformatieMaker:
         """
         resultaat = ProjectactieResultaat (actie)
         resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (consolidatieInformatie, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_LVBB))
-        versiebeheer.Projectacties.append (resultaat)
+        voortgang.Projectacties.append (resultaat)
 
-        maker = ConsolidatieInformatieMaker (log, versiebeheer, consolidatieInformatie)
+        maker = ConsolidatieInformatieMaker (log, voortgang, consolidatieInformatie)
         return (maker._WerkVersiebeheerBij (), resultaat)
 
 #======================================================================
@@ -64,17 +65,17 @@ class ConsolidatieInformatieMaker:
 # Implementatie
 #
 #======================================================================
-    def __init__(self, log: Meldingen, versiebeheer: Versiebeheer, consolidatieInformatie : ConsolidatieInformatie):
+    def __init__(self, log: Meldingen, voortgang: Projectvoortgang, consolidatieInformatie : ConsolidatieInformatie):
         """Maak een nieuwe instantie aan.
 
         Argumenten:
 
         log Meldingen  Verzameling van meldingen over de uitvoering van het scenario
-        versiebeheer Versiebeheer  Informatie over het versiebeheer zoals bevoegd gezag dat uitvoert.
+        voortgang Projectvoortgang  Informatie over de projectvoortgang en het versiebeheer zoals bevoegd gezag dat uitvoert.
         consolidatieInformatie ConsolidatieInformatie  De consolidatie-informatie voor een uitwisseling
         """
         self._Log = log
-        self._Versiebeheer = versiebeheer
+        self._Voortgang = voortgang
         self._ConsolidatieInformatie = consolidatieInformatie
 
 #======================================================================
@@ -91,9 +92,9 @@ class ConsolidatieInformatieMaker:
         # Begin met de BeoogdeRegelingen
         for beoogdeVersie in self._ConsolidatieInformatie.BeoogdeVersies:
             for doel in beoogdeVersie.Doelen:
-                branch = self._Versiebeheer.Branches.get (doel)
+                branch = self._Voortgang.Versiebeheer.Branches.get (doel)
                 if branch is None:
-                    self._Versiebeheer.Branches[doel] = branch = Branch (doel)
+                    self._Voortgang.Versiebeheer.Branches[doel] = branch = Branch (doel)
                 elif branch._ViaProject:
                     self._Log.Fout ("Doel '" + str(doel) + "' wordt via projecten beheerd; daarvoor kan geen ConsolidatieInformatie gespecificeerd worden. Bestand: '" + self._ConsolidatieInformatie.Pad + "'")
                     isValide = False
@@ -108,16 +109,16 @@ class ConsolidatieInformatieMaker:
                 momentopname.IsJuridischUitgewerkt = False
                 momentopname.IsTeruggetrokken = False
 
-                self._Versiebeheer.BekendeInstrumenten.add (beoogdeVersie.WorkId)
+                self._Voortgang.BekendeInstrumenten.add (beoogdeVersie.WorkId)
                 if not beoogdeVersie.ExpressionId is None:
-                    self._Versiebeheer.PubliekeInstrumentversies.add (beoogdeVersie.ExpressionId)
+                    self._Voortgang.Versiebeheer.PubliekeInstrumentversies.add (beoogdeVersie.ExpressionId)
 
         # Intrekkingen
         for intrekking in self._ConsolidatieInformatie.Intrekkingen:
             for doel in intrekking.Doelen:
-                branch = self._Versiebeheer.Branches.get (doel)
+                branch = self._Voortgang.Versiebeheer.Branches.get (doel)
                 if branch is None:
-                    self._Versiebeheer.Branches[doel] = branch = Branch (doel)
+                    self._Voortgang.Versiebeheer.Branches[doel] = branch = Branch (doel)
                 elif branch._ViaProject:
                     self._Log.Fout ("Doel '" + str(doel) + "' wordt via projecten beheerd; daarvoor kan geen ConsolidatieInformatie gespecificeerd worden. Bestand: '" + self._ConsolidatieInformatie.Pad + "'")
                     isValide = False
@@ -136,7 +137,7 @@ class ConsolidatieInformatieMaker:
         # (in deze applicatie) bij het verwerken in de versiebeheerinformatie voor het ontvangende systeem
         for terugtrekking in [*self._ConsolidatieInformatie.Terugtrekkingen, *self._ConsolidatieInformatie.TerugtrekkingenIntrekking]:
             for doel in terugtrekking.Doelen:
-                branch = self._Versiebeheer.Branches.get (doel)
+                branch = self._Voortgang.Versiebeheer.Branches.get (doel)
                 if branch is None:
                     self._Log.Fout ("Terugtrekking voor doel '" + str(doel) + "' voordat er een terugtrekking of beoogde instrumentversie is uitgewisseld. Bestand: '" + self._ConsolidatieInformatie.Pad + "'")
                     isValide = False
@@ -158,7 +159,7 @@ class ConsolidatieInformatieMaker:
 
         # Tijdstempels
         for tijdstempel in self._ConsolidatieInformatie.Tijdstempels:
-            branch = self._Versiebeheer.Branches.get (tijdstempel.Doel)
+            branch = self._Voortgang.Versiebeheer.Branches.get (tijdstempel.Doel)
             if branch is None:
                 self._Log.Fout ("Tijdstempel voor doel '" + str(tijdstempel.Doel) + "' voordat er een terugtrekking of beoogde instrumentversie is uitgewisseld. Bestand: '" + self._ConsolidatieInformatie.Pad + "'")
                 isValide = False
@@ -173,7 +174,7 @@ class ConsolidatieInformatieMaker:
                 branch.PubliekeTijdstempels.JuridischWerkendVanaf = tijdstempel.Datum
 
         for tijdstempel in self._ConsolidatieInformatie.TijdstempelTerugtrekkingen:
-            branch = self._Versiebeheer.Branches.get (tijdstempel.Doel)
+            branch = self._Voortgang.Versiebeheer.Branches.get (tijdstempel.Doel)
             if branch is None:
                 self._Log.Fout ("Terugtrekking tijdstempel voor doel '" + str(tijdstempel.Doel) + "' voordat er een terugtrekking of beoogde instrumentversie is uitgewisseld. Bestand: '" + self._ConsolidatieInformatie.Pad + "'")
                 isValide = False

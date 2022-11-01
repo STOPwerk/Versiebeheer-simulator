@@ -2,13 +2,13 @@
 #
 # Maakt een overzicht van de projecten en projectacties als onderdeel
 # van de webpagina met resultaten. Via dit overzicht is ook een
-# uitwisseling te selecteren, als de projectactie tot een uitwisseling
-# leidt.
+# projectactie te selecteren, en tevens een uitwisseling als een 
+# projectactie tot een uitwisseling leidt.
 #
 #======================================================================
 
 from applicatie_scenario import Scenario
-from data_bg_versiebeheer import ProjectactieResultaat
+from data_bg_projectvoortgang import ProjectactieResultaat
 from weergave_webpagina import WebpaginaGenerator
 
 class Weergave_Projecten:
@@ -21,7 +21,7 @@ class Weergave_Projecten:
         generator WebpaginaGenerator  Generator voor de webpagina
         scenario Scenario  Scenario waar de generator voor gemaakt wordt
         """
-        einde = generator.StartSectie ("Overzicht van projectacties", True)
+        einde = generator.StartSectie ("<h3>Overzicht van projectacties</h3>", True)
         einde_t = generator.StartToelichting ("Over het overzicht")
         generator.LeesHtmlTemplate ('help')
         generator.VoegHtmlToe (einde_t)
@@ -34,7 +34,7 @@ class Weergave_Projecten:
 
         # Overzicht van de projectacties
         toonUitvoerder = False
-        for resultaat in scenario.Versiebeheer.Projectacties:
+        for resultaat in scenario.Projectvoortgang.Projectacties:
             if resultaat.UitgevoerdDoor != ProjectactieResultaat._Uitvoerder_BevoegdGezag:
                 toonUitvoerder = True
                 break
@@ -47,12 +47,14 @@ class Weergave_Projecten:
             generator.VoegHtmlToe ('<th>Door</th>')
         generator.VoegHtmlToe ('<th>Beschrijving</th></td></tr>')
 
-        for resultaat in scenario.Versiebeheer.Projectacties:
+        for resultaat in scenario.Projectvoortgang.Projectacties:
             actie = resultaat._Projectactie
             idx = scenario.Projecten.index (actie._Project)
 
-            tr = '<tr' + (' data-uw="' + actie.UitgevoerdOp + '"' if actie._IsUitwisseling else '')
-            generator.VoegHtmlToe (tr + '><td>' + actie.UitgevoerdOp + '</td>')
+            generator.VoegHtmlToe ('<tr data-pa="' + actie.UitgevoerdOp + '"')
+            if actie._IsUitwisseling:
+                generator.VoegHtmlToe (' class="uw"')
+            generator.VoegHtmlToe ('><td>' + actie.UitgevoerdOp + '</td>')
             for jdx in range (0, len (scenario.Projecten)):
                 generator.VoegHtmlToe ('<td class="c">' + ('&#x2714;' if idx == jdx else '') + '</td>')
             generator.VoegHtmlToe ('<td>' + actie.SoortActie + '</td>')
@@ -74,4 +76,5 @@ class Weergave_Projecten:
 
         generator.VoegHtmlToe (einde)
         generator.LeesCssTemplate ('')
+        generator.LeesJSTemplate ('')
 

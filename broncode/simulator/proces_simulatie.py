@@ -18,7 +18,8 @@ from pickle import NONE
 from applicatie_scenario import Scenario
 import applicatie_configuratie
 from data_bg_project import ProjectActie
-from data_bg_versiebeheer import ProjectactieResultaat, UitgewisseldeSTOPModule
+from data_bg_projectvoortgang import ProjectactieResultaat, UitgewisseldeSTOPModule
+from weergave_data_bg_versiebeheer import VersiebeheerWeergave
 from weergave_resultaat_data import WeergaveData
 from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
 from proces_bg_projectacties import ProjectactieUitvoering
@@ -64,16 +65,20 @@ class Proces_Simulatie:
                     consolidatieInformatie = consolidatieInformatieBron.Module
                     if self.Scenario.Opties.Versiebeheer:
                         # Verwerk dat in het versiebeheer van het bevoegd gezag
-                        isValide, actieResultaat = ConsolidatieInformatieMaker.WerkBij (self.Scenario.Log, self.Scenario.Versiebeheer, consolidatieInformatie, consolidatieInformatieBron.Actie)
+                        isValide, actieResultaat = ConsolidatieInformatieMaker.WerkBij (self.Scenario.Log, self.Scenario.Projectvoortgang, consolidatieInformatie, consolidatieInformatieBron.Actie)
                         if not isValide:
                             # Er is iets fout gegaan
                             return
+                        # Bewaar een kopie van het interne versiebeheer voor weergave
+                        actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
                 else:
                     # Project actie: voer de actie uit
                     isValide, consolidatieInformatie, actieResultaat = ProjectactieUitvoering.Voor (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
                     if not isValide:
                         # Er is iets fout gegaan
                         return
+                    # Bewaar een kopie van het interne versiebeheer voor weergave
+                    actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
                     if consolidatieInformatie is None:
                         # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
                         continue

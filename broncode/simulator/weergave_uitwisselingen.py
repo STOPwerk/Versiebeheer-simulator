@@ -20,7 +20,7 @@ class Weergave_Uitwisselingen:
         generator WebpaginaGenerator  Generator voor de webpagina
         scenario Scenario  Scenario waar de generator voor gemaakt wordt
         """
-        einde = generator.StartSectie ("Overzicht van uitwisselingen en publicaties", True)
+        einde = generator.StartSectie ("<h3>Overzicht van uitwisselingen en publicaties</h3>", True)
         einde_t = generator.StartToelichting ("Over het overzicht")
         generator.LeesHtmlTemplate ('help')
         generator.VoegHtmlToe (einde_t)

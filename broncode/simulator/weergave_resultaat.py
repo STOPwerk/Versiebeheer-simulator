@@ -19,6 +19,7 @@ import applicatie_configuratie
 from stop_naamgeving import Naamgeving
 from weergave_actueletoestanden import Weergave_ActueleToestanden
 from weergave_annotaties import Weergave_Annotaties
+from weergave_bg_versiebeheer import Weergave_BG_Versiebeheer
 from weergave_completetoestanden import Weergave_CompleteToestanden
 from weergave_consolidatieinformatie import Weergave_ConsolidatieInformatie
 from weergave_proefversies import Weergave_Proefversies
@@ -137,6 +138,7 @@ class ResultaatGenerator (WebpaginaGenerator):
 
             Weergave_Projecten.VoegToe (self, self.Scenario)
             Weergave_Project_Uitwisselingen.VoegToe (self, self.Scenario)
+            Weergave_BG_Versiebeheer.VoegToe (self, self.Scenario)
 
             self.VoegHtmlToe ('</div>')
 

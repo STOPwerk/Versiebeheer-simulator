@@ -17,8 +17,9 @@
 from typing import Dict, List, Tuple
 
 from applicatie_meldingen import Meldingen
-from data_bg_versiebeheer import Versiebeheer, Projectstatus, ProjectactieResultaat, Branch, MomentopnameInstrument, MomentopnameVerwijzing, UitgewisseldeSTOPModule, UitgewisseldMaarNietViaSTOP
 from data_bg_project import ProjectActie, ProjectActie_NieuwDoel, ProjectActie_Download, ProjectActie_Uitwisseling, ProjectActie_Wijziging, ProjectActie_Publicatie, Instrumentversie
+from data_bg_projectvoortgang import Branch, Projectstatus, ProjectactieResultaat, UitgewisseldeSTOPModule, UitgewisseldMaarNietViaSTOP
+from data_bg_versiebeheer import MomentopnameInstrument, MomentopnameVerwijzing
 from data_doel import Doel
 from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Intrekking, Terugtrekking, TerugtrekkingIntrekking, Tijdstempel, TerugtrekkingTijdstempel, Momentopname as CI_Momentopname
 from stop_momentopname import DownloadserviceModules, Momentopname, InstrumentversieInformatie
@@ -55,16 +56,16 @@ class ProjectactieUitvoering:
             uitvoerder = ProjectactieUitvoering._Uitvoerders[actie.SoortActie] ()
             uitvoerder._Log = log
             uitvoerder._Scenario = scenario
-            uitvoerder._Versiebeheer = scenario.Versiebeheer
-            uitvoerder._Projectstatus = uitvoerder._Versiebeheer.Projecten.get (actie._Project.Code)
+            uitvoerder._Projectvoortgang = scenario.Projectvoortgang
+            uitvoerder._Projectstatus = uitvoerder._Projectvoortgang.Projecten.get (actie._Project.Code)
             if uitvoerder._Projectstatus is None:
-                uitvoerder._Versiebeheer.Projecten[actie._Project.Code] = uitvoerder._Projectstatus = Projectstatus (actie._Project)
+                uitvoerder._Projectvoortgang.Projecten[actie._Project.Code] = uitvoerder._Projectstatus = Projectstatus (actie._Project)
             uitvoerder._Resultaat = ProjectactieResultaat (actie)
 
             # Voer de actie uit en geef de resulterende ConsolidatieInformatie terug
             if not uitvoerder.VoerUit (actie):
                 return (False, None, None)
-            uitvoerder._Versiebeheer.Projectacties.append (uitvoerder._Resultaat)
+            uitvoerder._Projectvoortgang.Projectacties.append (uitvoerder._Resultaat)
             if len (uitvoerder._Resultaat.Uitgewisseld) > 0 and isinstance (uitvoerder._Resultaat.Uitgewisseld[0].Module, ConsolidatieInformatie):
                 return (True, uitvoerder._Resultaat.Uitgewisseld[0].Module, uitvoerder._Resultaat)
             return (True, None, uitvoerder._Resultaat)
@@ -91,7 +92,7 @@ class ProjectactieUitvoering:
         # Via het scenario is de geldende regelgeving uit de LVBB beschikbaar.
         self._Scenario = None
         # Informatie over het versiebeheer zoals bevoegd gezag dat uitvoert.
-        self._Versiebeheer : Versiebeheer = None
+        self._Projectvoortgang : Projectvoortgang = None
         # De status van het project bij de start van de actie
         self._Projectstatus : Projectstatus = None
         # Het resultaat van de actie
@@ -129,7 +130,7 @@ class ProjectactieUitvoering:
         if branch is None:
             branch = self._Projectstatus.Branches.get (doel)
             if branch is None:
-                branch = self._Versiebeheer.Branches.get (doel)
+                branch = self._Projectvoortgang.Versiebeheer.Branches.get (doel)
                 if not branch is None:
                     if not branch._ViaProject:
                         self.LogFout ("branch '" + str(doel) + "' wordt niet via projecten beheerd en kan hier niet gebruikt worden,")
@@ -181,7 +182,7 @@ class ProjectactieUitvoering:
         juridischUitgewerktVanaf = None # Grootste jwv-datum die kleiner of gelijk aan geldigOp waarop het instrument juridisch uitgewerkt is
 
         # Onderzoek alle bekende branches en momentopnamen
-        for branch in self._Versiebeheer.Branches.values ():
+        for branch in self._Projectvoortgang.Versiebeheer.Branches.values ():
             if not branch.PubliekeTijdstempels.JuridischWerkendVanaf is None and branch.PubliekeTijdstempels.JuridischWerkendVanaf <= geldigOp:
                 momentopname = branch.PubliekeInstrumentversies.get (workId)
                 if not momentopname is None:
@@ -255,7 +256,7 @@ class ProjectactieUitvoering:
                 # Dit mag alleen een initiële versie voor een nieuw instrument zijn (in deze simulator),
                 # want de simulator kan niet vanaf dit punt de uitgangssituatie voor een bestaand instrument bepalen.
                 # Dat is in principe wel mogelijk, maar te complex voor deze software.
-                if workId in self._Versiebeheer.BekendeInstrumenten:
+                if workId in self._Projectvoortgang.BekendeInstrumenten:
                     self._LogFout ("Bestaand instrument '" + workId + "' wordt niet beheerd als onderdeel van de branch voor doel '" + str(branch._Doel) + "'")
                     succes = False
                     continue
@@ -270,7 +271,7 @@ class ProjectactieUitvoering:
                 branch.InterneInstrumentversies[workId] = momentopname = MomentopnameInstrument (branch, workId)
                 momentopname.ExpressionId = instrumentversie.ExpressionId
                 if registreerNieuweWorks:
-                    self._Versiebeheer.BekendeInstrumenten.add (workId)
+                    self._Projectvoortgang.BekendeInstrumenten.add (workId)
             else:
                 if instrumentversie.IsJuridischUitgewerkt:
                     if not momentopname.IsJuridischUitgewerkt:
@@ -340,10 +341,10 @@ class _VoerUit_NieuwDoel (ProjectactieUitvoering):
         succes = True
 
         # Maak een nieuwe branch
-        if actie.Doel in self._Versiebeheer.Branches:
+        if actie.Doel in self._Projectvoortgang.Versiebeheer.Branches:
             self._LogFout ("branch bestaat al voor doel: '" + str(actie.Doel) + "'")
             return False
-        self._Versiebeheer.Branches[actie.Doel] = branch = Branch (actie.Doel)
+        self._Projectvoortgang.Versiebeheer.Branches[actie.Doel] = branch = Branch (actie.Doel)
         self._Projectstatus.Branches[actie.Doel] = branch
         branch._ViaProject = True
         branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
@@ -351,7 +352,7 @@ class _VoerUit_NieuwDoel (ProjectactieUitvoering):
 
         if not actie.GebaseerdOp_Doel is None:
             # Het project is een expliciete aftakking van het opgegeven doel.
-            basisBranch = self._Versiebeheer.Branches.get (actie.GebaseerdOp_Doel)
+            basisBranch = self._Projectvoortgang.Versiebeheer.Branches.get (actie.GebaseerdOp_Doel)
             if basisBranch is None:
                 self._LogFout ("onbekend doel: '" + str(actie.GebaseerdOp_Doel) + "'")
                 return False
@@ -408,7 +409,7 @@ class _VoerUit_Download (ProjectactieUitvoering):
         succes = True
 
         # Maak een nieuwe branch
-        if actie.Doel in self._Versiebeheer.Branches:
+        if actie.Doel in self._Projectvoortgang.Versiebeheer.Branches:
             self._LogFout ("branch bestaat al voor doel: '" + str(actie.Doel) + "'")
             return False
         branch = self._Projectstatus.ExterneBranches.get (actie.Doel)
@@ -449,7 +450,7 @@ class _VoerUit_Download (ProjectactieUitvoering):
             stop_mo.Doel = geldigeToestand.Inwerkingtredingsdoelen[0] # Downloadservice kiest er 1
             # GemaaktOp is niet beschikbaar via actuele toestanden, maar de downloadservice geeft dit wel mee
             # In deze simulator: haal het tijdstip uit het versiebeheer van BG
-            stop_mo.GemaaktOp = self._Versiebeheer.Branches[stop_mo.Doel].PubliekeInstrumentversies[workId].GemaaktOp
+            stop_mo.GemaaktOp = self._Projectvoortgang.Versiebeheer.Branches[stop_mo.Doel].PubliekeInstrumentversies[workId].GemaaktOp
             module.Modules[geldigeToestand.Instrumentversie] = stop_mo
 
             # Maak de momentopname van de uitgangssituatie zoals de downloadservice dat levert
@@ -513,12 +514,12 @@ class _VoerUit_Uitwisseling (ProjectactieUitvoering):
                     if bgVersie is None:
                         if instrumentversie.IsTeruggetrokken:
                             continue
-                        if workId in self._Versiebeheer.BekendeInstrumenten:
+                        if workId in self._Projectvoortgang.BekendeInstrumenten:
                             self._LogFout ("Bestaand instrument '" + workId + "' is niet door BG aan het adviesbureau doorgegeven")
                             succes = False
                             continue
                         bgBranch.InterneInstrumentversies[workId] = bgVersie = MomentopnameInstrument (bgBranch, workId)
-                        self._Versiebeheer.BekendeInstrumenten.add (workId)
+                        self._Projectvoortgang.BekendeInstrumenten.add (workId)
                     bgVersie.ExpressionId = instrumentversie.ExpressionId
                     bgVersie.IsJuridischUitgewerkt = instrumentversie.IsJuridischUitgewerkt
                     bgVersie.IsTeruggetrokken = instrumentversie.IsTeruggetrokken

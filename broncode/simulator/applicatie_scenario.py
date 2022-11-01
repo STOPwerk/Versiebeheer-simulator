@@ -20,7 +20,7 @@ import xml.etree.ElementTree as ET
 from applicatie_meldingen import Meldingen
 from applicatie_procesopties import ProcesOpties, BenoemdeUitwisseling
 from data_bg_project import Project, ProjectActie, ProjectActie_Publicatie, ProjectActie_Uitwisseling, ProjectActie_Download
-from data_bg_versiebeheer import Versiebeheer
+from data_bg_projectvoortgang import Projectvoortgang
 from data_lv_annotatie import Annotatie
 from data_lv_consolidatie import GeconsolideerdInstrument
 from data_lv_versiebeheerinformatie import Versiebeheerinformatie
@@ -128,8 +128,9 @@ class Scenario:
         #--------------------------------------------------------------
         # Simulatie bevoegd gezag systemen
         #--------------------------------------------------------------
-        # Het interne datamodel met versiebeheerinformatie
-        self.Versiebeheer = Versiebeheer ()
+        # Het interne datamodel met versiebeheerinformatie en de resultaten
+        # van de uitvoering van projectacties
+        self.Projectvoortgang : Projectvoortgang = None
         #--------------------------------------------------------------
         # Simulatie ontvangende systemen
         #--------------------------------------------------------------
@@ -304,7 +305,7 @@ class Scenario:
                 self.Log.Waarschuwing ("Bepaling van actuele toestanden wordt altijd uitgevoerd als er projecten zijn gespecificeerd")
                 self.Opties.ActueleToestanden = True
             self.Opties.Versiebeheer = True
-            self.Versiebeheer = Versiebeheer ()
+            self.Projectvoortgang = Projectvoortgang ()
 
             for project in self.Projecten:
                 for actie in project.Acties:
