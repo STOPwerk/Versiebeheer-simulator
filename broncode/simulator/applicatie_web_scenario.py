@@ -73,6 +73,7 @@ class ScenarioPostedDataIterator (ScenarioIterator):
                                  Argumenten zijn pad en inhoud van het bestand als tekst.
         """
         self.Scenario.Titel = "Versiebeheer-simulator resultaat"
+        self.Scenario.ResultaatPad = None
         for naam, data in self._Data:
             filetype = os.path.splitext (naam)[1]
             if filetype == '':
