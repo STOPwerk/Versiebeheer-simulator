@@ -1,0 +1,24 @@
+<p>
+    Zie de <a href="https://github.com/STOPwerk/Versiebeheer-simulator/wiki">documentatie</a> voor een beschrijving van de invoer.
+</p>
+<form id="Invoer" action="resultaat" method="post" target="_blank" class="invoer" enctype="multipart/form-data">
+    <h2>Invoerbestanden</h2>
+    <div class="box">
+        <p>Maak zelf invoerbestanden,</p>
+        <label>
+            <strong>selecteer de bestanden</strong>
+            <span>of sleep ze hier naar toe.</span>
+            <input class="box__file" type="file" name="files[]" multiple accept="application/json,application/xml" />
+        </label>
+    </div>
+    <p class="file-list"></p>
+    <h2>Aanvullende invoer</h2>
+    <p>Plaats de inhoud van een extra invoerbestand in een tekstvak.</p>
+    <div id="NieuwTekstvak"></div>
+    <div>
+        <strong id="MaakTekstvak">Maak extra tekstvak</strong>
+    </div>
+
+    <h2>Simulator</h2>
+    <button>Start simulator</button>
+</form>
