@@ -20,9 +20,9 @@ git pull
 @if errorlevel 1 goto Pause
 git merge --strategy-option theirs --squash -m "Release @@@VERSIE@@@" development
 @if errorlevel 1 goto Pause
-copy /b/v/y applicatie_config.py %1applicatie_config.py
+copy /b/v/y applicatie_configuratie.py %1applicatie_configuratie.py
 @if errorlevel 1 goto Pause
-git add %1applicatie_config.py
+git add applicatie_configuratie.py
 @if errorlevel 1 goto Pause
 pause
 git commit -a -m "Release @@@VERSIE@@@"
