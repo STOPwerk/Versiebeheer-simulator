@@ -38,7 +38,7 @@ goto Pause
 :Start
 python.exe ..\tools\maak_release_artefacts.py . ..\..
 if errorlevel 1 goto Pause
-call publiceer_git.bat Release || goto Pause
+call publiceer_git.bat ..\simulator\ || goto Pause
 
 if errorlevel 0 goto End
 :Pause

@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="simulator\applicatie.py" />
+    <Compile Include="simulator\applicatie_versie.py" />
     <Compile Include="simulator\applicatie_meldingen.py" />
     <Compile Include="simulator\applicatie_configuratie.py" />
     <Compile Include="simulator\data_bg_project.py" />

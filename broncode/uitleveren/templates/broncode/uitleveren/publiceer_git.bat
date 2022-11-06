@@ -1,9 +1,9 @@
 @echo off
 rem Origineel is: templates\broncode\uitleveren\publiceer_git.bat
 
-if "A%1" == "ARelease" goto Start
+if not "A%1" == "A" goto Start
 echo.
-echo Dit script wordt gedraaid vanuit publiceer.bat
+echo Dit script moet gedraaid worden vanuit publiceer.bat
 echo.
 goto Pause
 
@@ -20,6 +20,11 @@ git pull
 @if errorlevel 1 goto Pause
 git merge --strategy-option theirs --squash -m "Release @@@VERSIE@@@" development
 @if errorlevel 1 goto Pause
+copy /b/v/y applicatie_config.py %1applicatie_config.py
+@if errorlevel 1 goto Pause
+git add %1applicatie_config.py
+@if errorlevel 1 goto Pause
+pause
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
 git config --unset user.mail
