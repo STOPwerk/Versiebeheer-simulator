@@ -3,56 +3,47 @@
     border: 1px solid #666666;
 }
 
-    .prj_overzicht td {
-        border-left: 1px solid #666666;
-        border-right: 1px solid #666666;
+    .prj_overzicht td.nw {
+        white-space: nowrap;
     }
 
-        .prj_overzicht td.none {
-            border-left: 0px;
-            border-right: 0px;
-        }
-
-        .prj_overzicht td.nw {
-            white-space: nowrap;
-        }
-
-    .prj_overzicht th {
-        border: 1px solid #666666;
+    .prj_overzicht td.c {
+        text-align: center;
     }
 
-    .prj_overzicht tr { /* projectactie in tabel */
+    .prj_overzicht th.nw {
+        white-space: nowrap;
+    }
+
+    .prj_overzicht th.c {
+        text-align: center;
+    }
+
+    .prj_overzicht tr[data-pa] { /* projectactie die selecteerbaar is */
         cursor: pointer;
     }
 
-        .prj_overzicht tr.top {
-            border-top: 1px solid #666666;
-        }
-
-        .prj_overzicht tr.bottom {
-            border-bottom: 1px solid #666666;
-        }
-
-        .prj_overzicht tr:hover {
+        .prj_overzicht tr[data-pa]:hover {
             background-color: #dae8fc;
         }
 
-        .prj_overzicht tr.huidige-uw { /* geselecteerde projectactie die ook een uitwisseling is */
+    .prj_overzicht tr.huidige-pa { /* geselecteerde projectactie die geen uitwisseling is */
+        border: 3px solid #000000;
+        cursor: pointer;
+    }
+
+        .prj_overzicht tr.huidige-pa.uw { /* geselecteerde projectactie die ook uitwisseling is */
             background-color: #ffe6cc;
-            border-left: 3px solid #000000;
-            border-right: 3px solid #000000;
         }
 
-            .prj_overzicht tr.huidige-uw.top {
-                background-color: #ffe6cc;
-                border-left: 3px solid #000000;
-                border-right: 3px solid #000000;
-                border-top: 3px solid #000000;
+            .prj_overzicht tr.huidige-pa.uw:hover {
+                background-color: #dae8fc;
             }
 
-            .prj_overzicht tr.huidige-uw.bottom {
-                background-color: #ffe6cc;
-                border-left: 3px solid #000000;
-                border-right: 3px solid #000000;
-                border-bottom: 3px solid #000000;
-            }
+table.prj_overzicht > tbody > tr > td {
+    border: 1px solid #666666;
+}
+
+table.prj_overzicht > tbody > tr > th {
+    border: 1px solid #666666;
+}

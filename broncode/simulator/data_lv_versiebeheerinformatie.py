@@ -275,7 +275,7 @@ class MomentopnameInstrument (Momentopname):
         # Overzicht van alle branches die al dan niet bijdragen aan het versiebeheer
         # tot nu toe (inclusief deze branch)
         # key = instantie van Doel, value = instantie van BranchBijdrage
-        self.BranchesCumulatief = None
+        self.BranchesCumulatief : Dict[Doel,BranchBijdrage] = None
 
 
 class BranchBijdrage:

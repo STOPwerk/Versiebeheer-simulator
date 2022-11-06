@@ -29,8 +29,7 @@ class Weergave_ConsolidatieInformatie:
         selector = Weergave_Uitwisselingselector (scenario)
         moduleMaker = Weergave_STOPModule (generator)
         for idx, uitwisseling in enumerate (scenario.Versiebeheerinformatie.Uitwisselingen):
-            volgendeGemaaktOp = None if idx == len (scenario.Versiebeheerinformatie.Uitwisselingen)-1 else scenario.Versiebeheerinformatie.Uitwisselingen[idx+1].GemaaktOp
-            generator.VoegHtmlToe ('<div ' + selector.AttributenToonIn (uitwisseling.GemaaktOp, volgendeGemaaktOp) + '>')
+            generator.VoegHtmlToe ('<div ' + selector.AttributenToonVoor (uitwisseling.GemaaktOp) + '>')
             moduleMaker.VoegHtmlToe (uitwisseling._ConsolidatieInformatie.ModuleXml ())
             generator.VoegHtmlToe ('</div>')
 

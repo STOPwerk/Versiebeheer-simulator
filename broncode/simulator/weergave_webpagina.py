@@ -23,11 +23,12 @@ from stop_documentatie import VervangSTOPCodumentatieURL
 #======================================================================
 class WebpaginaGenerator:
 
-    def __init__ (self, titel = None):
+    def __init__ (self, titel = None, favicon = None):
         """Maak een generator aan voor een webpagina
 
         Argumenten:
         titel string/HTML  Titel van de pagina
+        favicon string  URL van het favicon voor de webpagina; moet een PNG plaatje zijn
         """
         super().__init__ ()
         # Template voor de start van de pagina
@@ -45,8 +46,13 @@ class WebpaginaGenerator:
         # Index voor het uniek maken van repeterende HTML fragmenten
         self._Index = 0
 
+        if favicon is None:
+            favicon = ''
+        else:
+            favicon = '\n<link rel="icon" type="image/png" href="' + favicon + '">'
+
         if not titel is None:
-            self._Start = self._Start.replace ("<!--TITEL-->", "<title>" + titel + "</title>")
+            self._Start = self._Start.replace ("<!--TITEL-->", "<title>" + titel + "</title>" + favicon)
             self._Html += "<h1>" + titel + "</h1>"
 
 #----------------------------------------------------------------------
@@ -167,7 +173,7 @@ class WebpaginaGenerator:
         id = str(WebpaginaGenerator._AccordionPaneel)
         active = ' active' if startOpen else ''
         block = ' style="display: block"' if startOpen else ' style="display: none"'
-        nietblock = ' style="display: none"' if not startOpen else ''
+        nietblock = ' style="display: none"' if startOpen else ' style="display: block"'
         self._Html += '<table><tr><td><button data-accordion="' + id + '" class="accordion_t' + active + '">?</button></td>\n'
         self._Html += '<td data-accordion-titel="' + id + '" class="accordion_t_titel"''' + nietblock + '>&#8678;' + titel + '</td>\n'
         self._Html += '<td data-accordion-paneel="' + id + '" class="accordion_t_paneel"''' + block + '>\n'

@@ -27,8 +27,12 @@
       "Command": "-t tests\\scenarios\\Annotaties"
     },
     {
-      "Id": "31207cf7-2cc3-496e-bb5f-548a9e92ad3c",
-      "Command": "-t \"tests\\scenarios\\Projecten\\Project bij BG\\01 Enkel project geen ontwerp\""
+      "Id": "97072cd4-1f25-44c3-813c-9c384a9e1ce7",
+      "Command": "-t \"tests\\scenarios\\Projecten\""
+    },
+    {
+      "Id": "a92b0bd0-2cea-460e-9230-58fd2eaabc08",
+      "Command": "-t \"tests\\scenarios\\Projecten\\01 Enkel project\\13 Met rectificatie\""
     },
     {
       "Id": "c3b16407-655d-4113-841b-acc25f6e8217",

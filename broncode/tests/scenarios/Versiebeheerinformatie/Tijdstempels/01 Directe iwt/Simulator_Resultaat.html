@@ -12,8 +12,6 @@
         }
 
         table {
-            background-color: White;
-            color: Black;
             font-family: Verdana, Geneva, sans-serif;
             font-size: 10pt;
             line-height: 1.4em;
@@ -208,7 +206,93 @@
             border-right: 1em solid #d79b00;
         }
 
-        .uw_overzicht { /* Tabel */
+        #uitwisselingselector {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 1px solid #808080;
+    background-color: #fff;
+    padding: 2px;
+}
+
+.uitwisselingselector_paneel {
+}
+
+.uitwisselingselector_accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 18pt;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    .active, .uitwisselingselector_accordion:hover {
+        background-color: #ccc;
+    }
+
+#uitwisselingselector_gemaaktOp {
+    padding: 2px;
+}
+
+.uitwisselingselectorknop {
+    text-decoration: none;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+    .uitwisselingselectorknop:hover {
+        text-decoration: underline;
+    }
+
+    .uitwisselingselectorknop.huidige-uw {
+        background-color: #ffe6cc;
+    }
+
+/* https://csslayout.io/triangle-buttons/ */
+.pijlknop {
+    /* Center the content */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    /* Spacing */
+    padding: 2px;
+}
+
+.pijlknop_driehoek {
+    border-style: solid;
+    /* Size */
+    height: 0px;
+    width: 0px;
+}
+
+.pijlknop_driehoek_omhoog {
+    border-color: transparent transparent rgba(0, 0, 0, 0.3);
+    border-width: 0px 8px 8px;
+}
+
+.pijlknop_driehoek_rechts {
+    border-color: transparent transparent transparent rgba(0, 0, 0, 0.3);
+    border-width: 8px 0px 8px 8px;
+}
+
+.pijlknop_driehoek_omlaag {
+    border-color: rgba(0, 0, 0, 0.3) transparent transparent;
+    border-width: 8px 8px 0px;
+}
+
+.pijlknop_driehoek_links {
+    border-color: transparent rgba(0, 0, 0, 0.3) transparent transparent;
+    border-width: 8px 8px 8px 0px;
+}
+
+.uw_overzicht { /* Tabel */
     border-collapse: collapse;
     border: 1px solid #666666;
 }
@@ -228,12 +312,15 @@
     }
 
     .uw_overzicht tr { /* uitwisseling in tabel */
-        cursor: pointer;
     }
 
-        .uw_overzicht tr:hover {
-            background-color: #dae8fc;
+        .uw_overzicht tr[data-uw] { /* uitwisseling */
+            cursor: pointer;
         }
+
+            .uw_overzicht tr[data-uw]:hover {
+                background-color: #dae8fc;
+            }
 
         .uw_overzicht tr.huidige-uw { /* geselecteerde uitwisseling */
             background-color: #ffe6cc;
@@ -2633,10 +2720,30 @@ Applicatie = (function () {
 <body>
 <h1>01 Directe iwt</h1><p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</p>
 <div id="intro">
+<table id="uitwisselingselector">
+    <tr>
+        <td><button data-accordion="uitwisselingselector" class="uitwisselingselector_accordion" title="Selecteer de uitwisseling">&#128228;</button></td>
+        <td data-accordion-paneel="uitwisselingselector" class="uitwisselingselector_paneel" style="display: none">
+            De resultaten worden getoond zoals ze zijn na de uitwisseling:<br />
+            <table>
+                <tr>
+                    <td><button class="pijlknop" id="uitwisselingselector_vorige" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_links"></div></button></td>
+                    <td><select id="uitwisselingselector_gemaaktOp"><option value="2022-01-01T07:00:00Z" selected>2022-01-01T07:00:00Z</option>
+</select></td>
+                    <td><button class="pijlknop" id="uitwisselingselector_volgende" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_rechts"></div></button></td>
+                </tr>
+            </table>
+        </td>
+        <td style="width: 0; white-space: nowrap;">
+            
+        </td>
+    </tr>
+</table>
+
 </div>
-<table><tr><td><button data-accordion="3187" class="accordion_t active">?</button></td>
-<td data-accordion-titel="3187" class="accordion_t_titel">&#8678;Over deze pagina</td>
-<td data-accordion-paneel="3187" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="3394" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3394" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="3394" class="accordion_t_paneel" style="display: block">
 <b>Over deze pagina</b>
 <p>
     Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
@@ -2728,8 +2835,8 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<button data-accordion="3188" class="accordion_h">Uitvoering van de applicatie</button>
-<div data-accordion-paneel="3188" class="accordion_h_paneel">
+<button data-accordion="3395" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="3395" class="accordion_h_paneel">
 <p>
     Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
     het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
@@ -2745,7 +2852,7 @@ Applicatie = (function () {
 <div id="log_detail">
 
 <table id="meldingen_tabel">
-<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand 'tests\scenarios\Versiebeheerinformatie\Tijdstempels\01 Directe iwt\01 Test.xml' bevat valide ConsolidatieInformatie</td></tr>
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheerinformatie\Tijdstempels\01 Directe iwt\01 Test.xml' bevat valide ConsolidatieInformatie</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main"><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Voer de simulatie uit</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Verwerk de consolidatie-informatie ontvangen op 2022-01-01 (@2022-01-01T07:00:00Z)</td></tr>
@@ -2775,9 +2882,9 @@ Applicatie = (function () {
 </div>
 
 <div class="sectie_op"><h1>Publiceren</h1>
-<table><tr><td><button data-accordion="3189" class="accordion_t active">?</button></td>
-<td data-accordion-titel="3189" class="accordion_t_titel">&#8678;Over publiceren</td>
-<td data-accordion-paneel="3189" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="3396" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3396" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
+<td data-accordion-paneel="3396" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
     en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
@@ -2787,11 +2894,11 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<button data-accordion="3190" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
-<div data-accordion-paneel="3190" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="3191" class="accordion_t active">?</button></td>
-<td data-accordion-titel="3191" class="accordion_t_titel">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="3191" class="accordion_t_paneel" style="display: block">
+<button data-accordion="3397" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
+<div data-accordion-paneel="3397" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="3398" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3398" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="3398" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
     het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
@@ -2812,11 +2919,11 @@ Applicatie = (function () {
 </table></p>
 </div>
 
-<button data-accordion="3192" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
-<div data-accordion-paneel="3192" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="3193" class="accordion_t active">?</button></td>
-<td data-accordion-titel="3193" class="accordion_t_titel">&#8678;Over de module</td>
-<td data-accordion-paneel="3193" class="accordion_t_paneel" style="display: block">
+<button data-accordion="3399" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="3399" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="3400" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3400" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
+<td data-accordion-paneel="3400" class="accordion_t_paneel" style="display: block">
 <p>
     Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
 </p>
@@ -2850,9 +2957,9 @@ Applicatie = (function () {
 
 </div>
 <div class="sectie_lv"><h1>Beschikbaar stellen</h1>
-<table><tr><td><button data-accordion="3194" class="accordion_t active">?</button></td>
-<td data-accordion-titel="3194" class="accordion_t_titel">&#8678;Over beschikbaar stellen</td>
-<td data-accordion-paneel="3194" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="3401" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3401" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="3401" class="accordion_t_paneel" style="display: block">
 <p>
     De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
     en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).
@@ -2864,11 +2971,11 @@ Applicatie = (function () {
 </td></tr></table>
 
 <h2>Regeling: /akn/nl/act/gm9999/2022/REG_A</h2>
-<button data-accordion="3195" class="accordion_h active"><h3>Versiebeheer</h3></button>
-<div data-accordion-paneel="3195" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="3196" class="accordion_t active">?</button></td>
-<td data-accordion-titel="3196" class="accordion_t_titel">&#8678;Toelichting op het gebruik van versiebeheer</td>
-<td data-accordion-paneel="3196" class="accordion_t_paneel" style="display: block">
+<button data-accordion="3402" class="accordion_h active"><h3>Versiebeheer</h3></button>
+<div data-accordion-paneel="3402" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="3403" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3403" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer</td>
+<td data-accordion-paneel="3403" class="accordion_t_paneel" style="display: block">
 <p>
     STOP kent een vorm van <a href="@@@Documentatie_Url@@@/versiebeheer_principes.html">versiebeheer</a> voor regelgeving.
     Daarbij wordt bij elke uitwisseling aangegeven hoe een uitgewisselde versie van een regeling of informatieobject zich verhoudt
@@ -2937,9 +3044,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
     </tr>
 </table>
 
-<table><tr><td><button data-accordion="3197" class="accordion_t active">?</button></td>
-<td data-accordion-titel="3197" class="accordion_t_titel">&#8678;Legenda</td>
-<td data-accordion-paneel="3197" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="3404" class="accordion_t active">?</button></td>
+<td data-accordion-titel="3404" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="3404" class="accordion_t_paneel" style="display: block">
 <table>
     <tr><td><div><table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr></table></div>
@@ -3113,6 +3220,92 @@ Juridisch werkend vanaf: 2022-02-01<br/>
         elt.addEventListener('click', ToonVerwerkteUitwisselingenAanUit);
     });
 
+});
+
+window.addEventListener('load', function () {
+
+    // Zet de knoppen voor de vorige/volgende uitwisseling
+    function uitwisselingselector_button_status(elt) {
+        var button = document.getElementById('uitwisselingselector_volgende')
+        if (elt.selectedIndex == 0) {
+            button.dataset.uw = '';
+            button.disabled = true
+        } else {
+            button.dataset.uw = elt.options[elt.selectedIndex - 1].value;
+            button.disabled = false
+        }
+        button = document.getElementById('uitwisselingselector_vorige')
+        if (elt.selectedIndex == elt.options.length - 1) {
+            button.dataset.uw = '';
+            button.disabled = true
+        } else {
+            button.dataset.uw = elt.options[elt.selectedIndex + 1].value;
+            button.disabled = false
+        }
+        document.querySelectorAll("[data-uw]").forEach((button) => {
+            if (elt.value == button.dataset.uw) {
+                button.classList.add('huidige-uw')
+            } else {
+                button.classList.remove('huidige-uw')
+            }
+        });
+    }
+    uitwisselingselector_button_status(document.getElementById('uitwisselingselector_gemaaktOp'))
+
+    // Selecteer een uitwisseling op basis van de gemaaktOp datum
+    // De event handler toont/verbergt delen van de HTML aan de hand van de data-u* attributen
+    function uitwisselingselector_selecteer(gemaaktOp) {
+
+        // Dropdown selectie
+        var elt = document.getElementById('uitwisselingselector_gemaaktOp');
+        elt.value = gemaaktOp;
+        uitwisselingselector_button_status(elt)
+
+        document.querySelectorAll("[data-u]").forEach((elt) => {
+            if (elt.dataset.u == gemaaktOp) {
+                elt.style.display = '';
+            } else {
+                elt.style.display = 'none';
+            }
+        });
+        document.querySelectorAll("[data-uv]").forEach((elt) => {
+            if (elt.dataset.uv <= gemaaktOp && (!elt.hasAttribute('data-ut') || gemaaktOp < elt.dataset.ut)) {
+                elt.style.display = '';
+            } else {
+                elt.style.display = 'none';
+            }
+        });
+        /* Stuur globaal event uit */
+        Applicatie.SelecteerUitwisseling(gemaaktOp);
+    }
+    uitwisselingselector_selecteer("2022-01-01T07:00:00Z")
+
+    // Event handler voor de knoppen om een uitwisseling te selecteren
+    function uitwisselingselector_selecteer_uw(e) {
+        Applicatie.EnkeleTouchStartClick(e);
+        var gemaaktOp = e.srcElement.dataset['uw'];
+        if (typeof gemaaktOp === 'undefined') {
+            gemaaktOp = e.srcElement.parentElement.dataset.uw;
+        }
+        if (gemaaktOp != '') {
+            uitwisselingselector_selecteer(gemaaktOp);
+        }
+    }
+    document.querySelectorAll("[data-uw]").forEach((elt) => {
+        Applicatie.AddTouchStartClickListener(elt, uitwisselingselector_selecteer_uw);
+    });
+
+    // Event handler voor de dropdown
+    document.getElementById('uitwisselingselector_gemaaktOp').addEventListener('click', function (e) {
+        uitwisselingselector_selecteer(e.srcElement.value)
+    })
+
+    // Pas breedte van beschrijving van scenario aan zodat de selector er nit voor zit.
+    var intro = document.getElementById('intro')
+    if (intro) {
+        var rect = document.getElementById('uitwisselingselector').getBoundingClientRect()
+        intro.style.width = rect.left
+    }
 });
 
 window.addEventListener('load', function () {

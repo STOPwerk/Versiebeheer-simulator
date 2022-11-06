@@ -77,7 +77,6 @@ class ProjectActie:
     _SoortActie_Uitwisseling = 'Uitwisseling' # Wissel aangepaste versie uit tussen adviesbureau en bevoegd gezag
     _SoortActie_Wijziging = 'Wijziging' # Pas de instrumentversie(s) en tijdstempels op een branch aan
     _SoortActie_BijwerkenUitgangssituatie = 'Bijwerken uitgangssituatie' # Neem de wijzigingen over van (nu of later) geldende regelgeving of van een branch, afhankelijk van de uitgangssituatie.
-    _SoortActie_VerwerkingUitspraakRechter = 'Verwerking uitspraak rechter' # Beschrijf het effect van een aanpassing van een historische versie in de huidige versie
     _SoortActie_Publicatie = 'Publicatie' # Publicatie van een besluit/mededeling/revisie
 
     # Constructors om de acties te maken (bij het inlezen van de specificatie) op basis van de SoortActie
@@ -87,7 +86,6 @@ class ProjectActie:
         _SoortActie_Uitwisseling: (lambda p: ProjectActie_Uitwisseling(p)),
         _SoortActie_Wijziging: (lambda p: ProjectActie_Wijziging(p)),
         _SoortActie_BijwerkenUitgangssituatie: (lambda p: ProjectActie_BijwerkenUitgangssituatie(p)),
-        _SoortActie_VerwerkingUitspraakRechter: (lambda p: ProjectActie_VerwerkingUitspraakRechter(p)),
         _SoortActie_Publicatie: (lambda p: ProjectActie_Publicatie(p))
     }
 
@@ -168,9 +166,9 @@ class ProjectActie_Wijziging (ProjectActie):
         # De instrumentversies voor alle instrumenten in de branch na de wijziging.
         # Key = workId
         self.Instrumentversies : Dict[str,Instrumentversie] = {}
-        # De waarde van de juridischWerkendVanaf tijdstempel, of None als die niet gezet is.
+        # De waarde van de juridischWerkendVanaf tijdstempel, of None als die niet opgegeven is, of '-' als die niet meer bekend is
         self.JuridischWerkendVanaf = None
-        # De waarde van de geldigVanaf tijdstempel, of None als die niet gezet is.
+        # De waarde van de geldigVanaf tijdstempel, of None als die niet opgegeven is, of '-' als die niet meer bekend is.
         self.GeldigVanaf = None
 
 #----------------------------------------------------------------------
@@ -218,34 +216,6 @@ class ProjectActie_BijwerkenUitgangssituatie (ProjectActie):
         # De instrumentversies voor alle instrumenten in de branch na het overnemen van de wijziging.
         # Key = workId
         self.Instrumentversies : Dict[str,Instrumentversie] = {}
-
-#----------------------------------------------------------------------
-# Actie: VerwerkingUitspraakRechter
-#----------------------------------------------------------------------
-class ProjectActie_VerwerkingUitspraakRechter (ProjectActie):
-
-    def __init__ (self, project):
-        """Maak een specificatie van de actie om de uitspraak van een rechter te verwerken in
-        de geldende regelgeving.
-
-        Argumenten:
-
-        project Project  Project waarvoor de actie is gespecificeerd
-        """
-        super().__init__(project)
-        self.SoortActie = ProjectActie._SoortActie_VerwerkingUitspraakRechter
-        # Doelen in het besluit waar de rechter een uitspraak over gedaan heeft.
-        # Lijst met instanties van Doel
-        self.Doelen = []
-        # Datum van de uitspraak van de rechter
-        self.DatumUitspraak = None
-        # Geeft aan of het besluit is geheel vernietigd is, of slechts gedeeltelijk
-        self.IsVernietiging = None
-        # De instrumentversies voor alle instrumenten in de branch van de huidig geldende regelgeving 
-        # na het verwerken van de uitspraak.
-        # Key = workId
-        self.Instrumentversies : Dict[str,Instrumentversie] = {}
-
 
 #----------------------------------------------------------------------
 # Actie: Publicatie
@@ -469,28 +439,6 @@ class Project:
                         else:
                             actie.GebaseerdOp_Doel = Doel.DoelInstantie (actieSpec[actie._GebaseerdOp_Doel])
 
-                if hasattr (actie, "DatumUitspraak"):
-                    if not "DatumUitspraak" in actieSpec:
-                        log.Fout ("Bestand '" + pad + "': 'DatumUitspraak' is verplicht voor actie: " + actie.SoortActie)
-                        project._IsValide = False
-                    elif not isinstance (actieSpec["DatumUitspraak"], str):
-                        log.Fout ("Bestand '" + pad + "': 'DatumUitspraak' moet als waarde een string hebben")
-                        project._IsValide = False
-                    elif not ConsolidatieInformatie.ValideerDatum (log, pad, "DatumUitspraak", actieSpec["DatumUitspraak"]):
-                        project._IsValide = False
-                    else:
-                        actie.DatumUitspraak = actieSpec["DatumUitspraak"]
-
-                if hasattr (actie, "IsVernietiging"):
-                    if not "Vernietigd" in actieSpec:
-                        log.Fout ("Bestand '" + pad + "': 'Vernietigd' is verplicht voor actie: " + actie.SoortActie)
-                        project._IsValide = False
-                    elif not isinstance (actieSpec["Vernietigd"], bool):
-                        log.Fout ("Bestand '" + pad + "': 'Vernietigd' moet als waarde true of false hebben")
-                        project._IsValide = False
-                    else:
-                        actie.IsVernietiging = actieSpec["Vernietigd"]
-
                 if hasattr (actie, "Instrumenten"):
                     if not "Instrumenten" in actieSpec:
                         log.Fout ("Bestand '" + pad + "': 'Instrumenten' is verplicht voor actie: " + actie.SoortActie)
@@ -516,62 +464,74 @@ class Project:
                                 actie.Instrumenten.append (workId)
 
                 if hasattr (actie, "Instrumentversies"):
-                    if not "Instrumentversies" in actieSpec or not isinstance (actieSpec["Instrumentversies"], list) or len (actieSpec["Instrumentversies"]) == 0:
-                        log.Fout ("Bestand '" + pad + "': 'Instrumentversies' is verplicht en moet een niet-leeg array zijn voor actie: " + actie.SoortActie)
-                        project._IsValide = False
-                    else:
-                        for versieSpec in actieSpec["Instrumentversies"]:
-                            if not isinstance (versieSpec, dict) or len (versieSpec) != 1:
-                                log.Fout ("Bestand '" + pad + "': element van 'Instrumentversies' moet een object met één kenmerk ('Instrumentversie', 'JuridischUitgewerkt', 'Teruggetrokkens') zijn")
-                                project._IsValide = False
-                                continue
+                    if "Instrumentversies" in actieSpec:
+                        if not isinstance (actieSpec["Instrumentversies"], list):
+                            log.Fout ("Bestand '" + pad + "': 'Instrumentversies' moet een array zijn voor actie: " + actie.SoortActie)
+                            project._IsValide = False
+                        else:
+                            for versieSpec in actieSpec["Instrumentversies"]:
+                                if not isinstance (versieSpec, dict) or len (versieSpec) != 1:
+                                    log.Fout ("Bestand '" + pad + "': element van 'Instrumentversies' moet een object met één kenmerk ('Instrumentversie', 'JuridischUitgewerkt', 'Teruggetrokkens') zijn")
+                                    project._IsValide = False
+                                    continue
 
-                            if "Instrumentversie" in versieSpec:
-                                if not isinstance (versieSpec["Instrumentversie"], str):
-                                    log.Fout ("Bestand '" + pad + "': element 'Instrumentversie' in 'Instrumentversies' moet als waarde een string hebben")
+                                if "Instrumentversie" in versieSpec:
+                                    if not isinstance (versieSpec["Instrumentversie"], str):
+                                        log.Fout ("Bestand '" + pad + "': element 'Instrumentversie' in 'Instrumentversies' moet als waarde een string hebben")
+                                        project._IsValide = False
+                                        continue
+                                    if (not Naamgeving.IsRegeling (versieSpec["Instrumentversie"]) and not Naamgeving.IsInformatieobject (versieSpec["Instrumentversie"])) or not Naamgeving.IsExpression (versieSpec["Instrumentversie"]):
+                                        log.Fout ("Bestand '" + pad + "': 'Instrumentversie' in 'Instrumentversies' moet als waarde een expression-identificatie van een regeling of informatieobject hebben, niet '" + versieSpec["Instrumentversie"] + "'")
+                                        project._IsValide = False
+                                        continue
+                                    versie = Instrumentversie ()
+                                    versie.ExpressionId = versieSpec["Instrumentversie"]
+                                    workId = Naamgeving.WorkVan (versie.ExpressionId)
+                                elif "OnbekendeVersie" in versieSpec:
+                                    if not isinstance (versieSpec["OnbekendeVersie"], str):
+                                        log.Fout ("Bestand '" + pad + "': element 'OnbekendeVersie' in 'Instrumentversies' moet als waarde een string hebben")
+                                        project._IsValide = False
+                                        continue
+                                    if (not Naamgeving.IsRegeling (versieSpec["OnbekendeVersie"]) and not Naamgeving.IsInformatieobject (versieSpec["OnbekendeVersie"])) or Naamgeving.IsExpression (versieSpec["OnbekendeVersie"]):
+                                        log.Fout ("Bestand '" + pad + "': 'OnbekendeVersie' in 'Instrumentversies' moet als waarde een work-identificatie van een regeling of informatieobject hebben, niet '" + versieSpec["OnbekendeVersie"] + "'")
+                                        project._IsValide = False
+                                        continue
+                                    versie = Instrumentversie ()
+                                    workId = versieSpec["OnbekendeVersie"]
+                                elif "JuridischUitgewerkt" in versieSpec:
+                                    if not isinstance (versieSpec["JuridischUitgewerkt"], str):
+                                        log.Fout ("Bestand '" + pad + "': 'JuridischUitgewerkt' in 'Instrumentversies' moet als waarde een string hebben")
+                                        project._IsValide = False
+                                        continue
+                                    if (not Naamgeving.IsRegeling (versieSpec["JuridischUitgewerkt"]) and not Naamgeving.IsInformatieobject (versieSpec["JuridischUitgewerkt"])) or Naamgeving.IsExpression (versieSpec["JuridischUitgewerkt"]):
+                                        log.Fout ("Bestand '" + pad + "': 'JuridischUitgewerkt' moet als waarde een work-identificatie hebben, niet '" + versieSpec["JuridischUitgewerkt"] + "'")
+                                        project._IsValide = False
+                                        continue
+                                    versie = Instrumentversie ()
+                                    versie.IsJuridischUitgewerkt = True
+                                    workId = versieSpec["JuridischUitgewerkt"]
+                                elif "Teruggetrokken" in versieSpec:
+                                    if not isinstance (versieSpec["Teruggetrokken"], str):
+                                        log.Fout ("Bestand '" + pad + "': 'Teruggetrokken' in 'Instrumentversies' moet als waarde een string hebben")
+                                        project._IsValide = False
+                                        continue
+                                    if (not Naamgeving.IsRegeling (versieSpec["Teruggetrokken"]) and not Naamgeving.IsInformatieobject (versieSpec["Teruggetrokken"])) or Naamgeving.IsExpression (versieSpec["Teruggetrokken"]):
+                                        log.Fout ("Bestand '" + pad + "': 'Teruggetrokken' moet als waarde een work-identificatie hebben, niet '" + versieSpec["Teruggetrokken"] + "'")
+                                        project._IsValide = False
+                                        continue
+                                    versie = Instrumentversie ()
+                                    versie.IsTeruggetrokken = True
+                                    workId = versieSpec["Teruggetrokken"]
+                                else:
+                                    log.Fout ("Bestand '" + pad + "': element van 'Instrumentversies' moet een object met één kenmerk ('Instrumentversie', 'JuridischUitgewerkt', 'Teruggetrokkens') zijn")
                                     project._IsValide = False
                                     continue
-                                if (not Naamgeving.IsRegeling (versieSpec["Instrumentversie"]) and not Naamgeving.IsInformatieobject (versieSpec["Instrumentversie"])) or not Naamgeving.IsExpression (versieSpec["Instrumentversie"]):
-                                    log.Fout ("Bestand '" + pad + "': 'Instrumentversie' in 'Instrumentversies' moet als waarde een expression-identificatie van een regeling of informatieobject hebben, niet '" + versieSpec["Instrumentversie"] + "'")
-                                    project._IsValide = False
-                                    continue
-                                versie = Instrumentversie ()
-                                versie.ExpressionId = versieSpec["Instrumentversie"]
-                                workId = Naamgeving.WorkVan (versie.ExpressionId)
-                            elif "JuridischUitgewerkt" in versieSpec:
-                                if not isinstance (versieSpec["JuridischUitgewerkt"], str):
-                                    log.Fout ("Bestand '" + pad + "': 'JuridischUitgewerkt' in 'Instrumentversies' moet als waarde een string hebben")
-                                    project._IsValide = False
-                                    continue
-                                if (not Naamgeving.IsRegeling (versieSpec["JuridischUitgewerkt"]) and not Naamgeving.IsInformatieobject (versieSpec["JuridischUitgewerkt"])) or Naamgeving.IsExpression (versieSpec["JuridischUitgewerkt"]):
-                                    log.Fout ("Bestand '" + pad + "': 'JuridischUitgewerkt' moet als waarde een work-identificatie hebben, niet '" + versieSpec["JuridischUitgewerkt"] + "'")
-                                    project._IsValide = False
-                                    continue
-                                versie = Instrumentversie ()
-                                versie.IsJuridischUitgewerkt = True
-                                workId = versieSpec["JuridischUitgewerkt"]
-                            elif "Teruggetrokken" in versieSpec:
-                                if not isinstance (versieSpec["Teruggetrokken"], str):
-                                    log.Fout ("Bestand '" + pad + "': 'Teruggetrokken' in 'Instrumentversies' moet als waarde een string hebben")
-                                    project._IsValide = False
-                                    continue
-                                if (not Naamgeving.IsRegeling (versieSpec["Teruggetrokken"]) and not Naamgeving.IsInformatieobject (versieSpec["Teruggetrokken"])) or Naamgeving.IsExpression (versieSpec["Teruggetrokken"]):
-                                    log.Fout ("Bestand '" + pad + "': 'Teruggetrokken' moet als waarde een work-identificatie hebben, niet '" + versieSpec["Teruggetrokken"] + "'")
-                                    project._IsValide = False
-                                    continue
-                                versie = Instrumentversie ()
-                                versie.IsTeruggetrokken = True
-                                workId = versieSpec["Teruggetrokken"]
-                            else:
-                                log.Fout ("Bestand '" + pad + "': element van 'Instrumentversies' moet een object met één kenmerk ('Instrumentversie', 'JuridischUitgewerkt', 'Teruggetrokkens') zijn")
-                                project._IsValide = False
-                                continue
 
-                            if workId in actie.Instrumentversies:
-                                log.Fout ("Bestand '" + pad + "': 'Instrumentversies' bevat twee specificaties voor het work " + workId)
-                                project._IsValide = False
-                            else:
-                                actie.Instrumentversies[workId] = versie
+                                if workId in actie.Instrumentversies:
+                                    log.Fout ("Bestand '" + pad + "': 'Instrumentversies' bevat twee specificaties voor het work " + workId)
+                                    project._IsValide = False
+                                else:
+                                    actie.Instrumentversies[workId] = versie
 
 
                 if hasattr (actie, "JuridischWerkendVanaf"):
@@ -579,22 +539,24 @@ class Project:
                         if not isinstance (actieSpec["JuridischWerkendVanaf"], str):
                             log.Fout ("Bestand '" + pad + "': 'JuridischWerkendVanaf' moet als waarde een string hebben")
                             project._IsValide = False
+                        elif actieSpec["JuridischWerkendVanaf"] in ['-', '?']:
+                            actie.JuridischWerkendVanaf = '-'
                         elif not ConsolidatieInformatie.ValideerDatum (log, pad, 'JuridischWerkendVanaf', actieSpec["JuridischWerkendVanaf"]):
                             project._IsValide = False
                         else:
                             actie.JuridischWerkendVanaf = actieSpec["JuridischWerkendVanaf"]
 
-                        if "GeldigVanaf" in actieSpec:
-                            if not isinstance (actieSpec["GeldigVanaf"], str):
-                                log.Fout ("Bestand '" + pad + "': 'GeldigVanaf' moet als waarde een string hebben")
-                                project._IsValide = False
-                            elif not ConsolidatieInformatie.ValideerDatum (log, pad, 'GeldigVanaf', actieSpec["GeldigVanaf"]):
-                                project._IsValide = False
-                            else:
-                                actie.GeldigVanaf = actieSpec["GeldigVanaf"]
-                    elif "GeldigVanaf" in actieSpec:
-                        log.Fout ("Bestand '" + pad + "': 'GeldigVanaf' mag alleen aanwezig zijn als ook 'JuridischWerkendVanaf' gespecificeerd is")
-                        project._IsValide = False
+                if hasattr (actie, "GeldigVanaf"):
+                    if "GeldigVanaf" in actieSpec:
+                        if not isinstance (actieSpec["GeldigVanaf"], str):
+                            log.Fout ("Bestand '" + pad + "': 'GeldigVanaf' moet als waarde een string hebben")
+                            project._IsValide = False
+                        elif actieSpec["GeldigVanaf"] in ['-', '?']:
+                            actie.GeldigVanaf = '-'
+                        elif not ConsolidatieInformatie.ValideerDatum (log, pad, 'GeldigVanaf', actieSpec["GeldigVanaf"]):
+                            project._IsValide = False
+                        else:
+                            actie.GeldigVanaf = actieSpec["GeldigVanaf"]
 
                 if hasattr (actie, "SoortPublicatie"):
                     if not "SoortPublicatie" in actieSpec:

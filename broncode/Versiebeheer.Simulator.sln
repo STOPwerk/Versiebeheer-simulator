@@ -31,6 +31,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{
 		uitleveren\templates\README.md = uitleveren\templates\README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "broncode", "broncode", "{E2226A5F-899F-45F7-8654-27C31209768C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "uitleveren", "uitleveren", "{F3F7C268-D0FB-4306-9B23-F59BE1E763E8}"
+	ProjectSection(SolutionItems) = preProject
+		uitleveren\templates\broncode\uitleveren\publiceer_git.bat = uitleveren\templates\broncode\uitleveren\publiceer_git.bat
+	EndProjectSection
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Versiebeheer.Simulator.Web", "simulator\Versiebeheer.Simulator.Web.pyproj", "{B77CD3E4-97F9-464E-B516-0DB5201E9C81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +48,10 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A00FA148-8F87-4637-AEA6-1A4774DE7551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A00FA148-8F87-4637-AEA6-1A4774DE7551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B77CD3E4-97F9-464E-B516-0DB5201E9C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B77CD3E4-97F9-464E-B516-0DB5201E9C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B77CD3E4-97F9-464E-B516-0DB5201E9C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B77CD3E4-97F9-464E-B516-0DB5201E9C81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +60,8 @@ Global
 		{AC303DEE-C03D-4BF4-AF61-337A7FF23C49} = {ED6D49FC-DEED-4C0B-A2AC-4636EFBDB3D7}
 		{86A9BB6F-E055-4705-B124-85EB0EF6DA83} = {AC303DEE-C03D-4BF4-AF61-337A7FF23C49}
 		{01512893-CBAB-4E48-8947-DE923AB841FB} = {AC303DEE-C03D-4BF4-AF61-337A7FF23C49}
+		{E2226A5F-899F-45F7-8654-27C31209768C} = {01512893-CBAB-4E48-8947-DE923AB841FB}
+		{F3F7C268-D0FB-4306-9B23-F59BE1E763E8} = {E2226A5F-899F-45F7-8654-27C31209768C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {421E6513-4800-4E5F-9647-785F5C633E35}

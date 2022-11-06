@@ -4,30 +4,25 @@
 #
 #======================================================================
 #
-# Als de simulatie ook het projectmatig werken bij het bevoegd gezag
-# simuleert, dan wordt voor het bevoegd gezag informatie over de
-# voortgang van projecten en over het versiebeheer bijgehouden.
-# In een productie-waardige applicatie zal deze informatie wellicht
-# af te leiden zijn uit de gegevens van het onderliggende
-# versiebeheersysteem.
+# De bevoegd gezag software zal moeten beschikken over een intern 
+# versiebeheer dat tenminste een bepaalde hoeveelheid informatie
+# bevat (of kan afleiden). Deze module bevat het datamodel voor
+# het interne versiebeheer voor deze applicatie.
 #
-# Deze applicatie biedt geen ondersteuning voor het consolideren zelf,
-# d.w.z. het helpen van de eindgebruiker door aan te geven waar
-# consolidatie nodig is. ook wordt niet naar de juridische correctheid
-# van de projectacties gekeken. Het doel van de simulatie is uitsluitend
-# om te verkennen welke consolidatie-informatie uitgewisseld moet worden
-# en hoe mutaties opgesteld moeten worden.
+# Het datamodel kent geen historie; projectacties overschrijven
+# oude informatie. In deze applicatie wordt er na elke projectactie
+# wel een kloon gemaakt, maar dat is alleen voor de weergave van de
+# resultaten en dus applicatie-specifiek. 
 #
 #======================================================================
 
 from typing import Dict, List
 from data_doel import Doel
-from data_bg_project import Project, ProjectActie, Instrumentversie
 
 #----------------------------------------------------------------------
 #
 # Versiebeheer: minimale informatie die in de bevoegd gezag software
-#               bijgehouden moet worden c.q. opvraagbaar moet zijn.
+#               bijgehouden moet worden c.q. afleidbaar moet zijn.
 #
 #----------------------------------------------------------------------
 class Versiebeheer:
@@ -35,60 +30,14 @@ class Versiebeheer:
     def __init__ (self):
         """Maak een nieuwe instantie van het versiebeheer bij het bevoegd gezag.
         """
-        # Informatie over de status van de projecten
-        # Key = code van project
-        self.Projecten : Dict[str,Projectstatus] = {}
-        # De resultaten van de projectacties, op volgorde van uitvoeren
-        self.Projectacties : List[ProjectactieResultaat] = []
         # Informatie over alle doelen die door bevoegd gezag beheerd worden
         self.Branches : Dict[Doel,Branch] = {}
-        # Alle workId van instrumenten die bij BG bekend zijn. Wijzigingen
-        # voor deze works mogen alleen in projecten gedaan worden als het
-        # work expliciet als te beheren instrument aan een branch is toegevoegd.
-        self.BekendeInstrumenten = set ()
+        # De consolidaties van elk bekend instrument
+        # Key = work-id
+        self.Consolidaties : Dict[str,Consolidatie] = {}
         # Alle gepubliceerde instrumentversies - deze versies hoeven niet
         # opnieuw uitgewisseld te worden (althans niet in deze simulator)
         self.PubliekeInstrumentversies = set ()
-
-#======================================================================
-#
-# Projectverloop
-#
-#======================================================================
-
-class Projectstatus:
-
-    def __init__(self, project : Project):
-        """Maak een nieuwe projectstatus aan
-        
-        Argumenten:
-
-        project Project  Het project waarvoor de status wordt aangemaakt
-        """
-        self._Project = project
-        # De branches waar in het project aan gewerkt wordt door het bevoegd gezag
-        self.Branches : Dict[Doel,Branch] = {}
-        # De branches waar in het project aan gewerkt wordt door een adviesbureau
-        self.ExterneBranches : Dict[Doel,Branch] = {}
-
-class ProjectactieResultaat:
-
-    def __init__(self, projectactie):
-        self._Projectactie : ProjectActie = projectactie
-        # Degene die de actie heeft uitgevoerd: adviesbureau of bevoegd gezag
-        self.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_BevoegdGezag
-        # Alleen voor weergave: de STOP module(s) waarin consolidatie-informatie voor deze actie uitgewisseld wordt
-        # Instantie van een klasse die de methode self.ModuleXml() implementeert
-        self.STOPModule = None
-
-    _Uitvoerder_BevoegdGezag = 'Bevoegd gezag'
-    _Uitvoerder_Adviesbureau = 'Adviesbureau'
-
-#======================================================================
-#
-#
-#
-#======================================================================
 
 #----------------------------------------------------------------------
 #
@@ -106,15 +55,6 @@ class Branch:
         doel Doel  Instantie van het doel waar de branch voor aangemaakt is
         """
         self._Doel = doel
-        # Geeft aan of de branch via projecten wordt beheerd. In deze simulator kan 
-        # een branch ofwel via een project beheerd worden, ofwel geheel via 
-        # ConsolidatieInformatie modules worden bestuurd. Voor de besturing via
-        # projecten maakt het niet uit of dat door één of door meerdere projecten
-        # gedaan wordt - het is dus mogelijk een naorog/redactie als apart project
-        # op te nemen.
-        self._ViaProject = False
-        # Degene die op dit moment aan de branch werkt: adviesbureau of bevoegd gezag
-        self.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
         # Als de branch een versie van regelgeving beschrijft die als uitgangssituatie
         # het resultaat van een ander doel heeft, dan is dat doel opgegeven als:
         self.Uitgangssituatie_Doel : 'Branch' = None
@@ -130,12 +70,12 @@ class Branch:
         # key = work-Id
         self.InterneInstrumentversies : Dict[str,MomentopnameInstrument] = {}
         # De actuele (interne, binnen de creatie-keten) waarden van de tijdstempels
-        self.InterneTijdstempels = MomentopnameTijdstempels (doel)
+        self.InterneTijdstempels = MomentopnameTijdstempels (self)
         # De laatst gepubliceerde stand van de instrumentversies
         # key = work-Id
         self.PubliekeInstrumentversies : Dict[str,MomentopnameInstrument] = {}
         # De laatst gepubliceerde waarden van de tijdstempels
-        self.PubliekeTijdstempels = MomentopnameTijdstempels (doel)
+        self.PubliekeTijdstempels = MomentopnameTijdstempels (self)
 
 #----------------------------------------------------------------------
 #
@@ -157,7 +97,7 @@ class MomentopnameInstrument:
         self._Branch = branch
         self._WorkId = workId
         # ExpressionId van de instrumentversie
-        # Als IsJuridischUitgewerkt True of IsTeruggetrokken is, dan is de waarde None. Anders is het de waarde
+        # Als IsJuridischUitgewerkt True of IsTeruggetrokken True is, dan is de waarde None. Anders is het de waarde
         # zoals opgegeven of (als er geen waarde is opgegeven) de waarde afgeleid van de uitgangssituatie.
         # Als de ExpressionId in dat geval None is gaat het om een onbekende versie.
         self.ExpressionId = None
@@ -169,27 +109,19 @@ class MomentopnameInstrument:
         # De uitgangssituatie moet als was in een was-wordt RegelingMutatie gebruikt worden.
         # Dit is None voor een initiële versie.
         self.Uitgangssituatie : List[MomentopnameVerwijzing] = None
-        # Geeft aan wat de laatste momentopname (op deze branch) is voor dit instrument behorend bij 
-        # een vastgesteld besluit of vergelijkbare publicatie. Als dit None is, dan moet een wijziging
-        # in een besluit ten opzichte van de Uitgangssituatie geformuleerd worden. Zo niet, dan 
-        # ten opzichte van deze momentopname.
-        self.BasisVoorWijziging : 'MomentopnameInstrument' = None
         # Tijdstip van de laatste uitwisseling ter publicatie van de instrumentversie
         # Deze waarde is None als de MomentopnameInstrument deel is van de InterneInstrumentversies
         # op de branch, en niet None als onderdeel van PubliekeInstrumentversies
         self.GemaaktOp = None
-        # Als de wijzigingen uit een specifieke branch (anders dan de uitgangssituatie) zijn 
-        # overgenomen sinds de laatste uitwisseling ter publicatie, dan worden die in VervlochtenMet 
-        # vermeld. Een verandering van de uitgangssituatie wordt hier niet vermeld.
-        # Deze waarde is None als de MomentopnameInstrument deel is van de PubliekeInstrumentversies
-        self.VervlochtenMet : List['MomentopnameInstrument']
-        # Als de wijzigingen uit een specifieke branch (anders dan de uitgangssituatie) zijn 
-        # verwijderd sinds de laatste uitwisseling ter publicatie, dan worden die in OntvlochtenMet 
-        # vermeld. Een verandering van de uitgangssituatie wordt hier niet vermeld.
-        # Deze waarde is None als de MomentopnameInstrument deel is van de PubliekeInstrumentversies
-        self.OntvlochtenMet : List['MomentopnameInstrument']
+        # De lijst met momentopnamen (de meest recente van elke branch) die in deze instrumentversie
+        # zijn verwerkt.
+        self.MetBijdragenVan : List[MomentopnameVerwijzing] = []
+        # De lijst met momentopnamen (de meest recente van elke branch) waarvan de wijzigingen
+        # ooit wel maar nu niet meer in deze instrumentversie verwerkt zijn.
+        self.ZonderBijdragenVan : List[MomentopnameVerwijzing] = []
         # Versie geeft een indicatie van het aantal wijzigingen van het instrument op de branch.
-        # Wordt gebruikt bij verwijzingen naar deze momentopname om te borgen dat de inhoud van
+        # Wordt gebruikt om te detecteren of de inhoud van de momentopname is gewijzigd.
+        # Wordt ook gebruikt bij verwijzingen naar deze momentopname om te borgen dat de inhoud van
         # deze momentopname niet is gewijzigd sinds het aanmaken van de verwijzing. Preciezer: dat
         # als de verwijzing bij een publicatie wordt omgezet in een STOP-verwijzing, de STOP-verwijzing
         # naar inhoud verwijst die gelijk is aan de inhoud van de momentopname bij het aanmaken van de
@@ -209,17 +141,17 @@ class MomentopnameInstrument:
         if self.IsJuridischUitgewerkt:
             return '-'
         if not self.IsTeruggetrokken:
-            return '?' if self.ExpressionId is None else self.ExpressionId
+            return self.WorkId + ': onbekend' if self.ExpressionId is None else self.ExpressionId
         if self.Uitgangssituatie is None:
             # Initiële versie
             return None
         if self.Uitgangssituatie[0].Momentopname.ExpressionId is None:
             # Onbekende versie of misschien ook wel geen eenduidige versie
-            return '?'
+            return self.WorkId + ': onbekend?'
         if len (self.Uitgangssituatie) > 1:
             if len (set (v.Momentopname.ExpressionId for v in self.Uitgangssituatie)) > 1:
                 # Geen eenduidige versie
-                return '?'
+                return self.WorkId + ': ?'
         return self.Uitgangssituatie[0].Momentopname.ExpressionId
 
     def IsGepubliceerd (self, gemaaktOp : str, isConceptOfOntwerp : bool):
@@ -245,11 +177,7 @@ class MomentopnameInstrument:
         nieuweVersie.IsJuridischUitgewerkt = self.IsJuridischUitgewerkt
         nieuweVersie.IsTeruggetrokken = self.IsTeruggetrokken
         nieuweVersie.Uitgangssituatie = self.Uitgangssituatie
-        nieuweVersie.BasisVoorWijziging = self.BasisVoorWijziging
         nieuweVersie.Versie = self.Versie
-        if not self.IsTeruggetrokken and not isConceptOfOntwerp:
-            nieuweVersie.BasisVoorWijziging = self
-
         self._Branch.InterneInstrumentversies[self._WorkId] = nieuweVersie
 
 class MomentopnameVerwijzing:
@@ -286,6 +214,9 @@ class MomentopnameTijdstempels:
         self.JuridischWerkendVanaf = None
         # De waarde van de geldigVanaf tijdstempel, of None als die niet gezet is.
         self.GeldigVanaf = None
+        # Versie geeft een indicatie van het aantal wijzigingen van het instrument op de branch.
+        # Wordt gebruikt om te detecteren of de inhoud van de momentopname is gewijzigd.
+        self.Versie = 0
 
     def IsGepubliceerd (self):
         """Markeert deze momentopname als gepubliceerd en maakt een nieuwe instantie die 
@@ -294,7 +225,67 @@ class MomentopnameTijdstempels:
         """
         self._Branch.PubliekeTijdstempels = self
         # Maak een nieuwe momentopname voor de volgende wijzigingen
-        nieuweVersie = MomentopnameTijdstempels (self._Doel)
+        nieuweVersie = MomentopnameTijdstempels (self._Branch)
         nieuweVersie.JuridischWerkendVanaf = self.JuridischWerkendVanaf
         nieuweVersie.GeldigVanaf = self.GeldigVanaf
+        nieuweVersie.Versie = self.Versie
         self._Branch.InterneTijdstempels = nieuweVersie
+
+#----------------------------------------------------------------------
+#
+# Consolidatie: consolidatie van een instrument.
+#
+#----------------------------------------------------------------------
+class Consolidatie:
+
+    def __init__(self, workId : str):
+        """Maak een nieuwe consolidatie aan voor een instrument
+
+        Argumenten:
+
+        workId string  Work-identificatie van het instrument
+        """
+        self._WorkId = workId
+        # Lijst met versies (toestanden) die nu of in de toekomst geldig zijn,
+        # gesorteerd op oplopende juridischWerkendVanaf datum
+        self.Versies : List[Consolidatieversie] = []
+
+#----------------------------------------------------------------------
+#
+# Consolidatieversie: status van de consolidatie (van een instrument)
+#                     op een bepaalde datum. BG-equivalent van een
+#                     toestand.
+#
+#----------------------------------------------------------------------
+class Consolidatieversie:
+
+    def __init__(self, juridischWerkendVanaf : str):
+        """Maak een nieuw overzicht aan van de status van de consolidatie
+        voor een specifieke inwerkingtredingsdatum
+
+        Argumenten:
+
+        juridischWerkendVanaf  string  Datum waarop een nieuwe versie van een
+                                       geconsolideerd instrument ontstaat.
+        """
+        self.JuridischWerkendVanaf = juridischWerkendVanaf
+        # De doelen die aanleiding geven tot het ontstaan van deze consolidatie
+        self.Inwerkingtredingsdoelen : List[Doel] = []
+        # ExpressionId van de instrumentversie, indien bekend
+        self.ExpressionId = None
+        # Geeft aan of het instrument juridisch uitgewerkt is
+        self.IsJuridischUitgewerkt = False
+        # Geeft aan dat deze consolidatie ontstaat nadat het instrument al juridisch uitgewerkt is
+        self.WijzigingNaIntrekking = False
+        # Als er niet één versie voor het instrument wordt gespecificeerd, dan:
+        # per versie de doelen die de versie 
+        self.TegenstrijdigeVersies : Dict[str, List[Doel]] = {}
+        # Als de consolidatie op een eerder moment wijzigt doordat een nieuwe instrumentversie
+        # wordt opgegeven, dan moet deze consolidatie bijgewerkt worden.
+        # De doelen van die eerdere consolidatie staan in:
+        self.TeVervlechtenMet: List[Doel] = []
+        # Als de consolidatie op een eerder moment komt te vervallen omdat er op dat moment
+        # geen wijziging meer optreedt, dan moet deze consolidatie bijgewerkt worden.
+        # De doelen van die eerdere consolidatie staan in:
+        self.TeOntvlechtenMet: List[Doel] = []
+

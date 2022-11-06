@@ -1,0 +1,12 @@
+.bgvb_overzicht { /* Tabel */
+}
+
+    .bgvb_overzicht th {
+        white-space: nowrap;
+        vertical-align: top;
+        padding-right: 1em;
+    }
+
+    .bgvb_overzicht td {
+        vertical-align: top;
+    }

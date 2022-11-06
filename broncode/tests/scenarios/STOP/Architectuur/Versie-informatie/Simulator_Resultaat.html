@@ -12,8 +12,6 @@
         }
 
         table {
-            background-color: White;
-            color: Black;
             font-family: Verdana, Geneva, sans-serif;
             font-size: 10pt;
             line-height: 1.4em;
@@ -228,12 +226,15 @@
     }
 
     .uw_overzicht tr { /* uitwisseling in tabel */
-        cursor: pointer;
     }
 
-        .uw_overzicht tr:hover {
-            background-color: #dae8fc;
+        .uw_overzicht tr[data-uw] { /* uitwisseling */
+            cursor: pointer;
         }
+
+            .uw_overzicht tr[data-uw]:hover {
+                background-color: #dae8fc;
+            }
 
         .uw_overzicht tr.huidige-uw { /* geselecteerde uitwisseling */
             background-color: #ffe6cc;
@@ -370,9 +371,9 @@
 <h1>Versie-informatie</h1><p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</p>
 <div id="intro">
 </div>
-<table><tr><td><button data-accordion="185" class="accordion_t active">?</button></td>
-<td data-accordion-titel="185" class="accordion_t_titel">&#8678;Over deze pagina</td>
-<td data-accordion-paneel="185" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="392" class="accordion_t active">?</button></td>
+<td data-accordion-titel="392" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="392" class="accordion_t_paneel" style="display: block">
 <b>Over deze pagina</b>
 <p>
     Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
@@ -467,8 +468,8 @@
 <p>Er zijn 
 3 foutmeldingen
 ; klik op <i>Uitvoering van de applicatie</i> om deze te bekijken</p>
-<button data-accordion="186" class="accordion_h">Uitvoering van de applicatie</button>
-<div data-accordion-paneel="186" class="accordion_h_paneel">
+<button data-accordion="393" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="393" class="accordion_h_paneel">
 <p>
     Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
     het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
@@ -484,9 +485,9 @@
 <div id="log_detail">
 
 <table id="meldingen_tabel">
-<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Bestand 'tests\scenarios\STOP\Architectuur\Versie-informatie\03a-Consolidatie-informatie-1.1.0-naar-1.0.4.xml': gemaaktOp ontbreekt</td></tr>
-<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Bestand 'tests\scenarios\STOP\Architectuur\Versie-informatie\03a-Consolidatie-informatie-1.1.0.xml': gemaaktOp ontbreekt</td></tr>
-<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Bestand 'tests\scenarios\STOP\Architectuur\Versie-informatie\03b-Consolidatie-informatie-1.1.0.xml': gemaaktOp ontbreekt</td></tr>
+<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Bestand '.\STOP\Architectuur\Versie-informatie\03a-Consolidatie-informatie-1.1.0-naar-1.0.4.xml': gemaaktOp ontbreekt</td></tr>
+<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Bestand '.\STOP\Architectuur\Versie-informatie\03a-Consolidatie-informatie-1.1.0.xml': gemaaktOp ontbreekt</td></tr>
+<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Bestand '.\STOP\Architectuur\Versie-informatie\03b-Consolidatie-informatie-1.1.0.xml': gemaaktOp ontbreekt</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Fouten en waarschuwingen: geen verwachte resultaten beschikbaar</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Versiebeheerinformatie: geen verwachte resultaten beschikbaar</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Cumulatieve versieinformatie: geen verwachte resultaten beschikbaar</td></tr>
@@ -511,9 +512,9 @@
 </div>
 
 <div class="sectie_op"><h1>Publiceren</h1>
-<table><tr><td><button data-accordion="187" class="accordion_t active">?</button></td>
-<td data-accordion-titel="187" class="accordion_t_titel">&#8678;Over publiceren</td>
-<td data-accordion-paneel="187" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="394" class="accordion_t active">?</button></td>
+<td data-accordion-titel="394" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
+<td data-accordion-paneel="394" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
     en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
@@ -523,11 +524,11 @@
 
 </td></tr></table>
 
-<button data-accordion="188" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
-<div data-accordion-paneel="188" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="189" class="accordion_t active">?</button></td>
-<td data-accordion-titel="189" class="accordion_t_titel">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="189" class="accordion_t_paneel" style="display: block">
+<button data-accordion="395" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
+<div data-accordion-paneel="395" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="396" class="accordion_t active">?</button></td>
+<td data-accordion-titel="396" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="396" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
     het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
@@ -543,11 +544,11 @@
 </table></p>
 </div>
 
-<button data-accordion="190" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
-<div data-accordion-paneel="190" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="191" class="accordion_t active">?</button></td>
-<td data-accordion-titel="191" class="accordion_t_titel">&#8678;Over de module</td>
-<td data-accordion-paneel="191" class="accordion_t_paneel" style="display: block">
+<button data-accordion="397" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="397" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="398" class="accordion_t active">?</button></td>
+<td data-accordion-titel="398" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
+<td data-accordion-paneel="398" class="accordion_t_paneel" style="display: block">
 <p>
     Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
 </p>
@@ -558,9 +559,9 @@
 
 </div>
 <div class="sectie_lv"><h1>Beschikbaar stellen</h1>
-<table><tr><td><button data-accordion="192" class="accordion_t active">?</button></td>
-<td data-accordion-titel="192" class="accordion_t_titel">&#8678;Over beschikbaar stellen</td>
-<td data-accordion-paneel="192" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="399" class="accordion_t active">?</button></td>
+<td data-accordion-titel="399" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="399" class="accordion_t_paneel" style="display: block">
 <p>
     De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
     en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).

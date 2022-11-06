@@ -190,6 +190,8 @@ class Test_data_bg_project(unittest.TestCase):
                 { "Instrumentversie": "/join/id/regdata/2022/IO_B@2022;P1" },
                 { "JuridischUitgewerkt": "/akn/nl/act/gm9999/2022/REG_A" },
                 { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_A" },
+                { "OnbekendeVersie": "/akn/nl/act/gm9999/2022/REG_E" },
+                { "OnbekendeVersie": "/join/id/regdata/2022/IO_F" },
                 { "Teruggetrokken": "/join/id/regdata/2022/IO_C" },
                 { "Teruggetrokken": "/join/id/regdata/2022/IO_D" }
             ],
@@ -224,6 +226,14 @@ class Test_data_bg_project(unittest.TestCase):
                     "IsJuridischUitgewerkt": true,
                     "IsTeruggetrokken": false
                 },
+                "/akn/nl/act/gm9999/2022/REG_E": {
+                    "IsJuridischUitgewerkt": false,
+                    "IsTeruggetrokken": false
+                },
+                "/join/id/regdata/2022/IO_F": {
+                    "IsJuridischUitgewerkt": false,
+                    "IsTeruggetrokken": false
+                },
                 "/join/id/regdata/2022/IO_C": {
                     "IsJuridischUitgewerkt": false,
                     "IsTeruggetrokken": true
@@ -235,6 +245,34 @@ class Test_data_bg_project(unittest.TestCase):
             },
             "JuridischWerkendVanaf": "2022-08-01",
             "GeldigVanaf": "2022-06-01"
+        }
+    ]
+}''')
+
+
+    def test_Wijziging_Datums(self):
+        self._Test_LeesJson ('''{
+    "Project": "P1",
+    "Acties": [
+        {
+            "SoortActie": "Wijziging",
+            "UitgevoerdOp": "2022-05-25T07:00:00Z",
+            "Beschrijving": "Enige actie",
+            "Doel": "/join/id/proces/gm9999/2022/Project",
+            "JuridischWerkendVanaf": "-",
+            "GeldigVanaf": "?"
+        }
+    ]
+}''','''{
+    "Code": "P1",
+    "Acties": [
+        {
+            "SoortActie": "Wijziging",
+            "UitgevoerdOp": "2022-05-25T07:00:00Z",
+            "Beschrijving": "Enige actie",
+            "Doel": "/join/id/proces/gm9999/2022/Project",
+            "JuridischWerkendVanaf": "-",
+            "GeldigVanaf": "-"
         }
     ]
 }''')
@@ -309,9 +347,6 @@ class Test_data_bg_project(unittest.TestCase):
     ]
 }''')
 
-    
-
-
     def test_BijwerkenUitgangssituatieBranch(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
@@ -336,106 +371,6 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Instrumentversies": {
-                "/akn/nl/act/gm9999/2022/REG_A": {
-                    "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1",
-                    "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": false
-                },
-                "/join/id/regdata/2022/IO_A": {
-                    "IsJuridischUitgewerkt": true,
-                    "IsTeruggetrokken": false
-                },
-                "/join/id/regdata/2022/IO_B": {
-                    "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": true
-                }
-            }
-        }
-    ]
-}''')
-
-
-    def test_VerwerkingUitspraakRechter_Vernietigd(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Verwerking uitspraak rechter",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doelen": [ "/join/id/proces/gm9999/2022/Project" ],
-            "DatumUitspraak": "2022-05-20",
-            "Vernietigd": true,
-            "Instrumentversies": [
-                { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" },
-                { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_A" },
-                { "Teruggetrokken": "/join/id/regdata/2022/IO_B" }
-            ]
-        }
-    ]
-}''','''{
-    "Code": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Verwerking uitspraak rechter",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doelen": [
-                "/join/id/proces/gm9999/2022/Project"
-            ],
-            "DatumUitspraak": "2022-05-20",
-            "IsVernietiging": true,
-            "Instrumentversies": {
-                "/akn/nl/act/gm9999/2022/REG_A": {
-                    "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1",
-                    "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": false
-                },
-                "/join/id/regdata/2022/IO_A": {
-                    "IsJuridischUitgewerkt": true,
-                    "IsTeruggetrokken": false
-                },
-                "/join/id/regdata/2022/IO_B": {
-                    "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": true
-                }
-            }
-        }
-    ]
-}''')
-     
-    def test_VerwerkingUitspraakRechter_GedeeltelijkVernietigd(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Verwerking uitspraak rechter",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doelen": [ "/join/id/proces/gm9999/2022/Project_D1", "/join/id/proces/gm9999/2022/Project_D2" ],
-            "DatumUitspraak": "2022-05-20",
-            "Vernietigd": false,
-            "Instrumentversies": [
-                { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" },
-                { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_A" },
-                { "Teruggetrokken": "/join/id/regdata/2022/IO_B" }
-            ]
-        }
-    ]
-}''','''{
-    "Code": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Verwerking uitspraak rechter",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doelen": [
-                "/join/id/proces/gm9999/2022/Project_D1",
-                "/join/id/proces/gm9999/2022/Project_D2"
-            ],
-            "DatumUitspraak": "2022-05-20",
-            "IsVernietiging": false,
             "Instrumentversies": {
                 "/akn/nl/act/gm9999/2022/REG_A": {
                     "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1",
@@ -1060,19 +995,6 @@ class Test_data_bg_project(unittest.TestCase):
     ]
 }''',None)
 
-    def test_Fout_GeenInstrumentversies(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Wijziging",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project"
-        }
-    ]
-}''',None)
-
     def test_Fout_InstrumentversiesGeenArray(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
@@ -1083,21 +1005,6 @@ class Test_data_bg_project(unittest.TestCase):
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
             "Instrumentversies": 42
-        }
-    ]
-}''',None)
-
-    def test_Fout_InstrumentversiesLeeg(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Wijziging",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Instrumentversies": [
-            ]
         }
     ]
 }''',None)
@@ -1246,6 +1153,53 @@ class Test_data_bg_project(unittest.TestCase):
     ]
 }''',None)
 
+    def test_Fout_Instrumentversies_OnbekendeVersie_GeenString(self):
+        self._Test_LeesJson ('''{
+    "Project": "P1",
+    "Acties": [
+        {
+            "SoortActie": "Wijziging",
+            "UitgevoerdOp": "2022-05-25T07:00:00Z",
+            "Beschrijving": "Enige actie",
+            "Doel": "/join/id/proces/gm9999/2022/Project",
+            "Instrumentversies": [
+                { "OnbekendeVersie": true }
+            ]
+        }
+    ]
+}''',None)
+
+    def test_Fout_Instrumentversies_OnbekendeVersie_GeenInstrument(self):
+        self._Test_LeesJson ('''{
+    "Project": "P1",
+    "Acties": [
+        {
+            "SoortActie": "Wijziging",
+            "UitgevoerdOp": "2022-05-25T07:00:00Z",
+            "Beschrijving": "Enige actie",
+            "Doel": "/join/id/proces/gm9999/2022/Project",
+            "Instrumentversies": [
+                { "OnbekendeVersie": "/geen/work" }
+            ]
+        }
+    ]
+}''',None)
+
+    def test_Fout_Instrumentversies_OnbekendeVersie_GeenWork(self):
+        self._Test_LeesJson ('''{
+    "Project": "P1",
+    "Acties": [
+        {
+            "SoortActie": "Wijziging",
+            "UitgevoerdOp": "2022-05-25T07:00:00Z",
+            "Beschrijving": "Enige actie",
+            "Doel": "/join/id/proces/gm9999/2022/Project",
+            "Instrumentversies": [
+                { "OnbekendeVersie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" }
+            ]
+        }
+    ]
+}''',None)
     def test_Fout_Instrumentversies_Teruggetrokken_GeenString(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
@@ -1465,24 +1419,6 @@ class Test_data_bg_project(unittest.TestCase):
         }
     ]
 }''',None)
-
-    def test_Fout_GeldigVanafZonderJuridischWerkendVanaf(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Wijziging",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Instrumentversies": [
-                { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" }
-            ],
-            "GeldigVanaf": "2022-01-01"
-        }
-    ]
-}''',None)
-
 
     def test_Fout_GeenSoortPublicatie(self):
         self._Test_LeesJson ('''{

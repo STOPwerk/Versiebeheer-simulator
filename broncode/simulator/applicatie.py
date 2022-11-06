@@ -68,21 +68,22 @@ if len(directory_paden) == 0:
 # Uitvoeren van de applicatie.
 #======================================================================
 from applicatie_meldingen import Meldingen
-from applicatie_scenario import Scenario
+from applicatie_scenario import Scenario, ScenarioMappenIterator
 import applicatie_configuratie
 
 log = Meldingen (True)
 log.Informatie ('<a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_configuratie.Applicatie_versie)
 
+scenarioIterator = ScenarioMappenIterator (log, directory_paden, recursie)
 if testen:
     log.Informatie ("Voer unit tests uit")
     from applicatie_testen import UnitTests
-    aantalScenarios, aantalSucces = Scenario.VoorElkScenario (log, directory_paden, recursie, UnitTests.VoerUit)
-    log.Informatie ("Unit tests: " + str (aantalScenarios) + " uitgevoerd, " + str (aantalSucces) + " geslaagd, " + str (aantalScenarios - aantalSucces)+ " gefaald")
+    Scenario.VoorElkScenario (log, scenarioIterator, UnitTests.VoerUit)
+    log.Informatie ("Unit tests: " + str (scenarioIterator.AantalScenarios) + " uitgevoerd, " + str (scenarioIterator.AantalSucces) + " geslaagd, " + str (scenarioIterator.AantalScenarios - scenarioIterator.AantalSucces)+ " gefaald")
 else:
     log.Informatie ("Bepaal de consolidatie voor de scenario's")
     from applicatie_uitvoeren import Uitvoering
-    aantalScenarios, aantalSucces = Scenario.VoorElkScenario (log, directory_paden, recursie, Uitvoering.VoerUit)
-    log.Informatie ("Consolidaties: " + str (aantalSucces) + " uitgevoerd, " + str (aantalScenarios - aantalSucces) + " niet (volledig) uitgevoerd")
+    Scenario.VoorElkScenario (log, scenarioIterator, Uitvoering.VoerUit)
+    log.Informatie ("Consolidaties: " + str (scenarioIterator.AantalSucces) + " uitgevoerd, " + str (scenarioIterator.AantalScenarios - scenarioIterator.AantalSucces) + " niet (volledig) uitgevoerd")
 
 log.ToonHtml (meldingen_pad)

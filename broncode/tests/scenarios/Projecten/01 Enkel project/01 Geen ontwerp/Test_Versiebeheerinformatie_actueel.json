@@ -26,6 +26,18 @@
                 ]
             }
         },
+        "Tijdstempels": {
+            "/join/id/proces/gm9999/2022/Instelling": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2022-02-01",
+                        "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                        "GemaaktOp": "2022-02-01T07:00:00Z",
+                        "JuridischWerkendVanaf": "2022-03-01"
+                    }
+                ]
+            }
+        },
         "Uitwisselingen": [
             {
                 "BekendOp": "2022-02-01",
