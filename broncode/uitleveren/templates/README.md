@@ -9,6 +9,11 @@ De simulator is een Python script dat toegepast wordt op een set invoerbestanden
 
 ## Hoe gebruik ik het?
 
+### Online
+
+- Ga naar de [Versiebeheer-simulator online](https://versiebeheer-simulator.vercel.app/)
+
+### Offline / eigen computer
 - Zorg dat Python geïnstalleerd is. Dat is op Unix en MacOS meestal het geval. Voor Windows kan de laatste versie van Python [hier](https://www.python.org/downloads/) gedownload worden.
 
 - [Download](download.zip) de simulator en pak het zip bestand uit. Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_simulator_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken.
