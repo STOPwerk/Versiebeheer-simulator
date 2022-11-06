@@ -1,6 +1,6 @@
 # Versiebeheer-simulator
 
-Huidige versie: `2022-11-06 19:23:12`.
+Huidige versie: `2022-11-06 20:00:38`.
 
 ## Wat is het?
 Simulator die laat zien hoe het [STOP](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/)-versiebeheer gebruikt kan worden in de keten van adviesbureaus, bevoegd gezagen, landelijke voorzieningen en hun afnemers.
