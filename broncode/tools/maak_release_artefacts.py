@@ -93,7 +93,7 @@ with zipfile.ZipFile (downloadPad, 'w') as zip:
             elif file.startswith ('Versiebeheer.Simulator'):
                 # Visual Studio bestanden
                 pass
-            elif file.startswith ('applicatie_web') or file == 'requirements.txt' or file == 'index.py':
+            elif file == 'index.py' or file.startswith ('applicatie_web') or file == 'requirements.txt' or file == 'vercel.json':
                 # Web bestanden
                 pass
             else:
