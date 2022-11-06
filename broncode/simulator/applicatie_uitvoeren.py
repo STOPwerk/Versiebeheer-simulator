@@ -26,16 +26,17 @@ from weergave_webpagina import WebpaginaGenerator
 class Uitvoering:
     
     @staticmethod
-    def VoerUit (scenario : Scenario):
+    def VoerUit (scenario : Scenario, maakResultaatGenerator = None):
         """Voer de simulatie uit
         
         Argumenten:
         scenario Scenario Invoer voor het consolidatiescenario
+        maakResultaatGenerator lambda -> ResultaatGenerator Wordt aangeroepen om de resultaatpagina te genereren
 
         Geeft terug of de uitvoering zonder problemen is verlopen
         """
         test = Uitvoering (scenario)
-        return test._VoerUit ()
+        return test._VoerUit (maakResultaatGenerator)
 
 #----------------------------------------------------------------------
 # Implementatie
@@ -48,7 +49,7 @@ class Uitvoering:
         """
         self._Scenario = scenario
     
-    def _VoerUit (self):
+    def _VoerUit (self, maakResultaatGenerator):
         """Voer de simulatie uit
         Geeft terug of de uitvoering zonder problemen is verlopen
         """
@@ -71,9 +72,12 @@ class Uitvoering:
             else:
                 self._Scenario.ApplicatieLog.Fout ("Scenario in '" + self._Scenario.Pad + "' niet uitgevoerd wegens invalide invoer")
 
-            ResultaatGenerator.MaakPagina (self._Scenario)
-            self._Scenario.ApplicatieLog.Informatie ('Voor een verslag zie: <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
-
+            if maakResultaatGenerator is None:
+                ResultaatGenerator.MaakPagina (self._Scenario)
+                if not self._Scenario.ResultaatPad is None:
+                    self._Scenario.ApplicatieLog.Informatie ('Voor een verslag zie: <a href="' + WebpaginaGenerator.UrlVoorPad (self._Scenario.ResultaatPad) + '">' +  self._Scenario.ResultaatPad + '</a>')
+            else:
+                maakResultaatGenerator (self._Scenario)
             return self._Scenario.IsValide and self._Scenario.Log.Fouten == 0
 
         except Exception as e:

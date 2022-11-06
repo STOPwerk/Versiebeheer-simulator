@@ -236,16 +236,19 @@ class UnitTests:
                         self._Scenario.Log.Informatie (naam + ": resultaat (data) komt overeen met de verwachting")
                     else:
                         self._Scenario.Log.Fout (naam + ': verwacht (' + verwacht_resultaat_bestand + ') en uitkomst (' + actueel_resultaat_bestand + ') verschillen vanaf regel ' + str (idxFout+1))
-                        self._Scenario.ApplicatieLog.Fout (naam + ': verwacht (' + verwacht_resultaat_pad + ') en uitkomst (' + actueel_resultaat_pad + ') verschillen vanaf regel ' + str (idxFout+1) +  ' (' + self._Scenario.Pad + ')')
+                        if self._Scenario.ApplicatieLog != self._Scenario.Log:
+                            self._Scenario.ApplicatieLog.Fout (naam + ': verwacht (' + verwacht_resultaat_pad + ') en uitkomst (' + actueel_resultaat_pad + ') verschillen vanaf regel ' + str (idxFout+1) +  ' (' + self._Scenario.Pad + ')')
                         self.Succes = False
                 else:
                     self._Scenario.Log.Fout (naam + ': verwacht (geen data) en uitkomst (' + actueel_resultaat_bestand + ') verschillen')
-                    self._Scenario.ApplicatieLog.Fout (naam + ': verwacht (geen data) en uitkomst (' + actueel_resultaat_pad + ') verschillen (' + self._Scenario.Pad + ')')
+                    if self._Scenario.ApplicatieLog != self._Scenario.Log:
+                        self._Scenario.ApplicatieLog.Fout (naam + ': verwacht (geen data) en uitkomst (' + actueel_resultaat_pad + ') verschillen (' + self._Scenario.Pad + ')')
                     self.Succes = False
             else:
                 if len (json_verwacht) > 0:
                     self._Scenario.Log.Fout (naam + ': verwacht (' + verwacht_resultaat_bestand + ') en uitkomst (geen data) verschillen')
-                    self._Scenario.ApplicatieLog.Fout (naam + ': verwacht (' + verwacht_resultaat_pad + ') en uitkomst (geen data) verschillen (' + self._Scenario.Pad + ')')
+                    if self._Scenario.ApplicatieLog != self._Scenario.Log:
+                        self._Scenario.ApplicatieLog.Fout (naam + ': verwacht (' + verwacht_resultaat_pad + ') en uitkomst (geen data) verschillen (' + self._Scenario.Pad + ')')
                     self.Succes = False
                 else:
                     self._Scenario.Log.Informatie (naam + ": resultaat (geen data) komt overeen met de verwachting")

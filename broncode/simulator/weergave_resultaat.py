@@ -42,25 +42,31 @@ from weergave_webpagina import WebpaginaGenerator
 class ResultaatGenerator (WebpaginaGenerator):
 
     @staticmethod
-    def MaakPagina (scenario : Scenario):
+    def MaakPagina (scenario : Scenario, favicon = None):
         """Maak een webpagina met de resultaten van de consolidatie
         
         Argumenten:
         scenario Scenario  De invoer en resultaten van de consolidatie
+        favicon string  URL van het favicon voor de webpagina; moet een PNG plaatje zijn
+
+        Geeft de generator terug
         """
-        generator = ResultaatGenerator (scenario)
+        generator = ResultaatGenerator (scenario, favicon)
         try:
             generator._MaakPagina ()
         except Exception as e:
             # Invalide invoer kan het maken van een pagina in de weg zitten
             scenario.ApplicatieLog.Fout ("Potverdorie, een fout in het maken van de resultaatpagina die niet voorzien werd: " + str(e))
-            scenario.Log.Fout ("Potverdorie, een fout in het maken van de resultaatpagina die niet voorzien werd: " + str(e))
+            if scenario.ApplicatieLog != scenario.Log:
+                scenario.Log.Fout ("Potverdorie, een fout in het maken van de resultaatpagina die niet voorzien werd: " + str(e))
 
             # Maak een pagina met alleen de meldingen
             generator = ResultaatGenerator (scenario)
             generator.VoegHtmlToe ('<p>De resultaatpagina kan niet gemaakt worden</p>')
             generator._AlleenMeldingen ()
-        generator.SchrijfHtml (scenario.ResultaatPad)
+        if not scenario.ResultaatPad is None:
+            generator.SchrijfHtml (scenario.ResultaatPad)
+        return generator
 
     @staticmethod
     def MaakMeldingen (scenario : Scenario):
@@ -76,13 +82,14 @@ class ResultaatGenerator (WebpaginaGenerator):
 #----------------------------------------------------------------------
 # Implementatie
 #----------------------------------------------------------------------
-    def __init__ (self, scenario : Scenario):
+    def __init__ (self, scenario : Scenario, favicon = None):
         """Maak een generator aan voor de resultaten van de consolidatie
         
         Argumenten:
         scenario Scenario  De invoer en resultaten van de consolidatie
+        favicon string  URL van het favicon voor de webpagina; moet een PNG plaatje zijn
         """
-        super().__init__ (os.path.basename (os.path.dirname (scenario.ResultaatPad)))
+        super().__init__ (scenario.Titel, favicon)
         self.Scenario = scenario
 
     def _AlleenMeldingen (self):

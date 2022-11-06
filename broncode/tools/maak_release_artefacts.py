@@ -90,6 +90,12 @@ with zipfile.ZipFile (downloadPad, 'w') as zip:
         for file in files:
             if file == 'applicatie_configuratie.py':
                 zip.write (appConfigPad, 'simulator/' + file)
+            elif file.startswith ('Versiebeheer.Simulator'):
+                # Visual Studio bestanden
+                pass
+            elif file.startswith ('applicatie_web') or file == 'requirements.txt':
+                # Web bestanden
+                pass
             else:
                 zip.write (os.path.join (root, file), 'simulator/' + file)
         break
