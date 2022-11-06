@@ -116,9 +116,6 @@ class ProjectActie_NieuwDoel (ProjectActie):
         self.GebaseerdOp_GeldigOp = None
         self._GebaseerdOp_GeldigOp = "Uitgangssituatie" # Naam in specificatie
         self._GebaseerdOp_GeldigOp_Optioneel = True
-        # Instrumenten die bij aanvang in de branch aanwezig zijn
-        # Lijst van work-identificaties
-        self.Instrumenten = []
 
 #----------------------------------------------------------------------
 # Actie: Download
@@ -142,9 +139,6 @@ class ProjectActie_Download (ProjectActie):
         # Geldig-op datum van de regelgeving waarop de branch is gebaseerd
         self.GebaseerdOp_GeldigOp = None
         self._GebaseerdOp_GeldigOp = "GeldigOp" # Naam in specificatie
-        # Instrumenten die bij aanvang in de branch aanwezig zijn
-        # Lijst van work-identificaties
-        self.Instrumenten = []
 
 #----------------------------------------------------------------------
 # Actie: Wijziging
@@ -438,30 +432,6 @@ class Project:
                             project._IsValide = False
                         else:
                             actie.GebaseerdOp_Doel = Doel.DoelInstantie (actieSpec[actie._GebaseerdOp_Doel])
-
-                if hasattr (actie, "Instrumenten"):
-                    if not "Instrumenten" in actieSpec:
-                        log.Fout ("Bestand '" + pad + "': 'Instrumenten' is verplicht voor actie: " + actie.SoortActie)
-                        project._IsValide = False
-                    elif not isinstance (actieSpec["Instrumenten"], list) or len (actieSpec["Instrumenten"]) == 0:
-                        log.Fout ("Bestand '" + pad + "': 'Instrumenten' moet als waarde een array van strings hebben")
-                        project._IsValide = False
-                    else:
-                        for workId in actieSpec["Instrumenten"]:
-                            if not isinstance (workId, str):
-                                log.Fout ("Bestand '" + pad + "': 'Instrumenten' moet als waarde een array van strings hebben")
-                                project._IsValide = False
-                            elif (not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId)):
-                                log.Fout ("Bestand '" + pad + "': element van 'Instrumenten' is geen identificatie van een regeling of informatieobject: '" + workId + "'")
-                                project._IsValide = False
-                            elif Naamgeving.IsExpression (workId):
-                                log.Fout ("Bestand '" + pad + "': element van 'Instrumenten' is geen work-identificatie maar een expression-identificatie: '" + workId + "'")
-                                project._IsValide = False
-                            elif workId in actie.Instrumenten:
-                                log.Fout ("Bestand '" + pad + "': hetzelfde work komt meerdere keren voor in 'Instrumenten': '" + workId + "'")
-                                project._IsValide = False
-                            else:
-                                actie.Instrumenten.append (workId)
 
                 if hasattr (actie, "Instrumentversies"):
                     if "Instrumentversies" in actieSpec:

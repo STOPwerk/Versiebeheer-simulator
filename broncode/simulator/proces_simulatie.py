@@ -21,8 +21,8 @@ from data_bg_project import ProjectActie
 from data_bg_projectvoortgang import ProjectactieResultaat, UitgewisseldeSTOPModule
 from weergave_data_bg_versiebeheer import VersiebeheerWeergave
 from weergave_resultaat_data import WeergaveData
-from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
-from proces_bg_projectacties import ProjectactieUitvoering
+from proces_bg_consolidatieinformatie import ConsolidatieInformatieVerwerker
+from proces_bg_procesbegeleiding import Procesbegeleiding
 from proces_lv_versiebeheerinformatie import WerkVersiebeheerinformatieBij
 from proces_lv_proefversies import MaakProefversies
 from proces_lv_completetoestanden import MaakCompleteToestanden
@@ -65,7 +65,7 @@ class Proces_Simulatie:
                     consolidatieInformatie = consolidatieInformatieBron.Module
                     if self.Scenario.Opties.Versiebeheer:
                         # Verwerk dat in het versiebeheer van het bevoegd gezag
-                        isValide, actieResultaat = ConsolidatieInformatieMaker.WerkBij (self.Scenario.Log, self.Scenario.Projectvoortgang, consolidatieInformatie, consolidatieInformatieBron.Actie)
+                        isValide, actieResultaat = ConsolidatieInformatieVerwerker.WerkBij (self.Scenario.Log, self.Scenario.Projectvoortgang, consolidatieInformatie, consolidatieInformatieBron.Actie)
                         if not isValide:
                             # Er is iets fout gegaan
                             return
@@ -73,7 +73,7 @@ class Proces_Simulatie:
                         actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
                 else:
                     # Project actie: voer de actie uit
-                    isValide, consolidatieInformatie, actieResultaat = ProjectactieUitvoering.Voor (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
+                    isValide, consolidatieInformatie, actieResultaat = Procesbegeleiding.VoerUit (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
                     if not isValide:
                         # Er is iets fout gegaan
                         return

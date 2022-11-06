@@ -92,30 +92,75 @@ class Weergave_BG_Versiebeheer:
 
             self._Generator.VoegHtmlToe ('<dt>Branch/doel: <b>' + str(branch._Doel) + '</b></dt><dd><table class="bgvb_overzicht">')
 
-            if not branch.Uitgangssituatie_Doel is None:
-                self._Generator.VoegHtmlToe ('<tr><th>Uitgangssituatie</th><td>Instrumentversies van branch ' + str(branch.Uitgangssituatie_Doel._Doel) + '</td></tr>')
-            elif not branch.Uitgangssituatie_GeldigOp is None:
-                self._Generator.VoegHtmlToe ('<tr><th>Uitgangssituatie</th><td>Regelgeving geldig op ' + branch.Uitgangssituatie_GeldigOp + '</td></tr>')
-            
-            for workId in sorted (branch.InterneInstrumentversies.keys ()):
-                momentopname = branch.InterneInstrumentversies[workId]
-                self._Generator.VoegHtmlToe ('<tr><th>Instrument</th><td>')
-                if momentopname.IsJuridischUitgewerkt:
-                    self._Generator.VoegHtmlToe (workId + '<br>Juridisch uitgewerkt')
-                elif momentopname.ExpressionId is None:
-                    self._Generator.VoegHtmlToe (workId + '<br>Onbekende instrumentversie')
+            if branch._ViaProject:
+                self._Generator.VoegHtmlToe ('<tr><th>Uitgangssituatie</th><td>')
+                if not branch.Uitgangssituatie_Doel is None:
+                    self._Generator.VoegHtmlToe ('Instrumentversies van branch ' + str(branch.Uitgangssituatie_Doel._Doel))
+                elif not branch.Uitgangssituatie_GeldigOp is None:
+                    self._Generator.VoegHtmlToe ('Regelgeving geldig op ' + branch.Uitgangssituatie_GeldigOp)
                 else:
-                    self._Generator.VoegHtmlToe (momentopname.ExpressionId)
+                    self._Generator.VoegHtmlToe ('Geen; initiële versie')
+                self._Generator.VoegHtmlToe ('</td></tr>')
+            else:
+                self._Generator.VoegHtmlToe ('<tr><td colspan="2">Deze branch wordt in een van de overige projecten bijgehouden; intern versiebeheer is niet beschikbaar</td></tr>')
+            
+            for workId in sorted (branch.Instrumentversies.keys ()):
+                instrumentInfo = branch.Instrumentversies[workId]
+                self._Generator.VoegHtmlToe ('<tr><th>Instrument</th><td>')
+                if not branch._ViaProject and not instrumentInfo.IsGewijzigd:
+                    self._Generator.VoegHtmlToe (workId + '<br>Instrument wordt niet gewijzigd voor dit doel')
+                elif instrumentInfo.Instrumentversie is None:
+                    self._Generator.VoegHtmlToe (workId + '<br>Nog geen instrumentversie gemaakt')
+                else:
+                    if instrumentInfo.Instrumentversie.IsJuridischUitgewerkt:
+                        self._Generator.VoegHtmlToe (workId + '<br>Juridisch uitgewerkt')
+                    elif instrumentInfo.Instrumentversie.ExpressionId is None:
+                        self._Generator.VoegHtmlToe (workId + '<br>Onbekende instrumentversie')
+                    else:
+                        self._Generator.VoegHtmlToe (instrumentInfo.Instrumentversie.ExpressionId)
+                    if len (instrumentInfo.Instrumentversie.UitgewisseldVoor) > 0:
+                        self._Generator.VoegHtmlToe ('<br>&nbsp;&nbsp;Voor doelen: ' + ',<br>&nbsp;&nbsp;&nbsp;&nbsp;'.join (str(d) for d in instrumentInfo.Instrumentversie.UitgewisseldVoor))
 
-                if momentopname.IsTeruggetrokken:
-                    self._Generator.VoegHtmlToe ('<br>Ongewijzigd in deze branch')
+                if branch._ViaProject:
+                    if not instrumentInfo.Uitgangssituatie is None:
+                        if instrumentInfo.Uitgangssituatie.IsJuridischUitgewerkt:
+                            self._Generator.VoegHtmlToe ('<br>Uitgangssituatie: juridisch uitgewerkt')
+                        elif instrumentInfo.Uitgangssituatie.ExpressionId is None:
+                            self._Generator.VoegHtmlToe ('<br>Uitgangssituatie: onbekende instrumentversie')
+                        else:
+                            self._Generator.VoegHtmlToe ('<br>Uitgangssituatie: ' + instrumentInfo.Uitgangssituatie.ExpressionId)
+                        self._Generator.VoegHtmlToe ('<br>&nbsp;&nbsp;Voor doel: ' + ',<br>&nbsp;&nbsp;&nbsp;&nbsp;'.join (str(d) for d in instrumentInfo.Uitgangssituatie.UitgewisseldVoor))
+                        if not instrumentInfo.Uitgangssituatie.UitgewisseldOp is None:
+                            self._Generator.VoegHtmlToe ('<br>&nbsp;&nbsp;Laatst uitgewisseld: gemaaktOp = ' + instrumentInfo.Uitgangssituatie.UitgewisseldOp)
+                    self._Generator.VoegHtmlToe ('<brInstrument wordt ' + ('' if instrumentInfo.IsGewijzigd else 'niet ') + 'gewijzigd voor dit doel')
+
+                    if not instrumentInfo.UitgewisseldeVersie is None:
+                        self._Generator.VoegHtmlToe ('<br>Laatste uitwisseling: gemaaktOp = ' + instrumentInfo.UitgewisseldeVersie.UitgewisseldOp)
+                        if instrumentInfo.UitgewisseldeVersie.IsJuridischUitgewerkt:
+                            self._Generator.VoegHtmlToe ('<br>&nbsp;&nbsp;Als: Intrekking')
+                        elif instrumentInfo.UitgewisseldeVersie.ExpressionId is None:
+                            self._Generator.VoegHtmlToe ('<br>&nbsp;&nbsp;Als: onbekende instrumentversie')
+                        else:
+                            self._Generator.VoegHtmlToe ('<br>&nbsp;&nbsp;Wordt-versie: ' + instrumentInfo.UitgewisseldeVersie.ExpressionId)
+                            if not instrumentInfo.UitgewisseldeWasVersie is None:
+                                self._Generator.VoegHtmlToe ('<br>&nbsp;&nbsp;Was-versie: ' + instrumentInfo.UitgewisseldeWasVersie)
+                        if len (instrumentInfo.UitgewisseldeVersie.UitgewisseldVoor) > 0:
+                            self._Generator.VoegHtmlToe ('<br>&nbsp;&nbsp;Voor doelen: ' + ',<br>&nbsp;&nbsp;&nbsp;&nbsp;'.join (str(d) for d in instrumentInfo.UitgewisseldeVersie.UitgewisseldVoor))
+                else:
+                    self._Generator.VoegHtmlToe ('<br>Laatste uitwisseling: gemaaktOp = ' + instrumentInfo.UitgewisseldeVersie.UitgewisseldOp)
 
                 self._Generator.VoegHtmlToe ('</td></tr>')
 
-            if not branch.InterneTijdstempels.JuridischWerkendVanaf is None:
-                self._Generator.VoegHtmlToe ('<tr><th>Juridisch werkend vanaf</th><td>' + branch.InterneTijdstempels.JuridischWerkendVanaf + '</td></tr>')
-                if not branch.InterneTijdstempels.GeldigVanaf is None:
-                    self._Generator.VoegHtmlToe ('<tr><th>Geldig vanaf</th><td>' + branch.InterneTijdstempels.GeldigVanaf + '</td></tr>')
+            self._Generator.VoegHtmlToe ('<tr><th>Tijdstempels</th><td>')
+            if branch.Tijdstempels.JuridischWerkendVanaf is None:
+                self._Generator.VoegHtmlToe ('Geen tijdstempels gespecificeerd')
+            else:
+                self._Generator.VoegHtmlToe ('Juridisch werkend vanaf: ' + branch.Tijdstempels.JuridischWerkendVanaf)
+                if not branch.Tijdstempels.GeldigVanaf is None:
+                    self._Generator.VoegHtmlToe ('<br>Geldig vanaf: ' + branch.Tijdstempels.GeldigVanaf)
+            if branch._ViaProject and not branch.Tijdstempels.IsGelijkAan (branch.UitgewisseldeTijdstempels):
+                self._Generator.VoegHtmlToe ('<br>Tijdstempels moeten nog uitgewisseld worden')
+            self._Generator.VoegHtmlToe ('</td></tr>')
 
             self._Generator.VoegHtmlToe ('</table></dd>')
 

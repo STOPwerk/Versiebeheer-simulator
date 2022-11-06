@@ -15,7 +15,10 @@
 #======================================================================
 
 from typing import Dict, List
-from data_bg_versiebeheer import Versiebeheer, Branch, MomentopnameInstrument, MomentopnameTijdstempels, Consolidatie, Consolidatieversie
+from copy import copy
+from data_doel import Doel
+from data_bg_projectvoortgang import Branch
+from data_bg_versiebeheer import Versiebeheer, InstrumentInformatie, Instrumentversie, Tijdstempels, Consolidatie, Consolidatieversie
 
 #----------------------------------------------------------------------
 #
@@ -40,32 +43,20 @@ class VersiebeheerWeergave:
 
     def _KloonBranch (self, origineel: Branch):
         """Maak een kloon van de branch"""
-        kloon = Branch (origineel._Doel)
-        kloon.Uitgangssituatie_Doel = origineel.Uitgangssituatie_Doel # Hoeft geen kloon te zijn, alleen doel wordt gebruikt
-        kloon.Uitgangssituatie_GeldigOp = origineel.Uitgangssituatie_GeldigOp
-        kloon.InterneInstrumentversies = { w: self._KloonMomentopnameInstrument (kloon, m) for w, m in origineel.InterneInstrumentversies.items () }
-        kloon.InterneTijdstempels = self._KloonMomentopnameTijdstempels (kloon, origineel.InterneTijdstempels)
-        kloon.PubliekeInstrumentversies = { w: self._KloonMomentopnameInstrument (kloon, m) for w, m in origineel.PubliekeInstrumentversies.items () }
-        kloon.PubliekeTijdstempels = self._KloonMomentopnameTijdstempels (kloon, origineel.PubliekeTijdstempels)
+        kloon = copy (origineel)
+        kloon.Instrumentversies = { w: self._KloonInstrumentInformatie (kloon, m) for w, m in origineel.Instrumentversies.items () }
+        kloon.Tijdstempels = copy (origineel.Tijdstempels)
+        kloon.UitgewisseldeTijdstempels = copy (origineel.UitgewisseldeTijdstempels)
         return kloon
 
-    def _KloonMomentopnameInstrument (self, branch: Branch, origineel: MomentopnameInstrument):
-        """Maak een kloon van de MomentopnameInstrument"""
-        kloon = MomentopnameInstrument (branch, origineel._WorkId)
-        kloon.ExpressionId = origineel.ExpressionId
-        kloon.IsJuridischUitgewerkt = origineel.IsJuridischUitgewerkt
-        kloon.IsTeruggetrokken = origineel.IsTeruggetrokken
-        kloon.Uitgangssituatie = None if origineel.Uitgangssituatie is None else origineel.Uitgangssituatie.copy ()
-        kloon.GemaaktOp = origineel.GemaaktOp
-        kloon.MetBijdragenVan = origineel.MetBijdragenVan.copy ()
-        kloon.ZonderBijdragenVan = origineel.ZonderBijdragenVan.copy ()
-        return kloon
-
-    def _KloonMomentopnameTijdstempels (self, branch: Branch, origineel: MomentopnameTijdstempels):
-        """Maak een kloon van de MomentopnameTijdstempels"""
-        kloon = MomentopnameTijdstempels (branch)
-        kloon.JuridischWerkendVanaf = origineel.JuridischWerkendVanaf
-        kloon.GeldigVanaf = origineel.GeldigVanaf
+    def _KloonInstrumentInformatie (self, branch: Branch, origineel: InstrumentInformatie) -> InstrumentInformatie:
+        """Maak een kloon van de InstrumentInformatie"""
+        kloon = copy (origineel)
+        kloon._Branch = branch
+        if not origineel.Instrumentversie is None:
+            kloon.Instrumentversie = copy (origineel.Instrumentversie)
+        if not origineel.Uitgangssituatie is None:
+            kloon.Uitgangssituatie = copy (origineel.Uitgangssituatie)
         return kloon
 
     def _KloonConsolidatie (self, origineel : Consolidatie):

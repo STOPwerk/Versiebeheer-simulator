@@ -30,11 +30,11 @@ class ConsolidatieInformatie:
         """Maak een lege module aan.
         
         Argumenten:
-        log Meldingen verzameling van meldingen
-        pad string Pad van het XML bestand
+        log Meldingen verzameling van meldingen; alleen nodig voor het inlezen
+        pad string Pad van het XML bestand; alleen nodig voor het inlezen
         """
-        self.Log = log
-        self.Pad = pad
+        self._Log = log
+        self._Pad = pad
 
         # Tijdstip van de momentopname voor alle elementen in de module
         self.GemaaktOp = None
@@ -153,7 +153,7 @@ class ConsolidatieInformatie:
             _VoegToe (module.MaterieelUitgewerkt, MaterieelUitgewerkt.LeesXml (module, elt, True))
 
         if not module._BekendOp is None and module._BekendOp > module.OntvangenOp:
-            module.Log.Informatie ("Bestand '" + module.Pad + "': bekendOp ligt in de toekomst - dat is alleen toegestaan in deze applicatie")
+            module.Log.Informatie ("Bestand '" + module._Pad + "': bekendOp ligt in de toekomst - dat is alleen toegestaan in deze applicatie")
 
         if module.IsValide:
             log.Detail ("Bestand '" + pad + "' bevat valide ConsolidatieInformatie")
@@ -167,7 +167,7 @@ class ConsolidatieInformatie:
         elt = containerElement.find ("data:" + naam, ConsolidatieInformatie._Namespaces)
         if elt is None:
             if moetBestaan:
-                self.Log.Fout ("Bestand '" + self.Pad + "': " + naam + " ontbreekt")
+                self._Log.Fout ("Bestand '" + self._Pad + "': " + naam + " ontbreekt")
                 self.IsValide = False
             return
         return elt
@@ -177,7 +177,7 @@ class ConsolidatieInformatie:
         elts = [x for x in containerElement.findall ("data:" + naam, ConsolidatieInformatie._Namespaces)]
         if len (elts) == 0:
             if moetBestaan:
-                self.Log.Fout ("Bestand '" + self.Pad + "': " + naam + " ontbreekt")
+                self._Log.Fout ("Bestand '" + self._Pad + "': " + naam + " ontbreekt")
                 self.IsValide = False
             return
         return elts
@@ -201,7 +201,7 @@ class ConsolidatieInformatie:
     def _LeesGemaaktOp (self, containerElement):
         """Lees de waarde van het gemaaktOp element dat als kind onder het containerElement hangt"""
         gemaaktOp = self._LeesElement (containerElement, "gemaaktOp")
-        if gemaaktOp and ConsolidatieInformatie.ValideerGemaaktOp (self.Log, self.Pad, gemaaktOp):
+        if gemaaktOp and ConsolidatieInformatie.ValideerGemaaktOp (self._Log, self._Pad, gemaaktOp):
             return gemaaktOp
         self.IsValide = False
         return None
@@ -249,7 +249,7 @@ class ConsolidatieInformatie:
         """Lees de waarde van het gemaaktOp element dat als kind onder het containerElement hangt"""
         bekendOp = self._LeesElement (containerElement, "bekendOp", False)
         if bekendOp:
-            if ConsolidatieInformatie.ValideerDatum (self.Log, self.Pad, "bekendOp", bekendOp):
+            if ConsolidatieInformatie.ValideerDatum (self._Log, self._Pad, "bekendOp", bekendOp):
                 return bekendOp
             self.IsValide = False
 
@@ -382,7 +382,7 @@ class VoorInstrument (VoorInstrumentEnTijdstempel):
         for elt in elts:
             momentopname = Momentopname.LeesXml (module, elt)
             if momentopname.Doel in resultaat:
-                module.Log.Fout ("Bestand '" + module.Pad + "': doel " + str(momentopname.Doel) + " komt meerdere keren voor in " + collectie)
+                module.Log.Fout ("Bestand '" + module._Pad + "': doel " + str(momentopname.Doel) + " komt meerdere keren voor in " + collectie)
                 module.IsValide = False
             else:
                 resultaat[momentopname.Doel] = momentopname
@@ -449,28 +449,28 @@ class BeoogdeVersie (VoorInstrument):
         if not expressionId is None:
             if isRegeling:
                 if not Naamgeving.IsRegeling (expressionId):
-                    module.Log.Fout ("Bestand '" + module.Pad + "': expression identificatie '" + expressionId + "' past niet bij een regeling")
+                    module.Log.Fout ("Bestand '" + module._Pad + "': expression identificatie '" + expressionId + "' past niet bij een regeling")
                     module.IsValide = False
                     return
             else:
                 if not Naamgeving.IsInformatieobject (expressionId):
-                    module.Log.Fout ("Bestand '" + module.Pad + "': expression identificatie '" + expressionId + "' past niet bij een informatieobject")
+                    module.Log.Fout ("Bestand '" + module._Pad + "': expression identificatie '" + expressionId + "' past niet bij een informatieobject")
                     module.IsValide = False
                     return
             return BeoogdeVersie (module, doelen, Naamgeving.WorkVan (expressionId), expressionId)._LeesGemeenschappelijkeInformatie (module, xml, False, False)
         workId = module._LeesElement (xml, "instrument", False)
         if workId is None:
-            module.Log.Fout ("Bestand '" + module.Pad + "': Instrument of Instrumentversie ontbreekt")
+            module.Log.Fout ("Bestand '" + module._Pad + "': Instrument of Instrumentversie ontbreekt")
             module.IsValide = False
         else:
             if isRegeling:
                 if not Naamgeving.IsRegeling (workId):
-                    module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie '" + workId + "' past niet bij een regeling")
+                    module.Log.Fout ("Bestand '" + module._Pad + "': work identificatie '" + workId + "' past niet bij een regeling")
                     module.IsValide = False
                     return
             else:
                 if not Naamgeving.IsInformatieobject (workId):
-                    module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie '" + workId + "' past niet bij een informatieobject")
+                    module.Log.Fout ("Bestand '" + module._Pad + "': work identificatie '" + workId + "' past niet bij een informatieobject")
                     module.IsValide = False
                     return
             return BeoogdeVersie (module, doelen, workId, None)._LeesGemeenschappelijkeInformatie (module, xml, False, False)
@@ -482,7 +482,7 @@ class BeoogdeVersie (VoorInstrument):
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
-                module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
+                module.Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
                 module.IsValide = False
                 return
             return BeoogdeVersie (module, doelen, workId, None)._LeesGemeenschappelijkeInformatie (module, xml, True)
@@ -518,7 +518,7 @@ class Intrekking (VoorInstrument):
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
-                module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
+                module.Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
                 module.IsValide = False
                 return
             return Intrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True, True)
@@ -555,12 +555,12 @@ class Terugtrekking (VoorInstrument):
         if not workId is None:
             if isRegeling:
                 if not Naamgeving.IsRegeling (workId):
-                    module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een regeling")
+                    module.Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een regeling")
                     module.IsValide = False
                     return
             else:
                 if not Naamgeving.IsInformatieobject (workId):
-                    module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een informatieobject")
+                    module.Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een informatieobject")
                     module.IsValide = False
                     return
             return Terugtrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True, True)
@@ -596,7 +596,7 @@ class TerugtrekkingIntrekking (VoorInstrument):
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
-                module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een regeling")
+                module.Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een regeling")
                 module.IsValide = False
                 return
             return TerugtrekkingIntrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, False, True)
@@ -641,7 +641,7 @@ class VoorTijdstempel(VoorInstrumentEnTijdstempel):
             elif soort == "geldigVanaf":
                 self.IsGeldigVanaf = True
             else:
-                module.Log.Fout ("Bestand '" + module.Pad + "': onbekende soortTijdstempel '" + soort + "'")
+                module.Log.Fout ("Bestand '" + module._Pad + "': onbekende soortTijdstempel '" + soort + "'")
                 module.IsValide = False
         self._BekendOp = module._LeesBekendOp (xml)
         super ()._LeesGemeenschappelijkeInformatie (module, xml)
@@ -671,7 +671,7 @@ class Tijdstempel(VoorTijdstempel):
             return
         datum = datum[0:10]
         if not ConsolidatieInformatie._DatumPatroon.match (datum):
-            module.Log.Fout ("Bestand '" + module.Pad + "': datum '" + datum + "' is onherkenbaar")
+            module.Log.Fout ("Bestand '" + module._Pad + "': datum '" + datum + "' is onherkenbaar")
             module.IsValide = False
         else:
             self.Datum = datum
@@ -752,7 +752,7 @@ class MaterieelUitgewerkt:
         workId = module._LeesElement (xml, "instrument", True)
         if not workId is None:
             if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
-                module.Log.Fout ("Bestand '" + module.Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
+                module.Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
                 module.IsValide = False
         element = MaterieelUitgewerkt (module, workId)
         if not isTerugtrekking:
@@ -760,7 +760,7 @@ class MaterieelUitgewerkt:
             if not datum is None:
                 datum = datum[0:10]
                 if not ConsolidatieInformatie._DatumPatroon.match (datum):
-                    module.Log.Fout ("Bestand '" + module.Pad + "': datum '" + datum + "' is onherkenbaar")
+                    module.Log.Fout ("Bestand '" + module._Pad + "': datum '" + datum + "' is onherkenbaar")
                     module.IsValide = False
                 else:
                     element.Datum = datum
