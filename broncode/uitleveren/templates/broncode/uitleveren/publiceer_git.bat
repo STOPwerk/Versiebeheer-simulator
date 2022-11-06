@@ -26,7 +26,6 @@ git add applicatie_configuratie.py
 @if errorlevel 1 goto Pause
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
-pause
 git config --unset user.mail
 git config --unset user.name
 git switch development
