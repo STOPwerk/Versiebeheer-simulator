@@ -1,3 +1,20 @@
+#startknop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 3px solid #82b366;
+    background-color: #d5e8d4;
+    font-size: large;
+    font-weight: bolder;
+    padding: 1em;
+    cursor: pointer;
+}
+
+    #startknop:hover {
+        border-color: #d79b00;
+        background-color: #ffe6cc;
+    }
+
 .box {
     background-color: white;
     outline: 2px dashed black;

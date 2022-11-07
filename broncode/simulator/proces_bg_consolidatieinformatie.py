@@ -28,6 +28,7 @@
 #======================================================================
 
 from typing import Dict, List, Tuple
+from copy import copy
 
 from applicatie_meldingen import Meldingen
 from data_bg_project import ProjectActie
@@ -50,16 +51,16 @@ from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, 
 class ConsolidatieInformatieMaker:
 
     @staticmethod
-    def VoerUit (logFout, actieResultaat: ProjectactieResultaat, branches: List[Branch]) -> ConsolidatieInformatie:
+    def VoerUit (logFout, voortgang: Projectvoortgang, branches: List[Branch]) -> ConsolidatieInformatie:
         """Leidt de consolidatie-informatie af uit de staat van het interne versiebeheer
         
         Argumenten:
         
         logFout lambda(str)  Methode om een foutmelding te doen
-        actieResultaat ProjectactieResultaat  Het resultaat van de actie waarvoor de consolidatie-informatie wordt opgesteld
+        voortgang Projectvoortgang  Informatie over de projectvoortgang en het versiebeheer zoals bevoegd gezag dat uitvoert.
         branches [Branch]  De branches waarvoor de consolidatie-informatie samengesteld moet worden
         """
-        maker = ConsolidatieInformatieMaker (actieResultaat, branches)
+        maker = ConsolidatieInformatieMaker (logFout, voortgang, branches)
         maker._VoerUit ()
 
 #----------------------------------------------------------------------
@@ -67,18 +68,18 @@ class ConsolidatieInformatieMaker:
 # Implementatie
 #
 #----------------------------------------------------------------------
-    def __init__(self, logFout, actieResultaat: ProjectactieResultaat, branches: List[Branch]):
+    def __init__(self, logFout, voortgang: Projectvoortgang, branches: List[Branch]):
         """Maak een instantie van de maker
         
         Argumenten:
         
         logFout lambda(str)  Methode om een foutmelding te doen
-        actieResultaat ProjectactieResultaat  Het resultaat van de actie waarvoor de consolidatie-informatie wordt opgesteld
+        voortgang Projectvoortgang  Informatie over de projectvoortgang en het versiebeheer zoals bevoegd gezag dat uitvoert.
         branches [Branch]  De branches waarvoor de consolidatie-informatie samengesteld moet worden
         """
         self._LogFout = logFout
         self._IsValide = True
-        self._Resultaat = actieResultaat
+        self._Voortgang = voortgang
         self._Branches = list (sorted (branches, key = lambda x: str (x._Doel))) # Sortering ivm weergave op de resultaatpagina
         self._ConsolidatieInformatie = ConsolidatieInformatie (None, "(afgeleid uit intern versiebeheer)")
         self._ConsolidatieInformatie.GemaaktOp = actieResultaat._Projectactie.UitgevoerdOp
@@ -107,11 +108,10 @@ class ConsolidatieInformatieMaker:
                     if not eerderUitgewisseld is None:
                         eerderUitgewisseld.UitgewisseldVoor = [branch._Doel] # Alleen dit doel is interessant
                     nuUitgewisseld = instrumentinfo.Instrumentversie
-                    instrumentinfo.Instrumentversie = nuUitgewisseld.copy ()
+                    instrumentinfo.Instrumentversie = copy (nuUitgewisseld)
                     instrumentinfo.UitgewisseldeVersie = nuUitgewisseld
 
-                    # Zet gemaaktOp/doelen/was-versie voor de uitwisseling
-                    instrumentinfo.UitgewisseldeWasVersie
+                    # Zet gemaaktOp/doelen voor de uitwisseling
                     nuUitgewisseld.UitgewisseldOp = self._ConsolidatieInformatie.OntvangenOp
                     if nuUitgewisseld.IsJuridischUitgewerkt:
                         # Intrekking of terugtrekking
@@ -152,6 +152,7 @@ class ConsolidatieInformatieMaker:
             else:
                 # Beoogde versie
                 element = BeoogdeVersie (self._ConsolidatieInformatie, nuUitgewisseld.UitgewisseldVoor, workId, nuUitgewisseld.ExpressionId)
+                self._Voortgang.PubliekeInstrumentversies.add (nuUitgewisseld.ExpressionId)
 
                 # TODO: vervlechting/ontvlechting
 
@@ -324,7 +325,7 @@ class ConsolidatieInformatieVerwerker:
                     isValide = False
                 self._Voortgang.BekendeInstrumenten.add (beoogdeVersie.WorkId)
                 if not beoogdeVersie.ExpressionId is None:
-                    self._Voortgang.Versiebeheer.PubliekeInstrumentversies.add (beoogdeVersie.ExpressionId)
+                    self._Voortgang.PubliekeInstrumentversies.add (beoogdeVersie.ExpressionId)
 
         # Intrekkingen
         for intrekking in self._ConsolidatieInformatie.Intrekkingen:

@@ -39,9 +39,6 @@ class Versiebeheer:
         # bij het omzetten naar STOP consolidatie-informatie.
         # Lijst is gesorteerd op volgorde van inwerkingtreding - juridischGeldigVanaf
         self.Consolidatie : List[Consolidatie] = {}
-        # Alle gepubliceerde instrumentversies - deze versies hoeven niet
-        # opnieuw uitgewisseld te worden (althans niet in deze simulator)
-        self.PubliekeInstrumentversies = set ()
 
 #======================================================================
 #
@@ -92,10 +89,10 @@ class Branch:
         # key = work-Id
         self.Instrumentversies : Dict[str,InstrumentInformatie] = {}
         # De actuele (interne, binnen de creatie-keten) waarden van de tijdstempels
-        self.Tijdstempels = Tijdstempels (self)
+        self.Tijdstempels = Tijdstempels ()
         # De waarden van de tijdstempels zoals die voor het laatst zijn uitgewisseld met de LVBB 
         # voor deze branch
-        self.UitgewisseldeTijdstempels = Tijdstempels (self)
+        self.UitgewisseldeTijdstempels = Tijdstempels ()
         
 
 #----------------------------------------------------------------------
@@ -124,9 +121,6 @@ class InstrumentInformatie:
         # De versie van het instrument op deze branch die eerder is uitgewisseld met de LVBB
         # None als er nog geen versie is uitgewisseld
         self.UitgewisseldeVersie : Instrumentversie = None
-        # De versie van het instrument dat als was-versie is gebruikt bij het doorgeven van de
-        # eerder uitgewisselde versie.
-        self.UitgewisseldeWasVersie : str = None
 
 #----------------------------------------------------------------------
 #
@@ -247,7 +241,7 @@ class Consolidatie:
         # geen wijziging meer optreedt, dan moet deze consolidatie bijgewerkt worden.
         # De doelen van die eerdere consolidatie staan in:
         self.TeOntvlechtenMet: List[Doel] = None
-        # De instrumentversies waarvan op dit moment een geconsoliderede versie beschikbaar is
+        # De instrumentversies waarvan op dit moment een geconsolideerde versie beschikbaar is
         self.Instrumentversies : Dict[str,GeconsolideerdeVersie] = {}
 
     # Hoogste status telt.

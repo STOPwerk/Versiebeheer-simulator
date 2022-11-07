@@ -13,8 +13,7 @@
 #
 #======================================================================
 
-from msilib.schema import AppId
-from typing import Concatenate, Dict
+from typing import Dict
 from data_bg_versiebeheer import Versiebeheer, Branch, InstrumentInformatie, Consolidatie, GeconsolideerdeVersie, Instrumentversie
 
 class Consolideren:

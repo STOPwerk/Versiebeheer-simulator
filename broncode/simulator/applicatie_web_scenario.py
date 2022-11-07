@@ -26,28 +26,27 @@ class ScenarioPostedDataIterator (ScenarioIterator):
         files {} Meegestuurde bestanden
         """
         super ().__init__()
+        self.MeldingenApart = False
         self._Log = log
         self._Data = []
-        fileData = []
         if not files is None and 'files[]' in files:
             files = files.getlist('files[]')
             for file in files:
                 fileType = os.path.splitext (file.filename)[1]
                 try:
-                    data = file.stream.read ().decode("utf-8")
+                    data = file.stream.read ().decode("utf-8").strip ()
                     if fileType == '.json' or fileType == '.xml':
-                        fileData.append ((file.filename, data.strip ()))
+                        if len(data) == 0:
+                            self._Log.Waarschuwing ("Leeg bestand '" + file.filename + "' genegeerd")
+                        else:
+                            self._Data.append ((file.filename, data))
                     elif file.filename != '':
                         self._Log.Waarschuwing ("Bestand '" + file.filename + "' genegeerd; is geen .xml of .json bestand")
                 except Exception as e:
                     self._Log.Fout ("Bestand '" + file.filename + "' bevat geen valide utf-8: " + str(e))
         if not onlineInvoer is None:
-            fileData.extend ([(d, t.strip ()) for d, t in onlineInvoer.items () if d.startswith ('onlineInvoer')])
-        for naam, data in fileData:
-            if len(data) == 0:
-                self._Log.Waarschuwing ("Leeg bestand '" + naam + "' genegeerd")
-            else:
-                self._Data.append ((naam, data))
+            fileData = [(d, t.strip ()) for d, t in onlineInvoer.items () if d.startswith ('onlineInvoer')]
+            self._Data.extend ((d,t) for d,t in fileData if len(t) > 0)
 
     def VindElkScenario (self, lees_scenario):
         """Vind elk scenario en roep lees_scenario aan met de iterator als argument als een potentieel scenario gevonden is

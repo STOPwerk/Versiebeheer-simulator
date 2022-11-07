@@ -18,7 +18,7 @@ from typing import Dict, List
 from copy import copy
 from data_doel import Doel
 from data_bg_projectvoortgang import Branch
-from data_bg_versiebeheer import Versiebeheer, InstrumentInformatie, Instrumentversie, Tijdstempels, Consolidatie, Consolidatieversie
+from data_bg_versiebeheer import Versiebeheer, InstrumentInformatie, Instrumentversie, Tijdstempels, Consolidatie
 
 #----------------------------------------------------------------------
 #
@@ -26,7 +26,7 @@ from data_bg_versiebeheer import Versiebeheer, InstrumentInformatie, Instrumentv
 #               bijgehouden moet worden c.q. afleidbaar moet zijn.
 #
 #----------------------------------------------------------------------
-class VersiebeheerWeergave:
+class VersiebeheerWeergave (Versiebeheer):
 
     def __init__ (self, origineel : Versiebeheer):
         """Maak een kopie van het versiebeheer bij het bevoegd gezag voor weergave.
@@ -38,8 +38,11 @@ class VersiebeheerWeergave:
         super ().__init__ ()
         # Informatie over alle doelen die door bevoegd gezag beheerd worden
         self.Branches : Dict[Doel,Branch] = { d: self._KloonBranch (b) for d, b in origineel.Branches.items () }
-        # De consolidaties van elk bekend instrument
-        self.Consolidaties : Dict[str,Consolidatie] = { w: self._KloonConsolidatie (c) for w, c in origineel.Consolidaties.items () }
+        # De consolidatie kan bij het bevoegd gezag op het niveau van branches
+        # worden bijgehouden. Dat wordt vertaald naar informatie per instrument
+        # bij het omzetten naar STOP consolidatie-informatie.
+        # Lijst is gesorteerd op volgorde van inwerkingtreding - juridischGeldigVanaf
+        self.Consolidaties : List[Consolidatie] = origineel.Consolidaties
 
     def _KloonBranch (self, origineel: Branch):
         """Maak een kloon van de branch"""
@@ -57,11 +60,5 @@ class VersiebeheerWeergave:
             kloon.Instrumentversie = copy (origineel.Instrumentversie)
         if not origineel.Uitgangssituatie is None:
             kloon.Uitgangssituatie = copy (origineel.Uitgangssituatie)
-        return kloon
-
-    def _KloonConsolidatie (self, origineel : Consolidatie):
-        """Maak een kloon van de Consolidatie"""
-        kloon = Consolidatie (origineel._WorkId)
-        kloon.Versies = origineel.Versies.copy ()
         return kloon
 

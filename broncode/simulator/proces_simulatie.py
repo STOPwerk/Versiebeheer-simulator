@@ -21,6 +21,7 @@ from data_bg_project import ProjectActie
 from data_bg_projectvoortgang import ProjectactieResultaat, UitgewisseldeSTOPModule
 from weergave_data_bg_versiebeheer import VersiebeheerWeergave
 from weergave_resultaat_data import WeergaveData
+from proces_bg_consolidatie import Consolideren
 from proces_bg_consolidatieinformatie import ConsolidatieInformatieVerwerker
 from proces_bg_procesbegeleiding import Procesbegeleiding
 from proces_lv_versiebeheerinformatie import WerkVersiebeheerinformatieBij
@@ -69,20 +70,24 @@ class Proces_Simulatie:
                         if not isValide:
                             # Er is iets fout gegaan
                             return
-                        # Bewaar een kopie van het interne versiebeheer voor weergave
-                        actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
                 else:
                     # Project actie: voer de actie uit
                     isValide, consolidatieInformatie, actieResultaat = Procesbegeleiding.VoerUit (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
                     if not isValide:
                         # Er is iets fout gegaan
                         return
+
+                if self.Scenario.Opties.Versiebeheer:
+                    # Maak opnieuw de consolidatie aan op basis van intern versiebeheer
+                    # Dit hoeft eigenlijk niet altijd, maar het is teveel moeite voor de ontwikkelaar van de simulator
+                    # om precies bij te houden wanneer het wel en niet hoeft.
+                    Consolideren.VoerUit (self.Scenario.Projectvoortgang.Versiebeheer, consolidatieInformatieBron.GemaaktOp())
                     # Bewaar een kopie van het interne versiebeheer voor weergave
                     actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
-                    if consolidatieInformatie is None:
-                        # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
-                        continue
 
+                if consolidatieInformatie is None:
+                    # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
+                    continue
                 # Verwerk de uitgewisselde consolidatie-informatie. Een productie-waardige (ontvangende) applicatie begint
                 # hier met de verwerking na ontvangst van een uitwisseling
                 self.Scenario.Log.Informatie ("Verwerk de consolidatie-informatie ontvangen op " + consolidatieInformatie.OntvangenOp + " (@" + consolidatieInformatie.GemaaktOp + ")")

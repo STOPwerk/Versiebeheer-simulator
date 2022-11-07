@@ -28,8 +28,9 @@ from data_bg_project import ProjectActie, ProjectActie_NieuwDoel, ProjectActie_D
 from data_bg_projectvoortgang import Projectvoortgang, Branch, Projectstatus, ProjectactieResultaat, UitgewisseldeSTOPModule, UitgewisseldMaarNietViaSTOP
 from data_bg_versiebeheer import InstrumentInformatie, Instrumentversie
 from data_doel import Doel
-from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Intrekking, Terugtrekking, TerugtrekkingIntrekking, Tijdstempel, TerugtrekkingTijdstempel, Momentopname as CI_Momentopname
+from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
 from stop_momentopname import DownloadserviceModules, Momentopname, InstrumentversieInformatie
+from stop_consolidatieinformatie import ConsolidatieInformatie
 
 #======================================================================
 #
@@ -57,10 +58,10 @@ class Procesbegeleiding:
         """
 
         # Maak de uitvoerder van de actie aan
-        if not actie.SoortActie in ProjectactieUitvoering._Uitvoerders:
+        if not actie.SoortActie in Procesbegeleiding._Uitvoerders:
             log.Fout ("Geen code beschikbaar om actie uit te voeren: '" + actie.SoortActie + "'")
         else:
-            uitvoerder = ProjectactieUitvoering._Uitvoerders[actie.SoortActie] ()
+            uitvoerder = Procesbegeleiding._Uitvoerders[actie.SoortActie] ()
             uitvoerder._Log = log
             uitvoerder._Scenario = scenario
             uitvoerder._Projectvoortgang = scenario.Projectvoortgang
@@ -238,7 +239,8 @@ class Procesbegeleiding:
         """
         succes = True
 
-        alleInstrumentversies : Dict[str,Instrumentversie] = {}
+        # Bepaal de collectie van instrumentversies die de uitgangssituatie vormen
+        uitgangssituatie : Dict[str,Instrumentversie] = {}
         if not uitgangssituatie_doel is None:
             #
             # Uitgangssituatie: versies van een andere branch
@@ -260,7 +262,7 @@ class Procesbegeleiding:
             branch.Uitgangssituatie_Doel = uitgangssituatie_branch
             branch.Uitgangssituatie_GeldigOp = None
             branch.Uitgangssituatie_LaatstGewijzigdOp = [(uitgangssituatie_branch, uitgangssituatie_branch.LaatstGewijzigdOp)]
-            alleInstrumentversies = uitgangssituatie_branch.Instrumentversies
+            uitgangssituatie = uitgangssituatie_branch.Instrumentversies
 
         elif not uitgangssituatie_geldigOp is None:
             #
@@ -277,10 +279,10 @@ class Procesbegeleiding:
 
         # Overschrijf evt de uitgangssituatie met de nieuwe versies
         for workId, instrumentversie in nieuweInstrumentversies.items ():
-            alleInstrumentversies[workId] = instrumentversie
+            uitgangssituatie[workId] = instrumentversie
 
         # Werk de branch bij
-        for workId, instrumentversie in alleInstrumentversies.items ():
+        for workId, instrumentversie in uitgangssituatie.items ():
             instrumentinfo = branch.Instrumentversies.get (workId)
             if instrumentinfo is None:
                 if instrumentversie.IsTeruggetrokken:
@@ -327,8 +329,6 @@ class Procesbegeleiding:
 
         return succes
 
-    def _MaakConsolidatie (self):
-
 
 #======================================================================
 #
@@ -346,7 +346,7 @@ class Procesbegeleiding:
 # aan een (nieuwe) branch te gaan werken.
 #
 #----------------------------------------------------------------------
-class _VoerUit_NieuwDoel (ProjectactieUitvoering):
+class _VoerUit_NieuwDoel (Procesbegeleiding):
 
     def __init__ (self):
         super ().__init__ ()
@@ -418,7 +418,7 @@ class _VoerUit_NieuwDoel (ProjectactieUitvoering):
 # versie.
 #
 #----------------------------------------------------------------------
-class _VoerUit_Download (ProjectactieUitvoering):
+class _VoerUit_Download (Procesbegeleiding):
 
     def __init__ (self):
         super ().__init__ ()
@@ -499,7 +499,7 @@ class _VoerUit_Download (ProjectactieUitvoering):
 # het bevoegd gezag om de startversie aan een adviesbureau te geven.
 #
 #----------------------------------------------------------------------
-class _VoerUit_Uitwisseling (ProjectactieUitvoering):
+class _VoerUit_Uitwisseling (Procesbegeleiding):
 
     def __init__ (self):
         super ().__init__ ()
@@ -596,7 +596,7 @@ class _VoerUit_Uitwisseling (ProjectactieUitvoering):
 # bevoegd gezag. De instrumentversies op de branch worden aangepast.
 #
 #----------------------------------------------------------------------
-class _VoerUit_Wijziging (ProjectactieUitvoering):
+class _VoerUit_Wijziging (Procesbegeleiding):
 
     def __init__ (self):
         super ().__init__ ()
@@ -648,7 +648,7 @@ class _VoerUit_Wijziging (ProjectactieUitvoering):
 # één of meer doelen binnen het project.
 #
 #----------------------------------------------------------------------
-class _VoerUit_Publicatie (ProjectactieUitvoering):
+class _VoerUit_Publicatie (Procesbegeleiding):
 
     def __init__ (self):
         super ().__init__ ()
@@ -809,13 +809,13 @@ class _VoerUit_Publicatie (ProjectactieUitvoering):
         return succes
  
     class _ElementMetRelaties:
-        def __init__ (self, element : VoorInstrument, basisversies : List[MomentopnameInstrument]):
+        def __init__ (self, element, basisversies):
             """Maak een nieuw in-memory bakje met de te leggen relaties
             """
             self.Element = element
             self.Basisversies = basisversies
-            self.VervlochtenMet : List[MomentopnameInstrument] = []
-            self.OntvlochtenMet : List[MomentopnameInstrument] = []
+            self.VervlochtenMet = []
+            self.OntvlochtenMet = []
 
         def VoegRelatiesToe (self):
             # Voeg de relaties toe aan de consolidatie-informatie
