@@ -405,9 +405,6 @@ class _VoerUit_NieuwDoel (Procesbegeleiding):
                 instrumentinfo.Instrumentversie.ExpressionId = instrumentinfo.Uitgangssituatie.ExpressionId
                 instrumentinfo.Instrumentversie.UitgewisseldVoor = [branch._Doel]
 
-        if succes:
-            self._RapporteerBranch (branch)
-
         return succes
 
 #----------------------------------------------------------------------
