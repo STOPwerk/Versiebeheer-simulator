@@ -21,8 +21,9 @@ from data_bg_project import ProjectActie
 from data_bg_projectvoortgang import ProjectactieResultaat, UitgewisseldeSTOPModule
 from weergave_data_bg_versiebeheer import VersiebeheerWeergave
 from weergave_resultaat_data import WeergaveData
-from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
-from proces_bg_projectacties import ProjectactieUitvoering
+from proces_bg_consolidatie import Consolideren
+from proces_bg_consolidatieinformatie import ConsolidatieInformatieVerwerker
+from proces_bg_procesbegeleiding import Procesbegeleiding
 from proces_lv_versiebeheerinformatie import WerkVersiebeheerinformatieBij
 from proces_lv_proefversies import MaakProefversies
 from proces_lv_completetoestanden import MaakCompleteToestanden
@@ -65,7 +66,7 @@ class Proces_Simulatie:
                     consolidatieInformatie = consolidatieInformatieBron.Module
                     if self.Scenario.Opties.Versiebeheer:
                         # Verwerk dat in het versiebeheer van het bevoegd gezag
-                        isValide, actieResultaat = ConsolidatieInformatieMaker.WerkBij (self.Scenario.Log, self.Scenario.Projectvoortgang, consolidatieInformatie, consolidatieInformatieBron.Actie)
+                        isValide, actieResultaat = ConsolidatieInformatieVerwerker.WerkBij (self.Scenario.Log, self.Scenario.Projectvoortgang, consolidatieInformatie, consolidatieInformatieBron.Actie)
                         if not isValide:
                             # Er is iets fout gegaan
                             return
@@ -73,16 +74,22 @@ class Proces_Simulatie:
                         actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
                 else:
                     # Project actie: voer de actie uit
-                    isValide, consolidatieInformatie, actieResultaat = ProjectactieUitvoering.Voor (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
+                    isValide, consolidatieInformatie, actieResultaat = Procesbegeleiding.VoerUit (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
                     if not isValide:
                         # Er is iets fout gegaan
                         return
+
+                if self.Scenario.Opties.Versiebeheer:
+                    # Maak opnieuw de consolidatie aan op basis van intern versiebeheer
+                    # Dit hoeft eigenlijk niet altijd, maar het is teveel moeite voor de ontwikkelaar van de simulator
+                    # om precies bij te houden wanneer het wel en niet hoeft.
+                    Consolideren.VoerUit (self.Scenario.Projectvoortgang.Versiebeheer, consolidatieInformatieBron.GemaaktOp())
                     # Bewaar een kopie van het interne versiebeheer voor weergave
                     actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
-                    if consolidatieInformatie is None:
-                        # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
-                        continue
 
+                if consolidatieInformatie is None:
+                    # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
+                    continue
                 # Verwerk de uitgewisselde consolidatie-informatie. Een productie-waardige (ontvangende) applicatie begint
                 # hier met de verwerking na ontvangst van een uitwisseling
                 self.Scenario.Log.Informatie ("Verwerk de consolidatie-informatie ontvangen op " + consolidatieInformatie.OntvangenOp + " (@" + consolidatieInformatie.GemaaktOp + ")")

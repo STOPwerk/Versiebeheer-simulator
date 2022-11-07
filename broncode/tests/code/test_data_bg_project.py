@@ -26,10 +26,7 @@ class Test_data_bg_project(unittest.TestCase):
             "SoortActie": "Nieuw doel",
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "Doel": "/join/id/proces/gm9999/2022/Project"
         }
     ]
 }''','''{
@@ -39,10 +36,7 @@ class Test_data_bg_project(unittest.TestCase):
             "SoortActie": "Nieuw doel",
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "Doel": "/join/id/proces/gm9999/2022/Project"
         }
     ]
 }''')
@@ -56,10 +50,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Uitgangssituatie": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "Uitgangssituatie": "2022-06-01"
         }
     ]
 }''','''{
@@ -70,10 +61,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GebaseerdOp_GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "GebaseerdOp_GeldigOp": "2022-06-01"
         }
     ]
 }''')
@@ -87,10 +75,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Uitgangssituatie": "/join/id/proces/gm9999/2022/Instelling",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "Uitgangssituatie": "/join/id/proces/gm9999/2022/Instelling"
         }
     ]
 }''','''{
@@ -101,10 +86,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GebaseerdOp_Doel": "/join/id/proces/gm9999/2022/Instelling",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "GebaseerdOp_Doel": "/join/id/proces/gm9999/2022/Instelling"
         }
     ]
 }''')
@@ -119,10 +101,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Uitgangssituatie": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "Uitgangssituatie": "2022-06-01"
         }
     ]
 }''','''{
@@ -134,10 +113,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GebaseerdOp_GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "GebaseerdOp_GeldigOp": "2022-06-01"
         }
     ]
 }''')
@@ -151,11 +127,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''','''{
@@ -166,11 +138,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GebaseerdOp_GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GebaseerdOp_GeldigOp": "2022-06-01"
         }
     ]
 }''')
@@ -433,11 +401,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None,True)
@@ -451,11 +415,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -470,11 +430,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -542,11 +498,7 @@ class Test_data_bg_project(unittest.TestCase):
             "SoortActie": "Download",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -560,11 +512,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": 42,
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -578,11 +526,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "AAAA-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -596,11 +540,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         },
         {
             "SoortActie": "Wijziging",
@@ -622,11 +562,7 @@ class Test_data_bg_project(unittest.TestCase):
             "SoortActie": "Download",
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -640,11 +576,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": true,
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -713,11 +645,7 @@ class Test_data_bg_project(unittest.TestCase):
             "SoortActie": "Download",
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -731,11 +659,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": 42,
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": "2022-06-01"
         }
     ]
 }''',None)
@@ -817,11 +741,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Uitgangssituatie": 42,
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "Uitgangssituatie": 42
         }
     ]
 }''',None)
@@ -834,11 +754,7 @@ class Test_data_bg_project(unittest.TestCase):
             "SoortActie": "Download",
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "Doel": "/join/id/proces/gm9999/2022/Project"
         }
     ]
 }''',None)
@@ -852,11 +768,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": true,
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
+            "GeldigOp": true
         }
     ]
 }''',None)
@@ -870,127 +782,7 @@ class Test_data_bg_project(unittest.TestCase):
             "UitgevoerdOp": "2022-05-25T07:00:00Z",
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-05-25T07:00:00Z",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/join/id/regdata/2022/IO_A"
-            ]
-        }
-    ]
-}''',None)
-
-    def test_Fout_GeenInstrumenten(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Download",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01"
-        }
-    ]
-}''',None)
-
-    def test_Fout_InstrumentenGeenArray(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Download",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": {
-                "Antwoord": 42
-            }
-        }
-    ]
-}''',None)
-
-    def test_Fout_InstrumentenLeeg(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Download",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-            ]
-        }
-    ]
-}''',None)
-
-    def test_Fout_InstrumentenGeenString(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Download",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                42
-            ]
-        }
-    ]
-}''',None)
-
-    def test_Fout_InstrumentenGeenRegelingIO(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Download",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/geen/work"
-            ]
-        }
-    ]
-}''',None)
-
-    def test_Fout_InstrumentenExpression(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Download",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1"
-            ]
-        }
-    ]
-}''',None)
-
-    def test_Fout_InstrumentenDubbel(self):
-        self._Test_LeesJson ('''{
-    "Project": "P1",
-    "Acties": [
-        {
-            "SoortActie": "Download",
-            "UitgevoerdOp": "2022-05-25T07:00:00Z",
-            "Beschrijving": "Enige actie",
-            "Doel": "/join/id/proces/gm9999/2022/Project",
-            "GeldigOp": "2022-06-01",
-            "Instrumenten": [
-                "/akn/nl/act/gm9999/2022/REG_A",
-                "/akn/nl/act/gm9999/2022/REG_A"
-            ]
+            "GeldigOp": "2022-05-25T07:00:00Z"
         }
     ]
 }''',None)

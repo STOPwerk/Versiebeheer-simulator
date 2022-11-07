@@ -22,7 +22,6 @@ from typing import Dict, List, Tuple
 from data_doel import Doel
 from data_bg_project import Project, ProjectActie, Instrumentversie
 from data_bg_versiebeheer import Versiebeheer, Branch as VersiebeheerBranch
-from weergave_data_bg_versiebeheer import VersiebeheerWeergave
 
 #----------------------------------------------------------------------
 #
@@ -46,6 +45,9 @@ class Projectvoortgang:
         # voor deze works mogen alleen in projecten gedaan worden als het
         # work expliciet als te beheren instrument aan een branch is toegevoegd.
         self.BekendeInstrumenten = set ()
+        # Alle gepubliceerde instrumentversies - deze versies hoeven niet
+        # opnieuw uitgewisseld te worden (althans niet in deze simulator)
+        self.PubliekeInstrumentversies = set ()
 
 #======================================================================
 #
@@ -67,6 +69,21 @@ class Projectstatus:
         self.Branches : Dict[Doel,Branch] = {}
         # De branches waar in het project aan gewerkt wordt door een adviesbureau
         self.ExterneBranches : Dict[Doel,Branch] = {}
+
+class InstrumentMutatie:
+
+    def __init__ (self):
+        """Maak een nieuwe instantie aan van een mutatie van een instrument
+        """
+        # Een lijst met de expressionId van de mogelijke was-versies voor de mutatie
+        # en het doel van de branch waaraan de versie ontleend is.
+        self.Was : List[Tuple[Doel,str]] = []
+        # De expressionId van de wordt-versie van de mutatie
+        self.Wordt : str = None
+        # Geeft aan of de mutatie juridische betekenis heeft en dus onderdeel moet zijn
+        # van een juridische tekst. Als dat niet zo is, dan is de mutatie een redactioneel
+        # product dat in het kader van het consolideren gemaakt wordt.
+        self.IsJuridisch : bool = None
 
 class UitgewisseldeSTOPModule:
 
@@ -107,7 +124,10 @@ class ProjectactieResultaat:
         # Parameters en data voor de actie; alleen voor weergave
         self.Data : List[Tuple[str,List[str]]] = []
         # Kopie van het interne versiebeheer dat resulteert uit de projectactie
-        self._Versiebeheer : VersiebeheerWeergave = None
+        self._Versiebeheer : Versiebeheer = None # instantie is VersiebeheerWeergave 
+        # Een overzicht van de mutaties die leiden tot de nieuwe versies in het versiebeheer
+        # als gevolg van deze acties.
+        self.Mutaties : List[InstrumentMutatie] = []
         # Alleen voor weergave: de STOP module(s) die in de keten uitgewisseld worden
         self.Uitgewisseld : List[UitgewisseldeSTOPModule] = []
 

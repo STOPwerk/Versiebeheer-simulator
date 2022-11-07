@@ -384,14 +384,18 @@ class MaakToestanden:
         # Bepaal de kandidaat-instrumentversies
         consolidatieStap = Weergave_Toestandbepaling.BepaalKandidaatInstrumentversie
         kandidaatVersies = {} # Alle kandidaat-instrumentversies; key = instrumentversie, value = lijst van TegensprekendDoel voor een van de doelen uit een momentopname
-        onbekendeVerises = 0 # Aantal momentopnamen waarvoor een onbekende versie is doorgegeven
+        aantalMomentopnamen = 0 # Aantal verschillende momentopnamen die aan de toestand bijdragen
 
-        doelenGezien = [] # doelen waarvoor al een momentopname is verwerkt
+        momentopnameOnbekendeVersie = set () # momentopnamen (doel + gemaaktOp) die al verwerkt is
+        aantalMomentopnamen = 0
         for doel in toestand.Inwerkingtredingsdoelen:
-            if doel in doelenGezien:
-                continue
             momentopname = self.LaatsteMomentopname(doel)
-            doelenGezien.extend (momentopname.Doelen)
+            if momentopname.GemaaktOp + str(doel) in momentopnameOnbekendeVersie:
+                # Deze is al eerder verwerkt
+                continue
+            aantalMomentopnamen += 1
+            for d in momentopname.Doelen:
+                momentopnameOnbekendeVersie.add (momentopname.GemaaktOp + str(d))
 
             versie = momentopname.ExpressionId
             if not versie is None:
@@ -403,11 +407,10 @@ class MaakToestanden:
             else:
                 # Als er twee keer een onbekende versie uitgewisseld is voor de toestand.
                 # dan weten we niet of dat dezelfde is. Tel daarom elke onbekende versie 
-                # als een aparte versie. Via doelenGezien wordt ervoor gezorgd dat de uitwisseling
-                # elke onbekende versie maar een keer wordt meegeteld.
+                # als een aparte versie, behalve als ze uit dezelfde momentopname komen
+
                 # Gebruik nummer als key, zodat we nog steeds het aantal verschillende versies kunnen tellen
-                onbekendeVerises += 1
-                kandidaatVersies[str(onbekendeVerises)] = [TegensprekendDoel (doel, momentopname.GemaaktOp)]
+                kandidaatVersies['(onbekend)'] = [TegensprekendDoel (doel, momentopname.GemaaktOp)]
                 _MaakMelding ('Geen instrumentversie bekend voor ' + ('' if len (momentopname.Doelen) == 1 else 'o.a. ') + 'doel ' + str(doel), Melding.Ernst_Waarschuwing)
 
                 # In een productie-waardige applicatie kan nu de inhoudbepaling voor een complete toestand afgebroken worden
@@ -437,8 +440,10 @@ class MaakToestanden:
             _MaakMelding ('Er zijn meerdere kandidaat-versies; niet alle inwerkingtredingsdoelen hebben dezelfde instrumentversie', Melding.Ernst_Fout)
             for lijst in kandidaatVersies.values ():
                 resultaat.TegensprekendeDoelen.extend (lijst)
-        elif onbekendeVerises > 0:
-            _MaakMelding ('Alle inwerkingtredingsdoelen hebben dezelfde beoogde instrumentversie, maar welke versie dat is, is onbekend')
+        elif aantalMomentopnamen > 1:
+            _MaakMelding ('Dezelfde kandidaatversie is in meerdere momentopnamen aangeleverd in plaats van één momentopnamen met meerdere doelen', Melding.Ernst_Fout)
+            for lijst in kandidaatVersies.values ():
+                resultaat.TegensprekendeDoelen.extend (lijst)
         else:
             _MaakMelding ('Alle inwerkingtredingsdoelen hebben dezelfde beoogde instrumentversie')
             resultaat.KandidaatInstrumentversie = resultaat.Instrumentversie = list (kandidaatVersies.keys ())[0]
