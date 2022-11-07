@@ -20,7 +20,7 @@ class Test_data_lv_consolidatie(unittest.TestCase):
     def test_MaakToestandExpressionId (self):
 
         instrument = Instrument (None, "/akn/nl/act/gm9999/2022/instrument")
-        scenario = Scenario (None, '')
+        scenario = Scenario (None, '', True)
         scenario.Opties = ProcesOpties ()
         consolidatie = GeconsolideerdInstrument (scenario, instrument)
         consolidatie.ConsolidatieIdentificatie = ConsolidatieIdentificatie (scenario, consolidatie.Instrument.WorkId, "2022-01-01")
