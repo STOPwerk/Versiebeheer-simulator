@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//03a Rectificaties staande praktijk\">03 03a Rectificaties staande praktijk - Scenario C</a>.</p><p>In dit voorbeeld wordt een rectificatie van een initi\u00c3\u00able regeling bekendgemaakt. De rectificatie bevat een gewijzigde inwerkingtredingsdatum.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Rectificatie besluit",
+            "gemaaktOp": "2010-10-18T09:01:00Z",
+            "beschrijving": "De gerectificeerde regelingversie de gewijzigde inwerkingtredingsdatum naar 12-10-2010."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able versie",
+            "gemaaktOp": "2010-10-11T09:01:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling met inwerkingtredingsdatum 10-10-2010."
+        }
+    ],
+    "Procesopties": true
+}

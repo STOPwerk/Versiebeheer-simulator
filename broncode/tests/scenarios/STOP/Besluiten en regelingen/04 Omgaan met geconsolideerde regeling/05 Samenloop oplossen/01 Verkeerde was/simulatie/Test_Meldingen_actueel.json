@@ -1,10 +1,1 @@
-[
-    {
-        "Ernst": "FOUT",
-        "Tekst": "BeoogdeRegeling voor (/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan, @2020-02-28T09:00:00Z) en instrument /akn/nl/act/gm9999/2020/REG0001 mag geen basisversie hebben voor hetzelfde doel maar heeft als basisversie (/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan, @2020-02-28T09:00:00Z)"
-    },
-    {
-        "Ernst": "FOUT",
-        "Tekst": "BeoogdeRegeling voor (/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan, @2020-02-28T09:00:00Z) en instrument /akn/nl/act/gm9999/2020/REG0001 heeft een VervlochtenVersies die verwijst naar een onbekende momentopname (/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan, @2020-02-18T09:00:00Z)"
-    }
-]
+[]

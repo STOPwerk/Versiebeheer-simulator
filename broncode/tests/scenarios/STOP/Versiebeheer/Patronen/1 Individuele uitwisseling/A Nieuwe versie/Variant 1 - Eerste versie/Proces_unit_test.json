@@ -1,0 +1,11 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1versie.html\">patroon 1A Nieuwe versie van een regeling of informatieobject - Variant 1 - Initi\u00c3\u00able versie</a>: In dit scenario wordt middels een besluit de eerste versie van een nieuwe regeling bekend gemaakt. In dit voorbeeld wordt ook een inwerkingtredingsdatum meegegeven; het patroon blijft van toepassing als de inwerkingtreding in een apart besluit zou worden vastgesteld.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - initi\u00c3\u00able versie",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Eerste versie van een nieuwe regeling."
+        }
+    ],
+    "Procesopties": true
+}

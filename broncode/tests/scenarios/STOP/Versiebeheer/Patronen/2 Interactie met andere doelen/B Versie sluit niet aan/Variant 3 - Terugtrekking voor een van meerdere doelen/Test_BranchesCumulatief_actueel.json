@@ -1,0 +1,107 @@
+{
+    "Testresultaat - Cumulatieve versieinformatie": {
+        "/akn/nl/act/gm9999/2022/REG_A": {
+            "/join/id/proces/gm9999/2022/Instelling": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2022/Instelling": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-01-01T07:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2022-01-01T07:00:00Z"
+                },
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2022/Instelling": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-02-01T07:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2022/Wijziging": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-02-01T07:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2022-02-01T07:00:00Z"
+                },
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2022/Instelling": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-04-15T07:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2022/Wijziging": {
+                            "IsOntvlochten": true,
+                            "LaatstVerwerkt": "2022-04-01T07:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2022-04-15T07:00:00Z"
+                }
+            ],
+            "/join/id/proces/gm9999/2022/Wijziging": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2022/Instelling": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-02-01T07:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2022/Wijziging": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-02-01T07:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2022-02-01T07:00:00Z"
+                },
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2022/Instelling": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-02-01T07:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2022/Wijziging": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-04-01T07:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2022-04-01T07:00:00Z"
+                }
+            ],
+            "/join/id/proces/gm9999/2022/Wijziging2": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2022/Instelling": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-02-01T07:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2022/Wijziging": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-02-01T07:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2022/Wijziging2": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-03-01T07:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2022-03-01T07:00:00Z"
+                },
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/gm9999/2022/Instelling": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-04-15T07:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2022/Wijziging": {
+                            "IsOntvlochten": true,
+                            "LaatstVerwerkt": "2022-04-01T07:00:00Z"
+                        },
+                        "/join/id/proces/gm9999/2022/Wijziging2": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2022-04-15T07:00:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2022-04-15T07:00:00Z"
+                }
+            ]
+        }
+    }
+}

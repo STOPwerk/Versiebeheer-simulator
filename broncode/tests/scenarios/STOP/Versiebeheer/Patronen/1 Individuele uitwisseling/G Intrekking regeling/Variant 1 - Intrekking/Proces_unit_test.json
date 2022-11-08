@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 1G Intrekking van een regeling (of informatieobject) - Variant 1 - Intrekking</a>: In dit scenario wordt er middels een besluit een intrekking van een regeling bekend gemaakt. Hiervoor kan gekozen worden wanneer een regeling niet meer nodig is, de juridische werking ervan wordt be\u00c3\u00abindigd. Het is geen intrekking in de zin dat de regeling met terugwerkende kracht ongedaan wordt gemaakt.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Tweede besluit met intrekking",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Het tweede besluit met de intrekking van de bestaande regeling."
+        },
+        {
+            "naam": "Vooraf - nieuwe versie regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een nieuwe versie van de regeling."
+        }
+    ],
+    "Procesopties": true
+}

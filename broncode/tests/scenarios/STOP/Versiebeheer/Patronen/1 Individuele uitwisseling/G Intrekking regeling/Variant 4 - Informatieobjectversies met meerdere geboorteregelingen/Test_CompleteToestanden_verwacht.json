@@ -1,0 +1,166 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/mnre1034/2022/GemeentenViaGIO": {
+            "BekendOp": "2022-01-01",
+            "OntvangenOp": "2022-01-01",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/land/2022/regeling1/nld@2022-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/mnre1034/2022/Instelling"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Instrumentversie": "/akn/nl/act/mnre1034/2022/GemeentenViaGIO/nld@2022;v1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-01-01",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-01-01"
+                }
+            ]
+        },
+        "/akn/nl/act/mnre1034/2022/HerindelingGemeenten2023": {
+            "BekendOp": "2022-11-01",
+            "OntvangenOp": "2022-11-01",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/land/2022/regeling3/nld@2023-12-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/IntrekkingGemeenteHerindeling2023"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/land/2022/regeling3/nld@2022-09-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/mnre1034/2022/Herindeling"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "IsNietInWerking": true
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/mnre1034/2022/HerindelingGemeenten2023/nld@2022;v1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-11-01",
+                    "GeldigVanaf": "2023-12-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2023-12-01",
+                    "OntvangenOp": "2022-11-01"
+                },
+                {
+                    "BekendOp": "2022-07-01",
+                    "GeldigVanaf": "2022-09-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-09-01",
+                    "OntvangenOp": "2022-07-01"
+                }
+            ]
+        },
+        "/join/id/regdata/2022/NederlandseGemeenten": {
+            "BekendOp": "2022-11-01",
+            "OntvangenOp": "2022-11-01",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2023-12-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/IntrekkingGemeenteHerindeling2023"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-09-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/mnre1034/2022/Herindeling"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/mnre1034/2022/Instelling"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/mnre1034/2022/Herindeling",
+                        "/join/id/proces/mnre1034/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2023;initieel",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/mnre1034/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2023;met_herindeling",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2022;initieel",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-11-01",
+                    "GeldigVanaf": "2023-12-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2023-12-01",
+                    "OntvangenOp": "2022-11-01"
+                },
+                {
+                    "BekendOp": "2022-07-01",
+                    "GeldigVanaf": "2022-09-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-09-01",
+                    "OntvangenOp": "2022-07-01"
+                },
+                {
+                    "BekendOp": "2022-01-01",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 2,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-01-01"
+                }
+            ]
+        }
+    }
+}

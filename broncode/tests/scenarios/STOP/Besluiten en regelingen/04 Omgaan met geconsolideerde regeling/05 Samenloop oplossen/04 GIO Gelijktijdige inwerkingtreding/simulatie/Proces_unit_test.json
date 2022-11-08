@@ -1,3 +1,26 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//04 Omgaan met geconsolideerde regeling//05 Samenloop oplossen//03 04 GIO Gelijktijdige inwerkingtreding\">04 05 04 GIO Gelijktijdige inwerkingtreding</a>.</p><p>Dit voorbeeld laat zien hoe samenloop ontstaat en opgelost kan worden als twee besluiten tegelijk in werkingtreden met allebei wijzigingen op dezelfde GIO-versie. De consolidatie kan dan niet geautomatiseerd worden uitgevoerd: er is samenloop ontstaan.</p><p>Er ontstaat ook samenloop in de regeling omdat elke regelingversie een verwijzing bevat naar de bijbehorende GIO-versie.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - GIO gelijktijdige inwerkingtreding",
+            "gemaaktOp": "2020-06-26T09:03:00Z",
+            "beschrijving": "Tweede GIO wijzigingsbesluit ook gebaseerd op de initiele versie dat tegelijk met het vorige wijzigingsbesluit in werkingtreedt. De geautomatiseerde consolidatie kan de geconsolideerde GIO (en regelingversie) niet samenstellen omdat er zowel voor de GIO als voor de regeling twee kandidaten zijn ('TegensprekendeDoelen')."
+        },
+        {
+            "naam": "Oplossing - Revisie met samenvoeging",
+            "gemaaktOp": "2020-06-28T09:03:00Z",
+            "beschrijving": "Om de samenloop op te lossen, levert het bevoegd gezag met een revisie de samenvoeging van beide gewijzigde GIO-versies en een nieuwe regelingversie die verwijst naar deze samenvoeg-GIO. In de consolidatie-informatie wordt aangegeven dat het een samenvoeging betreft door <i>twee</i> 'Basisversies' op te nemen voor zowel het GIO als de regeling."
+        },
+        {
+            "naam": "Vooraf - Gewijzigde GIO (en regeling)",
+            "gemaaktOp": "2020-06-20T09:03:00Z",
+            "beschrijving": "Wijzigingsbesluit met de gewijzigde GIO. In de regelingversie wordt enkel de verwijzing naar de gewijzigde GIO aangepast."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able regeling met GIO",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van de initi\u00c3\u00able regelingversie met GIO."
+        }
+    ],
     "Procesopties": true
 }

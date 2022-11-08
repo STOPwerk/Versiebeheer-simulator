@@ -1,0 +1,27 @@
+{
+    "Beschrijving": "<p>Oplossing voor <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 2C Er zijn nog toestanden na een intrekking - Variant 1 - Bedoelde intrekking, negeer de wijziging</a>: Deze variant is alleen van toepassing op de intrekking van een regeling of een intrekking van een informatieobject als die samenvalt met de intrekking van de geboorteregeling. Juridisch heeft de wijziging geen betekenis meer nadat de regeling is ingetrokken.</p><p>In dit scenario wordt na de intrekking een revisie uitgewisseld waarin de gewijzigde regelingversie wordt teruggetrokken</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Start - nieuwe versie regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Instelling van de regeling, inwerkingtreding 1 maart."
+        },
+        {
+            "naam": "Vooraf - nieuw besluit gewijzigde regeling",
+            "gemaaktOp": "2022-02-01T07:00:00Z",
+            "beschrijving": "Wijziging van de regeling, inwerkingtreding 1 mei."
+        },
+        {
+            "naam": "Patroon - Intrekking",
+            "gemaaktOp": "2022-04-01T07:00:00Z",
+            "beschrijving": "De regeling versie wordt ingetrokken per 1 april. De toekomstige wijziging wordt betekenisloos."
+        },
+        {
+            "naam": "Revisie - Terugtrekking wijziging",
+            "gemaaktOp": "2022-04-15T07:00:00Z",
+            "beschrijving": "De revisie waarin de betekenisloze wijziging wordt teruggetrokken.",
+            "revisie": true
+        }
+    ],
+    "Procesopties": true
+}

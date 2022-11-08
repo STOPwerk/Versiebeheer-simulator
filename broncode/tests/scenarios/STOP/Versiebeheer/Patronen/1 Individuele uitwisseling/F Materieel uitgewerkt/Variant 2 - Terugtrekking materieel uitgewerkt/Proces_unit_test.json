@@ -1,0 +1,18 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1materieel.html\">patroon 1F Materieel uitgewerkte regeling - Variant 2 - Terugtrekking datum materieel uitgewerkt</a>: In dit scenario wordt een regeling niet langer als materieel uitgewerkt aangeduid. Het gaat hier om om een bericht or revisie (geen besluit) van een regeling waarbij de eerder doorgegeven datum wordt teruggetrokken.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Terugtrekking materieel uitgewerkt",
+            "gemaaktOp": "2022-03-03T07:00:00Z",
+            "beschrijving": "De datum materieel uitgewerkt wordt teruggetrokken. Dit is geen publicatie maar een bericht/revisie.",
+            "revisie": true
+        },
+        {
+            "naam": "Start - materieel uitgewerkt",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "De datum waarop het instrument materieel uitgewerkt is wordt doorgegeven.",
+            "revisie": true
+        }
+    ],
+    "Procesopties": true
+}

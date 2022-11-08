@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "<p>In dit scenario worden twee wijzigingsbesluiten bekendgemaakt en treden ze in werking. De rechter vernietigt in eerste instantie het eerste wijzigingsbesluit, maar in een latere uitspraak wordt dat gewijzigd in een gedeelteijke vernietiging. </p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Start",
+            "gemaaktOp": "2022-03-15T07:00:00Z",
+            "beschrijving": "De twee wijzigingsbesluiten zijn bekendgemaakt en in werking getreden."
+        },
+        {
+            "naam": "Vernietiging",
+            "gemaaktOp": "2022-05-01T07:00:00Z",
+            "beschrijving": "De vernietiging wordt aangegeven door de wijziging van het instrument voor het eerste doel terug te trekken. De doorwerking naar het tweede wijzigingsbesluit verloopt via een ontvlechting."
+        },
+        {
+            "naam": "Herleven van besluit",
+            "gemaaktOp": "2022-06-01T07:00:00Z",
+            "beschrijving": "Door het terugdraaien van de vernietiging moet voor het eerste doel zowel de juiste versie (in dit geval een gewijzigde versie, maar het had ook de originele versie kunnen zijn. De doorwerking naar het tweede wijzigingsbesluit verloopt via een vervlechting."
+        }
+    ],
+    "Procesopties": true
+}

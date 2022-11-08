@@ -1,3 +1,21 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//10 Terugwerkende kracht\">03 10 Terugwerkende kracht</a>.</p><p>In dit voorbeeld wordt een wijzigingsbesluit bekendgemaakt om een regeling met terugwerkende kracht te wijzigen. Het gaat hier om een tweede wijziging per 2020-05-01 die terug werkt tot 2020-02-15. Dit is v\u00c3\u00b2\u00c3\u00b2r de inwerkingtreding van de eerste wijziging.</p><p>Omdat de tekeningen van de branches en de consolidatie gebaseerd zijn op de datum 'JuridischWerkendVanaf' is deze terugwerkende kracht wijziging daar niet zichtbaar. De terugwerkende kracht is alleen te zien in de 'Complete toestanden' waar door middel van ex-nunc tijdreizen ook de 'herschreven' historie zichtbaar is.",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Terugwerkende kracht",
+            "gemaaktOp": "2020-04-20T09:05:00Z",
+            "beschrijving": "Wijzigingsbesluit met terugwerkende kracht. Tijdstempels voor zowel juridischWerkendVanaf als geldigVanaf."
+        },
+        {
+            "naam": "Vooraf - Wijzigingsbesluit met eerste wijziging",
+            "gemaaktOp": "2020-02-18T09:03:00Z",
+            "beschrijving": "Wijzigingsbesluit, met inwerkingtredingsdatum."
+        },
+        {
+            "naam": "Vooraf - Instellingsbesluit",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een Instructie, met inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

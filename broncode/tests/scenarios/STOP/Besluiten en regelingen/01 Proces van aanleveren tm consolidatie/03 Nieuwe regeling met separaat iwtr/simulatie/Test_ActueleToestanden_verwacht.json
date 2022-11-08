@@ -1,0 +1,23 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/gm9999/2020/REG0001": [
+            null,
+            {
+                "BekendOp": "2020-01-28",
+                "OntvangenOp": "2020-01-28",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-01-30",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "JuridischWerkendVanaf": "2020-01-30",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "Beschrijving": "<p>In dit scenario worden drie wijzigingen in samenhang voorbereid. Er zijn drie doelen; de wijzigingsbesluiten voor een doel worden in eerste instantie zonder inwerkingtredingsdatum bekendgemaakt. De verwachting is dat het eerste besluit ook als eerste in werking zal treden. De andere twee zullen later in werking treden, de onderlinge volgorde is nog niet bekend. Door onvoorziene omstandigheden treedt het tweede besluit als eerste in werking, gevolgd door het eerste wijzigingsbesluit.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Start",
+            "gemaaktOp": "2022-05-01T07:00:00Z",
+            "beschrijving": "De wijzigingsbesluiten voor de drie doelen zijn bekendgemaakt maar nog niet in werking getreden."
+        },
+        {
+            "naam": "Inwerkingtreding doel 2",
+            "gemaaktOp": "2022-07-01T07:00:00Z",
+            "beschrijving": "Het inwerkingtredingsbesluit voor doel 2 wordt bekendgemaakt. Omdat de wijzigingan voor doel 1 nog in de instrumentversie voor doel 2 verwerkt is, dienen de wijzigingen ontvlochten te worden. Het maakt daarbij niet zoveel uit welke van de twee momentopnamen als bron voor de ontvlechting gekozen wordt. Er kunnen daarnaast wijzigingen nodig zijn ter compensatie van het ontbreken van de wijzigingen van doel 1."
+        },
+        {
+            "naam": "Inwerkingtreding doel 1",
+            "gemaaktOp": "2022-09-01T07:00:00Z",
+            "beschrijving": "Het inwerkingtredingsbesluit voor doel 1 wordt bekendgemaakt. Omdat de wijzigingen voor doel 2 inmiddels in werking getreden zijn, moeten die overgenomen worden via een vervlechting."
+        },
+        {
+            "naam": "Inwerkingtreding doel 3",
+            "gemaaktOp": "2022-11-01T07:00:00Z",
+            "beschrijving": "Het inwerkingtredingsbesluit voor doel 3 wordt bekendgemaakt. De wijzigingen voor doel 2 en de laatste aanpassingen voor doel 1 zijn nog niet verwerkt in de laatst bekendgemaakte versie voor doel 3. Door een vervlechting met de laatste versie van doel 1 wordt aangegeven dat in de nieuwe instrumentversie alle wijzigingen voor zowel doel 1 en doel 2 zijn overgenomen."
+        }
+    ],
+    "Procesopties": true
+}

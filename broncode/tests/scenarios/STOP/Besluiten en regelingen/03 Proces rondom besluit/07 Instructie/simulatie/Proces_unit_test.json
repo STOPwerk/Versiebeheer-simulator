@@ -1,3 +1,16 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//07 Instructie\">03 07 Instructie</a>.</p><p>In dit voorbeeld wordt middels een besluit een Instructie bekend gemaakt. Een instructie is een eenmalige opdracht van een hoger bestuursorgaan aan een lager bestuursorgaan en geldt dus niet voor burgers en bedrijven. Het besluit bevat ook een inwerkingtredingsdatum.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - besluit met instructie",
+            "gemaaktOp": "2020-07-03T10:03:00Z",
+            "beschrijving": "Instellingsbesluit van een Instructie, met inwerkingtredingsdatum."
+        },
+        {
+            "naam": "Materieel uitgewerkt",
+            "gemaaktOp": "2020-11-12T10:03:00Z",
+            "beschrijving": "Instructie wordt gemarkeerd als materieel uitgewerkt en zal nietaltijd meer gevonden worden."
+        }
+    ],
     "Procesopties": true
 }

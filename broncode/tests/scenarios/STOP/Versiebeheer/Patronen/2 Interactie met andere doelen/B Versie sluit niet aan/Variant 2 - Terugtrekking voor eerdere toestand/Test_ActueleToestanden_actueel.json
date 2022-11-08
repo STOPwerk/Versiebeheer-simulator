@@ -1,0 +1,163 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/gm9999/2022/REG_A": [
+            {
+                "BekendOp": "2022-01-01",
+                "OntvangenOp": "2022-01-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-03-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendVanaf": "2022-03-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2022-02-01",
+                "OntvangenOp": "2022-02-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-03-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendTot": "2022-03-15",
+                        "JuridischWerkendVanaf": "2022-03-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-03-15",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging"
+                        ],
+                        "JuridischWerkendVanaf": "2022-03-15",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2022-03-01",
+                "OntvangenOp": "2022-03-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-03-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendTot": "2022-03-15",
+                        "JuridischWerkendVanaf": "2022-03-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-03-15",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging"
+                        ],
+                        "JuridischWerkendTot": "2022-05-01",
+                        "JuridischWerkendVanaf": "2022-03-15",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling",
+                            "/join/id/proces/gm9999/2022/Wijziging"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-05-01",
+                        "Identificatie": 2,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v3",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging2"
+                        ],
+                        "JuridischWerkendVanaf": "2022-05-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2022-04-01",
+                "OntvangenOp": "2022-04-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-03-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendTot": "2022-05-01",
+                        "JuridischWerkendVanaf": "2022-03-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-05-01",
+                        "Identificatie": 2,
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging2"
+                        ],
+                        "JuridischWerkendVanaf": "2022-05-01",
+                        "NietMeerActueel": false,
+                        "TeVerwerkenDoelen": [
+                            {
+                                "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                "LaatstBekend": "2022-04-01T07:00:00Z",
+                                "LaatstVerwerkt": "2022-02-01T07:00:00Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2022-04-15",
+                "OntvangenOp": "2022-04-15",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-03-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendTot": "2022-05-01",
+                        "JuridischWerkendVanaf": "2022-03-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-05-01",
+                        "Identificatie": 2,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v4",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging2"
+                        ],
+                        "JuridischWerkendVanaf": "2022-05-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

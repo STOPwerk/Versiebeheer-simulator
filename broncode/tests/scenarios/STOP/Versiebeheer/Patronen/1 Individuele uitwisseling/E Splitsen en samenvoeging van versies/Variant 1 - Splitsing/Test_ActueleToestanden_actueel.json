@@ -1,0 +1,53 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/gm9999/2022/REG_A": [
+            null,
+            {
+                "BekendOp": "2022-01-20",
+                "OntvangenOp": "2022-01-20",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendVanaf": "2022-02-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2022-02-20",
+                "OntvangenOp": "2022-02-20",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "JuridischWerkendTot": "2022-04-01",
+                        "JuridischWerkendVanaf": "2022-02-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-04-01",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v3",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging"
+                        ],
+                        "JuridischWerkendVanaf": "2022-04-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

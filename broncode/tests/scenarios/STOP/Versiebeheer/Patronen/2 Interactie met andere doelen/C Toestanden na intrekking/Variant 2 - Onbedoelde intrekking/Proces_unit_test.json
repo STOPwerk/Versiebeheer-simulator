@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "<p>Oplossing voor <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 2C Er zijn nog toestanden na een intrekking - Variant 2 - Onbedoelde intrekking</a>: om samenloop in deze situatie op te lossen moet een nieuw besluit genomen worden om de intrekking ongedaan te maken.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Intrekking",
+            "gemaaktOp": "2022-03-10T07:00:00Z",
+            "beschrijving": "De regelingversie wordt ingetrokken, terwijl er nog een toekomstige wijziging is."
+        },
+        {
+            "naam": "Oplossing - Terugtrekking intrekking",
+            "gemaaktOp": "2022-04-15T07:00:00Z",
+            "beschrijving": "De intrekking wordt ongedaan gemaakt(teruggetrokken) en de gewijzigde versie kan 'gewoon' in werking treden."
+        },
+        {
+            "naam": "Vooraf - nieuw besluit gewijzigde regeling",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "De tweede regeling versie."
+        }
+    ],
+    "Procesopties": true
+}

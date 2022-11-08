@@ -1,3 +1,26 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//02 Proces met GIO//05 Besluit met Pons\">02 05 Besluit met Pons</a>.</p><p>In dit voorbeeld wordt in een besluit een nieuwe regelingversie bekendgemaakt en daarbij wordt een GIO gebruikt  als Pons. Het besluit stelt dat het bestemmingsplan ter plaatse van de Pons niet langer van toepassing is.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Besluit met Pons",
+            "gemaaktOp": "2021-05-18T09:03:00Z",
+            "beschrijving": "Derde wijzigingsbesluit van de regeling. Naast de wijziging van de regeling stelt het besluit ook een nieuwe GIO in als Pons om daarmee aan te geven dat het bestemmingsplan ter plaatse van de Pons niet langer van toepassing is."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able versie met GIO",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling en Geografisch Informatieobject (GIO), met inwerkingtredingsdatum."
+        },
+        {
+            "naam": "Vooraf - Gewijzigde versie met GIO",
+            "gemaaktOp": "2020-06-20T09:03:00Z",
+            "beschrijving": "Wijzigingsbesluit van de regeling met de gewijzigde GIO."
+        },
+        {
+            "naam": "Vooraf - Intrekking en instelling GIO",
+            "gemaaktOp": "2021-03-27T09:03:00Z",
+            "beschrijving": "Tweede wijzigingsbesluit van de regeling met intrekking oorspronkelijke GIO en instelling van een nieuwe GIO."
+        }
+    ],
     "Procesopties": true
 }

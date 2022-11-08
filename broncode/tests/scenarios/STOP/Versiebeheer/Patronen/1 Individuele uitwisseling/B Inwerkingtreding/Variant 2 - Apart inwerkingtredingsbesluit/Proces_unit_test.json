@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1iwt.html\">patroon 1B Inwerkingtreding van een besluit - Variant 2 - Apart inwerkingtredingsbesluit</a>: In dit scenario is voor hetzelfde doel al eerder een besluit bekendgemaakt met daarin een nieuwe versie van de regeling. Vervolgens wordt in een apart besluit (het inwerkingtredingsbesluit) de datum van inwerkingtreding van de eerder gepubliceerde versie bepaald.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - inwerkingtredingsbesluit",
+            "gemaaktOp": "2022-01-20T07:00:00Z",
+            "beschrijving": "Het inwerkingtredingsbesluit met alleen de datum van inwerkingtreding als tijdstempel voor de eerder gepubliceerde versie van de regeling."
+        },
+        {
+            "naam": "Start - nieuwe versie regeling zonder iwt",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een nieuwe versie van de regeling zonder inwerkingtredingsbepaling."
+        }
+    ],
+    "Procesopties": true
+}

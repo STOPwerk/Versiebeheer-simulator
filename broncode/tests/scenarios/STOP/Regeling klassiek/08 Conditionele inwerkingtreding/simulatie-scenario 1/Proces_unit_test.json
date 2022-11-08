@@ -1,3 +1,36 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie van scenario 1 uit het voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Regeling klassiek//08 Conditionele inwerkingtreding\">Klassiek 08 Conditionele inwerkingtreding</a>.</p><p>Dit scenario borduurt voort op voorbeeld 01 en 02 waarin '<i>Voorbeeldregeling aanwijzing consumenten- en theatervuurwerk(VRACT)</i>' is ingesteld en gewijzigd. Nu volgt er een conditionele wijziging die afhankelijk is van de inwerkingtreding van een andere regeling '<i>Regeling op afstand bestuurde luchtvaartuigen(RABLV)</i>'.</p><p>Eerst wordt de intiele versie van de RABLV regeling gepubliceerd nog zonder inwerkingtreding.</p><p>Daarna wordt de '<i>2e wijzigingsregeling voor de voorbeeldregeling aanwijzing consumenten- en theatervuurwerk</i>' met gewone en conditionele wijzigingen gepubliceerd. De conditionele wijzigingen moeten tegelijk met RABLV in werking treden. In de consolidatie-informatie van deze wijzigingsregeling worden twee doelen gebruikt, beide zonder inwerkingtredingsdatum.</p><p>In dit <b>eerste</b> scenario wordt de '<i>Regeling tot vaststelling van het tijdstip van inwerkingtreding van de 2e wijzigingsregeling voor de voorbeeldregeling aanwijzing consumenten- en theatervuurwerk</i>' ingesteld voorafgaand aan de '<i>Regeling tot vaststelling van het tijdstip van inwerkingtreding van de Regeling op afstand bestuurde luchtvaartuigen</i>'. De conditionele wijzigingen treden dus later dan de gewone wijzigingen in werking.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "2022-03-09: Conditionele wijzigingsregeling VRACT",
+            "gemaaktOp": "2022-03-09T09:08:00Z",
+            "beschrijving": "De '<i>2e wijzigingsregeling voor de voorbeeldregeling aanwijzing consumenten- en theatervuurwerk</i>' leidt tot twee nieuwe regelingversies van VRACT: 1 met alleen de onafhankelijke wijzigingen en 1 met zowel de onafhankelijke als de conditionele wijzigingen, elk met een eigen doel zodat ze naar believen in werking kunnen treden. De regeling bevat nu nog geen inwerkingtredingsdatum."
+        },
+        {
+            "naam": "2020-07-14: Initi\u00c3\u00able versie VRACT",
+            "gemaaktOp": "2020-07-14T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling, met inwerkingtredingsdatum.(Voorbeeld 01)"
+        },
+        {
+            "naam": "2021-05-21: Gewijzigde versie VRACT",
+            "gemaaktOp": "2021-05-21T09:03:00Z",
+            "beschrijving": "Wijzigingen aangebracht door de wijzigingsregeling per 2021-01-01. (Voorbeeld 02)"
+        },
+        {
+            "naam": "2022-02-14: Initiele versie RABLV",
+            "gemaaktOp": "2022-02-14T09:04:00Z",
+            "beschrijving": "Initiele versie '<i>Regeling op afstand bestuurde luchtvaartuigen</i>' zonder inwerkingtredingsdatum."
+        },
+        {
+            "naam": "2022-05-07: Scenario 1: Eerst inwerkingtreding conditionele wijzigingsregeling",
+            "gemaaktOp": "2022-05-07T09:09:00Z",
+            "beschrijving": "De '<i>Regeling tot vaststelling van het tijdstip van inwerkingtreding van de 2e wijzigingsregeling voor de voorbeeldregeling aanwijzing consumenten- en theatervuurwerk</i>' stelt de inwerkingtredingsdatum van '<i>2e wijzigingsregeling voor de voorbeeldregeling aanwijzing consumenten- en theatervuurwerk</i>' op 2022-07-01. Omdat '<i>Regeling op afstand bestuurde luchtvaartuigen</i>' nog niet in werking is getreden, treden dan alleen de niet-conditionele wijzigingen in werking."
+        },
+        {
+            "naam": "2022-12-06: Scenario 1: Inwerkingtreding RABLV",
+            "gemaaktOp": "2022-12-06T09:09:00Z",
+            "beschrijving": "De '<i>Regeling tot vaststelling van het tijdstip van inwerkingtreding van de Regeling op afstand bestuurde luchtvaartuigen</i>' stelt de inwerkingtredingsdatum van '<i>Regeling op afstand bestuurde luchtvaartuigen</i>' op 2023-01-01. De conditionele wijzigingen van VRACT moeten nu ook in werkingtreden. Daarom bevat de consolidatie-informatie voor twee doelen een inwerkingstredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

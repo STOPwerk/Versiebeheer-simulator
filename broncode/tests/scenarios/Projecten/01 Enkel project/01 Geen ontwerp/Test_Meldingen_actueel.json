@@ -1,1 +1,6 @@
-[]
+[
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Potverdorie, een fout in de simulatie die niet voorzien werd: 'ProjectActie_NieuwDoel' object has no attribute 'Instrumenten'"
+    }
+]

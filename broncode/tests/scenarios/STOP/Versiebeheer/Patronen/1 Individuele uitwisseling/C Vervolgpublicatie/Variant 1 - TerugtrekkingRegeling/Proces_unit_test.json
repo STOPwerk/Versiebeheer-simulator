@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1vervolg.html\">patroon 1C Vervolgpublicatie - Variant 1 - TerugtrekkingRegeling</a>: In dit scenario wordt middels een besluit in eerste instantie (onder andere) een wijziging van een regeling bekendgemaakt. Later blijkt dat het bekendgemaakte besluit niet de juiste weergave van het vastgestelde besluit was - daarin werd de regeling niet gewijzigd. In de rectificatie wordt daarom de wijziging teruggetrokken.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - terugtrekking wijziging regeling",
+            "gemaaktOp": "2022-02-15T07:00:00Z",
+            "beschrijving": "Een rectificatie met een terugtrekking van de wijziging van de regeling."
+        },
+        {
+            "naam": "Vooraf - instelling regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met de instelling van een regeling."
+        },
+        {
+            "naam": "Vooraf - wijziging regeling",
+            "gemaaktOp": "2022-02-01T07:00:00Z",
+            "beschrijving": "Het tweede besluit met een nieuwe versie voor gewijzigde regeling."
+        }
+    ],
+    "Procesopties": true
+}

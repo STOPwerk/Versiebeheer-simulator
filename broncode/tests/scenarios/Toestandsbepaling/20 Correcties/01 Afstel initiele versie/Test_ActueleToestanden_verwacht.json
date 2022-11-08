@@ -17,10 +17,7 @@
                     }
                 ]
             },
-            {
-                "BekendOp": "2022-01-15",
-                "OntvangenOp": "2022-01-15"
-            }
+            null
         ],
         "/join/id/regdata/2022/IO_A": [
             {
@@ -39,10 +36,7 @@
                     }
                 ]
             },
-            {
-                "BekendOp": "2022-01-15",
-                "OntvangenOp": "2022-01-15"
-            }
+            null
         ]
     }
 }

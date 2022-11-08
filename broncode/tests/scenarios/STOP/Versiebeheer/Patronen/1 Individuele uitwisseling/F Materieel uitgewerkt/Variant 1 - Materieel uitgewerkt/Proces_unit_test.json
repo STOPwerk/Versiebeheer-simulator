@@ -1,0 +1,17 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1materieel.html\">patroon 1F Materieel uitgewerkte regeling - Variant 1 - Doorgifte datum materieel uitgewerkt</a>: In dit scenario wordt een regeling als materieel uitgewerkt aangeduid. Het gaat hier om om een bericht or revisie (geen besluit) van een regeling waarbij 01-01-2023 als datum wordt doorgegeven waarop de regeling geen toepassing meer heeft.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - doorgifte datum materieel uitgewerkt",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "De datum waarop het instrument materieel uitgewerkt is wordt doorgegeven. Dit is geen publicatie maar een bericht/revisie.",
+            "revisie": true
+        },
+        {
+            "naam": "Start - nieuwe versie regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een eerste versie van de regeling met inwerkingtredingsbepaling."
+        }
+    ],
+    "Procesopties": true
+}

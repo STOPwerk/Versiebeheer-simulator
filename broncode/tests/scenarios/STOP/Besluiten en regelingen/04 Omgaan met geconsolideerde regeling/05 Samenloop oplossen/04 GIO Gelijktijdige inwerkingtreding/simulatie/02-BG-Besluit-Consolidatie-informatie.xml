@@ -7,9 +7,16 @@
       <doelen>
         <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
       </doelen>
-      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1</instrumentVersie>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1</instrumentVersie>
       <eId>art_I</eId>
     </BeoogdeRegeling>
+    <BeoogdInformatieobject>
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
+      </doelen>
+      <instrumentVersie>/join/id/regdata/gm9999/2019/gio993859238/nld@2019-12-20;1</instrumentVersie>
+      <eId>!regeling#cmp_A__content_o_1__list_1__item_1__ref_o_1</eId>
+    </BeoogdInformatieobject>
   </BeoogdeRegelgeving>
   <Tijdstempels>
     <Tijdstempel>

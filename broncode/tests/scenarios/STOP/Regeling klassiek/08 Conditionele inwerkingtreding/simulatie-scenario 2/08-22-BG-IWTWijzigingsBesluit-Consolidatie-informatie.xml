@@ -2,6 +2,25 @@
 <ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xmlns="https://standaarden.overheid.nl/stop/imop/data/" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/ https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
   <gemaaktOp>2023-02-07T09:09:00Z</gemaaktOp>
+  <BeoogdeRegelgeving>
+    <BeoogdeRegeling>
+      <doelen>
+        <doel>/join/id/proces/mnre1034/2022/ConditioneleWijzigingVoorbeeldregeling</doel>
+        <doel>/join/id/proces/mnre1034/2022/2eWijzigingVoorbeeldregeling</doel>
+      </doelen>
+      <instrumentVersie>/akn/nl/act/mnre1034/2020/VRACT/nld@2022-02-22;4</instrumentVersie>
+      <gemaaktOpBasisVan>
+        <Basisversie>
+            <doel>/join/id/proces/mnre1034/2022/2eWijzigingVoorbeeldregeling</doel>
+            <gemaaktOp>2022-03-09T09:08:00Z</gemaaktOp>
+        </Basisversie>
+        <Basisversie>
+            <doel>/join/id/proces/mnre1034/2022/ConditioneleWijzigingVoorbeeldregeling</doel>
+            <gemaaktOp>2022-03-09T09:08:00Z</gemaaktOp>
+        </Basisversie>
+      </gemaaktOpBasisVan>
+    </BeoogdeRegeling>
+  </BeoogdeRegelgeving>
   <Tijdstempels>
     <Tijdstempel>
       <!-- tijdstempel voor onafhankelijke wijziging -->

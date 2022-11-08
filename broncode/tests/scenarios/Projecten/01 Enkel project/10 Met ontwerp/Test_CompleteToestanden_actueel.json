@@ -1,38 +1,3 @@
 {
-    "Testresultaat - CompleteToestanden": {
-        "/akn/nl/act/gm9999/2022/REG_A": {
-            "BekendOp": "2022-06-01",
-            "OntvangenOp": "2022-06-01",
-            "Tijdreisfilter": {
-                "BekendOpAanwezig": true,
-                "GeldigVanafAanwezig": true,
-                "OntvangenOpAanwezig": true,
-                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
-            },
-            "ToestandIdentificatie": [
-                {
-                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-07-01",
-                    "Inwerkingtredingsdoelen": [
-                        "/join/id/proces/gm9999/2022/Instelling"
-                    ]
-                }
-            ],
-            "ToestandInhoud": [
-                {
-                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;definitief",
-                    "IsNietInWerking": false
-                }
-            ],
-            "Toestanden": [
-                {
-                    "BekendOp": "2022-06-01",
-                    "GeldigVanaf": "2022-07-01",
-                    "Identificatie": 0,
-                    "Inhoud": 0,
-                    "JuridischWerkendVanaf": "2022-07-01",
-                    "OntvangenOp": "2022-06-01"
-                }
-            ]
-        }
-    }
+    "Testresultaat - CompleteToestanden": {}
 }

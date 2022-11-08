@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 1C Vervolgpublicatie - Variant 3 - TerugtrekkingIntrekking</a>: In dit scenario wordt middels een terugtrekking de eerdere iintrekking van een regeling ongedaan gemaakt.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - terugtrekking intrekking",
+            "gemaaktOp": "2023-01-01T07:00:00Z",
+            "beschrijving": "In dit besluit wordt de intrekking ongedaan gemaakt."
+        },
+        {
+            "naam": "Vooraf - nieuwe versie regeling en intrekking van rechtswege",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "In dit besluit wordt naast een nieuwe versie van de regeling al direct de datum van intrekking bepaald per 01-07-2023."
+        }
+    ],
+    "Procesopties": true
+}

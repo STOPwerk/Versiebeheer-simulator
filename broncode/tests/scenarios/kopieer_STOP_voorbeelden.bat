@@ -29,6 +29,7 @@ if errorlevel 1 goto Pause
 
 if errorlevel 0 goto End
 :Pause
-pause
+rem pause
 
 :End
+pause

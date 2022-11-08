@@ -1,0 +1,32 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_2samenloop.html\">Patroon 2B Nieuwe versie sluit niet aan - Variant 2 - Terugtrekking voor eerdere toestand</a>: Er is geen nieuw besluit nodig om te komen tot een ontvlochten versie. Er wordt een revisie voor uitgewisseld. De revisie bevat de nieuwe versie van de regeling waaruit de wijzigingen die zijn ingetrokken, zijn verwijderd.</p><p>In dit voorbeeld is een regeling ingesteld en er zijn twee wijzigingen bekendgemaakt. De  eerste wijziging wordt ingetrokken waardoor de toestand met latere inwerkingtreding dan onbekend wordt. De oplossing is om een revisie uit te wisselen voor die toestand waarin de ingetrokken wijziging ontvlochten wordt.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Terugtrekking",
+            "gemaaktOp": "2022-04-01T07:00:00Z",
+            "beschrijving": "De teruggetrokken regelingversie."
+        },
+        {
+            "naam": "Oplossing - revisie",
+            "gemaaktOp": "2022-04-15T07:00:00Z",
+            "beschrijving": "Een revisie waarin de ingetrokken wijziging ontvlochten wordt.",
+            "revisie": true
+        },
+        {
+            "naam": "Start",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Instelling van de regeling."
+        },
+        {
+            "naam": "In te trekken wijziging",
+            "gemaaktOp": "2022-02-01T07:00:00Z",
+            "beschrijving": "Eerste wijziging van de regeling."
+        },
+        {
+            "naam": "Vooraf - wijziging nieuwe branch",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Tweede wijziging van de regeling."
+        }
+    ],
+    "Procesopties": true
+}

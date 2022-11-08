@@ -1,3 +1,11 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//02 Proces met GIO//01 Nieuwe regeling met GIO\">02 01 Nieuwe regeling met GIO</a>.</p><p>In dit voorbeeld wordt middels een besluit de eerste versie van een nieuwe regeling met een Geografisch Informatieobject (GIO) bekend gemaakt. Het besluit bevat ook een inwerkingtredingsdatum.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Initi\u00c3\u00able versie met GIO",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling met Geografisch Informatieobject (GIO), met inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

@@ -7,14 +7,21 @@
       <doelen>
         <doel>/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij</doel>
       </doelen>
-      <instrumentVersie>/akn/nl/act/gm9999/2020/REG00123/nld@2020-01-20;1</instrumentVersie>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/TIJD-REG00123/nld@2020-01-20;1</instrumentVersie>
       <eId>art_II</eId>
     </BeoogdeRegeling>
+    <BeoogdInformatieobject>
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/Instelling_tijdelijkregelingdeel_Geitenhouderij</doel>
+      </doelen>
+      <instrumentVersie>/join/id/regdata/gm9999/2019/gio993859238/nld@2019-12-20;1</instrumentVersie>
+      <eId>!main#cmp_A__content_o_1__list_1__item_1__ref_o_1</eId>
+    </BeoogdInformatieobject>
   </BeoogdeRegelgeving>
   <Intrekkingen>
     <Intrekking>
       <doel>/join/id/proces/gm9999/2021/Intrekken_tijdelijkregelingdeel_Geitenhouderij</doel>
-      <instrument>/akn/nl/act/gm9999/2020/REG00123</instrument> <!-- tijdelijkregelingdeel als Work! -->
+      <instrument>/akn/nl/act/gm9999/2020/TIJD-REG00123</instrument> <!-- tijdelijkregelingdeel als Work! -->
       <eId>art_III</eId>
       <gemaaktOpBasisVan>
         <Basisversie>

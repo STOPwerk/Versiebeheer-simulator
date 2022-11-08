@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 1D Intrekking van een besluit</a>: In dit scenario heeft het bevoegd gezag een (wijzigings-)besluit gepubliceerd maar komt op een later tijdstip tot de conclusie dat het geen goed besluit is. Het bevoegd gezag publiceert een nieuw besluit waarin staat dat het eerdere besluit ingetrokken wordt, zonder in renvooi aan te geven welke wijzigingen teruggedraaid worden.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Intrekking besluit",
+            "gemaaktOp": "2022-03-20T07:00:00Z",
+            "beschrijving": "De intrekking van het tweede besluit is verder een gewoon wijzigingsbesluit met een nieuw doel en eigen inwerkingtreding."
+        },
+        {
+            "naam": "Vooraf - nieuwe versie regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een nieuwe versie van een regeling."
+        },
+        {
+            "naam": "Vooraf - Tweede regelingversie in (in te trekken) besluit",
+            "gemaaktOp": "2022-02-15T07:00:00Z",
+            "beschrijving": "Het derde met een aangepaste versie van de regeling voor een nieuw doel."
+        }
+    ],
+    "Procesopties": true
+}

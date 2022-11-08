@@ -2,6 +2,7 @@
     "Testresultaat - CompleteToestanden": {
         "/akn/nl/act/gm9999/2022/REG_A": {
             "BekendOp": "2022-05-02",
+            "MaterieelUitgewerktOp": "2022-05-01",
             "OntvangenOp": "2022-05-02",
             "Tijdreisfilter": {
                 "BekendOpAanwezig": true,

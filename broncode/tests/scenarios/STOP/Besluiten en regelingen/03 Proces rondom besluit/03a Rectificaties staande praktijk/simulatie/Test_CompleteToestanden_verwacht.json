@@ -1,0 +1,70 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/pv29/2010/milieubeleidsplan0612": {
+            "BekendOp": "2010-10-18",
+            "OntvangenOp": "2010-10-18",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/provincie/2010/regeling1/nld@2010-10-12",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/provincie/2010/regeling1/nld@2010-10-10;2"
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/provincie/2010/regeling1/nld@2010-10-10",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Instrumentversie": "/akn/nl/act/pv29/2010/milieubeleidsplan0612/nld@2010-09-01;1",
+                    "IsNietInWerking": false
+                },
+                {
+                    "IsNietInWerking": true
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/pv29/2010/milieubeleidsplan0612/nld@2010-09-01;v01",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2010-10-18",
+                    "GeldigVanaf": "2010-10-12",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2010-10-12",
+                    "OntvangenOp": "2010-10-18"
+                },
+                {
+                    "BekendOp": "2010-10-18",
+                    "GeldigVanaf": "2010-10-10",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2010-10-10",
+                    "OntvangenOp": "2010-10-18"
+                },
+                {
+                    "BekendOp": "2010-10-11",
+                    "GeldigVanaf": "2010-10-10",
+                    "Identificatie": 2,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2010-10-10",
+                    "OntvangenOp": "2010-10-11"
+                }
+            ]
+        }
+    }
+}

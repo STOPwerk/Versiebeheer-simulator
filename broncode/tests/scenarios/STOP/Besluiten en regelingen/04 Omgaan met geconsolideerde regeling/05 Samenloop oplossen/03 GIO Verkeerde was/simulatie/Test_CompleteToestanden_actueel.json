@@ -1,0 +1,260 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/gm9999/2020/REG0001": {
+            "BekendOp": "2020-10-15",
+            "OntvangenOp": "2020-10-15",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-10-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/BebouwdekomVuurwerkverbodsgebied"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-07-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-10-15;4",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                                "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-06-16;2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2020/BebouwdekomVuurwerkverbodsgebied",
+                                    "LaatstBekend": "2020-09-26T09:03:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb003#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                                "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-09-23;3",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied",
+                                    "LaatstBekend": "2020-06-20T09:03:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb002#art_I"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-06-16;2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-10-15",
+                    "GeldigVanaf": "2020-10-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2020-10-01",
+                    "OntvangenOp": "2020-10-15"
+                },
+                {
+                    "BekendOp": "2020-09-26",
+                    "GeldigVanaf": "2020-10-01",
+                    "Identificatie": 0,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2020-10-01",
+                    "OntvangenOp": "2020-09-26"
+                },
+                {
+                    "BekendOp": "2020-06-20",
+                    "GeldigVanaf": "2020-07-01",
+                    "Identificatie": 1,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2020-07-01",
+                    "OntvangenOp": "2020-06-20"
+                },
+                {
+                    "BekendOp": "2020-01-21",
+                    "GeldigVanaf": "2020-02-01",
+                    "Identificatie": 2,
+                    "Inhoud": 3,
+                    "JuridischWerkendVanaf": "2020-02-01",
+                    "OntvangenOp": "2020-01-21"
+                }
+            ]
+        },
+        "/join/id/regdata/gm9999/2019/gio993859238": {
+            "BekendOp": "2020-10-15",
+            "OntvangenOp": "2020-10-15",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2020/io2/nld@2020-10-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/BebouwdekomVuurwerkverbodsgebied"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2020/io2/nld@2020-07-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2020/io2/nld@2020-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2020-10-15;4",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                                "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                            ],
+                            "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2020-06-16;2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2020/BebouwdekomVuurwerkverbodsgebied",
+                                    "LaatstBekend": "2020-09-26T09:03:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb003#!wijziging#cmp_A__content_o_1__list_1__item_1__ref_o_1"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                                "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                            ],
+                            "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2020-09-23;3",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied",
+                                    "LaatstBekend": "2020-06-20T09:03:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb002#!wijziging#cmp_A__content_o_1__list_1__item_1__ref_o_1"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2020-06-16;2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2019-12-20;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-10-15",
+                    "GeldigVanaf": "2020-10-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2020-10-01",
+                    "OntvangenOp": "2020-10-15"
+                },
+                {
+                    "BekendOp": "2020-09-26",
+                    "GeldigVanaf": "2020-10-01",
+                    "Identificatie": 0,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2020-10-01",
+                    "OntvangenOp": "2020-09-26"
+                },
+                {
+                    "BekendOp": "2020-06-20",
+                    "GeldigVanaf": "2020-07-01",
+                    "Identificatie": 1,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2020-07-01",
+                    "OntvangenOp": "2020-06-20"
+                },
+                {
+                    "BekendOp": "2020-01-21",
+                    "GeldigVanaf": "2020-02-01",
+                    "Identificatie": 2,
+                    "Inhoud": 3,
+                    "JuridischWerkendVanaf": "2020-02-01",
+                    "OntvangenOp": "2020-01-21"
+                }
+            ]
+        }
+    }
+}

@@ -1,3 +1,16 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit het voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Regeling klassiek//04 Inwerkingtreding\">Klassiek 04 Inwerkingtreding</a>.</p><p>In dit voorbeeld wordt middels een klassiek besluit de inwerkingstredingsdatum van de initiele regeling met GIO bekend gemaakt. Voor het publiceren van deze inwerkingtreding wordt ook het klassieke model gebruikt. De inwerkingtredingsregeling bevat geen zelfstandige bepalingen en wordt dus niet opgenomen in de consolidatie-informatie.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Inwerkingtreding initiele regeling met GIO",
+            "gemaaktOp": "2014-03-06T09:03:00Z",
+            "beschrijving": "Inwerkingtredingsregeling voor de initiele regeling met Geografisch Informatieobject (GIO)."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able regeling met GIO",
+            "gemaaktOp": "2012-06-25T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling met Geografisch Informatieobject (GIO), zonder inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

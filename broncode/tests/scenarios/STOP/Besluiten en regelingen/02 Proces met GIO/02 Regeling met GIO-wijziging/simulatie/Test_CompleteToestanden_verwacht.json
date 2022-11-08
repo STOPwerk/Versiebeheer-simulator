@@ -1,0 +1,114 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/gm9999/2020/REG0001": {
+            "BekendOp": "2020-06-20",
+            "OntvangenOp": "2020-06-20",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-07-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-06-16;2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-06-20",
+                    "GeldigVanaf": "2020-07-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2020-07-01",
+                    "OntvangenOp": "2020-06-20"
+                },
+                {
+                    "BekendOp": "2020-01-21",
+                    "GeldigVanaf": "2020-02-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2020-02-01",
+                    "OntvangenOp": "2020-01-21"
+                }
+            ]
+        },
+        "/join/id/regdata/gm9999/2019/gio993859238": {
+            "BekendOp": "2020-06-20",
+            "OntvangenOp": "2020-06-20",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2020/io2/nld@2020-07-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2020/io2/nld@2020-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2020-06-16;2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2019-12-20;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-06-20",
+                    "GeldigVanaf": "2020-07-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2020-07-01",
+                    "OntvangenOp": "2020-06-20"
+                },
+                {
+                    "BekendOp": "2020-01-21",
+                    "GeldigVanaf": "2020-02-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2020-02-01",
+                    "OntvangenOp": "2020-01-21"
+                }
+            ]
+        }
+    }
+}

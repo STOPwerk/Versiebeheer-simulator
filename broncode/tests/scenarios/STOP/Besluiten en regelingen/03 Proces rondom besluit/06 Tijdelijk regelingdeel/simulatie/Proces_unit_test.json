@@ -1,3 +1,16 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//06 Tijdelijk regelingdeel\">03 06 Tijdelijk regelingdeel</a>.</p><p>In dit voorbeeld wordt er een tijdelijk regelingdeel met voorbeschermingsregels bij een hoofdregeling ingesteld. De consolidatieinformatie bevat ook direct het intrekken van het tijdelijk regelingdeel na 18 maanden.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Tijdelijk regelingdeel",
+            "gemaaktOp": "2020-02-13T09:00:00Z",
+            "beschrijving": "Het voorbereidingsbesluit met de instelling van het tijdelijk regelingdeel. Bij de instelling wordt ook direct de intrekking van het tijdelijk regelingdeel na 18 maanden geregeld door de intrekking te koppelen aan een apart doel en dit doel een toekomstige inwerkingtredingsdatum te geven."
+        },
+        {
+            "naam": "Vooraf - instelling initi\u00c3\u00able hoofdregeling",
+            "gemaaktOp": "2020-01-20T09:00:00Z",
+            "beschrijving": "Instellingsbesluit van de initi\u00c3\u00able hoofdregeling, met inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

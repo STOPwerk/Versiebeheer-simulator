@@ -2823,7 +2823,7 @@ Applicatie = (function () {
         }));
     }
 
-    // Swelectie van momentopnamen
+    // Selectie van momentopnamen in het versiebeheer van LVBB
     Applicatie.SelecteerMomentopname = function (wid, mid) {
         window.dispatchEvent(new CustomEvent('momentopname', {
             detail: {
@@ -2836,10 +2836,10 @@ Applicatie = (function () {
 
     // Selectie van uitwisselingen
     var toestanden = {
-        2: [["2022-01-15T07:00:00Z", 8]],
-0: [["2022-01-01T07:00:00Z", 4]],
-3: [["2022-01-15T07:00:00Z", 6]],
-1: [["2022-01-01T07:00:00Z", 2]]
+        2: [["2022-01-15T07:00:00Z", 6]],
+0: [["2022-01-01T07:00:00Z", 2]],
+3: [["2022-01-15T07:00:00Z", 8]],
+1: [["2022-01-01T07:00:00Z", 4]]
     };
     Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
         window.dispatchEvent(new CustomEvent('uitwisseling', {
@@ -2857,6 +2857,15 @@ Applicatie = (function () {
                 Applicatie.SelecteerToestand(geselecteerdeToestand.Identificatie, uniekId);
             }
         }
+        // Uitwisselingen en projectacties delen dezelfde tijdlijn
+        window.dispatchEvent(new CustomEvent('projectactie', {
+            detail: gemaaktOp
+        }));
+    }
+
+    // Selectie van projectacties
+    Applicatie.SelecteerProjectactie = function (uitgevoerdOp) {
+        Applicatie.SelecteerUitwisseling(uitgevoerdOp);
     }
 
     // Initialisatie van een diagram
@@ -2910,8 +2919,8 @@ Applicatie = (function () {
             <table>
                 <tr>
                     <td><button class="pijlknop" id="uitwisselingselector_vorige" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_links"></div></button></td>
-                    <td><select id="uitwisselingselector_gemaaktOp"><option value="2022-01-01T07:00:00Z">2022-01-01T07:00:00Z Vooraf</option>
-<option value="2022-01-15T07:00:00Z" selected>2022-01-15T07:00:00Z Test</option>
+                    <td><select id="uitwisselingselector_gemaaktOp"><option value="2022-01-15T07:00:00Z" selected>2022-01-15T07:00:00Z Test</option>
+<option value="2022-01-01T07:00:00Z">2022-01-01T07:00:00Z Vooraf</option>
 </select></td>
                     <td><button class="pijlknop" id="uitwisselingselector_volgende" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_rechts"></div></button></td>
                 </tr>
@@ -2924,9 +2933,9 @@ Applicatie = (function () {
 </table>
 
 </div>
-<table><tr><td><button data-accordion="2556" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2556" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
-<td data-accordion-paneel="2556" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4241" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4241" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="4241" class="accordion_t_paneel" style="display: block">
 <b>Over deze pagina</b>
 <p>
     Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
@@ -3018,11 +3027,8 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<p>Er is 
-een foutmelding
-; klik op <i>Uitvoering van de applicatie</i> om deze te bekijken</p>
-<button data-accordion="2557" class="accordion_h">Uitvoering van de applicatie</button>
-<div data-accordion-paneel="2557" class="accordion_h_paneel">
+<button data-accordion="4242" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="4242" class="accordion_h_paneel">
 <p>
     Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
     het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
@@ -3038,6 +3044,7 @@ een foutmelding
 <div id="log_detail">
 
 <table id="meldingen_tabel">
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Toestandsbepaling\20 Correcties\01 Afstel initiele versie\Proces_unit_test.json' bevat valide procesopties</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Toestandsbepaling\20 Correcties\01 Afstel initiele versie\01 Vooraf - Instelling.xml' bevat valide ConsolidatieInformatie</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Toestandsbepaling\20 Correcties\01 Afstel initiele versie\10 Test - afstel.xml' bevat valide ConsolidatieInformatie</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main"><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</td></tr>
@@ -3085,7 +3092,7 @@ een foutmelding
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Fouten en waarschuwingen: resultaat (data) komt overeen met de verwachting</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Versiebeheerinformatie: resultaat (data) komt overeen met de verwachting</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Cumulatieve versieinformatie: resultaat (data) komt overeen met de verwachting</td></tr>
-<tr class="entry_FOUT"><td class="level_FOUT">FOUT</td><td class="message_FOUT main">Actuele toestanden: verwacht (<a href="Test_ActueleToestanden_verwacht.json" target="_blank">json</a>) en uitkomst (<a href="Test_ActueleToestanden_actueel.json" target="_blank">json</a>) verschillen vanaf regel 20</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Actuele toestanden: resultaat (data) komt overeen met de verwachting</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Complete toestanden: resultaat (data) komt overeen met de verwachting</td></tr>
 </table>
 </div>
@@ -3108,9 +3115,9 @@ een foutmelding
 </div>
 
 <div class="sectie_op"><h1>Publiceren</h1>
-<table><tr><td><button data-accordion="2558" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2558" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
-<td data-accordion-paneel="2558" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4243" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4243" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
+<td data-accordion-paneel="4243" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
     en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
@@ -3120,11 +3127,11 @@ een foutmelding
 
 </td></tr></table>
 
-<button data-accordion="2559" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
-<div data-accordion-paneel="2559" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2560" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2560" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="2560" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4244" class="accordion_h active"><h3>Overzicht van uitwisselingen en publicaties</h3></button>
+<div data-accordion-paneel="4244" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4245" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4245" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="4245" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
     het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
@@ -3150,11 +3157,11 @@ een foutmelding
 </table></p>
 </div>
 
-<button data-accordion="2561" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
-<div data-accordion-paneel="2561" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="2562" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2562" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
-<td data-accordion-paneel="2562" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4246" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="4246" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="4247" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4247" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
+<td data-accordion-paneel="4247" class="accordion_t_paneel" style="display: block">
 <p>
     Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
 </p>
@@ -3208,9 +3215,9 @@ een foutmelding
 
 </div>
 <div class="sectie_lv"><h1>Beschikbaar stellen</h1>
-<table><tr><td><button data-accordion="2563" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2563" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
-<td data-accordion-paneel="2563" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4248" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4248" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="4248" class="accordion_t_paneel" style="display: block">
 <p>
     De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
     en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).
@@ -3222,11 +3229,11 @@ een foutmelding
 </td></tr></table>
 
 <h2>Regeling: /akn/nl/act/gm9999/2022/REG_A</h2>
-<button data-accordion="2564" class="accordion_h active"><h3>Versiebeheer en actuele toestanden</h3></button>
-<div data-accordion-paneel="2564" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2565" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2565" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer en actuele toestanden</td>
-<td data-accordion-paneel="2565" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4249" class="accordion_h active"><h3>Versiebeheer en actuele toestanden</h3></button>
+<div data-accordion-paneel="4249" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4250" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4250" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer en actuele toestanden</td>
+<td data-accordion-paneel="4250" class="accordion_t_paneel" style="display: block">
 <p>
     STOP kent een vorm van <a href="@@@Documentatie_Url@@@/versiebeheer_principes.html">versiebeheer</a> voor regelgeving.
     Daarbij wordt bij elke uitwisseling aangegeven hoe een uitgewisselde versie van een regeling of informatieobject zich verhoudt
@@ -3284,9 +3291,9 @@ een foutmelding
 <table>
     <tr>
         <td style="width: 500px; height:500px"><svg id="vbh_1_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 350 180 " version="1.1">
-<g data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><text x="50" y="75" dominant-baseline="middle" text-anchor="middle" class="vbd_l_t vbd_i" data-vbh_1_e="1" data-vbh_1_ti="0" data-vbh_1_tid="4">2022-02-01</text>
-<rect x="94" y="60" width="45" height="30" rx="3" ry="3" class="vbd_t vbd_i" data-vbh_1_e="1" data-vbh_1_ti="0" data-vbh_1_tid="4"></rect>
-<text x="116" y="75" dominant-baseline="middle" text-anchor="middle" class="vbd_l_t vbd_i" data-vbh_1_e="1" data-vbh_1_ti="0" data-vbh_1_tid="4">&#128214;</text>
+<g data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><text x="50" y="75" dominant-baseline="middle" text-anchor="middle" class="vbd_l_t vbd_i" data-vbh_1_e="1" data-vbh_1_ti="0" data-vbh_1_tid="2">2022-02-01</text>
+<rect x="94" y="60" width="45" height="30" rx="3" ry="3" class="vbd_t vbd_i" data-vbh_1_e="1" data-vbh_1_ti="0" data-vbh_1_tid="2"></rect>
+<text x="116" y="75" dominant-baseline="middle" text-anchor="middle" class="vbd_l_t vbd_i" data-vbh_1_e="1" data-vbh_1_ti="0" data-vbh_1_tid="2">&#128214;</text>
 <text x="205" y="165" dominant-baseline="middle" text-anchor="middle" class="vbd_txt">A</text><rect x="183" y="105" width="45" height="30" rx="3" ry="3" class="vbd_mo vbd_i" data-vbh_1_e="2" data-vbh_1_mo="0"></rect>
 <text x="205" y="120" dominant-baseline="middle" text-anchor="middle" class="vbd_l_mo vbd_i" data-vbh_1_e="2" data-vbh_1_mo="0">&#128214;&#128344;</text>
 <path d="M 250 135 L 250 105" class="vbd_line_uw"/>
@@ -3308,7 +3315,7 @@ een foutmelding
 </g>
 Deze browser ondersteunt geen SVG
 </svg></td>
-        <td id="vbh_1_info" class="vbh_tv"><div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><div data-vbh_1_t="1" data-vbh_1_tid="4" data-vbh_1_ti="0" class="vbd_tl"><p><b>Toestand: /akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01</b><br/>
+        <td id="vbh_1_info" class="vbh_tv"><div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><div data-vbh_1_t="1" data-vbh_1_tid="2" data-vbh_1_ti="0" class="vbd_tl"><p><b>Toestand: /akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01</b><br/>
 Juridisch werkend vanaf 2022-02-01</p>
 <p>Instrumentversie: /akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1</p>
 <table><tr><td rowspan="1" data-vbh_1_ntc="1" class="vw">Inwerkingtredingsdoelen</td><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
@@ -3394,9 +3401,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
     </tr>
 </table>
 
-<table><tr><td><button data-accordion="2566" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2566" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="2566" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4251" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4251" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="4251" class="accordion_t_paneel" style="display: block">
 <table>
     <tr><td><div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr><tr><td colspan="2">De linkerkolom toont de actuele toestanden, en</td></tr>
@@ -3413,11 +3420,11 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 
 </div>
 
-<button data-accordion="2567" class="accordion_h active">Bepaling van de actuele toestand</button>
-<div data-accordion-paneel="2567" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2568" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2568" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de inhoud van deze sectie</td>
-<td data-accordion-paneel="2568" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4252" class="accordion_h active">Bepaling van de actuele toestand</button>
+<div data-accordion-paneel="4252" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4253" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4253" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de inhoud van deze sectie</td>
+<td data-accordion-paneel="4253" class="accordion_t_paneel" style="display: block">
 <p>
     Klik in het diagram in de voorgaande sectie (of in een latere sectie van deze pagina) op een actuele toestand.
     Deze sectie laat dan zien hoe de toestand bepaald kan worden. De tekst loopt alle stappen langs die in de
@@ -3432,9 +3439,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </td></tr></table>
 
 <div class="atb_2" style="display: none;">
-<table><tr><td><button data-accordion="2569" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2569" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
-<td data-accordion-paneel="2569" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4254" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4254" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
+<td data-accordion-paneel="4254" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
 <div data-atb_2_ti="0">
 <p><b>Stap 1. Bepaal relevante doelen en stel de toestanden samen.</b><br/>Voor deze toestand komt het erop neer te bepalen hoe de toestand eruit ziet voor JuridischWerkendVanaf = 2022-02-01 en een GeldigVanaf die rekening houdt met andere doelen die tegelijk juridische werking hebben.</p>
@@ -3446,9 +3453,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="2570" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2570" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
-<td data-accordion-paneel="2570" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4255" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4255" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
+<td data-accordion-paneel="4255" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
 <div data-atb_2_ti="0">
 <p>
@@ -3468,9 +3475,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="2571" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2571" class="accordion_t_titel" style="display: none">&#8678;5 - 6: Validatie kandidaat-instrumentversie</td>
-<td data-accordion-paneel="2571" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4256" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4256" class="accordion_t_titel" style="display: none">&#8678;5 - 6: Validatie kandidaat-instrumentversie</td>
+<td data-accordion-paneel="4256" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
 <div data-atb_2_ti="0">
 <p>
@@ -3497,11 +3504,11 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </div>
 </div>
 
-<button data-accordion="2572" class="accordion_h">STOP module: ActueleToestanden</button>
-<div data-accordion-paneel="2572" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="2573" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2573" class="accordion_t_titel" style="display: none">&#8678;Toelichting</td>
-<td data-accordion-paneel="2573" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4257" class="accordion_h">STOP module: ActueleToestanden</button>
+<div data-accordion-paneel="4257" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="4258" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4258" class="accordion_t_titel" style="display: none">&#8678;Toelichting</td>
+<td data-accordion-paneel="4258" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie toont het overzicht van actuele toestanden in de vorm van de STOP module
     <a href="@@@Documentatie_Url@@@/go/go.html?id=xsd:cons:ActueleToestanden">ActueleToestanden</a>.
@@ -3535,11 +3542,11 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </div>
 </div>
 
-<button data-accordion="2574" class="accordion_h active"><h3>Complete toestanden</h3></button>
-<div data-accordion-paneel="2574" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2575" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2575" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van de complete toestanden</td>
-<td data-accordion-paneel="2575" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4259" class="accordion_h active"><h3>Complete toestanden</h3></button>
+<div data-accordion-paneel="4259" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4260" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4260" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van de complete toestanden</td>
+<td data-accordion-paneel="4260" class="accordion_t_paneel" style="display: block">
 <p>
     Het overzicht van complete toestanden is bedoeld voor gebruik in software die de geconsolideerde regelgeving
     betrekt van de LVBB. Het overzicht van complete toestanden verschilt op twee punten van het overzicht van
@@ -3600,16 +3607,16 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 <table><tr><td>
 <table><tr><td>
-<table class="ct_o_toestanden" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><tr><th data-ct_o_3_ts="o">ontvangenOp</th><th data-ct_o_3_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-ct_o_3_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_o_t" data-ct_o_3_ti="0" data-ct_o_3_tid="4" data-ct_o_3_f=""><td data-ct_o_3_ts="o">2022-01-01</td><td data-ct_o_3_ts="b">2022-01-01</td><td>2022-02-01</td><td data-ct_o_3_ts="g">2022-02-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1">&#128214;</span></td></tr>
+<table class="ct_o_toestanden" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><tr><th data-ct_o_3_ts="o">ontvangenOp</th><th data-ct_o_3_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-ct_o_3_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_o_t" data-ct_o_3_ti="0" data-ct_o_3_tid="2" data-ct_o_3_f=""><td data-ct_o_3_ts="o">2022-01-01</td><td data-ct_o_3_ts="b">2022-01-01</td><td>2022-02-01</td><td data-ct_o_3_ts="g">2022-02-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1">&#128214;</span></td></tr>
 </table>
-<table class="ct_o_toestanden" data-uv="2022-01-15T07:00:00Z" ><tr><th data-ct_o_3_ts="o">ontvangenOp</th><th data-ct_o_3_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-ct_o_3_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_o_t" data-ct_o_3_ti="2" data-ct_o_3_tid="8" data-ct_o_3_f=""><td data-ct_o_3_ts="o">2022-01-15</td><td data-ct_o_3_ts="b">2022-01-15</td><td>2022-02-01</td><td data-ct_o_3_ts="g">2022-02-01</td><td>#2</td><td></td><td>#1</td><td class="s">&#128683;</td></tr>
-<tr class="ct_o_t" data-ct_o_3_ti="0" data-ct_o_3_tid="4" data-ct_o_3_f="|4|36|21|12|23|29|31|85|"><td data-ct_o_3_ts="o">2022-01-01</td><td data-ct_o_3_ts="b">2022-01-01</td><td>2022-02-01</td><td data-ct_o_3_ts="g">2022-02-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1">&#128214;</span></td></tr>
+<table class="ct_o_toestanden" data-uv="2022-01-15T07:00:00Z" ><tr><th data-ct_o_3_ts="o">ontvangenOp</th><th data-ct_o_3_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-ct_o_3_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_o_t" data-ct_o_3_ti="2" data-ct_o_3_tid="6" data-ct_o_3_f=""><td data-ct_o_3_ts="o">2022-01-15</td><td data-ct_o_3_ts="b">2022-01-15</td><td>2022-02-01</td><td data-ct_o_3_ts="g">2022-02-01</td><td>#2</td><td></td><td>#1</td><td class="s">&#128683;</td></tr>
+<tr class="ct_o_t" data-ct_o_3_ti="0" data-ct_o_3_tid="2" data-ct_o_3_f="|4|36|21|12|23|29|31|85|"><td data-ct_o_3_ts="o">2022-01-01</td><td data-ct_o_3_ts="b">2022-01-01</td><td>2022-02-01</td><td data-ct_o_3_ts="g">2022-02-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1">&#128214;</span></td></tr>
 </table>
 
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="2576" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2576" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="2576" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4261" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4261" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="4261" class="accordion_t_paneel" style="display: block">
 <table><tr><td>
 <table data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
 <tr><th>Letter</th><th>Doel</th></tr>
@@ -3623,11 +3630,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 </td></tr></table>
 </td><td>
-<div data-ct_o_3_t="8" class="ct_o_toestand">
+<div data-ct_o_3_t="6" class="ct_o_toestand">
 <table><tr><th colspan="3">Toestand</th></tr><tr><td>ontvangenOp</td><td colspan="2">2022-01-15</td></tr><tr><td>bekendOp</td><td colspan="2">2022-01-15</td></tr><tr><td>juridischWerkendVanaf</td><td colspan="2">2022-02-01</td></tr><tr><td>geldigVanaf</td><td colspan="2">2022-02-01</td></tr><tr><th colspan="3">Identificatie</th></tr><tr><td>Expression identificatie</td><td colspan="2">/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01;2</td></tr><tr><td>Inwerkingtredingsdoelen</td><td colspan="2">-</td></tr>
 <tr><th colspan="3">Inhoud</th></tr><tr><td></td><td colspan="2">Het instrument is niet in werking</td></tr></table>
 </div>
-<div data-ct_o_3_t="4" class="ct_o_toestand">
+<div data-ct_o_3_t="2" class="ct_o_toestand">
 <table><tr><th colspan="3">Toestand</th></tr><tr><td>ontvangenOp</td><td colspan="2">2022-01-01</td></tr><tr><td>bekendOp</td><td colspan="2">2022-01-01</td></tr><tr><td>juridischWerkendVanaf</td><td colspan="2">2022-02-01</td></tr><tr><td>geldigVanaf</td><td colspan="2">2022-02-01</td></tr><tr><th colspan="3">Identificatie</th></tr><tr><td>Expression identificatie</td><td colspan="2">/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01</td></tr><tr><td rowspan="1">Inwerkingtredingsdoelen</td><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
 <tr><th colspan="3">Inhoud</th></tr><tr><td>Instrumentversie</td><td colspan="2">/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1</td></tr></table>
 </div>
@@ -3635,11 +3642,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </td></tr></table>
 </div>
 
-<button data-accordion="2577" class="accordion_h active">Tijdreisfilter</button>
-<div data-accordion-paneel="2577" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2578" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2578" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het tijdreisfilter</td>
-<td data-accordion-paneel="2578" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4262" class="accordion_h active">Tijdreisfilter</button>
+<div data-accordion-paneel="4262" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4263" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4263" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het tijdreisfilter</td>
+<td data-accordion-paneel="4263" class="accordion_t_paneel" style="display: block">
 <p>
     Het volledig overzicht van complete toestanden kan erg omvangrijk worden als een instrument vaak gewijzigd wordt.
     Bovendien zal niet elke afnemer van deze informatie behoefte hebben aan tijdreizen over alle vier de tijdassen.
@@ -3707,11 +3714,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 </div>
 
-<button data-accordion="2579" class="accordion_h">STOP module: CompleteToestanden</button>
-<div data-accordion-paneel="2579" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="2580" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2580" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de STOP module</td>
-<td data-accordion-paneel="2580" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4264" class="accordion_h">STOP module: CompleteToestanden</button>
+<div data-accordion-paneel="4264" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="4265" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4265" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de STOP module</td>
+<td data-accordion-paneel="4265" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie laat de <a href="@@@Documentatie_Url@@@/go/go.html?id=xsd:cons:CompleteToestanden">CompleteToestanden</a> module
     zien voor het tijdreisfilter uit de vorige sectie. Als het tijdreisfilter de volledige selectie laat zien, dan komt de informatie
@@ -4917,13 +4924,13 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </div>
 </div>
 
-<button data-accordion="2581" class="accordion_h active">Bepaling van de complete toestand</button>
-<div data-accordion-paneel="2581" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2582" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2582" class="accordion_t_titel" style="display: none">&#8678;Complete toestand</td>
-<td data-accordion-paneel="2582" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4266" class="accordion_h active">Bepaling van de complete toestand</button>
+<div data-accordion-paneel="4266" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4267" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4267" class="accordion_t_titel" style="display: none">&#8678;Complete toestand</td>
+<td data-accordion-paneel="4267" class="accordion_t_paneel" style="display: block">
 <p>Hier wordt de bepaling van een complete toestand beschreven. Selecteer de te beschrijven toestand door een actuele toestand te selecteren of een toestand uit een van de overzichten van complete toestanden.</p>
-<div data-ctb_5_tid="4">
+<div data-ctb_5_tid="2">
 <p>Dit is een beschrijving van de bepaling van de complete toestand die in het tijdreisoverzicht staat vermeld als::<table>
 <tr><td>identificatie</td><td>#0</td></tr>
 <tr><td>inhoud</td><td>#0</td></tr>
@@ -4933,7 +4940,7 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 <tr><td>geldigVanaf</td><td>2022-02-01</td></tr>
 </table></p>
 </div>
-<div data-ctb_5_tid="8">
+<div data-ctb_5_tid="6">
 <p>Dit is een beschrijving van de bepaling van de complete toestand die in het tijdreisoverzicht staat vermeld als::<table>
 <tr><td>identificatie</td><td>#2</td></tr>
 <tr><td>inhoud</td><td>#1</td></tr>
@@ -4946,17 +4953,17 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </td></tr></table>
 
 <div class="ctb_5" style="display: none;">
-<table><tr><td><button data-accordion="2583" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2583" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
-<td data-accordion-paneel="2583" class="accordion_t_paneel" style="display: block">
-<div data-ctb_5_tid="4">
+<table><tr><td><button data-accordion="4268" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4268" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
+<td data-accordion-paneel="4268" class="accordion_t_paneel" style="display: block">
+<div data-ctb_5_tid="2">
 <p><b>Stap 1. Bepaal relevante doelen en stel de toestanden samen.</b><br/>(Deze stap is uitgevoerd bij de verwerking van uitwisseling 2022-01-01T07:00:00Z toen deze toestand voor het eerst gezien is)<br/>Voor deze toestand komt het erop neer te bepalen hoe de toestand eruit ziet voor JuridischWerkendVanaf = 2022-02-01 en GeldigVanaf = 2022-02-01. Deze applicatie bepaalt alle toestanden voor elke uitwisseling en bekendOp datum opnieuw. Of een toestand daadwerkelijk aan het overzicht van complete toestanden wordt toegevoegd wordt in de <i>Uitvoering van de applicatie</i> (boven aan de pagina) als detailmelding aangegeven.</p>
 <table><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Bepaal alle toestanden voor ontvangenOp = 2022-01-01 en bekendOp = 2022-01-01</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Eerste toestand, voor juridischWerkendVanaf 2022-02-01 en geldigVanaf 2022-02-01</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Doel /join/id/proces/gm9999/2022/Instelling is het inwerkingtredingsdoel van de nieuwe toestand</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Dit is de eerste toestand met deze tijdstempels: /akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01</td></tr></table>
 <p>Het resultaat is:<table><tr><td><b>Toestand</b></td><td colspan="2">/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01</td></tr><tr><td rowspan="1">Inwerkingtredingsdoelen</td><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr><tr><td>Juridisch werkend vanaf</td><td colspan="2">2022-02-01</td></tr><tr><td>Geldig vanaf</td><td colspan="2">2022-02-01</td></tr></table></p>
 <p>Ook is gevonden dat, naast de wijzigingen die voor de inwerkingtredingsdoelen worden doorgevoegd, ook alle instellingen en wijzigingen opgenomen moeten worden voor:<table><tr><td rowspan="0">Doelen eerdere toestanden:</td></table></p><br/>(Deze doelen zijn gevonden bij de verwerking van uitwisseling 2022-01-01T07:00:00Z voor bekendOp = 2022-01-01 toen deze inhoud van de toestand voor het eerst gezien is)<br/><p><b>Stap 2. Geen toestand na een intrekking.</b><br/>Als het instrument wordt ingetrokken, dan mogen er geen toestanden zijn met een juridischWerkendVanaf na de datum van intrekking.</p>
 <div>(Geen meldingen)</div>
 </div>
-<div data-ctb_5_tid="8">
+<div data-ctb_5_tid="6">
 <p><b>Stap 1. Bepaal relevante doelen en stel de toestanden samen.</b><br/>(Deze stap is uitgevoerd bij de verwerking van uitwisseling 2022-01-15T07:00:00Z toen deze toestand voor het eerst gezien is)<br/>Voor deze toestand komt het erop neer te bepalen hoe de toestand eruit ziet voor JuridischWerkendVanaf = 2022-02-01 en GeldigVanaf = 2022-02-01. Deze applicatie bepaalt alle toestanden voor elke uitwisseling en bekendOp datum opnieuw. Of een toestand daadwerkelijk aan het overzicht van complete toestanden wordt toegevoegd wordt in de <i>Uitvoering van de applicatie</i> (boven aan de pagina) als detailmelding aangegeven.</p>
 <table><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Er zijn al toestanden met dezelfde tijdstempels maar met andere inwerkingtredingsdoelen, dit is nummer 2: /akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01;2</td></tr></table>
 <p>Het resultaat is:<table><tr><td><b>Toestand</b></td><td colspan="2">/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01;2</td></tr><tr><td rowspan="0">Inwerkingtredingsdoelen</td><tr><td>Juridisch werkend vanaf</td><td colspan="2">2022-02-01</td></tr><tr><td>Geldig vanaf</td><td colspan="2">2022-02-01</td></tr></table></p>
@@ -4965,10 +4972,10 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="2584" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2584" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
-<td data-accordion-paneel="2584" class="accordion_t_paneel" style="display: block">
-<div data-ctb_5_tid="4">
+<table><tr><td><button data-accordion="4269" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4269" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
+<td data-accordion-paneel="4269" class="accordion_t_paneel" style="display: block">
+<div data-ctb_5_tid="2">
 <p>
     De volgende stappen gaan over het vinden van de instrumentversie die de toestand
     inhoudelijk weergeeft. Als een versie gevonden wordt, dan wordt nagegaan of de
@@ -4987,10 +4994,10 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 <table><tr><td class="ctb_diagram_td">
 </td><td rowspan="2">
-<table><tr><td><button data-accordion="2585" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2585" class="accordion_t_titel" style="display: none">&#8678;5 - 7: Validatie kandidaat-instrumentversie en alternatieve versies</td>
-<td data-accordion-paneel="2585" class="accordion_t_paneel" style="display: block">
-<div data-ctb_5_tid="4">
+<table><tr><td><button data-accordion="4270" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4270" class="accordion_t_titel" style="display: none">&#8678;5 - 7: Validatie kandidaat-instrumentversie en alternatieve versies</td>
+<td data-accordion-paneel="4270" class="accordion_t_paneel" style="display: block">
+<div data-ctb_5_tid="2">
 <p>
     <b>Stap 5 en 6. Valideer de kandidaat-instrumentversie.</b><br />
     Ga na dat in de kandidaat-instrumentversie alle instellingen/wijzigingen van het
@@ -5012,20 +5019,20 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </td></tr></table>
 
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="2586" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2586" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="2586" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4271" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4271" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="4271" class="accordion_t_paneel" style="display: block">
 </td></tr></table>
 
 </td></tr></table>
 </div>
 </div>
 
-<button data-accordion="2587" class="accordion_h active"><h3>Tijdreizen</h3></button>
-<div data-accordion-paneel="2587" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2588" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2588" class="accordion_t_titel" style="display: none">&#8678;Toelichting op tijdreizen</td>
-<td data-accordion-paneel="2588" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4272" class="accordion_h active"><h3>Tijdreizen</h3></button>
+<div data-accordion-paneel="4272" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4273" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4273" class="accordion_t_titel" style="display: none">&#8678;Toelichting op tijdreizen</td>
+<td data-accordion-paneel="4273" class="accordion_t_paneel" style="display: block">
 <p>
     Vanaf dit onderdeel wordt dieper ingegaan op de bepaling van de complete toestanden. Tevens wordt
     ingegaan op het tijdreizen op basis van de complete toestanden. Daarbij wordt op een manier naar de
@@ -5075,11 +5082,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 <table><tr><td>
 <table><tr><td>
-<table class="ct_tr_toestanden"><tr><th>ontvangenOp</th><th>bekendOp</th><th>juridischWerkendVanaf</th><th>geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_tr_tk" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><td>2022-01-15</td><td>2022-01-15</td><td>2022-02-01</td><td>2022-02-01</td><td>#2</td><td></td><td>#1</td><td class="s">&#128683;</td></tr><tr class="ct_tr_t uw" data-ct_tr_6_ti="2" data-ct_tr_6_tid="8" data-ct_tr_6_ob_t="1" data-uv="2022-01-15T07:00:00Z" ><td>2022-01-15</td><td>2022-01-15</td><td>2022-02-01</td><td>2022-02-01</td><td>#2</td><td></td><td>#1</td><td class="s">&#128683;</td></tr><tr class="ct_tr_t uw" data-ct_tr_6_ti="0" data-ct_tr_6_tid="4" data-ct_tr_6_ob_t="2" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><td>2022-01-01</td><td>2022-01-01</td><td>2022-02-01</td><td>2022-02-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1">&#128214;</span></td></tr><tr class="ct_tr_t" data-ct_tr_6_ti="0" data-ct_tr_6_tid="4" data-ct_tr_6_ob_t="2" data-uv="2022-01-15T07:00:00Z" ><td>2022-01-01</td><td>2022-01-01</td><td>2022-02-01</td><td>2022-02-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1">&#128214;</span></td></tr></table>
+<table class="ct_tr_toestanden"><tr><th>ontvangenOp</th><th>bekendOp</th><th>juridischWerkendVanaf</th><th>geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_tr_tk" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><td>2022-01-15</td><td>2022-01-15</td><td>2022-02-01</td><td>2022-02-01</td><td>#2</td><td></td><td>#1</td><td class="s">&#128683;</td></tr><tr class="ct_tr_t uw" data-ct_tr_6_ti="2" data-ct_tr_6_tid="6" data-ct_tr_6_ob_t="1" data-uv="2022-01-15T07:00:00Z" ><td>2022-01-15</td><td>2022-01-15</td><td>2022-02-01</td><td>2022-02-01</td><td>#2</td><td></td><td>#1</td><td class="s">&#128683;</td></tr><tr class="ct_tr_t uw" data-ct_tr_6_ti="0" data-ct_tr_6_tid="2" data-ct_tr_6_ob_t="2" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><td>2022-01-01</td><td>2022-01-01</td><td>2022-02-01</td><td>2022-02-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1">&#128214;</span></td></tr><tr class="ct_tr_t" data-ct_tr_6_ti="0" data-ct_tr_6_tid="2" data-ct_tr_6_ob_t="2" data-uv="2022-01-15T07:00:00Z" ><td>2022-01-01</td><td>2022-01-01</td><td>2022-02-01</td><td>2022-02-01</td><td>#0</td><td>A</td><td>#0</td><td class="s"><span title="/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1">&#128214;</span></td></tr></table>
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="2589" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2589" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="2589" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4274" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4274" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="4274" class="accordion_t_paneel" style="display: block">
 <table><tr><td>
 <table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr></table>
@@ -5134,19 +5141,19 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
             <td>
                 <div class="ct_tr_diagram "><svg id="ct_tr_6_jg_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 105.0 63.0 " version="1.1">
 <g  data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
-<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr uw" data-ct_tr_6_ob_g=2 data-ct_tr_6_tid=4 data-ct_tr_6_ti=0><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
+<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr uw" data-ct_tr_6_ob_g=2 data-ct_tr_6_tid=2 data-ct_tr_6_ti=0><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
 <path d="M 21.0 42.0 L 21.0 0" class="ct_tr_dl uw" data-ct_tr_6_ob_g="2"/>
 <path d="M 21.0 42.0 L 105.0 42.0" class="ct_tr_dl uw" data-ct_tr_6_ob_g="2"/>
-<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_6_ob_g=2 data-ct_tr_6_tid=4 data-ct_tr_6_ti=0><title>/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1</title>&#128214;A</text>
+<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_6_ob_g=2 data-ct_tr_6_tid=2 data-ct_tr_6_ti=0><title>/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1</title>&#128214;A</text>
 </g><g  data-uv="2022-01-15T07:00:00Z" >
-<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr" data-ct_tr_6_ob_g=2 data-ct_tr_6_tid=4 data-ct_tr_6_ti=0><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
+<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr" data-ct_tr_6_ob_g=2 data-ct_tr_6_tid=2 data-ct_tr_6_ti=0><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
 <path d="M 21.0 42.0 L 21.0 0" class="ct_tr_dl" data-ct_tr_6_ob_g="2"/>
 <path d="M 21.0 42.0 L 105.0 42.0" class="ct_tr_dl" data-ct_tr_6_ob_g="2"/>
-<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_6_ob_g=2 data-ct_tr_6_tid=4 data-ct_tr_6_ti=0><title>/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1</title>&#128214;A</text>
-<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr uw" data-ct_tr_6_ob_g=1 data-ct_tr_6_tid=8 data-ct_tr_6_ti=2><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
+<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_6_ob_g=2 data-ct_tr_6_tid=2 data-ct_tr_6_ti=0><title>/akn/nl/act/gm9999/2022/REG_A/nld@2022;versie1</title>&#128214;A</text>
+<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr uw" data-ct_tr_6_ob_g=1 data-ct_tr_6_tid=6 data-ct_tr_6_ti=2><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
 <path d="M 21.0 42.0 L 21.0 0" class="ct_tr_dl uw" data-ct_tr_6_ob_g="1"/>
 <path d="M 21.0 42.0 L 105.0 42.0" class="ct_tr_dl uw" data-ct_tr_6_ob_g="1"/>
-<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_6_ob_g=1 data-ct_tr_6_tid=8 data-ct_tr_6_ti=2>&#128683;</text>
+<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_6_ob_g=1 data-ct_tr_6_tid=6 data-ct_tr_6_ti=2>&#128683;</text>
 </g>Deze browser ondersteunt geen SVG
 </svg></div>
                 <div class="ct_tr_diagram_x">geldigVanaf</div>
@@ -5160,11 +5167,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 </div><div class="sectie_lv_alt1">
 <h2>Informatieobject: /join/id/regdata/2022/IO_A</h2>
-<button data-accordion="2590" class="accordion_h active"><h3>Versiebeheer en actuele toestanden</h3></button>
-<div data-accordion-paneel="2590" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2591" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2591" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer en actuele toestanden</td>
-<td data-accordion-paneel="2591" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4275" class="accordion_h active"><h3>Versiebeheer en actuele toestanden</h3></button>
+<div data-accordion-paneel="4275" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4276" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4276" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer en actuele toestanden</td>
+<td data-accordion-paneel="4276" class="accordion_t_paneel" style="display: block">
 <p>
     STOP kent een vorm van <a href="@@@Documentatie_Url@@@/versiebeheer_principes.html">versiebeheer</a> voor regelgeving.
     Daarbij wordt bij elke uitwisseling aangegeven hoe een uitgewisselde versie van een regeling of informatieobject zich verhoudt
@@ -5222,9 +5229,9 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 <table>
     <tr>
         <td style="width: 500px; height:500px"><svg id="vbh_7_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 350 180 " version="1.1">
-<g data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><text x="50" y="75" dominant-baseline="middle" text-anchor="middle" class="vbd_l_t vbd_i" data-vbh_7_e="1" data-vbh_7_ti="1" data-vbh_7_tid="2">2022-02-01</text>
-<rect x="94" y="60" width="45" height="30" rx="3" ry="3" class="vbd_t vbd_i" data-vbh_7_e="1" data-vbh_7_ti="1" data-vbh_7_tid="2"></rect>
-<text x="116" y="75" dominant-baseline="middle" text-anchor="middle" class="vbd_l_t vbd_i" data-vbh_7_e="1" data-vbh_7_ti="1" data-vbh_7_tid="2">&#128214;</text>
+<g data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><text x="50" y="75" dominant-baseline="middle" text-anchor="middle" class="vbd_l_t vbd_i" data-vbh_7_e="1" data-vbh_7_ti="1" data-vbh_7_tid="4">2022-02-01</text>
+<rect x="94" y="60" width="45" height="30" rx="3" ry="3" class="vbd_t vbd_i" data-vbh_7_e="1" data-vbh_7_ti="1" data-vbh_7_tid="4"></rect>
+<text x="116" y="75" dominant-baseline="middle" text-anchor="middle" class="vbd_l_t vbd_i" data-vbh_7_e="1" data-vbh_7_ti="1" data-vbh_7_tid="4">&#128214;</text>
 <text x="205" y="165" dominant-baseline="middle" text-anchor="middle" class="vbd_txt">A</text><rect x="183" y="105" width="45" height="30" rx="3" ry="3" class="vbd_mo vbd_i" data-vbh_7_e="2" data-vbh_7_mo="0"></rect>
 <text x="205" y="120" dominant-baseline="middle" text-anchor="middle" class="vbd_l_mo vbd_i" data-vbh_7_e="2" data-vbh_7_mo="0">&#128214;&#128344;</text>
 <path d="M 250 135 L 250 105" class="vbd_line_uw"/>
@@ -5246,7 +5253,7 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </g>
 Deze browser ondersteunt geen SVG
 </svg></td>
-        <td id="vbh_7_info" class="vbh_tv"><div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><div data-vbh_7_t="1" data-vbh_7_tid="2" data-vbh_7_ti="1" class="vbd_tl"><p><b>Toestand: /join/id/regdata/consolidatie/2022/io2/nld@2022-02-01</b><br/>
+        <td id="vbh_7_info" class="vbh_tv"><div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><div data-vbh_7_t="1" data-vbh_7_tid="4" data-vbh_7_ti="1" class="vbd_tl"><p><b>Toestand: /join/id/regdata/consolidatie/2022/io2/nld@2022-02-01</b><br/>
 Juridisch werkend vanaf 2022-02-01</p>
 <p>Instrumentversie: /join/id/regdata/2022/IO_A@2022;versie1</p>
 <table><tr><td rowspan="1" data-vbh_7_ntc="1" class="vw">Inwerkingtredingsdoelen</td><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
@@ -5332,9 +5339,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
     </tr>
 </table>
 
-<table><tr><td><button data-accordion="2592" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2592" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="2592" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4277" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4277" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="4277" class="accordion_t_paneel" style="display: block">
 <table>
     <tr><td><div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr><tr><td colspan="2">De linkerkolom toont de actuele toestanden, en</td></tr>
@@ -5351,11 +5358,11 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 
 </div>
 
-<button data-accordion="2593" class="accordion_h active">Bepaling van de actuele toestand</button>
-<div data-accordion-paneel="2593" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2594" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2594" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de inhoud van deze sectie</td>
-<td data-accordion-paneel="2594" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4278" class="accordion_h active">Bepaling van de actuele toestand</button>
+<div data-accordion-paneel="4278" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4279" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4279" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de inhoud van deze sectie</td>
+<td data-accordion-paneel="4279" class="accordion_t_paneel" style="display: block">
 <p>
     Klik in het diagram in de voorgaande sectie (of in een latere sectie van deze pagina) op een actuele toestand.
     Deze sectie laat dan zien hoe de toestand bepaald kan worden. De tekst loopt alle stappen langs die in de
@@ -5370,9 +5377,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </td></tr></table>
 
 <div class="atb_8" style="display: none;">
-<table><tr><td><button data-accordion="2595" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2595" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
-<td data-accordion-paneel="2595" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4280" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4280" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
+<td data-accordion-paneel="4280" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
 <div data-atb_8_ti="1">
 <p><b>Stap 1. Bepaal relevante doelen en stel de toestanden samen.</b><br/>Voor deze toestand komt het erop neer te bepalen hoe de toestand eruit ziet voor JuridischWerkendVanaf = 2022-02-01 en een GeldigVanaf die rekening houdt met andere doelen die tegelijk juridische werking hebben.</p>
@@ -5384,9 +5391,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="2596" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2596" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
-<td data-accordion-paneel="2596" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4281" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4281" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
+<td data-accordion-paneel="4281" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
 <div data-atb_8_ti="1">
 <p>
@@ -5406,9 +5413,9 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="2597" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2597" class="accordion_t_titel" style="display: none">&#8678;5 - 6: Validatie kandidaat-instrumentversie</td>
-<td data-accordion-paneel="2597" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4282" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4282" class="accordion_t_titel" style="display: none">&#8678;5 - 6: Validatie kandidaat-instrumentversie</td>
+<td data-accordion-paneel="4282" class="accordion_t_paneel" style="display: block">
 <div data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
 <div data-atb_8_ti="1">
 <p>
@@ -5435,11 +5442,11 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </div>
 </div>
 
-<button data-accordion="2598" class="accordion_h">STOP module: ActueleToestanden</button>
-<div data-accordion-paneel="2598" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="2599" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2599" class="accordion_t_titel" style="display: none">&#8678;Toelichting</td>
-<td data-accordion-paneel="2599" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4283" class="accordion_h">STOP module: ActueleToestanden</button>
+<div data-accordion-paneel="4283" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="4284" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4284" class="accordion_t_titel" style="display: none">&#8678;Toelichting</td>
+<td data-accordion-paneel="4284" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie toont het overzicht van actuele toestanden in de vorm van de STOP module
     <a href="@@@Documentatie_Url@@@/go/go.html?id=xsd:cons:ActueleToestanden">ActueleToestanden</a>.
@@ -5473,11 +5480,11 @@ Juridisch werkend vanaf: 2022-02-01<br/>
 </div>
 </div>
 
-<button data-accordion="2600" class="accordion_h active"><h3>Complete toestanden</h3></button>
-<div data-accordion-paneel="2600" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2601" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2601" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van de complete toestanden</td>
-<td data-accordion-paneel="2601" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4285" class="accordion_h active"><h3>Complete toestanden</h3></button>
+<div data-accordion-paneel="4285" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4286" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4286" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van de complete toestanden</td>
+<td data-accordion-paneel="4286" class="accordion_t_paneel" style="display: block">
 <p>
     Het overzicht van complete toestanden is bedoeld voor gebruik in software die de geconsolideerde regelgeving
     betrekt van de LVBB. Het overzicht van complete toestanden verschilt op twee punten van het overzicht van
@@ -5538,16 +5545,16 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 <table><tr><td>
 <table><tr><td>
-<table class="ct_o_toestanden" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><tr><th data-ct_o_9_ts="o">ontvangenOp</th><th data-ct_o_9_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-ct_o_9_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_o_t" data-ct_o_9_ti="1" data-ct_o_9_tid="2" data-ct_o_9_f=""><td data-ct_o_9_ts="o">2022-01-01</td><td data-ct_o_9_ts="b">2022-01-01</td><td>2022-02-01</td><td data-ct_o_9_ts="g">2022-02-01</td><td>#1</td><td>A</td><td>#0</td><td class="s"><span title="/join/id/regdata/2022/IO_A@2022;versie1">&#128214;</span></td></tr>
+<table class="ct_o_toestanden" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><tr><th data-ct_o_9_ts="o">ontvangenOp</th><th data-ct_o_9_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-ct_o_9_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_o_t" data-ct_o_9_ti="1" data-ct_o_9_tid="4" data-ct_o_9_f=""><td data-ct_o_9_ts="o">2022-01-01</td><td data-ct_o_9_ts="b">2022-01-01</td><td>2022-02-01</td><td data-ct_o_9_ts="g">2022-02-01</td><td>#1</td><td>A</td><td>#0</td><td class="s"><span title="/join/id/regdata/2022/IO_A@2022;versie1">&#128214;</span></td></tr>
 </table>
-<table class="ct_o_toestanden" data-uv="2022-01-15T07:00:00Z" ><tr><th data-ct_o_9_ts="o">ontvangenOp</th><th data-ct_o_9_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-ct_o_9_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_o_t" data-ct_o_9_ti="3" data-ct_o_9_tid="6" data-ct_o_9_f=""><td data-ct_o_9_ts="o">2022-01-15</td><td data-ct_o_9_ts="b">2022-01-15</td><td>2022-02-01</td><td data-ct_o_9_ts="g">2022-02-01</td><td>#3</td><td></td><td>#1</td><td class="s">&#128683;</td></tr>
-<tr class="ct_o_t" data-ct_o_9_ti="1" data-ct_o_9_tid="2" data-ct_o_9_f="|4|36|21|12|23|29|31|85|"><td data-ct_o_9_ts="o">2022-01-01</td><td data-ct_o_9_ts="b">2022-01-01</td><td>2022-02-01</td><td data-ct_o_9_ts="g">2022-02-01</td><td>#1</td><td>A</td><td>#0</td><td class="s"><span title="/join/id/regdata/2022/IO_A@2022;versie1">&#128214;</span></td></tr>
+<table class="ct_o_toestanden" data-uv="2022-01-15T07:00:00Z" ><tr><th data-ct_o_9_ts="o">ontvangenOp</th><th data-ct_o_9_ts="b">bekendOp</th><th>juridischWerkendVanaf</th><th data-ct_o_9_ts="g">geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_o_t" data-ct_o_9_ti="3" data-ct_o_9_tid="8" data-ct_o_9_f=""><td data-ct_o_9_ts="o">2022-01-15</td><td data-ct_o_9_ts="b">2022-01-15</td><td>2022-02-01</td><td data-ct_o_9_ts="g">2022-02-01</td><td>#3</td><td></td><td>#1</td><td class="s">&#128683;</td></tr>
+<tr class="ct_o_t" data-ct_o_9_ti="1" data-ct_o_9_tid="4" data-ct_o_9_f="|4|36|21|12|23|29|31|85|"><td data-ct_o_9_ts="o">2022-01-01</td><td data-ct_o_9_ts="b">2022-01-01</td><td>2022-02-01</td><td data-ct_o_9_ts="g">2022-02-01</td><td>#1</td><td>A</td><td>#0</td><td class="s"><span title="/join/id/regdata/2022/IO_A@2022;versie1">&#128214;</span></td></tr>
 </table>
 
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="2602" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2602" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="2602" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4287" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4287" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="4287" class="accordion_t_paneel" style="display: block">
 <table><tr><td>
 <table data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
 <tr><th>Letter</th><th>Doel</th></tr>
@@ -5561,11 +5568,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 </td></tr></table>
 </td><td>
-<div data-ct_o_9_t="6" class="ct_o_toestand">
+<div data-ct_o_9_t="8" class="ct_o_toestand">
 <table><tr><th colspan="3">Toestand</th></tr><tr><td>ontvangenOp</td><td colspan="2">2022-01-15</td></tr><tr><td>bekendOp</td><td colspan="2">2022-01-15</td></tr><tr><td>juridischWerkendVanaf</td><td colspan="2">2022-02-01</td></tr><tr><td>geldigVanaf</td><td colspan="2">2022-02-01</td></tr><tr><th colspan="3">Identificatie</th></tr><tr><td>Expression identificatie</td><td colspan="2">/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01;2</td></tr><tr><td>Inwerkingtredingsdoelen</td><td colspan="2">-</td></tr>
 <tr><th colspan="3">Inhoud</th></tr><tr><td></td><td colspan="2">Het instrument is niet in werking</td></tr></table>
 </div>
-<div data-ct_o_9_t="2" class="ct_o_toestand">
+<div data-ct_o_9_t="4" class="ct_o_toestand">
 <table><tr><th colspan="3">Toestand</th></tr><tr><td>ontvangenOp</td><td colspan="2">2022-01-01</td></tr><tr><td>bekendOp</td><td colspan="2">2022-01-01</td></tr><tr><td>juridischWerkendVanaf</td><td colspan="2">2022-02-01</td></tr><tr><td>geldigVanaf</td><td colspan="2">2022-02-01</td></tr><tr><th colspan="3">Identificatie</th></tr><tr><td>Expression identificatie</td><td colspan="2">/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01</td></tr><tr><td rowspan="1">Inwerkingtredingsdoelen</td><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr>
 <tr><th colspan="3">Inhoud</th></tr><tr><td>Instrumentversie</td><td colspan="2">/join/id/regdata/2022/IO_A@2022;versie1</td></tr></table>
 </div>
@@ -5573,11 +5580,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </td></tr></table>
 </div>
 
-<button data-accordion="2603" class="accordion_h active">Tijdreisfilter</button>
-<div data-accordion-paneel="2603" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2604" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2604" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het tijdreisfilter</td>
-<td data-accordion-paneel="2604" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4288" class="accordion_h active">Tijdreisfilter</button>
+<div data-accordion-paneel="4288" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4289" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4289" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het tijdreisfilter</td>
+<td data-accordion-paneel="4289" class="accordion_t_paneel" style="display: block">
 <p>
     Het volledig overzicht van complete toestanden kan erg omvangrijk worden als een instrument vaak gewijzigd wordt.
     Bovendien zal niet elke afnemer van deze informatie behoefte hebben aan tijdreizen over alle vier de tijdassen.
@@ -5645,11 +5652,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 </div>
 
-<button data-accordion="2605" class="accordion_h">STOP module: CompleteToestanden</button>
-<div data-accordion-paneel="2605" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="2606" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2606" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de STOP module</td>
-<td data-accordion-paneel="2606" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4290" class="accordion_h">STOP module: CompleteToestanden</button>
+<div data-accordion-paneel="4290" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="4291" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4291" class="accordion_t_titel" style="display: none">&#8678;Toelichting op de STOP module</td>
+<td data-accordion-paneel="4291" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie laat de <a href="@@@Documentatie_Url@@@/go/go.html?id=xsd:cons:CompleteToestanden">CompleteToestanden</a> module
     zien voor het tijdreisfilter uit de vorige sectie. Als het tijdreisfilter de volledige selectie laat zien, dan komt de informatie
@@ -6855,13 +6862,13 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </div>
 </div>
 
-<button data-accordion="2607" class="accordion_h active">Bepaling van de complete toestand</button>
-<div data-accordion-paneel="2607" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2608" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2608" class="accordion_t_titel" style="display: none">&#8678;Complete toestand</td>
-<td data-accordion-paneel="2608" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4292" class="accordion_h active">Bepaling van de complete toestand</button>
+<div data-accordion-paneel="4292" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4293" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4293" class="accordion_t_titel" style="display: none">&#8678;Complete toestand</td>
+<td data-accordion-paneel="4293" class="accordion_t_paneel" style="display: block">
 <p>Hier wordt de bepaling van een complete toestand beschreven. Selecteer de te beschrijven toestand door een actuele toestand te selecteren of een toestand uit een van de overzichten van complete toestanden.</p>
-<div data-ctb_11_tid="2">
+<div data-ctb_11_tid="4">
 <p>Dit is een beschrijving van de bepaling van de complete toestand die in het tijdreisoverzicht staat vermeld als::<table>
 <tr><td>identificatie</td><td>#1</td></tr>
 <tr><td>inhoud</td><td>#0</td></tr>
@@ -6871,7 +6878,7 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 <tr><td>geldigVanaf</td><td>2022-02-01</td></tr>
 </table></p>
 </div>
-<div data-ctb_11_tid="6">
+<div data-ctb_11_tid="8">
 <p>Dit is een beschrijving van de bepaling van de complete toestand die in het tijdreisoverzicht staat vermeld als::<table>
 <tr><td>identificatie</td><td>#3</td></tr>
 <tr><td>inhoud</td><td>#1</td></tr>
@@ -6884,17 +6891,17 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </td></tr></table>
 
 <div class="ctb_11" style="display: none;">
-<table><tr><td><button data-accordion="2609" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2609" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
-<td data-accordion-paneel="2609" class="accordion_t_paneel" style="display: block">
-<div data-ctb_11_tid="2">
+<table><tr><td><button data-accordion="4294" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4294" class="accordion_t_titel" style="display: none">&#8678;1 - 2: Toestanden op basis van doelen en tijdstempels</td>
+<td data-accordion-paneel="4294" class="accordion_t_paneel" style="display: block">
+<div data-ctb_11_tid="4">
 <p><b>Stap 1. Bepaal relevante doelen en stel de toestanden samen.</b><br/>(Deze stap is uitgevoerd bij de verwerking van uitwisseling 2022-01-01T07:00:00Z toen deze toestand voor het eerst gezien is)<br/>Voor deze toestand komt het erop neer te bepalen hoe de toestand eruit ziet voor JuridischWerkendVanaf = 2022-02-01 en GeldigVanaf = 2022-02-01. Deze applicatie bepaalt alle toestanden voor elke uitwisseling en bekendOp datum opnieuw. Of een toestand daadwerkelijk aan het overzicht van complete toestanden wordt toegevoegd wordt in de <i>Uitvoering van de applicatie</i> (boven aan de pagina) als detailmelding aangegeven.</p>
 <table><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Bepaal alle toestanden voor ontvangenOp = 2022-01-01 en bekendOp = 2022-01-01</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Eerste toestand, voor juridischWerkendVanaf 2022-02-01 en geldigVanaf 2022-02-01</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Doel /join/id/proces/gm9999/2022/Instelling is het inwerkingtredingsdoel van de nieuwe toestand</td></tr><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Dit is de eerste toestand met deze tijdstempels: /join/id/regdata/consolidatie/2022/io2/nld@2022-02-01</td></tr></table>
 <p>Het resultaat is:<table><tr><td><b>Toestand</b></td><td colspan="2">/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01</td></tr><tr><td rowspan="1">Inwerkingtredingsdoelen</td><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr><tr><td>Juridisch werkend vanaf</td><td colspan="2">2022-02-01</td></tr><tr><td>Geldig vanaf</td><td colspan="2">2022-02-01</td></tr></table></p>
 <p>Ook is gevonden dat, naast de wijzigingen die voor de inwerkingtredingsdoelen worden doorgevoegd, ook alle instellingen en wijzigingen opgenomen moeten worden voor:<table><tr><td rowspan="0">Doelen eerdere toestanden:</td></table></p><br/>(Deze doelen zijn gevonden bij de verwerking van uitwisseling 2022-01-01T07:00:00Z voor bekendOp = 2022-01-01 toen deze inhoud van de toestand voor het eerst gezien is)<br/><p><b>Stap 2. Geen toestand na een intrekking.</b><br/>Als het instrument wordt ingetrokken, dan mogen er geen toestanden zijn met een juridischWerkendVanaf na de datum van intrekking.</p>
 <div>(Geen meldingen)</div>
 </div>
-<div data-ctb_11_tid="6">
+<div data-ctb_11_tid="8">
 <p><b>Stap 1. Bepaal relevante doelen en stel de toestanden samen.</b><br/>(Deze stap is uitgevoerd bij de verwerking van uitwisseling 2022-01-15T07:00:00Z toen deze toestand voor het eerst gezien is)<br/>Voor deze toestand komt het erop neer te bepalen hoe de toestand eruit ziet voor JuridischWerkendVanaf = 2022-02-01 en GeldigVanaf = 2022-02-01. Deze applicatie bepaalt alle toestanden voor elke uitwisseling en bekendOp datum opnieuw. Of een toestand daadwerkelijk aan het overzicht van complete toestanden wordt toegevoegd wordt in de <i>Uitvoering van de applicatie</i> (boven aan de pagina) als detailmelding aangegeven.</p>
 <table><tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Er zijn al toestanden met dezelfde tijdstempels maar met andere inwerkingtredingsdoelen, dit is nummer 2: /join/id/regdata/consolidatie/2022/io2/nld@2022-02-01;2</td></tr></table>
 <p>Het resultaat is:<table><tr><td><b>Toestand</b></td><td colspan="2">/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01;2</td></tr><tr><td rowspan="0">Inwerkingtredingsdoelen</td><tr><td>Juridisch werkend vanaf</td><td colspan="2">2022-02-01</td></tr><tr><td>Geldig vanaf</td><td colspan="2">2022-02-01</td></tr></table></p>
@@ -6903,10 +6910,10 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </div>
 </td></tr></table>
 
-<table><tr><td><button data-accordion="2610" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2610" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
-<td data-accordion-paneel="2610" class="accordion_t_paneel" style="display: block">
-<div data-ctb_11_tid="2">
+<table><tr><td><button data-accordion="4295" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4295" class="accordion_t_titel" style="display: none">&#8678;3 - 4: Bepaal kandidaat-instrumentversie</td>
+<td data-accordion-paneel="4295" class="accordion_t_paneel" style="display: block">
+<div data-ctb_11_tid="4">
 <p>
     De volgende stappen gaan over het vinden van de instrumentversie die de toestand
     inhoudelijk weergeeft. Als een versie gevonden wordt, dan wordt nagegaan of de
@@ -6925,10 +6932,10 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 <table><tr><td class="ctb_diagram_td">
 </td><td rowspan="2">
-<table><tr><td><button data-accordion="2611" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2611" class="accordion_t_titel" style="display: none">&#8678;5 - 7: Validatie kandidaat-instrumentversie en alternatieve versies</td>
-<td data-accordion-paneel="2611" class="accordion_t_paneel" style="display: block">
-<div data-ctb_11_tid="2">
+<table><tr><td><button data-accordion="4296" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4296" class="accordion_t_titel" style="display: none">&#8678;5 - 7: Validatie kandidaat-instrumentversie en alternatieve versies</td>
+<td data-accordion-paneel="4296" class="accordion_t_paneel" style="display: block">
+<div data-ctb_11_tid="4">
 <p>
     <b>Stap 5 en 6. Valideer de kandidaat-instrumentversie.</b><br />
     Ga na dat in de kandidaat-instrumentversie alle instellingen/wijzigingen van het
@@ -6950,20 +6957,20 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 </td></tr></table>
 
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="2612" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2612" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="2612" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4297" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4297" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="4297" class="accordion_t_paneel" style="display: block">
 </td></tr></table>
 
 </td></tr></table>
 </div>
 </div>
 
-<button data-accordion="2613" class="accordion_h active"><h3>Tijdreizen</h3></button>
-<div data-accordion-paneel="2613" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2614" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2614" class="accordion_t_titel" style="display: none">&#8678;Toelichting op tijdreizen</td>
-<td data-accordion-paneel="2614" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4298" class="accordion_h active"><h3>Tijdreizen</h3></button>
+<div data-accordion-paneel="4298" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4299" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4299" class="accordion_t_titel" style="display: none">&#8678;Toelichting op tijdreizen</td>
+<td data-accordion-paneel="4299" class="accordion_t_paneel" style="display: block">
 <p>
     Vanaf dit onderdeel wordt dieper ingegaan op de bepaling van de complete toestanden. Tevens wordt
     ingegaan op het tijdreizen op basis van de complete toestanden. Daarbij wordt op een manier naar de
@@ -7013,11 +7020,11 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
 
 <table><tr><td>
 <table><tr><td>
-<table class="ct_tr_toestanden"><tr><th>ontvangenOp</th><th>bekendOp</th><th>juridischWerkendVanaf</th><th>geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_tr_tk" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><td>2022-01-15</td><td>2022-01-15</td><td>2022-02-01</td><td>2022-02-01</td><td>#3</td><td></td><td>#1</td><td class="s">&#128683;</td></tr><tr class="ct_tr_t uw" data-ct_tr_12_ti="3" data-ct_tr_12_tid="6" data-ct_tr_12_ob_t="1" data-uv="2022-01-15T07:00:00Z" ><td>2022-01-15</td><td>2022-01-15</td><td>2022-02-01</td><td>2022-02-01</td><td>#3</td><td></td><td>#1</td><td class="s">&#128683;</td></tr><tr class="ct_tr_t uw" data-ct_tr_12_ti="1" data-ct_tr_12_tid="2" data-ct_tr_12_ob_t="2" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><td>2022-01-01</td><td>2022-01-01</td><td>2022-02-01</td><td>2022-02-01</td><td>#1</td><td>A</td><td>#0</td><td class="s"><span title="/join/id/regdata/2022/IO_A@2022;versie1">&#128214;</span></td></tr><tr class="ct_tr_t" data-ct_tr_12_ti="1" data-ct_tr_12_tid="2" data-ct_tr_12_ob_t="2" data-uv="2022-01-15T07:00:00Z" ><td>2022-01-01</td><td>2022-01-01</td><td>2022-02-01</td><td>2022-02-01</td><td>#1</td><td>A</td><td>#0</td><td class="s"><span title="/join/id/regdata/2022/IO_A@2022;versie1">&#128214;</span></td></tr></table>
+<table class="ct_tr_toestanden"><tr><th>ontvangenOp</th><th>bekendOp</th><th>juridischWerkendVanaf</th><th>geldigVanaf</th><th colspan="2">Identificatie</th><th colspan="2">Inhoud</th></tr><tr class="ct_tr_tk" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><td>2022-01-15</td><td>2022-01-15</td><td>2022-02-01</td><td>2022-02-01</td><td>#3</td><td></td><td>#1</td><td class="s">&#128683;</td></tr><tr class="ct_tr_t uw" data-ct_tr_12_ti="3" data-ct_tr_12_tid="8" data-ct_tr_12_ob_t="1" data-uv="2022-01-15T07:00:00Z" ><td>2022-01-15</td><td>2022-01-15</td><td>2022-02-01</td><td>2022-02-01</td><td>#3</td><td></td><td>#1</td><td class="s">&#128683;</td></tr><tr class="ct_tr_t uw" data-ct_tr_12_ti="1" data-ct_tr_12_tid="4" data-ct_tr_12_ob_t="2" data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" ><td>2022-01-01</td><td>2022-01-01</td><td>2022-02-01</td><td>2022-02-01</td><td>#1</td><td>A</td><td>#0</td><td class="s"><span title="/join/id/regdata/2022/IO_A@2022;versie1">&#128214;</span></td></tr><tr class="ct_tr_t" data-ct_tr_12_ti="1" data-ct_tr_12_tid="4" data-ct_tr_12_ob_t="2" data-uv="2022-01-15T07:00:00Z" ><td>2022-01-01</td><td>2022-01-01</td><td>2022-02-01</td><td>2022-02-01</td><td>#1</td><td>A</td><td>#0</td><td class="s"><span title="/join/id/regdata/2022/IO_A@2022;versie1">&#128214;</span></td></tr></table>
 </td></tr><tr><td>
-<table><tr><td><button data-accordion="2615" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2615" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="2615" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4300" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4300" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="4300" class="accordion_t_paneel" style="display: block">
 <table><tr><td>
 <table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/gm9999/2022/Instelling</td></tr></table>
@@ -7072,19 +7079,19 @@ is de eerste toestand vanaf het begin van de lijst met toestanden waarvoor geldt
             <td>
                 <div class="ct_tr_diagram "><svg id="ct_tr_12_jg_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 105.0 63.0 " version="1.1">
 <g  data-uv="2022-01-01T07:00:00Z" data-ut="2022-01-15T07:00:00Z" >
-<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr uw" data-ct_tr_12_ob_g=2 data-ct_tr_12_tid=2 data-ct_tr_12_ti=1><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
+<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr uw" data-ct_tr_12_ob_g=2 data-ct_tr_12_tid=4 data-ct_tr_12_ti=1><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
 <path d="M 21.0 42.0 L 21.0 0" class="ct_tr_dl uw" data-ct_tr_12_ob_g="2"/>
 <path d="M 21.0 42.0 L 105.0 42.0" class="ct_tr_dl uw" data-ct_tr_12_ob_g="2"/>
-<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_12_ob_g=2 data-ct_tr_12_tid=2 data-ct_tr_12_ti=1><title>/join/id/regdata/2022/IO_A@2022;versie1</title>&#128214;A</text>
+<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_12_ob_g=2 data-ct_tr_12_tid=4 data-ct_tr_12_ti=1><title>/join/id/regdata/2022/IO_A@2022;versie1</title>&#128214;A</text>
 </g><g  data-uv="2022-01-15T07:00:00Z" >
-<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr" data-ct_tr_12_ob_g=2 data-ct_tr_12_tid=2 data-ct_tr_12_ti=1><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
+<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr" data-ct_tr_12_ob_g=2 data-ct_tr_12_tid=4 data-ct_tr_12_ti=1><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
 <path d="M 21.0 42.0 L 21.0 0" class="ct_tr_dl" data-ct_tr_12_ob_g="2"/>
 <path d="M 21.0 42.0 L 105.0 42.0" class="ct_tr_dl" data-ct_tr_12_ob_g="2"/>
-<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_12_ob_g=2 data-ct_tr_12_tid=2 data-ct_tr_12_ti=1><title>/join/id/regdata/2022/IO_A@2022;versie1</title>&#128214;A</text>
-<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr uw" data-ct_tr_12_ob_g=1 data-ct_tr_12_tid=6 data-ct_tr_12_ti=3><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
+<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_12_ob_g=2 data-ct_tr_12_tid=4 data-ct_tr_12_ti=1><title>/join/id/regdata/2022/IO_A@2022;versie1</title>&#128214;A</text>
+<rect x="21.0" y="0" width="84.0" height="42.0" class="ct_tr_dr uw" data-ct_tr_12_ob_g=1 data-ct_tr_12_tid=8 data-ct_tr_12_ti=3><title>juridischWerkendVanaf=2022-02-01, geldigVanaf=2022-02-01</title></rect>
 <path d="M 21.0 42.0 L 21.0 0" class="ct_tr_dl uw" data-ct_tr_12_ob_g="1"/>
 <path d="M 21.0 42.0 L 105.0 42.0" class="ct_tr_dl uw" data-ct_tr_12_ob_g="1"/>
-<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_12_ob_g=1 data-ct_tr_12_tid=6 data-ct_tr_12_ti=3>&#128683;</text>
+<text x="31.5" y="31.5" class="ct_tr_dt" data-ct_tr_12_ob_g=1 data-ct_tr_12_tid=8 data-ct_tr_12_ti=3>&#128683;</text>
 </g>Deze browser ondersteunt geen SVG
 </svg></div>
                 <div class="ct_tr_diagram_x">geldigVanaf</div>
@@ -7994,10 +8001,21 @@ window.addEventListener('load', function () {
 
 window.addEventListener('load', function () {
 
-    // Zet de knoppen voor de vorige/volgende uitwisseling
-    function uitwisselingselector_button_status(elt) {
+    // Selecteer een uitwisseling op basis van de gemaaktOp datum
+    // De event handler toont/verbergt delen van de HTML aan de hand van de data-u* attributen
+    function SelecteerUitwisseling(e) {
+        var gemaaktOp = e.detail;
+
+        // Dropdown selectie
+        var elt = document.getElementById('uitwisselingselector_gemaaktOp');
+        elt.value = gemaaktOp;
+
+        // Volgende / vorige buttons
         var button = document.getElementById('uitwisselingselector_volgende')
-        if (elt.selectedIndex == 0) {
+        if (elt.selectedIndex == -1) {
+            button.dataset.uw = '';
+            button.disabled = true
+        } else if (elt.selectedIndex == 0) {
             button.dataset.uw = '';
             button.disabled = true
         } else {
@@ -8005,31 +8023,25 @@ window.addEventListener('load', function () {
             button.disabled = false
         }
         button = document.getElementById('uitwisselingselector_vorige')
-        if (elt.selectedIndex == elt.options.length - 1) {
+        if (elt.selectedIndex == -1) {
+            button.dataset.uw = '';
+            button.disabled = true
+        } else if (elt.selectedIndex == elt.options.length - 1) {
             button.dataset.uw = '';
             button.disabled = true
         } else {
             button.dataset.uw = elt.options[elt.selectedIndex + 1].value;
             button.disabled = false
         }
+
+        // Selectie van HTML elementen op basis van dataset waarden
         document.querySelectorAll("[data-uw]").forEach((button) => {
-            if (elt.value == button.dataset.uw) {
+            if (gemaaktOp == button.dataset.uw) {
                 button.classList.add('huidige-uw')
             } else {
                 button.classList.remove('huidige-uw')
             }
         });
-    }
-    uitwisselingselector_button_status(document.getElementById('uitwisselingselector_gemaaktOp'))
-
-    // Selecteer een uitwisseling op basis van de gemaaktOp datum
-    // De event handler toont/verbergt delen van de HTML aan de hand van de data-u* attributen
-    function uitwisselingselector_selecteer(gemaaktOp) {
-
-        // Dropdown selectie
-        var elt = document.getElementById('uitwisselingselector_gemaaktOp');
-        elt.value = gemaaktOp;
-        uitwisselingselector_button_status(elt)
 
         document.querySelectorAll("[data-u]").forEach((elt) => {
             if (elt.dataset.u == gemaaktOp) {
@@ -8045,6 +8057,11 @@ window.addEventListener('load', function () {
                 elt.style.display = 'none';
             }
         });
+    }
+    window.addEventListener('uitwisseling', SelecteerUitwisseling)
+
+    // Stuur het globale event uit
+    function uitwisselingselector_selecteer(gemaaktOp) {
         /* Stuur globaal event uit */
         Applicatie.SelecteerUitwisseling(gemaaktOp);
     }

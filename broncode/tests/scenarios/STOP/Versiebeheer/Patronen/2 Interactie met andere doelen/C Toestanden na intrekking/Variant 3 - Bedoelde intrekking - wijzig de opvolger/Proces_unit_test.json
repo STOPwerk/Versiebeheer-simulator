@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "<p>Oplossing voor <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 2C Er zijn nog toestanden na een intrekking - Variant 3 - Bedoelde intrekking, wijzig de opvolger</a>: Om samenloop in deze situatie op te lossen moet een nieuw besluit genomen worden om de wijziging op de opvolger toe te passen. Het voorgaande besluit had juridisch immers geen betekenis.</p><p>In dit scenario wordt initeel een regelingversie en informatieobject (gio993859238) ingesteld waarna deze gewijzigd worden. Op het moment dat het informatieobject ingetrokken wordt, wordt er ook een een nieuwe regelingversie en een nieuw informatieobject (een nieuw instrument, gio999999999) bekendgemaakt.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Intrekking",
+            "gemaaktOp": "2022-03-10T07:00:00Z",
+            "beschrijving": "Informatieobject /join/id/regdata/gm9999/2022/gio993859238 wordt ingetrokken, tegelijkertijd wordt er voor hetzelfde doel een nieuwe regelingversie en een nieuw informatieobject (een nieuw instrument, /join/id/regdata/gm9999/2022/gio999999999) bekendgemaakt. "
+        },
+        {
+            "naam": "Vooraf - nieuw besluit met gewijzigde regeling en IO versie",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "De tweede regeling en IO versie."
+        },
+        {
+            "naam": "Oplossing - wijzig de opvolger",
+            "gemaaktOp": "2022-04-15T07:00:00Z",
+            "beschrijving": "De gewijzigde gio993859238 wordt teruggetrokken en de wijziging wordt op het nieuwe instrument (gio999999999) doorgevoerd. Daarnaast wordt er ook een nieuwe regelingversie bekendgemaakt waarin de versie na intrekking vervlochten is."
+        }
+    ],
+    "Procesopties": true
+}

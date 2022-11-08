@@ -1,0 +1,17 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1versie.html\">patroon 1A Nieuwe versie van een regeling of informatieobject - Variant 4 - Revisie</a>: In dit scenario is eerder een besluit bekendgemaakt. Na de bekendmaking blijkt een aanpassing van de tekst nodig die zonder nieuw besluit aangebracht kan worden, bijvoorbeeld het aanbrengen van verwijzingen (ExtRef). Dat kan door een revisie van een regeling uit te wisselen. In dit voorbeeld wordt ook steeds een inwerkingtredingsdatum meegegeven; het patroon blijft van toepassing als de inwerkingtreding in een apart besluit zou worden vastgesteld.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - revisie",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Een gewijzigde versie van de regeling voor hetzelfde doel.",
+            "revisie": true
+        },
+        {
+            "naam": "Vooraf - initi\u00c3\u00able versie",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Een nieuwe versie van een regeling."
+        }
+    ],
+    "Procesopties": true
+}

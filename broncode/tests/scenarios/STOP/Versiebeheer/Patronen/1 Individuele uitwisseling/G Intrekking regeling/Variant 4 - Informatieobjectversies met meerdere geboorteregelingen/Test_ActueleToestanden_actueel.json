@@ -1,0 +1,151 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/mnre1034/2022/GemeentenViaGIO": [
+            {
+                "BekendOp": "2022-01-01",
+                "OntvangenOp": "2022-01-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/land/2022/regeling1/nld@2022-02-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2022/GemeentenViaGIO/nld@2022;v1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2022/Instelling"
+                        ],
+                        "JuridischWerkendVanaf": "2022-02-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ],
+        "/akn/nl/act/mnre1034/2022/HerindelingGemeenten2023": [
+            {
+                "BekendOp": "2022-07-01",
+                "OntvangenOp": "2022-07-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/land/2022/regeling3/nld@2022-09-01",
+                        "Identificatie": 2,
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2022/HerindelingGemeenten2023/nld@2022;v1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2022/Herindeling"
+                        ],
+                        "JuridischWerkendVanaf": "2022-09-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2022-11-01",
+                "JuridischUitgewerktOp": "2023-12-01",
+                "OntvangenOp": "2022-11-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/land/2022/regeling3/nld@2022-09-01",
+                        "Identificatie": 2,
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2022/HerindelingGemeenten2023/nld@2022;v1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2022/Herindeling"
+                        ],
+                        "JuridischWerkendTot": "2023-12-01",
+                        "JuridischWerkendVanaf": "2022-09-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ],
+        "/join/id/regdata/2022/NederlandseGemeenten": [
+            {
+                "BekendOp": "2022-01-01",
+                "OntvangenOp": "2022-01-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2022;initieel",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2022/Instelling"
+                        ],
+                        "JuridischWerkendVanaf": "2022-02-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2022-07-01",
+                "OntvangenOp": "2022-07-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2022;initieel",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2022/Instelling"
+                        ],
+                        "JuridischWerkendTot": "2022-09-01",
+                        "JuridischWerkendVanaf": "2022-02-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/mnre1034/2022/Instelling"
+                        ],
+                        "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-09-01",
+                        "Identificatie": 3,
+                        "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2023;met_herindeling",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2022/Herindeling"
+                        ],
+                        "JuridischWerkendVanaf": "2022-09-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2022-11-01",
+                "OntvangenOp": "2022-11-01",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2022;initieel",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2022/Instelling"
+                        ],
+                        "JuridischWerkendTot": "2022-09-01",
+                        "JuridischWerkendVanaf": "2022-02-01",
+                        "NietMeerActueel": true
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/mnre1034/2022/Instelling"
+                        ],
+                        "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-09-01",
+                        "Identificatie": 3,
+                        "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2023;met_herindeling",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2022/Herindeling"
+                        ],
+                        "JuridischWerkendTot": "2023-12-01",
+                        "JuridischWerkendVanaf": "2022-09-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/mnre1034/2022/Herindeling",
+                            "/join/id/proces/mnre1034/2022/Instelling"
+                        ],
+                        "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2023-12-01",
+                        "Identificatie": 5,
+                        "Instrumentversie": "/join/id/regdata/2022/NederlandseGemeenten@2023;initieel",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2022/IntrekkingGemeenteHerindeling2023"
+                        ],
+                        "JuridischWerkendVanaf": "2023-12-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

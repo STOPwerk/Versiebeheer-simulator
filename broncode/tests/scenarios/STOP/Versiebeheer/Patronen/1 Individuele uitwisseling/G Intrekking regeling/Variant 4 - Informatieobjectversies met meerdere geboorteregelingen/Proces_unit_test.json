@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 1G Intrekking van een regeling (of informatieobject) - Variant 4 - Informatieobjectversies met meerdere geboorteregelingen</a>. Dit voorbeeld betreft een GIO met de gemeentegrenzen. Het GIO wordt gewijzigd via een aparte regeling die een gemeentelijke herindeling beschrijft en die enige tijd voor de herindeling in werking treedt. De regeling wordt ingetrokken, en op dat moment wordt ook het GIO aangepast waarbij het effect van de herindeling wordt verwijderd.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Intrekking regeling en verwijderen wijzigingen uit GIO",
+            "gemaaktOp": "2022-11-01T07:00:00Z",
+            "beschrijving": "De regeling voor de gemeentelijke herindeling van 2023 wordt ingetrokken. Uit het GIO worden de wijzigingen ten gevolge van die regeling verwijderd."
+        },
+        {
+            "naam": "Vooraf - Nieuwe GIO",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het GIO met gemeentegrenzen ontstaat als onderdeel van een regeling die bepaalt dat voortaan gemeentegrenzen via een GIO worden vastgelegd."
+        },
+        {
+            "naam": "Vooraf - Nieuwe GIO-versie met nieuwe geboorteregeling",
+            "gemaaktOp": "2022-07-01T07:00:00Z",
+            "beschrijving": "Het GIO met de gemeentegrenzen wordt gewijzigd door een nieuwe regeling die de gemeentelijke herindeling van 2023 beschrijft."
+        }
+    ],
+    "Procesopties": true
+}

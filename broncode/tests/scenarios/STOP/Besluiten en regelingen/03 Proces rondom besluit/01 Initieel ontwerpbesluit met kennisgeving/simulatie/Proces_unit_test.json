@@ -1,3 +1,11 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//01 Initieel ontwerpbesluit met kennisgeving\">03 01 Initieel ontwerpbesluit met kennisgeving</a>.</p><p>In dit voorbeeld wordt een ontwerpbesluit bekendgemaakt.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Initieel ontwerpbesluit",
+            "gemaaktOp": "2020-02-17T09:03:00Z",
+            "beschrijving": "Het ontwerpbesluit met de intiti\u00c3\u00able  regelingversie die ter inzagelegging beschikbaar wordt gesteld."
+        }
+    ],
     "Procesopties": true
 }
