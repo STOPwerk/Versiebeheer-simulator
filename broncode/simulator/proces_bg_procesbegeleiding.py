@@ -221,9 +221,10 @@ class Procesbegeleiding:
 
         return geldigeMomentopnamen
 
-
-    def _NeemInstrumentversiesOver (self, branch : Branch, uitgangssituatie_doel : Doel, uitgangssituatie_geldigOp : str, nieuweInstrumentversies : Dict[str,Instrumentversie], registreerNieuweWorks : bool = True) -> bool:
-        """Neem de nieuw gespecificeerde instrumentversies over in de branch
+    def _WerkUitgangspuntBij (self, branch : Branch, uitgangssituatie_doel : Doel, uitgangssituatie_geldigOp : str, nieuweInstrumentversies : Dict[str,Instrumentversie], registreerNieuweWorks : bool = True) -> bool:
+        """Update of zet het uitgangspunt van de branch door het overnemen van de instrumentversies voor ongewijzigde instrumenten
+        en bewaar het nieuwe uitgangspunt. Als het eerdere uitgangspunt een branch was, dan moet dat nu ook zo zijn.
+        Als het eerdere uitgangspunt de geldige regelingverrsie is, dan nu ook.
 
         Argumenten:
 
@@ -237,10 +238,6 @@ class Procesbegeleiding:
 
         Geeft terug of het overnemen zonder fouten is gebeurd.
         """
-        succes = True
-
-        # Bepaal de collectie van instrumentversies die de uitgangssituatie vormen
-        uitgangssituatie : Dict[str,Instrumentversie] = {}
         if not uitgangssituatie_doel is None:
             #
             # Uitgangssituatie: versies van een andere branch
@@ -258,11 +255,7 @@ class Procesbegeleiding:
             if uitgangssituatie_branch is None:
                 self._LogFout ("onbekend doel: '" + str(uitgangssituatie_doel) + "'")
                 return False
-            self._Resultaat.Data.append (('Uitgangssituatie is branch', [uitgangssituatie_doel]))
             branch.Uitgangssituatie_Doel = uitgangssituatie_branch
-            branch.Uitgangssituatie_GeldigOp = None
-            branch.Uitgangssituatie_LaatstGewijzigdOp = [(uitgangssituatie_branch, uitgangssituatie_branch.LaatstGewijzigdOp)]
-            uitgangssituatie = uitgangssituatie_branch.Instrumentversies
 
         elif not uitgangssituatie_geldigOp is None:
             #
@@ -271,63 +264,130 @@ class Procesbegeleiding:
             if not branch.Uitgangssituatie_Doel is None:
                 self._LogFout ("De simulator staat niet toe dat als uitgangspunt de op " + uitgangssituatie_geldigOp + " geldende regeling gekozen wordt terwijl eerder een doel '" + str(branch.Uitgangssituatie_Doel) + "' is gekozen")
                 return False
-            self._Resultaat.Data.append (('Uitgangssituatie regelgeving geldend op', [uitgangssituatie_geldigOp]))
-            branch.Uitgangssituatie_Doel = uitgangssituatie_branch
-            branch.Uitgangssituatie_GeldigOp = None
-            branch.Uitgangssituatie_LaatstGewijzigdOp = [(uitgangssituatie_branch, uitgangssituatie_branch.LaatstGewijzigdOp)]
+            branch.Uitgangssituatie_GeldigOp = uitgangssituatie_geldigOp
+        elif not branch.Uitgangssituatie_GeldigOp is None:
+            #
+            # Uitgangspunt is geldige regelgeving; update naar huidige versie 
+            #
+            branch.Uitgangssituatie_GeldigOp = uitgangssituatie_geldigOp = self._Resultaat._Projectactie.UitgevoerdOp[0:10]
+        elif not branch.Uitgangssituatie_Doel is None:
+            uitgangssituatie_doel = branch.Uitgangssituatie_Doel._Doel
+
+        # Bepaal nu de versies
+        return self._NeemInstrumentversiesOver (branch, uitgangssituatie_doel, uitgangssituatie_geldigOp, nieuweInstrumentversies, True, registreerNieuweWorks)
 
 
-        # Overschrijf evt de uitgangssituatie met de nieuwe versies
-        for workId, instrumentversie in nieuweInstrumentversies.items ():
-            uitgangssituatie[workId] = instrumentversie
+    def _NeemInstrumentversiesOver (self, branch : Branch, uitgangssituatie_doel : Doel, uitgangssituatie_geldigOp : str, nieuweInstrumentversies : Dict[str,Instrumentversie], neemUitgangspuntOver : bool, registreerNieuweWorks : bool) -> bool:
+        """Gebruik de opgegeven uitgangssituatie en de opgegeven instrumentversies om de inhoud van de branch bij te werken.
 
-        # Werk de branch bij
-        for workId, instrumentversie in uitgangssituatie.items ():
-            instrumentinfo = branch.Instrumentversies.get (workId)
-            if instrumentinfo is None:
-                if instrumentversie.IsTeruggetrokken:
-                    self._LogInfo ("Terugtrekking van instrument '" + workId + "' genegeerd; instrument wordt niet beheerd als onderdeel van de branch voor doel '" + str(branch._Doel) + "'")
-                    continue
-                # Dit mag alleen een initiële versie voor een nieuw instrument zijn (in deze simulator),
-                # want de simulator kan niet vanaf dit punt de uitgangssituatie voor een bestaand instrument bepalen.
-                # Dat is in principe wel mogelijk, maar te complex voor deze software.
-                if workId in self._Projectvoortgang.BekendeInstrumenten:
-                    self._LogFout ("Bestaand instrument '" + workId + "' wordt niet beheerd als onderdeel van de branch voor doel '" + str(branch._Doel) + "'")
-                    succes = False
-                    continue
-                if instrumentversie.IsJuridischUitgewerkt:
-                    self._LogInfo ("Nog niet bestaand instrument '" + workId + "' kan niet meteen al ingetrokken worden voor doel '" + str(branch._Doel) + "'")
-                    succes = False
-                    continue
-                if instrumentversie.ExpressionId is None:
-                    self._LogInfo ("Initiële versie van een nieuw instrument '" + workId + "' kan niet onbekend zijn; doel '" + str(branch._Doel) + "'")
-                    succes = False
-                    continue
-                branch.InterneInstrumentversies[workId] = instrumentinfo = MomentopnameInstrument (branch, workId)
-                instrumentinfo.ExpressionId = instrumentversie.ExpressionId
-                if registreerNieuweWorks:
-                    self._Projectvoortgang.BekendeInstrumenten.add (workId)
-            else:
-                if instrumentversie.IsJuridischUitgewerkt:
-                    if not instrumentinfo.IsJuridischUitgewerkt:
-                        instrumentinfo.ExpressionId = None
-                        instrumentinfo.IsJuridischUitgewerkt = True
-                        instrumentinfo.IsTeruggetrokken = False
-                        instrumentinfo.Versie += 1
-                elif instrumentversie.IsTeruggetrokken:
-                    if not instrumentinfo.IsTeruggetrokken:
-                        instrumentinfo.ExpressionId = None
-                        instrumentinfo.IsJuridischUitgewerkt = False
-                        instrumentinfo.IsTeruggetrokken = True
-                        instrumentinfo.Versie += 1
-                else:
-                    if instrumentversie.ExpressionId != instrumentinfo.ExpressionId or instrumentinfo.IsJuridischUitgewerkt or instrumentinfo.IsTeruggetrokken: 
-                        instrumentinfo.ExpressionId = instrumentversie.ExpressionId
-                        instrumentinfo.IsJuridischUitgewerkt = False
-                        instrumentinfo.IsTeruggetrokken = False
-                        instrumentinfo.Versie += 1 
+        Argumenten:
 
-        return succes
+        branch Branch  Branch waarin de specificaties verwerkt moeten worden
+        uitgangssituatie_doel Doel  Indien niet None: de instrumentversies geven de wijziging aan ten opzichte van de inhoud van de aangegeven branch.
+                                    Als er nog geen instrumentversies door de branch beheerd worden, dan worden de instrumentversies van de branch overgenomen.
+        uitgangssituatie_geldigOp str  Indien niet None: de instrumentversies geven de wijziging aan ten opzichte van de regelgeving die op het aangegeven tijdstip geldig is.
+                                    Als er nog geen instrumentversies door de branch beheerd worden, dan worden de geldige instrumentversies overgenomen.
+        nieuweInstrumentversies {}  Specificatie van de instrumentversies zoals ze na afloop van de actie moeten zijn
+        neemUitgangspuntOver bool Werk de uitgangspunten voor de branch bij
+        registreerNieuweWorks bool  Geeft aan dat een nieuw work als bekend bij het BG geregistreerd moet worden.
+
+        Geeft terug of het overnemen zonder fouten is gebeurd.
+        """
+
+        if uitgangssituatie_doel is None and uitgangssituatie_geldigOp is None:
+            # Dit is een gewone update van de branch
+            for workId, instrumentversie in nieuweInstrumentversies:
+                instrumentinfo = branch.Instrumentversies.get (workId)
+                if instrumentinfo is None:
+                    branch.Instrumentversies[workId] = instrumentinfo = InstrumentInformatie (branch)
+                instrumentinfo.Instrumentversie = instrumentversie
+                instrumentinfo.IsGewijzigd = Instrumentversie.ZijnGelijk (instrumentinfo.Instrumentversie, instrumentinfo.Uitgangssituatie)
+            return True
+
+        else:
+            # Dit is een vervlechting van de nieuwe uitgangssituatie met de instrumentversies op de branch,
+            # waarbij de nieuweInstrumentversies de oplossing van eventuele merge conflicten zijn.
+            # In productie-waardige software gebeurt dat in het interne versiebeheer van het bevoegd gezag.
+            # De simulator probeert dat na te bootsen.
+
+            # Bepaal de collectie van instrumentversies die de uitgangssituatie vormen
+            valideVersies : Dict[str,Instrumentversie] = {}
+            onbepaaldeVersies : set()
+            if not uitgangssituatie_doel is None:
+                uitgangssituatie_branch = self._Projectvoortgang.Versiebeheer.Branches.get (uitgangssituatie_doel)
+                if uitgangssituatie_branch is None:
+                    self._LogFout ("onbekend doel: '" + str(uitgangssituatie_doel) + "'")
+                    return False
+                # De instrumentversies op de branch
+                valideVersies = uitgangssituatie_branch.Instrumentversies
+
+            elif not uitgangssituatie_geldigOp is None:
+                # Zoek de consolidatie met de grootste jwv kleiner dan de geldigOp datum
+                geldigeConsolidatie = None
+                for consolidatie in self._Projectvoortgang.Versiebeheer.Consolidatie:
+                    if consolidatie.JuridischGeldigVanaf > branch.Uitgangssituatie_GeldigOp:
+                        break
+                    geldigeConsolidatie = consolidatie 
+                if not geldigeConsolidatie is None:
+                    for workId, versie in geldigeConsolidatie.Instrumentversies.items ():
+                        if not versie._Instrumentversie is None:
+                            valideVersies[workId] = geldigeConsolidatie._Instrumentversie
+                        elif versie.IsJuridischUitgewerkt:
+                            valideVersies[workId] = None # Geen versie meer aanwezig
+                        else:
+                            onbepaaldeVersies.add (workId)
+
+            # Bepaal welke instrumenten (potentieel) bijgewerkt moeten worden:
+            # - alle instrumenten met nieuwe versies
+            # - alle instrumenten die in het uitgangspunt zitten
+            alleWorkId = set (nieuweInstrumentversies.keys ()).union (onbepaaldeVersies).union (valideVersies.keys ())
+            if neemUitgangspuntOver:
+                # - alle instrumenten die op de branch aanwezig zijn
+                alleWorkId.union (branch.Instrumentversies.keys ())
+
+            # Bepaal de nieuwe versies van alle instrumenten
+            succes = True
+        
+            for workId in alleWorkId:
+                # Dit instrument moet vanaf nu op de branch voorkomen
+                instrumentinfo = branch.Instrumentversies.get (workId)
+                if instrumentinfo is None:
+                    branch.Instrumentversies[workId] = instrumentinfo = InstrumentInformatie (branch)
+
+                nieuweVersie = nieuweInstrumentversies.get (workId)
+                if not nieuweVersie is None:
+                    # Neem deze over
+                    instrumentinfo.Instrumentversie = nieuweVersie
+
+                if neemUitgangspuntOver or (nieuweVersie is None and not instrumentinfo.IsGewijzigd):
+                    # Het uitgangspunt wordt gebruikt voor de branch
+                    if workId in onbepaaldeVersies:
+                        self._LogFout ("Geen instrumentversie opgegeven voor '" + workId + "' voor doel '" + str(branch._Doel) + "' terwijl er geen geldige versie bekend is op " + branch.Uitgangssituatie_GeldigOp)
+                        succes = False
+                        continue
+
+                    # De uitgangssituatie is None (geen versie) of een versie
+                    uitgangssituatie = valideVersies.get (workId)
+                    if nieuweVersie is None and not instrumentinfo.IsGewijzigd:
+                        if instrumentinfo.UitgewisseldeVersie is None and uitgangssituatie is None:
+                            # Nooit uitgewisseld, geen versie in de uitgangssituatie: haal het instrument weg
+                            branch.Instrumentversies.pop (workId)
+                            continue
+                        else:
+                            # Gebruik de uitgangssituatie als versie
+                            instrumentinfo.Instrumentversie = uitgangssituatie
+
+                    if neemUitgangspuntOver:
+                        instrumentinfo.Uitgangssituatie = uitgangssituatie
+
+                    if not instrumentinfo.UitgewisseldeVersie is None:
+                        # Eerder uitgewisseld, dus dit is een vervlechting
+                        instrumentinfo.VervlochtenVersie.append (nieuweVersie)
+
+                instrumentinfo.IsGewijzigd = Instrumentversie.ZijnGelijk (instrumentinfo.Instrumentversie, instrumentinfo.Uitgangssituatie)
+
+            
+            return succes 
 
 
 #======================================================================
