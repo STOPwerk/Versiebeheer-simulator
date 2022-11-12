@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a00fa148-8f87-4637-aea6-1a4774de7551</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>tools\pas_configuratie_toe.py</StartupFile>
+    <StartupFile>tools\maak_release_artefacts.py</StartupFile>
     <SearchPath>tests\code</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>

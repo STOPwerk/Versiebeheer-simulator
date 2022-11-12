@@ -38,7 +38,7 @@ goto Pause
 :Start
 if not exist wiki mkdir wiki
 cd wiki
-if exist wiki\.git\ (
+if exist wiki\.git\config (
   git pull 
 ) else (
   git clone https://github.com/STOPwerk/Versiebeheer-simulator.wiki.git .
