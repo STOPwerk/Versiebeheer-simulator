@@ -46,7 +46,6 @@ python.exe ..\tools\pas_configuratie_toe.py . ..\simulator
 rd /s /q ..\wiki
 git add -A
 @if errorlevel 1 goto Pause
-pause
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
 git config --unset user.mail
