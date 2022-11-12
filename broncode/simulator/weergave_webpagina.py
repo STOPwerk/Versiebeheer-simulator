@@ -16,8 +16,6 @@ import urllib.parse
 import urllib.request
 import webbrowser
 
-from stop_documentatie import VervangSTOPCodumentatieURL
-
 #======================================================================
 # Generatie van een webpagina
 #======================================================================
@@ -60,9 +58,7 @@ class WebpaginaGenerator:
 #----------------------------------------------------------------------
     def Html (self):
         """Geef de HTML van de webpagina"""
-        html = self._Start.replace ("/*EXTRASTYLE*/", "\n".join (sorted(self._Css))).replace ("/*EXTRASCRIPT*/", "\n".join (sorted(self._HeadScript))) + self._Html + self._Einde.replace ("/*EXTRASCRIPT*/", "\n".join (sorted(self._SlotScript)))
-        html = VervangSTOPCodumentatieURL.VoerUit (html)
-        return html
+        return self._Start.replace ("/*EXTRASTYLE*/", "\n".join (sorted(self._Css))).replace ("/*EXTRASCRIPT*/", "\n".join (sorted(self._HeadScript))) + self._Html + self._Einde.replace ("/*EXTRASCRIPT*/", "\n".join (sorted(self._SlotScript)))
 
     def SchrijfHtml (self, pad, toonInBrowser = False, genereerNaam = False):
         """Schrijf de webpagina naar een bestand

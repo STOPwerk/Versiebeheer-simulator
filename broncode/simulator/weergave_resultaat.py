@@ -15,7 +15,7 @@
 import os.path
 
 from applicatie_scenario import Scenario
-import applicatie_configuratie
+import applicatie_versie
 from stop_naamgeving import Naamgeving
 from weergave_actueletoestanden import Weergave_ActueleToestanden
 from weergave_annotaties import Weergave_Annotaties
@@ -112,7 +112,7 @@ class ResultaatGenerator (WebpaginaGenerator):
         # Algemene informatie over de pagina en het scenario
         #
         #--------------------------------------------------------------
-        self.VoegHtmlToe ('<p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_configuratie.Applicatie_versie + '</p>')
+        self.VoegHtmlToe ('<p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_versie.Applicatie_versie() + '</p>')
 
         self.VoegHtmlToe ('<div id="intro">')
         if self.Scenario.Opties.Beschrijving:
