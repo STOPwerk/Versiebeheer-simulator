@@ -91,6 +91,7 @@ for root, dirs, files in os.walk (wiki_doel_pad):
         except Exception as e:
             print ('Kan bestaand wiki map "' + dir + '" niet weggooien: ' + str(e))
             sys.exit(2)
+    break
 try:
     shutil.copytree (os.path.join (uitleverbestanden_map, 'wiki_extra'), wiki_doel_pad, dirs_exist_ok=True)
 except Exception as e:

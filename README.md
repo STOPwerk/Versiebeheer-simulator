@@ -1,9 +1,9 @@
 # Versiebeheer-simulator
 
-Huidige versie: `@@@VERSIE@@@`.
+Huidige versie: `2022-11-12 21:56:34`.
 
 ## Wat is het?
-Simulator die laat zien hoe het [STOP](@@@STOP_Documentatie_Url@@@)-versiebeheer gebruikt kan worden in de keten van adviesbureaus, bevoegd gezagen, landelijke voorzieningen en hun afnemers.
+Simulator die laat zien hoe het [STOP](https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/)-versiebeheer gebruikt kan worden in de keten van adviesbureaus, bevoegd gezagen, landelijke voorzieningen en hun afnemers.
 
 De simulator is een Python script dat toegepast wordt op een set invoerbestanden. Het resultaat is een interactieve webpagina waarin getoond wordt hoe de keten met de informatie uit de bestanden om kan gaan. De simulator laat de mogelijkheden uit het STOP versiebeheer zien. Bij het implementeren van STOP kunnen de verschillende systemen voor een andere aanpak kiezen of aanvullende eisen stellen.
 
@@ -11,7 +11,7 @@ De simulator is een Python script dat toegepast wordt op een set invoerbestanden
 
 ### Online
 
-- Ga naar de [Versiebeheer-simulator online](@@@Simulator_Online_Url@@@)
+- Ga naar de [Versiebeheer-simulator online](https://versiebeheer-simulator.vercel.app/)
 
 ### Offline / eigen computer
 - Zorg dat Python geïnstalleerd is. Dat is op Unix en MacOS meestal het geval. Voor Windows kan de laatste versie van Python [hier](https://www.python.org/downloads/) gedownload worden.
@@ -20,5 +20,5 @@ De simulator is een Python script dat toegepast wordt op een set invoerbestanden
 
 - Lees de [documentatie](../../wiki) waarin staat hoe de invoerbestanden gemaakt moeten worden.
 
-- Bekijk de [voorbeelden](voorbeelden) om inspiratie op te doen. De simulator is ook gebruikt voor een deel van de [STOP voorbeelden](@@@STOP_Voorbeelden_Url@@@).
+- Bekijk de [voorbeelden](voorbeelden) om inspiratie op te doen. De simulator is ook gebruikt voor een deel van de [STOP voorbeelden](https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/voorbeelden).
 
