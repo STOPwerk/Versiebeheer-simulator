@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "uitleveren", "uitleveren", 
 	ProjectSection(SolutionItems) = preProject
 		uitleveren\configuratie.json = uitleveren\configuratie.json
 		uitleveren\publiceer.bat = uitleveren\publiceer.bat
-		uitleveren\publiceer_git.bat = uitleveren\publiceer_git.bat
+		uitleveren\publiceer_git_template.bat = uitleveren\publiceer_git_template.bat
 		uitleveren\README.md = uitleveren\README.md
 	EndProjectSection
 EndProject

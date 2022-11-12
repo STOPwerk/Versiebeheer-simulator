@@ -13,8 +13,10 @@ echo on
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
 
+@echo Update wiki
+python.exe ..\tools\pas_configuratie_toe.py . wiki
+@if errorlevel 1 goto Pause
 @cd wiki
-@echo Commit naar wiki
 git config user.mail "@@@STOPwerk_Github_email@@@"
 @if errorlevel 1 goto Pause
 git config user.name "@@@STOPwerk_Github_user@@@"
@@ -31,11 +33,18 @@ git switch main
 git pull
 @if errorlevel 1 goto Pause
 git merge --strategy-option theirs --squash -m "Release @@@VERSIE@@@" development
+@if errorlevel 0 goto GaVerder
+Los de merge conflicten op en ga verder
+pause
+:GaVerder
+python.exe ..\tools\pas_configuratie_toe.py . ..\..
 @if errorlevel 1 goto Pause
-copy /b/v/y applicatie_configuratie.py %1applicatie_configuratie.py
+python.exe ..\tools\pas_configuratie_toe.py . ..\broncode
 @if errorlevel 1 goto Pause
-git add applicatie_configuratie.py
+rd /s /q ..\wiki
+git add -A
 @if errorlevel 1 goto Pause
+pause
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
 git config --unset user.mail
