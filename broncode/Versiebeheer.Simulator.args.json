@@ -63,8 +63,12 @@
       "Command": "..\\Versiebeheer-simulator-STOP-voorbeelden\\STOP\\voorbeelden tests\\scenarios\\STOP"
     },
     {
-      "Id": "ed778382-d689-4ae1-beb0-db63433cac16",
-      "Command": "uitleveren . ..\\Versiebeheer-simulator"
+      "Id": "eb54d022-057c-4538-841c-274be1fc590e",
+      "Command": "uitleveren .."
+    },
+    {
+      "Id": "f8962142-2171-4e23-a6dc-e8fce50f16e1",
+      "Command": "uitleveren uitleveren\\wiki"
     }
   ]
 }

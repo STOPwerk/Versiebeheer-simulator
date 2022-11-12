@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a00fa148-8f87-4637-aea6-1a4774de7551</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>simulator\applicatie.py</StartupFile>
+    <StartupFile>tools\pas_configuratie_toe.py</StartupFile>
     <SearchPath>tests\code</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -12,7 +12,7 @@
     <RootNamespace>Versiebeheer.Simulator</RootNamespace>
     <InterpreterId>Global|PythonCore|3.9</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-m logs -a  -t tests\scenarios\Toestandsbepaling</CommandLineArguments>
+    <CommandLineArguments>uitleveren uitleveren\wiki</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test_*.py</UnitTestPattern>
@@ -95,9 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="simulator\applicatie.py" />
-    <Compile Include="simulator\applicatie_versie.py" />
     <Compile Include="simulator\applicatie_meldingen.py" />
-    <Compile Include="simulator\applicatie_configuratie.py" />
+    <Compile Include="simulator\applicatie_versie.py" />
     <Compile Include="simulator\data_bg_project.py" />
     <Compile Include="simulator\data_bg_projectvoortgang.py" />
     <Compile Include="simulator\proces_bg_consolidatie.py" />
@@ -109,7 +108,6 @@
     <Compile Include="simulator\proces_bg_procesbegeleiding.py" />
     <Compile Include="simulator\proces_lv_actueleannotaties.py" />
     <Compile Include="simulator\proces_lv_branchescumulatief.py" />
-    <Compile Include="simulator\stop_documentatie.py" />
     <Compile Include="simulator\stop_momentopname.py" />
     <Compile Include="simulator\weergave_annotaties.py" />
     <Compile Include="simulator\weergave_data_toestanden.py" />
@@ -186,6 +184,7 @@
     <Compile Include="tests\code\test_stop_naamgeving.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tools\pas_configuratie_toe.py" />
     <Compile Include="tools\maak_release_artefacts.py" />
     <Compile Include="tools\voorbeelden_naar_unittests.py" />
   </ItemGroup>

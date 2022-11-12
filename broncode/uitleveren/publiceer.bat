@@ -36,6 +36,16 @@ goto Pause
 
 @rem ===== Script
 :Start
+if not exist wiki mkdir wiki
+cd wiki
+if exist wiki\.git\ (
+  git pull 
+) else (
+  git clone https://github.com/STOPwerk/Versiebeheer-simulator.wiki.git .
+) 
+if errorlevel 1 goto Pause
+cd ..
+
 python.exe ..\tools\maak_release_artefacts.py . ..\..
 if errorlevel 1 goto Pause
 call publiceer_git.bat ..\simulator\ || goto Pause

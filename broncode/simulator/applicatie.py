@@ -69,10 +69,10 @@ if len(directory_paden) == 0:
 #======================================================================
 from applicatie_meldingen import Meldingen
 from applicatie_scenario import Scenario, ScenarioMappenIterator
-import applicatie_configuratie
+import applicatie_versie
 
 log = Meldingen (True)
-log.Informatie ('<a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_configuratie.Applicatie_versie)
+log.Informatie ('<a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> ' + applicatie_versie.Applicatie_versie ())
 
 scenarioIterator = ScenarioMappenIterator (log, directory_paden, recursie)
 if testen:

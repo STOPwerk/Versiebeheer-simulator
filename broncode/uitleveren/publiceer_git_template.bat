@@ -9,11 +9,23 @@ goto Pause
 
 :Start
 echo on
+@echo Commit naar development
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
-git config user.mail "frank.robijn@koop.overheid.nl"
+
+@cd wiki
+@echo Commit naar wiki
+git config user.mail "@@@STOPwerk_Github_email@@@"
 @if errorlevel 1 goto Pause
-git config user.name "STOPwerk"
+git config user.name "@@@STOPwerk_Github_user@@@"
+git commit -a -m "Release @@@VERSIE@@@"
+@if errorlevel 1 goto Pause
+@cd ..
+
+@echo Switch naar main en update repository
+git config user.mail "@@@STOPwerk_Github_email@@@"
+@if errorlevel 1 goto Pause
+git config user.name "@@@STOPwerk_Github_user@@@"
 git switch main
 @if errorlevel 1 goto Pause
 git pull
@@ -28,14 +40,21 @@ git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
 git config --unset user.mail
 git config --unset user.name
+
+@echo Switch naar development
 git switch development
 @echo off
 echo.
 echo Alles staat klaar voor de release.
 set /P gitpush=Push naar github (J/[N])?
 if /I "%gitpush%" NEQ "J" goto End
+@echo Push naar deze repo en naar wiki-repo
 git push --all
 @if errorlevel 1 goto Pause
+@cd wiki
+git push --all
+@if errorlevel 1 goto Pause
+@cd ..
 
 if errorlevel 0 goto End
 :Pause

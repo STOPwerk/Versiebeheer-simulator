@@ -10,9 +10,8 @@
 #
 #======================================================================
 
-import applicatie_configuratie
 from applicatie_meldingen import Meldingen
-from applicatie_scenario import Scenario, ScenarioMappenIterator
+from applicatie_scenario import Scenario
 from applicatie_uitvoeren import Uitvoering
 from applicatie_web_scenario import ScenarioPostedDataIterator
 from weergave_resultaat import ResultaatGenerator
@@ -31,11 +30,7 @@ class WebApplicatie:
     def IndexPagine():
         """Startpagina"""
         generator = WebpaginaGenerator ("Versiebeheer-simulator online", WebApplicatie.FAVICON)
-        html = generator.LeesHtmlTemplate ('index', False)
-        html = html.replace ('@@@VERSIE@@@', applicatie_configuratie.Applicatie_versie)
-        html = html.replace ('@@@STOP_Documentatie_Url@@@', applicatie_configuratie.STOP_Documentatie_Url)
-        html = html.replace ('@@@STOP_Repository_Url@@@', applicatie_configuratie.STOP_Repository_Url)
-        generator.VoegHtmlToe (html)
+        generator.LeesHtmlTemplate ('index')
         return generator.Html ()
 
     @staticmethod
