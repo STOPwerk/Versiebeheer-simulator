@@ -159,7 +159,7 @@ class ProjectActie_Wijziging (ProjectActie):
         self.Doel = None
         # De instrumentversies voor alle instrumenten in de branch na de wijziging.
         # Key = workId
-        self.Instrumentversies : Dict[str,Instrumentversie] = {}
+        self.Instrumentversies : Dict[str,InstrumentversieSpecificatie] = {}
         # De waarde van de juridischWerkendVanaf tijdstempel, of None als die niet opgegeven is, of '-' als die niet meer bekend is
         self.JuridischWerkendVanaf = None
         # De waarde van de geldigVanaf tijdstempel, of None als die niet opgegeven is, of '-' als die niet meer bekend is.
@@ -209,7 +209,7 @@ class ProjectActie_BijwerkenUitgangssituatie (ProjectActie):
         self._GebaseerdOp_GeldigOp_Optioneel = True # Optioneel, validatie wordt gedaan bij uitvoeren actie
         # De instrumentversies voor alle instrumenten in de branch na het overnemen van de wijziging.
         # Key = workId
-        self.Instrumentversies : Dict[str,Instrumentversie] = {}
+        self.Instrumentversies : Dict[str,InstrumentversieSpecificatie] = {}
 
 #----------------------------------------------------------------------
 # Actie: Publicatie
@@ -267,10 +267,10 @@ class ProjectActie_Publicatie (ProjectActie):
     ]
 
 #----------------------------------------------------------------------
-# Instrumentversie: beoogde versie voor een instrument, inclusief
-#                   onbekende versie en ingetrokken/juridisch uitgewerkt.
+# InstrumentversieSpecificatie: beoogde versie voor een instrument, inclusief
+#                               onbekende versie en ingetrokken/juridisch uitgewerkt.
 #----------------------------------------------------------------------
-class Instrumentversie:
+class InstrumentversieSpecificatie:
 
     def __init__ (self):
         # ExpressionId van de instrumentversie
@@ -278,8 +278,9 @@ class Instrumentversie:
         self.ExpressionId = None
         # Geeft aan of het instrument juridisch uitgewerkt is (dus ingetrokken is/moet worden)
         self.IsJuridischUitgewerkt = False
-        # Geeft aan of een wijziging van het instrument geen onderdeel meer is van het eindbeeld voor het doel
-        self.IsTeruggetrokken = False
+        # Geeft aan dat het instrument niet bestaat voor de branch en dus ook niet (meer) in
+        # branches die eerder in werking (zijn ge)treden
+        self.BestaatNiet = False
 
 #----------------------------------------------------------------------
 # Project: representeert een enkel project waarin aan nieuwe versie(s)
@@ -454,7 +455,7 @@ class Project:
                                         log.Fout ("Bestand '" + pad + "': 'Instrumentversie' in 'Instrumentversies' moet als waarde een expression-identificatie van een regeling of informatieobject hebben, niet '" + versieSpec["Instrumentversie"] + "'")
                                         project._IsValide = False
                                         continue
-                                    versie = Instrumentversie ()
+                                    versie = InstrumentversieSpecificatie ()
                                     versie.ExpressionId = versieSpec["Instrumentversie"]
                                     workId = Naamgeving.WorkVan (versie.ExpressionId)
                                 elif "OnbekendeVersie" in versieSpec:
@@ -466,7 +467,7 @@ class Project:
                                         log.Fout ("Bestand '" + pad + "': 'OnbekendeVersie' in 'Instrumentversies' moet als waarde een work-identificatie van een regeling of informatieobject hebben, niet '" + versieSpec["OnbekendeVersie"] + "'")
                                         project._IsValide = False
                                         continue
-                                    versie = Instrumentversie ()
+                                    versie = InstrumentversieSpecificatie ()
                                     workId = versieSpec["OnbekendeVersie"]
                                 elif "JuridischUitgewerkt" in versieSpec:
                                     if not isinstance (versieSpec["JuridischUitgewerkt"], str):
@@ -477,21 +478,21 @@ class Project:
                                         log.Fout ("Bestand '" + pad + "': 'JuridischUitgewerkt' moet als waarde een work-identificatie hebben, niet '" + versieSpec["JuridischUitgewerkt"] + "'")
                                         project._IsValide = False
                                         continue
-                                    versie = Instrumentversie ()
+                                    versie = InstrumentversieSpecificatie ()
                                     versie.IsJuridischUitgewerkt = True
                                     workId = versieSpec["JuridischUitgewerkt"]
-                                elif "Teruggetrokken" in versieSpec:
-                                    if not isinstance (versieSpec["Teruggetrokken"], str):
-                                        log.Fout ("Bestand '" + pad + "': 'Teruggetrokken' in 'Instrumentversies' moet als waarde een string hebben")
+                                elif "BestaatNiet" in versieSpec:
+                                    if not isinstance (versieSpec["BestaatNiet"], str):
+                                        log.Fout ("Bestand '" + pad + "': 'BestaatNiet' in 'Instrumentversies' moet als waarde een string hebben")
                                         project._IsValide = False
                                         continue
-                                    if (not Naamgeving.IsRegeling (versieSpec["Teruggetrokken"]) and not Naamgeving.IsInformatieobject (versieSpec["Teruggetrokken"])) or Naamgeving.IsExpression (versieSpec["Teruggetrokken"]):
-                                        log.Fout ("Bestand '" + pad + "': 'Teruggetrokken' moet als waarde een work-identificatie hebben, niet '" + versieSpec["Teruggetrokken"] + "'")
+                                    if (not Naamgeving.IsRegeling (versieSpec["BestaatNiet"]) and not Naamgeving.IsInformatieobject (versieSpec["BestaatNiet"])) or Naamgeving.IsExpression (versieSpec["BestaatNiet"]):
+                                        log.Fout ("Bestand '" + pad + "': 'BestaatNiet' moet als waarde een work-identificatie hebben, niet '" + versieSpec["BestaatNiet"] + "'")
                                         project._IsValide = False
                                         continue
-                                    versie = Instrumentversie ()
-                                    versie.IsTeruggetrokken = True
-                                    workId = versieSpec["Teruggetrokken"]
+                                    versie = InstrumentversieSpecificatie ()
+                                    versie.BestaatNiet = True
+                                    workId = versieSpec["BestaatNiet"]
                                 else:
                                     log.Fout ("Bestand '" + pad + "': element van 'Instrumentversies' moet een object met één kenmerk ('Instrumentversie', 'JuridischUitgewerkt', 'Teruggetrokkens') zijn")
                                     project._IsValide = False
