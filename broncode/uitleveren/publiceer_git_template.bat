@@ -33,8 +33,10 @@ git switch main
 git pull
 @if errorlevel 1 goto Pause
 git merge --strategy-option theirs --squash -m "Release @@@VERSIE@@@" development
-@if errorlevel 0 goto GaVerder
-Los de merge conflicten op en ga verder
+@if errorlevel 1 goto LosMergeConflitsOp
+@goto GaVerder
+: LosMergeConflitsOp
+@echo Los de merge conflicten op en ga verder
 pause
 :GaVerder
 python.exe ..\tools\pas_configuratie_toe.py . ..\..
