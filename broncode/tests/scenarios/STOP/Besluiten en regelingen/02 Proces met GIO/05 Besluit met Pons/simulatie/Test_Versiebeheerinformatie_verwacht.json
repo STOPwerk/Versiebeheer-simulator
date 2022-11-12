@@ -1,0 +1,311 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2020/REG0001": {
+                "BekendOp": [
+                    "2020-01-21",
+                    "2020-06-20",
+                    "2021-03-27",
+                    "2021-05-18"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-01-21",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1",
+                                "GemaaktOp": "2020-01-21T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": "2020-01-21T09:03:00Z"
+                                },
+                                "BekendOp": "2020-06-20",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-06-16;2",
+                                "GemaaktOp": "2020-06-20T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan": "2021-03-27T09:03:00Z"
+                                },
+                                "BekendOp": "2021-05-18",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2021-06-21;4",
+                                "GemaaktOp": "2021-05-18T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied": "2020-06-20T09:03:00Z"
+                                },
+                                "BekendOp": "2021-03-27",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2021-03-23;3",
+                                "GemaaktOp": "2021-03-27T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                ]
+            },
+            "/join/id/regdata/gm9999/2019/gio993859238": {
+                "BekendOp": [
+                    "2020-01-21",
+                    "2020-06-20",
+                    "2021-03-27"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-01-21",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                                ],
+                                "ExpressionId": "/join/id/regdata/gm9999/2019/gio993859238/nld@2019-12-20;1",
+                                "GemaaktOp": "2020-01-21T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": "2020-01-21T09:03:00Z"
+                                },
+                                "BekendOp": "2020-06-20",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                                ],
+                                "ExpressionId": "/join/id/regdata/gm9999/2019/gio993859238/nld@2020-06-16;2",
+                                "GemaaktOp": "2020-06-20T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied": "2020-06-20T09:03:00Z"
+                                },
+                                "BekendOp": "2021-03-27",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan"
+                                ],
+                                "GemaaktOp": "2021-03-27T09:03:00Z",
+                                "IsIngetrokken": true,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                ]
+            },
+            "/join/id/regdata/gm9999/2021/gio993859462": {
+                "BekendOp": [
+                    "2021-03-27"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2021-03-27",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan"
+                                ],
+                                "ExpressionId": "/join/id/regdata/gm9999/2021/gio993859462/nld@2021-03-23;1",
+                                "GemaaktOp": "2021-03-27T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan"
+                ]
+            },
+            "/join/id/regdata/gm9999/2021/pons00000001": {
+                "BekendOp": [
+                    "2021-05-18"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2021-05-18",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan"
+                                ],
+                                "ExpressionId": "/join/id/regdata/gm9999/2021/pons00000001/nld@2021-04-18;1",
+                                "GemaaktOp": "2021-05-18T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan"
+                ]
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-01-21",
+                        "Doel": "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "GemaaktOp": "2020-01-21T09:03:00Z",
+                        "JuridischWerkendVanaf": "2020-02-01"
+                    }
+                ]
+            },
+            "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-06-20",
+                        "Doel": "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied",
+                        "GemaaktOp": "2020-06-20T09:03:00Z",
+                        "JuridischWerkendVanaf": "2020-07-01"
+                    }
+                ]
+            },
+            "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2021-05-18",
+                        "Doel": "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan",
+                        "GemaaktOp": "2021-05-18T09:03:00Z",
+                        "JuridischWerkendVanaf": "2021-07-01"
+                    }
+                ]
+            },
+            "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2021-03-27",
+                        "Doel": "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan",
+                        "GemaaktOp": "2021-03-27T09:03:00Z",
+                        "JuridischWerkendVanaf": "2021-05-01"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2020-01-21",
+                "GemaaktOp": "2020-01-21T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1"
+                    },
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2019-12-20;1"
+                    }
+                ],
+                "OntvangenOp": "2020-01-21"
+            },
+            {
+                "BekendOp": "2020-06-20",
+                "GemaaktOp": "2020-06-20T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-06-16;2"
+                    },
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/VergrotenVuurwerkverbodsgebied"
+                        ],
+                        "Instrumentversie": "/join/id/regdata/gm9999/2019/gio993859238/nld@2020-06-16;2"
+                    }
+                ],
+                "OntvangenOp": "2020-06-20"
+            },
+            {
+                "BekendOp": "2021-03-27",
+                "GemaaktOp": "2021-03-27T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2021-03-23;3"
+                    },
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2021/WijzigingKernenOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/join/id/regdata/gm9999/2021/gio993859462/nld@2021-03-23;1"
+                    }
+                ],
+                "OntvangenOp": "2021-03-27"
+            },
+            {
+                "BekendOp": "2021-05-18",
+                "GemaaktOp": "2021-05-18T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2021-06-21;4"
+                    },
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2021/EerstePonsOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/join/id/regdata/gm9999/2021/pons00000001/nld@2021-04-18;1"
+                    }
+                ],
+                "OntvangenOp": "2021-05-18"
+            }
+        ]
+    }
+}

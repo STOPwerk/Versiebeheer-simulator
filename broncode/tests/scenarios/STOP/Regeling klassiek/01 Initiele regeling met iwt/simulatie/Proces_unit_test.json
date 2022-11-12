@@ -1,3 +1,11 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit het voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Regeling klassiek//01 Initiele regeling met iwt\">Klassiek 01 Nieuwe regeling met iwt</a>.</p><p>In dit voorbeeld wordt middels een klassiek besluit de eerste versie van een nieuwe regeling bekend gemaakt. Het besluit bevat ook een inwerkingtredingsdatum.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Initi\u00c3\u00able versie",
+            "gemaaktOp": "2020-07-14T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling, met inwerkingtredingsdatum. De consolidatie-informatie van een klassiek besluit wijkt niet af van die van een compact besluit."
+        }
+    ],
     "Procesopties": true
 }

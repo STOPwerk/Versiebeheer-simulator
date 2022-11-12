@@ -1,1 +1,6 @@
-[]
+[
+    {
+        "Ernst": "FOUT",
+        "Tekst": "Potverdorie, een fout in de simulatie die niet voorzien werd: __WerkInstrumentInformatieBij() missing 1 required positional argument: 'isJuridischUitgewerkt'"
+    }
+]

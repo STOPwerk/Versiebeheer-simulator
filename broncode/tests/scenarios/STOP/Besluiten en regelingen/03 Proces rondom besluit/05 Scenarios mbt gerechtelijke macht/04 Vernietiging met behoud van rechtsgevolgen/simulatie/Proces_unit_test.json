@@ -1,3 +1,16 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//05 Scenarios mbt gerechtelijke macht//04 Vernietiging met behoud van rechtsgevolgen\">03 05 04 Vernietiging met behoud van rechtsgevolgen</a>.</p><p>In dit voorbeeld wordt er beroep aangetekend tegen een besluit waarna de uitkomst van de beroepsprocedure is dat de rechter het wijzigingsbesluit vernietigd met behoud van rechtsgevolgen. Vernietiging met behoud van rechtsgevolgen betekent dat de rechter de onderbouwing door het BG van het besluit onvoldoende acht, maar dat het BG in de rechtszaak alsnog voldoende argumenten heeft aangedragen om het besluit te rechtvaardigen.</p><p>Omdat de gerechtelijke uitspraak niet leidt tot aanpassing van de regelgeving publiceert het bevoegd gezag alleen een mededeling over de uitspraak. Deze mededeling bevat danook geen aangepaste regelgeving en dus ook geen consolidatie-informatie. In deze simulatie is deze mededeling daarom niet zichtbaar.",
+    "Uitwisselingen": [
+        {
+            "naam": "Vooraf - gewijzigde versie",
+            "gemaaktOp": "2020-06-20T09:03:00Z",
+            "beschrijving": "Besluit van een gewijzigde regeling + GIO, met inwerkingtredingsdatum. Tegen dit besluit wordt beroep ingesteld, waarna de uitkomst van de gerechtelijke procedure is dat dit besluit vernietigd wordt zonder rechtsgevolgen. BG publiceert wel een mededeling over de uitkomst van de gerechtelijke procedure, maar deze heeft verder geen gevolgen voor de (geconsolideerde) regelgeving."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able versie",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling + GIO, met inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

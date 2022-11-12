@@ -1,0 +1,27 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1samenvoeging.html\">patroon 2A Besluiten treden tegelijk in werking</a>. Hierbij wordt bij de bekendmaking van een besluit er geen rekening mee gehouden dat het besluit gelijk met anderen in werking treedt. De versie die de wijzigingen uit alle gelijktijdig in werking tredende besluiten bevat wordt achteraf als revisie aangeleverd.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - samengestelde versie",
+            "gemaaktOp": "2022-04-01T15:00:00Z",
+            "beschrijving": "Een revisie met een nieuwe versie van de regeling waarin de 3 doelen/versies worden samengevoegd.",
+            "revisie": true
+        },
+        {
+            "naam": "Vooraf - nieuwe versie regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een eerste versie van de regeling."
+        },
+        {
+            "naam": "Vooraf - eerste wijziging",
+            "gemaaktOp": "2022-02-01T07:00:00Z",
+            "beschrijving": "Het tweede besluit met een aangepaste versie van de regeling."
+        },
+        {
+            "naam": "Vooraf - tweede wijziging",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Het derde besluit met een nieuwe versie van de regeling met als basisversie branch/doel A."
+        }
+    ],
+    "Procesopties": true
+}

@@ -1,3 +1,11 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//11 Gefaseerde inwerkingtreding\">03 11 Gefaseerde inwerkingtreding</a>.</p><p>In dit voorbeeld stelt het BG een nieuwe regeling op <i>zonder</i> deze bekend te maken. Vervolgens wijzigt het BG de regeling en maakt beide regelingversies met elk een eigen inwerkingtredingsdatum bekend middels \u00c3\u00a9\u00c3\u00a9n besluit. De eerste regelingversie treedt op 2020-07-01 in werking, de gewijzigde versie treedt op 2020-10-01 in werking.</p><p>Dat beide regelingversies en inwerkingtredingsdatums uit \u00c3\u00a9\u00c3\u00a9n besluit komen is te zien aan de identieke gemaaktOp-datum/tijd van de consolidatie-informatie van de getekende twee momentopnamen (onder Versiebeheer en actuele toestanden).</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Gefaseerde inwerkingtreding",
+            "gemaaktOp": "2020-01-18T09:03:00Z",
+            "beschrijving": "E\u00c3\u00a9n besluit dat zowel de initi\u00c3\u00able regelingversie als de gewijzigde regelingversie instelt."
+        }
+    ],
     "Procesopties": true
 }

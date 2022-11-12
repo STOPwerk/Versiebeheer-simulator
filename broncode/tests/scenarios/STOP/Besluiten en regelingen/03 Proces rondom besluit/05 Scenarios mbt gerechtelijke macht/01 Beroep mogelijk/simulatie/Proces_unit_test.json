@@ -1,3 +1,11 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//05 Scenarios mbt gerechtelijke macht//01 Beroep mogelijk\">03 05 01 Beroep mogelijk</a>.</p><p>In dit voorbeeld wordt middels een besluit de eerste versie van een nieuwe regeling bekend gemaakt. Het besluit bevat ook een inwerkingtredingsdatum.</p><p>Dat beroep mogelijk is, beroep aangetekend is, of dat een besluit geschorst is, is niet zichtbaar in de consolidatie van de regeling zolang er geen definitieve onheroepelijke uitspraak van de rechter is. Pas dan wordt de uitkomst van de gerechtelijke procedure verwerkt in de regelgeving.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Initi\u00c3\u00able versie",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling, met inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

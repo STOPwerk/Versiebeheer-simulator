@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConsolidatieInformatie schemaversie="@@@IMOPVERSIE@@@" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns="https://standaarden.overheid.nl/stop/imop/data/" xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/ https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
+  <gemaaktOp>2020-01-21T09:03:00Z</gemaaktOp>
+  <BeoogdeRegelgeving>
+    <BeoogdeRegeling>
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
+      </doelen>
+      <instrumentVersie>/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-20;1</instrumentVersie>
+      <eId>art_I</eId>
+    </BeoogdeRegeling>
+    <BeoogdInformatieobject>
+      <doelen>
+        <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
+      </doelen>
+      <instrumentVersie>/join/id/regdata/gm9999/2019/pdf459366024/nld@2019-12-05;1</instrumentVersie>
+      <eId>!regeling#cmp_A__content_o_1__list_1__item_1__ref_o_1</eId>
+    </BeoogdInformatieobject>
+  </BeoogdeRegelgeving>
+  <Tijdstempels>
+    <Tijdstempel>
+      <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
+      <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+      <datum>2020-02-01</datum>
+      <eId>art_II</eId>
+    </Tijdstempel>
+  </Tijdstempels>
+</ConsolidatieInformatie>

@@ -1,3 +1,21 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//04 Omgaan met geconsolideerde regeling//06 Samenloop voorkomen//01 Gelijktijdige inwerkingtreding\">04 06 01 Gelijktijdige inwerkingtreding</a>.</p><p>Dit voorbeeld laat zien hoe samenloop voorkomen kan worden als twee besluiten tegelijk in werking treden. Als tegenhanger van het voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//04 Omgaan met geconsolideerde regeling//05 Samenloop oplossen//02 Gelijktijdige inwerkingtreding\">05 Samenloop oplossen/02 Gelijktijdige inwerkingtreding</a> waar wel samenloop ontstaat door gelijktijdige inwerkingtreding.</p><p>Omdat beide besluiten gelijktijdig inwerking treden, moet de consolidatie informatie aangeven dat de regelingversie die ontstaat naar aanleiding van het laatste besluit \u00c3\u00b2\u00c3\u00b2k de juiste versie is voor het doel van het eerdere besluit. Ze treden immers gelijktijdig in werking, dus het geconsolideerde resultaat voor beide besluiten is de regelingversie waar de wijzigingen uit beide besluiten inzitten.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Gelijktijdige inwerkingtreding",
+            "gemaaktOp": "2020-02-23T09:03:00Z",
+            "beschrijving": "Besluit met nieuwe regelingversie voor beide doelen. Door de wijzigingen uit het eerder gepubliceerde besluit te verwerken in deze regelingversie en in de consolidatie-informatie op te nemen dat deze regelingversie voor beide doelen is, wordt samenloop voorkomen."
+        },
+        {
+            "naam": "Vooraf - Gewijzigde regeling",
+            "gemaaktOp": "2020-02-18T09:03:00Z",
+            "beschrijving": "Wijzigingsbesluit met de gewijzigde regelingversie."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able regeling",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van de initi\u00c3\u00able regelingversie."
+        }
+    ],
     "Procesopties": true
 }

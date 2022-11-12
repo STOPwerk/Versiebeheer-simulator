@@ -1,0 +1,38 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/pv29/2010/milieubeleidsplan0612": [
+            {
+                "BekendOp": "2010-10-11",
+                "OntvangenOp": "2010-10-11",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/provincie/2010/regeling1/nld@2010-10-10",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/pv29/2010/milieubeleidsplan0612/nld@2010-09-01;v01",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan"
+                        ],
+                        "JuridischWerkendVanaf": "2010-10-10",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2010-10-18",
+                "OntvangenOp": "2010-10-18",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/provincie/2010/regeling1/nld@2010-10-12",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/akn/nl/act/pv29/2010/milieubeleidsplan0612/nld@2010-09-01;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan"
+                        ],
+                        "JuridischWerkendVanaf": "2010-10-12",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

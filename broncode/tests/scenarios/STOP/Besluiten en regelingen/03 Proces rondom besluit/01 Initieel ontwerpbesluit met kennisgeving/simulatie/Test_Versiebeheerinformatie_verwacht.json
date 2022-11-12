@@ -1,0 +1,45 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/pv30/2020/omgevingsverordening": {
+                "BekendOp": [
+                    "2020-02-17"
+                ],
+                "Branches": {
+                    "/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-02-17",
+                                "Doelen": [
+                                    "/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01"
+                                ],
+                                "ExpressionId": "/akn/nl/act/pv30/2020/omgevingsverordening/nld@2020-02-01;1",
+                                "GemaaktOp": "2020-02-17T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01"
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2020-02-17",
+                "GemaaktOp": "2020-02-17T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/pv30/2020/omgevingsverordening/nld@2020-02-01;1"
+                    }
+                ],
+                "OntvangenOp": "2020-02-17"
+            }
+        ]
+    }
+}

@@ -2644,7 +2644,7 @@ Applicatie = (function () {
         }));
     }
 
-    // Swelectie van momentopnamen
+    // Selectie van momentopnamen in het versiebeheer van LVBB
     Applicatie.SelecteerMomentopname = function (wid, mid) {
         window.dispatchEvent(new CustomEvent('momentopname', {
             detail: {
@@ -2675,6 +2675,15 @@ Applicatie = (function () {
                 Applicatie.SelecteerToestand(geselecteerdeToestand.Identificatie, uniekId);
             }
         }
+        // Uitwisselingen en projectacties delen dezelfde tijdlijn
+        window.dispatchEvent(new CustomEvent('projectactie', {
+            detail: gemaaktOp
+        }));
+    }
+
+    // Selectie van projectacties
+    Applicatie.SelecteerProjectactie = function (uitgevoerdOp) {
+        Applicatie.SelecteerUitwisseling(uitgevoerdOp);
     }
 
     // Initialisatie van een diagram
@@ -2720,6 +2729,12 @@ Applicatie = (function () {
 <body>
 <h1>simulatie</h1><p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</p>
 <div id="intro">
+<table><tr><td><button data-accordion="844" class="accordion_t active">?</button></td>
+<td data-accordion-titel="844" class="accordion_t_titel" style="display: none">&#8678;Beschrijving van het scenario</td>
+<td data-accordion-paneel="844" class="accordion_t_paneel" style="display: block">
+<p>Demonstratie van de consolidatie uit voorbeeld <a href="https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master///voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//01 Initieel ontwerpbesluit met kennisgeving">03 01 Initieel ontwerpbesluit met kennisgeving</a>.</p><p>In dit voorbeeld wordt een ontwerpbesluit bekendgemaakt.</p>
+</td></tr></table>
+
 <table id="uitwisselingselector">
     <tr>
         <td><button data-accordion="uitwisselingselector" class="uitwisselingselector_accordion" title="Selecteer de uitwisseling">&#128228;</button></td>
@@ -2728,22 +2743,22 @@ Applicatie = (function () {
             <table>
                 <tr>
                     <td><button class="pijlknop" id="uitwisselingselector_vorige" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_links"></div></button></td>
-                    <td><select id="uitwisselingselector_gemaaktOp"><option value="2020-02-17T09:03:00Z" selected>2020-02-17T09:03:00Z</option>
+                    <td><select id="uitwisselingselector_gemaaktOp"><option value="2020-02-17T09:03:00Z" selected>2020-02-17T09:03:00Z Voorbeeld - Initieel ontwerpbesluit</option>
 </select></td>
                     <td><button class="pijlknop" id="uitwisselingselector_volgende" data-uw=""><div class="pijlknop_driehoek pijlknop_driehoek_rechts"></div></button></td>
                 </tr>
             </table>
         </td>
         <td style="width: 0; white-space: nowrap;">
-            
+            <div class="uitwisselingselectorknop" data-uw="2020-02-17T09:03:00Z" title="Het ontwerpbesluit met de intitiÃ«le  regelingversie die ter inzagelegging beschikbaar wordt gesteld.">Voorbeeld - Initieel ontwerpbesluit</div>
         </td>
     </tr>
 </table>
 
 </div>
-<table><tr><td><button data-accordion="948" class="accordion_t active">?</button></td>
-<td data-accordion-titel="948" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
-<td data-accordion-paneel="948" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="845" class="accordion_t active">?</button></td>
+<td data-accordion-titel="845" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="845" class="accordion_t_paneel" style="display: block">
 <b>Over deze pagina</b>
 <p>
     Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
@@ -2835,8 +2850,8 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<button data-accordion="949" class="accordion_h">Uitvoering van de applicatie</button>
-<div data-accordion-paneel="949" class="accordion_h_paneel">
+<button data-accordion="846" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="846" class="accordion_h_paneel">
 <p>
     Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
     het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
@@ -2852,6 +2867,7 @@ Applicatie = (function () {
 <div id="log_detail">
 
 <table id="meldingen_tabel">
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\03 Proces rondom besluit\01 Initieel ontwerpbesluit met kennisgeving\simulatie\Proces_unit_test.json' bevat valide procesopties</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\STOP\Besluiten en regelingen\03 Proces rondom besluit\01 Initieel ontwerpbesluit met kennisgeving\simulatie\02-BG-Besluit-Consolidatie-informatie.xml' bevat valide ConsolidatieInformatie</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main"><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Voer de simulatie uit</td></tr>
@@ -2864,11 +2880,11 @@ Applicatie = (function () {
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Voor de bepaling zijn 0 toestanden met elkaar vergeleken en 0 tijdreizen gemaakt</td></tr>
 <tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Bepaal de actuele toestanden voor /akn/nl/act/pv30/2020/omgevingsverordening</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Er zijn 0 toestand(en) bepaald, waarvan 0 strikt nodig en 0 alleen voor de weergave in deze applicatie</td></tr>
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Fouten en waarschuwingen: geen verwachte resultaten beschikbaar</td></tr>
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Versiebeheerinformatie: geen verwachte resultaten beschikbaar</td></tr>
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Cumulatieve versieinformatie: geen verwachte resultaten beschikbaar</td></tr>
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Actuele toestanden: geen verwachte resultaten beschikbaar</td></tr>
-<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Complete toestanden: geen verwachte resultaten beschikbaar</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Fouten en waarschuwingen: resultaat (data) komt overeen met de verwachting</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Versiebeheerinformatie: resultaat (data) komt overeen met de verwachting</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Cumulatieve versieinformatie: resultaat (data) komt overeen met de verwachting</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Actuele toestanden: resultaat (data) komt overeen met de verwachting</td></tr>
+<tr class="entry_INFO"><td class="level_INFO">INFO</td><td class="message_INFO main">Complete toestanden: resultaat (data) komt overeen met de verwachting</td></tr>
 </table>
 </div>
 <script type="text/javascript">
@@ -2889,10 +2905,18 @@ Applicatie = (function () {
 
 </div>
 
+<p>
+<table><tr><td><button data-accordion="847" class="accordion_t active">?</button></td>
+<td data-accordion-titel="847" class="accordion_t_titel" style="display: none">&#8678;Geselecteerde uitwisseling</td>
+<td data-accordion-paneel="847" class="accordion_t_paneel" style="display: block">
+<div data-u="2020-02-17T09:03:00Z" >Getoond worden de resultaten na de uitwisseling: <b>Voorbeeld - Initieel ontwerpbesluit</b><br/>Het ontwerpbesluit met de intitiÃ«le  regelingversie die ter inzagelegging beschikbaar wordt gesteld.</div>
+</td></tr></table>
+
+</p>
 <div class="sectie_op"><h1>Publiceren</h1>
-<table><tr><td><button data-accordion="950" class="accordion_t active">?</button></td>
-<td data-accordion-titel="950" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
-<td data-accordion-paneel="950" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="848" class="accordion_t active">?</button></td>
+<td data-accordion-titel="848" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
+<td data-accordion-paneel="848" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
     en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
@@ -2902,11 +2926,11 @@ Applicatie = (function () {
 
 </td></tr></table>
 
-<button data-accordion="951" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
-<div data-accordion-paneel="951" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="952" class="accordion_t active">?</button></td>
-<td data-accordion-titel="952" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="952" class="accordion_t_paneel" style="display: block">
+<button data-accordion="849" class="accordion_h active"><h3>Overzicht van uitwisselingen en publicaties</h3></button>
+<div data-accordion-paneel="849" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="850" class="accordion_t active">?</button></td>
+<td data-accordion-titel="850" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="850" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
     het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
@@ -2920,25 +2944,25 @@ Applicatie = (function () {
 
 <p><table class="uw_overzicht"><tr><th>Naam</th><th>gemaaktOp</th><th>Publicatieblad</th><th>Beschrijving</th></tr>
 <tr data-uw="2020-02-17T09:03:00Z">
-<td></td>
+<td>Voorbeeld - Initieel ontwerpbesluit</td>
 <td class="nw">2020-02-17T09:03:00Z</td><td class="nw">pb001</td>
-<td></td>
+<td>Het ontwerpbesluit met de intitiÃ«le  regelingversie die ter inzagelegging beschikbaar wordt gesteld.</td>
 </tr>
 </table></p>
 </div>
 
-<button data-accordion="953" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
-<div data-accordion-paneel="953" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="954" class="accordion_t active">?</button></td>
-<td data-accordion-titel="954" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
-<td data-accordion-paneel="954" class="accordion_t_paneel" style="display: block">
+<button data-accordion="851" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="851" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="852" class="accordion_t active">?</button></td>
+<td data-accordion-titel="852" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
+<td data-accordion-paneel="852" class="accordion_t_paneel" style="display: block">
 <p>
     Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
 </p>
 
 </td></tr></table>
 
-<div >
+<div  data-u="2020-02-17T09:03:00Z" >
 <pre>
 &lt;ConsolidatieInformatie xmlns="https://standaarden.overheid.nl/stop/imop/data/"&gt;
   &lt;gemaaktOp&gt;2020-02-17T09:03:00Z&lt;/gemaaktOp&gt;
@@ -2958,9 +2982,9 @@ Applicatie = (function () {
 
 </div>
 <div class="sectie_lv"><h1>Beschikbaar stellen</h1>
-<table><tr><td><button data-accordion="955" class="accordion_t active">?</button></td>
-<td data-accordion-titel="955" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
-<td data-accordion-paneel="955" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="853" class="accordion_t active">?</button></td>
+<td data-accordion-titel="853" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="853" class="accordion_t_paneel" style="display: block">
 <p>
     De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
     en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).
@@ -2972,11 +2996,11 @@ Applicatie = (function () {
 </td></tr></table>
 
 <h2>Regeling: /akn/nl/act/pv30/2020/omgevingsverordening</h2>
-<button data-accordion="956" class="accordion_h active"><h3>Versiebeheer</h3></button>
-<div data-accordion-paneel="956" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="957" class="accordion_t active">?</button></td>
-<td data-accordion-titel="957" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer</td>
-<td data-accordion-paneel="957" class="accordion_t_paneel" style="display: block">
+<button data-accordion="854" class="accordion_h active"><h3>Versiebeheer</h3></button>
+<div data-accordion-paneel="854" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="855" class="accordion_t active">?</button></td>
+<td data-accordion-titel="855" class="accordion_t_titel" style="display: none">&#8678;Toelichting op het gebruik van versiebeheer</td>
+<td data-accordion-paneel="855" class="accordion_t_paneel" style="display: block">
 <p>
     STOP kent een vorm van <a href="@@@Documentatie_Url@@@/versiebeheer_principes.html">versiebeheer</a> voor regelgeving.
     Daarbij wordt bij elke uitwisseling aangegeven hoe een uitgewisselde versie van een regeling of informatieobject zich verhoudt
@@ -3003,7 +3027,7 @@ Applicatie = (function () {
 <table>
     <tr>
         <td style="width: 500px; height:500px"><svg id="vbh_1_svg" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 189 120 " version="1.1">
-<g><text x="44" y="105" dominant-baseline="middle" text-anchor="middle" class="vbd_txt">A</text><rect x="22" y="45" width="45" height="30" rx="3" ry="3" class="vbd_mo vbd_i" data-vbh_1_e="1" data-vbh_1_mo="0"></rect>
+<g data-uv="2020-02-17T09:03:00Z" ><text x="44" y="105" dominant-baseline="middle" text-anchor="middle" class="vbd_txt">A</text><rect x="22" y="45" width="45" height="30" rx="3" ry="3" class="vbd_mo vbd_i" data-vbh_1_e="1" data-vbh_1_mo="0"></rect>
 <text x="44" y="60" dominant-baseline="middle" text-anchor="middle" class="vbd_l_mo vbd_i" data-vbh_1_e="1" data-vbh_1_mo="0">&#128214;</text>
 <path d="M 89 75 L 89 45" class="vbd_line_uw"/>
 <text x="189" y="60.0" dominant-baseline="middle" text-anchor="end" class="vbd_txt">2020-02-17..<title>2020-02-17T09:03:00Z</title></text>
@@ -3011,7 +3035,7 @@ Applicatie = (function () {
 </g>
 Deze browser ondersteunt geen SVG
 </svg></td>
-        <td id="vbh_1_info" class="vbh_tv"><div><div data-vbh_1_t="1" data-vbh_1_mo="0" class="vbd_tl"><p><b>Doel A (/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01), gemaaktOp: 2020-02-17T09:03:00Z</b><br/>
+        <td id="vbh_1_info" class="vbh_tv"><div data-uv="2020-02-17T09:03:00Z" ><div data-vbh_1_t="1" data-vbh_1_mo="0" class="vbd_tl"><p><b>Doel A (/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01), gemaaktOp: 2020-02-17T09:03:00Z</b><br/>
 Instrumentversie: /akn/nl/act/pv30/2020/omgevingsverordening/nld@2020-02-01;1<br/>
 </p><p>Bij uitwisseling:
 <pre>
@@ -3035,13 +3059,13 @@ Instrumentversie: /akn/nl/act/pv30/2020/omgevingsverordening/nld@2020-02-01;1<br
     </tr>
 </table>
 
-<table><tr><td><button data-accordion="958" class="accordion_t active">?</button></td>
-<td data-accordion-titel="958" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
-<td data-accordion-paneel="958" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="856" class="accordion_t active">?</button></td>
+<td data-accordion-titel="856" class="accordion_t_titel" style="display: none">&#8678;Legenda</td>
+<td data-accordion-paneel="856" class="accordion_t_paneel" style="display: block">
 <table>
-    <tr><td><div><table><tr><th>Letter</th><th>Doel</th></tr>
+    <tr><td><div data-uv="2020-02-17T09:03:00Z" ><table><tr><th>Letter</th><th>Doel</th></tr>
 <tr><td>A</td><td>/join/id/proces/pv30/2020/terinzage_ontwerpbesluit01</td></tr></table></div>
-</td><td><div><table><tr><th class="vbd_th_mo">&nbsp;</th><th>Momentopnamen (publicatie)</th></tr><tr><th class="vbd_th_mor">&nbsp;</th><th>Momentopnamen (revisie)</th></tr><tr><td>&#128214;</td><td>Beoogde instrumentversie</td></tr><tr><td>&#128216;</td><td>Nieuwe instrumentversie is onbekend</td></tr><tr><td>&#128344;</td><td>Tijdstempel(s)</td></tr><tr><td>&#128683;</td><td>Intrekking</td></tr><tr><td>&#128465;</td><td>Instrument wijzigt niet meer</td></tr><tr><td>&#128173;</td><td>Tijdstempels geschrapt</td></tr></table></div>
+</td><td><div data-uv="2020-02-17T09:03:00Z" ><table><tr><th class="vbd_th_mo">&nbsp;</th><th>Momentopnamen (publicatie)</th></tr><tr><th class="vbd_th_mor">&nbsp;</th><th>Momentopnamen (revisie)</th></tr><tr><td>&#128214;</td><td>Beoogde instrumentversie</td></tr><tr><td>&#128216;</td><td>Nieuwe instrumentversie is onbekend</td></tr><tr><td>&#128344;</td><td>Tijdstempel(s)</td></tr><tr><td>&#128683;</td><td>Intrekking</td></tr><tr><td>&#128465;</td><td>Instrument wijzigt niet meer</td></tr><tr><td>&#128173;</td><td>Tijdstempels geschrapt</td></tr></table></div>
 </td></tr>
 </table>
 
@@ -3215,10 +3239,21 @@ Instrumentversie: /akn/nl/act/pv30/2020/omgevingsverordening/nld@2020-02-01;1<br
 
 window.addEventListener('load', function () {
 
-    // Zet de knoppen voor de vorige/volgende uitwisseling
-    function uitwisselingselector_button_status(elt) {
+    // Selecteer een uitwisseling op basis van de gemaaktOp datum
+    // De event handler toont/verbergt delen van de HTML aan de hand van de data-u* attributen
+    function SelecteerUitwisseling(e) {
+        var gemaaktOp = e.detail;
+
+        // Dropdown selectie
+        var elt = document.getElementById('uitwisselingselector_gemaaktOp');
+        elt.value = gemaaktOp;
+
+        // Volgende / vorige buttons
         var button = document.getElementById('uitwisselingselector_volgende')
-        if (elt.selectedIndex == 0) {
+        if (elt.selectedIndex == -1) {
+            button.dataset.uw = '';
+            button.disabled = true
+        } else if (elt.selectedIndex == 0) {
             button.dataset.uw = '';
             button.disabled = true
         } else {
@@ -3226,31 +3261,25 @@ window.addEventListener('load', function () {
             button.disabled = false
         }
         button = document.getElementById('uitwisselingselector_vorige')
-        if (elt.selectedIndex == elt.options.length - 1) {
+        if (elt.selectedIndex == -1) {
+            button.dataset.uw = '';
+            button.disabled = true
+        } else if (elt.selectedIndex == elt.options.length - 1) {
             button.dataset.uw = '';
             button.disabled = true
         } else {
             button.dataset.uw = elt.options[elt.selectedIndex + 1].value;
             button.disabled = false
         }
+
+        // Selectie van HTML elementen op basis van dataset waarden
         document.querySelectorAll("[data-uw]").forEach((button) => {
-            if (elt.value == button.dataset.uw) {
+            if (gemaaktOp == button.dataset.uw) {
                 button.classList.add('huidige-uw')
             } else {
                 button.classList.remove('huidige-uw')
             }
         });
-    }
-    uitwisselingselector_button_status(document.getElementById('uitwisselingselector_gemaaktOp'))
-
-    // Selecteer een uitwisseling op basis van de gemaaktOp datum
-    // De event handler toont/verbergt delen van de HTML aan de hand van de data-u* attributen
-    function uitwisselingselector_selecteer(gemaaktOp) {
-
-        // Dropdown selectie
-        var elt = document.getElementById('uitwisselingselector_gemaaktOp');
-        elt.value = gemaaktOp;
-        uitwisselingselector_button_status(elt)
 
         document.querySelectorAll("[data-u]").forEach((elt) => {
             if (elt.dataset.u == gemaaktOp) {
@@ -3266,6 +3295,11 @@ window.addEventListener('load', function () {
                 elt.style.display = 'none';
             }
         });
+    }
+    window.addEventListener('uitwisseling', SelecteerUitwisseling)
+
+    // Stuur het globale event uit
+    function uitwisselingselector_selecteer(gemaaktOp) {
         /* Stuur globaal event uit */
         Applicatie.SelecteerUitwisseling(gemaaktOp);
     }

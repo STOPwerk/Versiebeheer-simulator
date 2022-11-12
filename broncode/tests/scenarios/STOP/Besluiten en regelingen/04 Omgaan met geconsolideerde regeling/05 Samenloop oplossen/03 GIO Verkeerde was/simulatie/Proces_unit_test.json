@@ -1,3 +1,26 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//04 Omgaan met geconsolideerde regeling//05 Samenloop oplossen//03 GIO Verkeerde was\">04 05 01 03 GIO Verkeerde was</a>.</p><p>Dit voorbeeld laat zien hoe een vorm van samenloop kan ontstaat en opgelost kan worden in een GIO: als een besluit de wijzigingen in een GIO niet op de meest recente GIO-versie baseert. Dus als de verkeerde 'wasID' wordt gebruikt. De consolidatie van de GIO kan dan niet geautomatiseerd worden uitgevoerd: er is samenloop ontstaan.</p><p>Er ontstaat ook samenloop in de regeling omdat elke regelingversie een verwijzing bevat naar de bijbehorende GIO-versie.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Verkeerde was GIO",
+            "gemaaktOp": "2020-09-26T09:03:00Z",
+            "beschrijving": "Besluit met de verkeerde basisversie voor de nieuwe GIO. Het besluit kan hierdoor niet automatisch geconsolideerd worden, de consolidatie creert een toestand met onbekende inhoud. Zowel voor de regeling als voor het GIO. De automatische consolidatie kan wel aangeven wat er mis is: 'TeVerwerkenDoelen B' (klik op de toestand met de blauwe, onbekende inhoud.)."
+        },
+        {
+            "naam": "Oplossing - Oplossen samenloop",
+            "gemaaktOp": "2020-10-15T09:03:00Z",
+            "beschrijving": "Bevoegd gezag kan de samenloop oplossen door een revisie van het GIO en de regelingversie aan te leveren. De nieuwe GIO versie bevat de wijzigingen uit beide besluiten en de nieuwe regelingversie verwijst naar deze GIO. Dat deze versies ook de wijzigingen van het ontbrekende doel bevat wordt in de consolidatie-informatie aangegeven door het voorheen ontbrekende doel als 'VervlochtenVersie' op te nemen."
+        },
+        {
+            "naam": "Vooraf - Gewijzigde regeling",
+            "gemaaktOp": "2020-06-20T09:03:00Z",
+            "beschrijving": "Wijzigingsbesluit met de gewijzigde regelingversie."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able regeling",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van de initi\u00c3\u00able regelingversie."
+        }
+    ],
     "Procesopties": true
 }

@@ -1,0 +1,26 @@
+{
+    "Testresultaat - Cumulatieve versieinformatie": {
+        "/akn/nl/act/pv29/2010/milieubeleidsplan0612": {
+            "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan": [
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2010-10-11T09:01:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2010-10-11T09:01:00Z"
+                },
+                {
+                    "Cumulatief": {
+                        "/join/id/proces/pv29/2010/verlenging-milieubeleidsplan": {
+                            "IsOntvlochten": false,
+                            "LaatstVerwerkt": "2010-10-18T09:01:00Z"
+                        }
+                    },
+                    "GemaaktOp": "2010-10-18T09:01:00Z"
+                }
+            ]
+        }
+    }
+}

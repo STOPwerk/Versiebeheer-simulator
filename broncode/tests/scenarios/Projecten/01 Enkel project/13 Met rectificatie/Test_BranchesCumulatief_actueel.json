@@ -1,26 +1,3 @@
 {
-    "Testresultaat - Cumulatieve versieinformatie": {
-        "/akn/nl/act/gm9999/2022/REG_A": {
-            "/join/id/proces/gm9999/2022/Instelling": [
-                {
-                    "Cumulatief": {
-                        "/join/id/proces/gm9999/2022/Instelling": {
-                            "IsOntvlochten": false,
-                            "LaatstVerwerkt": "2022-02-01T07:00:00Z"
-                        }
-                    },
-                    "GemaaktOp": "2022-02-01T07:00:00Z"
-                },
-                {
-                    "Cumulatief": {
-                        "/join/id/proces/gm9999/2022/Instelling": {
-                            "IsOntvlochten": false,
-                            "LaatstVerwerkt": "2022-02-16T07:00:00Z"
-                        }
-                    },
-                    "GemaaktOp": "2022-02-16T07:00:00Z"
-                }
-            ]
-        }
-    }
+    "Testresultaat - Cumulatieve versieinformatie": {}
 }

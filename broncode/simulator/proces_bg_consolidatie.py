@@ -129,6 +129,7 @@ class Consolideren:
                 expressionId = '(onbekende instrumentversie)'
             else:
                 consolidatie.ExpressionId = expressionId = instrumentinfo.Instrumentversie.ExpressionId
+                consolidatie._Instrumentversie = instrumentinfo.Instrumentversie
             lijst = consolidatie.TegenstrijdigeVersies.get (expressionId)   
             if lijst is None:
                 consolidatie.TegenstrijdigeVersies[expressionId] = lijst = []
@@ -139,6 +140,7 @@ class Consolideren:
             return True
         else:
             consolidatie.ExpressionId = None
+            consolidatie._Instrumentversie = None
             return False
 
     def _BepaalUitwisselingVereist (self, consolidatie: Consolidatie):

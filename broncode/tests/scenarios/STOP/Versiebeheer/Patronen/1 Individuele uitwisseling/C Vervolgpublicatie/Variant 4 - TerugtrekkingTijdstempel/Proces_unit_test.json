@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1vervolg.html\">patroon 1C Vervolgpublicatie - Variant 4 - TerugtrekkingTijdstempel</a>: In dit scenario wordt middels een besluit de inwerkingtreding van een eerder besluit ongedaan gemaakt door de waarde van de tijdstempel terug te trekken.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - terugtrekking tijdstempel",
+            "gemaaktOp": "2022-01-15T07:00:00Z",
+            "beschrijving": "Het tweede besluit met een terugtrekking van datum inwerkingtreding van de regeling."
+        },
+        {
+            "naam": "Vooraf - nieuwe versie regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een nieuwe regeling en datum inwerkingtreding."
+        }
+    ],
+    "Procesopties": true
+}

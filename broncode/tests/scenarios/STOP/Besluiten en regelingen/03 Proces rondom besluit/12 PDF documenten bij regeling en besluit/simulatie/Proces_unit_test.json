@@ -1,0 +1,11 @@
+{
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//05 Overige scenario's//01 PDF documenten\">05 01 PDF documenten</a>.</p><p>Dit voorbeeld betreft het gebruik van PDF documenten in plaats van STOP XML-gecodeerde tekst. Dit mag alleen als het toegestaan wordt in het toepassingsprofiel voor het besluit en/of de regeling.</p><p>In dit voorbeeld stelt een BG eerst een nieuwe regelgeving op waarvan een deel van de regels is vastgelegd in een PDF document. In een apart besluit wordt deze regeling bekend gemaakt en de inwerkingtredingsdatum bepaald. Bij dat besluit wordt ook aanvullende informatie verstrekt in de vorm van een PDF document dat alleen gepubliceerd wordt (als informatieobject) en geen onderdeel wordt van de (geconsolideerde) regeling.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - PDF documenten",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingbesluit van initi\u00c3\u00able regeling waarin gebruik is gemaakt van een PDF document als informatieobject."
+        }
+    ],
+    "Procesopties": true
+}

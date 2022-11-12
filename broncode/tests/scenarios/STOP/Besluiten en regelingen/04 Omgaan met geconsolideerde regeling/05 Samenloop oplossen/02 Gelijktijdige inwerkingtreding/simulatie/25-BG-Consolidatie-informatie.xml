@@ -4,7 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://standaarden.overheid.nl/stop/imop/data/
   https://standaarden.overheid.nl/stop/@@@IMOPVERSIE@@@/imop-data.xsd">
-  <gemaaktOp>2020-02-28T09:00:00Z</gemaaktOp>
+  <gemaaktOp>2020-02-28T11:03:00Z</gemaaktOp>
   <BeoogdeRegelgeving>
     <BeoogdeRegeling>
       <!-- koppeling van de regelingversie van <RegelingMutatie> aan beide doelen -->
@@ -18,11 +18,11 @@
       <gemaaktOpBasisVan>
         <Basisversie>
           <doel>/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan</doel>
-          <gemaaktOp>2020-02-18T09:00:00Z</gemaaktOp>
+          <gemaaktOp>2020-02-18T09:03:00Z</gemaaktOp>
         </Basisversie>
         <Basisversie>
           <doel>/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan</doel>
-          <gemaaktOp>2020-02-28T09:00:00Z</gemaaktOp>
+          <gemaaktOp>2020-02-28T09:03:00Z</gemaaktOp>
         </Basisversie>
       </gemaaktOpBasisVan>
       <!-- geen eId, want er is geen besluit dat deze regelingversie instelt -->

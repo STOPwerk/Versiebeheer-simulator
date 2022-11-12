@@ -1,0 +1,274 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/gm9999/2022/REG_A": {
+            "BekendOp": "2022-04-15",
+            "OntvangenOp": "2022-04-15",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-05-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-03-18",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Intrekking"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2022/regeling1/nld@2022-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Intrekking"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v4",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling",
+                        "/join/id/proces/gm9999/2022/Intrekking"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Intrekking"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Intrekking",
+                                    "LaatstBekend": "2022-03-10T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb003#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2022/Instelling",
+                                "/join/id/proces/gm9999/2022/Intrekking"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v3",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                                    "LaatstBekend": "2022-03-01T07:00:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb002#art_I"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v3",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-04-15",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-05-01",
+                    "OntvangenOp": "2022-04-15"
+                },
+                {
+                    "BekendOp": "2022-03-10",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 0,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-05-01",
+                    "OntvangenOp": "2022-03-10"
+                },
+                {
+                    "BekendOp": "2022-03-10",
+                    "GeldigVanaf": "2022-03-18",
+                    "Identificatie": 1,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2022-03-18",
+                    "OntvangenOp": "2022-03-10"
+                },
+                {
+                    "BekendOp": "2022-03-01",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 0,
+                    "Inhoud": 3,
+                    "JuridischWerkendVanaf": "2022-05-01",
+                    "OntvangenOp": "2022-03-01"
+                },
+                {
+                    "BekendOp": "2022-01-01",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 2,
+                    "Inhoud": 4,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-01-01"
+                }
+            ]
+        },
+        "/join/id/regdata/gm9999/2022/gio993859238": {
+            "BekendOp": "2022-04-15",
+            "OntvangenOp": "2022-04-15",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-03-18",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Intrekking"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-05-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io2/nld@2022-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "IsNietInWerking": true
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/gm9999/2022/gio993859238/nld@2022;v2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/join/id/regdata/gm9999/2022/gio993859238/nld@2022;v1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-03-10",
+                    "GeldigVanaf": "2022-03-18",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-03-18",
+                    "OntvangenOp": "2022-03-10"
+                },
+                {
+                    "BekendOp": "2022-03-01",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-05-01",
+                    "OntvangenOp": "2022-03-01"
+                },
+                {
+                    "BekendOp": "2022-01-01",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 2,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-01-01"
+                }
+            ]
+        },
+        "/join/id/regdata/gm9999/2022/gio999999999": {
+            "BekendOp": "2022-04-15",
+            "OntvangenOp": "2022-04-15",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io3/nld@2022-05-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io3/nld@2022-03-18",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Intrekking"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Intrekking"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/gm9999/2022/gio999999999/nld@2022;v2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/join/id/regdata/gm9999/2022/gio999999999/nld@2022;v1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-04-15",
+                    "GeldigVanaf": "2022-05-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-05-01",
+                    "OntvangenOp": "2022-04-15"
+                },
+                {
+                    "BekendOp": "2022-03-10",
+                    "GeldigVanaf": "2022-03-18",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-03-18",
+                    "OntvangenOp": "2022-03-10"
+                }
+            ]
+        }
+    }
+}

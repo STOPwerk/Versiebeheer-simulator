@@ -10,6 +10,13 @@
       <instrumentVersie>/akn/nl/act/mnre1034/2012/RBOV/nld@2012-06-14;1</instrumentVersie>
       <eId>!regeling_initieel#chp_4__art_4.1</eId>
     </BeoogdeRegeling>
+    <BeoogdInformatieobject>
+      <doelen>
+        <doel>/join/id/proces/mnre1034/2012/InstellingRBOV</doel>
+      </doelen>
+      <instrumentVersie>/join/id/regdata/mnre1034/2012/gio12345678/nld@2012-06-01;1</instrumentVersie>
+      <eId>!regeling_initieel#cmp_A__content_o_1__list_o_1__item_o_1__ref_o_1</eId>
+    </BeoogdInformatieobject>
   </BeoogdeRegelgeving>
   <!-- geen tijdstempels, want geen inwerkingstredingsbepaling -->
 </ConsolidatieInformatie>

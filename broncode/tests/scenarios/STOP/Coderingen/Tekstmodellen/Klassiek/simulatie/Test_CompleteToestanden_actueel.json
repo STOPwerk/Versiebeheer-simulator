@@ -1,8 +1,8 @@
 {
     "Testresultaat - CompleteToestanden": {
         "/akn/nl/act/mnre1034/2020/VRACT": {
-            "BekendOp": "2020-07-14",
-            "OntvangenOp": "2020-07-14",
+            "BekendOp": "2021-05-21",
+            "OntvangenOp": "2021-05-21",
             "Tijdreisfilter": {
                 "BekendOpAanwezig": true,
                 "GeldigVanafAanwezig": true,
@@ -10,6 +10,12 @@
                 "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
             },
             "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/land/2021/regeling1/nld@2021-07-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/mnre1034/2021/WijzigingVoorbeeldregeling"
+                    ]
+                },
                 {
                     "ExpressionId": "/akn/nl/act/land/2021/regeling1/nld@2021-01-01",
                     "Inwerkingtredingsdoelen": [
@@ -19,16 +25,31 @@
             ],
             "ToestandInhoud": [
                 {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/mnre1034/2020/VRACT/nld@2020-10-05;2",
+                    "IsNietInWerking": false
+                },
+                {
                     "Instrumentversie": "/akn/nl/act/mnre1034/2020/VRACT/nld@2020-03-12;1",
                     "IsNietInWerking": false
                 }
             ],
             "Toestanden": [
                 {
-                    "BekendOp": "2020-07-14",
-                    "GeldigVanaf": "2021-01-01",
+                    "BekendOp": "2021-05-21",
+                    "GeldigVanaf": "2021-07-01",
                     "Identificatie": 0,
                     "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2021-07-01",
+                    "OntvangenOp": "2021-05-21"
+                },
+                {
+                    "BekendOp": "2020-07-14",
+                    "GeldigVanaf": "2021-01-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
                     "JuridischWerkendVanaf": "2021-01-01",
                     "OntvangenOp": "2020-07-14"
                 }

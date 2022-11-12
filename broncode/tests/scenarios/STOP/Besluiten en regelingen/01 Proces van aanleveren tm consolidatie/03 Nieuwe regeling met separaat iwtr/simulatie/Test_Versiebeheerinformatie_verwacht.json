@@ -1,0 +1,63 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2020/REG0001": {
+                "BekendOp": [
+                    "2020-01-27",
+                    "2020-01-28"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-01-27",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                                "GemaaktOp": "2020-01-27T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                ]
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-01-28",
+                        "Doel": "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "GemaaktOp": "2020-01-28T09:03:00Z",
+                        "JuridischWerkendVanaf": "2020-01-30"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2020-01-27",
+                "GemaaktOp": "2020-01-27T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1"
+                    }
+                ],
+                "OntvangenOp": "2020-01-27"
+            },
+            {
+                "BekendOp": "2020-01-28",
+                "GemaaktOp": "2020-01-28T09:03:00Z",
+                "OntvangenOp": "2020-01-28"
+            }
+        ]
+    }
+}

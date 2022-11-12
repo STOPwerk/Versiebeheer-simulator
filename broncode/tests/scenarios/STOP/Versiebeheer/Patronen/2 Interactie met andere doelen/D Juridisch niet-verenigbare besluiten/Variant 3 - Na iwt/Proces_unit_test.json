@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_2nieuwbesluit.html\">Patroon 2D  - Variant 3</a>: Juridisch niet-verenigbare besluiten, variant 3: Publicatie na juridischWerkendVanaf.<p>In dit voorbeeld is een regeling ingesteld (doel A) en is een wijziging bekendgemaakt (doel C). Er wordt een nieuwe wijziging bekendgemaakt (doel B) die eerder in werking treedt dan de eerste wijziging. De regelingversie voor de toestand met latere inwerkingtreding is dan onbekend. In dit scenario kan het nieuwe besluit niet tijdig bekendgemaakt worden, dus pas na de juridischWerkendVanaf datum voor doel C minus een eventuele wettelijk verplichte periode tussen bekendmaking en inwerkingtreding van het besluit.</p><p>In deze variant moet de nieuwe versie als eerste publicatie voor een nieuw doel (D) gedaan worden. In deze nieuwe versie de wijzigingen uit doel B overgenomen.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon",
+            "gemaaktOp": "2022-05-01T07:00:00Z",
+            "beschrijving": "Patroon: Nieuwe versie sluit niet aan bij de geldige versie."
+        },
+        {
+            "naam": "Start",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Start: De uitgangspositie voordat het patroon optreedt."
+        },
+        {
+            "naam": "Oplossing",
+            "gemaaktOp": "2022-06-15T07:00:00Z",
+            "beschrijving": "Oplossing: gewijzigde versie voor nieuw doel met nieuwe iwt."
+        }
+    ],
+    "Procesopties": true
+}

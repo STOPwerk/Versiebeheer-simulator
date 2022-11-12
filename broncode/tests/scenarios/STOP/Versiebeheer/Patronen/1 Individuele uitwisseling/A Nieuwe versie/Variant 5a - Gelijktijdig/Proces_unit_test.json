@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1versie.html\">patroon 1A Nieuwe versie - Variant 5 - Gelijktijdig</a>: meerdere opeenvolgend vastgestelde besluiten die tegelijk in werking treden moeten rekening met elkaar houden. De versie die inwerking treedt moet de wijzigingen uit alle besluiten bevatten. Omgekeerd moet elk doel/branch ook de wijzigingen uit de andere doelen/branches bevatten zodat elk doel/branch de versie bevat die in werking treedt.</p><p>In dit scenario wordt in een besluit een nieuwe versie aangeleverd waarbij rekening gehouden wordt met gelijktijdige inwerkingtreding met het voorgaande besluit.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Wijzigingsbesluit dat tegelijk in werking treedt",
+            "gemaaktOp": "2022-02-01T07:00:00Z",
+            "beschrijving": "Het derde besluit met een nieuwe versie van de regeling waarin 3 doelen worden samengevoegd."
+        },
+        {
+            "naam": "Vooraf - nieuwe versie regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een eerste versie van de regeling zonder inwerkingtredingsbepaling."
+        }
+    ],
+    "Procesopties": true
+}

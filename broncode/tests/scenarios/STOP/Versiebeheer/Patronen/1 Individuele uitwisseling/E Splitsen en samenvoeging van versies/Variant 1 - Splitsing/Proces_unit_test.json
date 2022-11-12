@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1iwt.html\">patroon 1E Splitsen en samenvoeging van versies - Variant 1 - Splitsing</a>: Als gekozen wordt voor een apart inwerkingtredingsbesluit kan bij het opstellen daarvan blijken dat niet de hele versie van de regeling of het informatieobject in werking kan treden. Er is dan sprake van uitstel van de inwerkingtreding van een deel van die versie. Dit wordt gedeeltelijke inwerkingtreding genoemd. In dit scenario is voor hetzelfde doel al eerder een besluit bekendgemaakt met daarin een nieuwe versie van de regeling, zonder inwerkingstredingbepaling. Vervolgens (nadat gebleken is dat niet de hele versie van de regeling in werking kan treden) wordt in een tweede besluit een aangepaste versie van de regeling bekendgemaakt met het deel dat wel al in werking treedt. Het resterende deel van de regeling dat op een later moment in werking treedt wordt aan een nieuw doel gekoppeld en in een derde (inwerkingtredings) besluit opgenomen.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - gedeeltelijke inwerkingtreding eerste deel",
+            "gemaaktOp": "2022-01-20T07:00:00Z",
+            "beschrijving": "Het tweede besluit met een aangepaste versie (doel A, het deel dat wel al in werking treedt) en inwerkingtredingsbepaling."
+        },
+        {
+            "naam": "Start - nieuwe versie regeling zonder iwt",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een nieuwe versie van de regeling zonder inwerkingtredingsbepaling."
+        },
+        {
+            "naam": "Patroon - inwerkingtreding overgebleven deel",
+            "gemaaktOp": "2022-02-20T07:00:00Z",
+            "beschrijving": "Het derde besluit met inwerkingtreding van het resterende deel van de regeling (doel B). Deze kent als basis versie de eerder bekendgemaakte volledige versie van de regeling. Ook heeft er een vervlechting plaatsgevonden van de laatste versie voor het originele doel (A)."
+        }
+    ],
+    "Procesopties": true
+}

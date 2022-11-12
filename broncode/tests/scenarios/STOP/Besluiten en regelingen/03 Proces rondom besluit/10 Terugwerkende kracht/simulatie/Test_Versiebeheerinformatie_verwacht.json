@@ -1,0 +1,140 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2020/REG0001": {
+                "BekendOp": [
+                    "2020-01-21",
+                    "2020-02-18",
+                    "2020-04-20"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2020-01-21",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                                "GemaaktOp": "2020-01-21T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": "2020-01-21T09:03:00Z"
+                                },
+                                "BekendOp": "2020-02-18",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-28;2",
+                                "GemaaktOp": "2020-02-18T09:03:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan": "2020-02-18T09:03:00Z"
+                                },
+                                "BekendOp": "2020-04-20",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-04-15;3",
+                                "GemaaktOp": "2020-04-20T09:05:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                ]
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-01-21",
+                        "Doel": "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "GemaaktOp": "2020-01-21T09:03:00Z",
+                        "JuridischWerkendVanaf": "2020-02-01"
+                    }
+                ]
+            },
+            "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-02-18",
+                        "Doel": "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan",
+                        "GemaaktOp": "2020-02-18T09:03:00Z",
+                        "JuridischWerkendVanaf": "2020-03-01"
+                    }
+                ]
+            },
+            "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2020-04-20",
+                        "Doel": "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen",
+                        "GeldigVanaf": "2020-02-15",
+                        "GemaaktOp": "2020-04-20T09:05:00Z",
+                        "JuridischWerkendVanaf": "2020-05-01"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2020-01-21",
+                "GemaaktOp": "2020-01-21T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1"
+                    }
+                ],
+                "OntvangenOp": "2020-01-21"
+            },
+            {
+                "BekendOp": "2020-02-18",
+                "GemaaktOp": "2020-02-18T09:03:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-28;2"
+                    }
+                ],
+                "OntvangenOp": "2020-02-18"
+            },
+            {
+                "BekendOp": "2020-04-20",
+                "GemaaktOp": "2020-04-20T09:05:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-04-15;3"
+                    }
+                ],
+                "OntvangenOp": "2020-04-20"
+            }
+        ]
+    }
+}

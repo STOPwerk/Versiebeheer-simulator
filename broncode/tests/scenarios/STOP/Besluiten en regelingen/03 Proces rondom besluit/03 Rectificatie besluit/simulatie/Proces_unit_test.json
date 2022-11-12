@@ -1,3 +1,16 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//03 Rectificatie besluit\">03 03 Rectificatie besluit</a>.</p><p>In dit voorbeeld wordt een rectificatie van een initi\u00c3\u00able regeling met GIO bekendgemaakt. Deze rectificatie bevat ook een gewijzigde inwerkingtredingsdatum.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Rectificatie besluit",
+            "gemaaktOp": "2020-01-25T15:03:00Z",
+            "beschrijving": "De gerectificeerde regelingversie en GIO die een aantal fouten herstellen, onder meer een gewijzigde inwerkingtredingsdatum."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able versie met GIO",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling met Geografisch Informatieobject (GIO), met inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

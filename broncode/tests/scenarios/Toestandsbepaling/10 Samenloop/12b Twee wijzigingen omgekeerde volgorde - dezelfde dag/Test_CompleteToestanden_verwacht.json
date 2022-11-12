@@ -59,7 +59,7 @@
                                 }
                             ],
                             "TeVerwerkenPublicaties": [
-                                "https://www.officielebekendmakingen.nl/pb003#eId_inhoud"
+                                "https://www.officielebekendmakingen.nl/pb003#art_I"
                             ]
                         },
                         {
@@ -76,7 +76,7 @@
                                 }
                             ],
                             "TeVerwerkenPublicaties": [
-                                "https://www.officielebekendmakingen.nl/pb002#eId_inhoud"
+                                "https://www.officielebekendmakingen.nl/pb002#art_I"
                             ]
                         }
                     ]
@@ -202,7 +202,7 @@
                                 }
                             ],
                             "TeVerwerkenPublicaties": [
-                                "https://www.officielebekendmakingen.nl/pb003#eId_inhoud"
+                                "https://www.officielebekendmakingen.nl/pb003#!wijziging#cmp_A__content_o_1__list_1__item_1__ref_o_1"
                             ]
                         },
                         {
@@ -219,7 +219,7 @@
                                 }
                             ],
                             "TeVerwerkenPublicaties": [
-                                "https://www.officielebekendmakingen.nl/pb002#eId_inhoud"
+                                "https://www.officielebekendmakingen.nl/pb002#!wijziging#cmp_A__content_o_1__list_1__item_1__ref_o_1"
                             ]
                         }
                     ]

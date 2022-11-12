@@ -1,0 +1,22 @@
+{
+    "Beschrijving": "Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_2samenloop.html\">Patroon 2B - Variant 1</a>: Versie latere toestand sluit niet aan. De juiste versie kan gemaakt worden door de wijzigingen uit beide besluiten te combineren.<p>In dit voorbeeld is een regeling ingesteld en is een wijziging bekendgemaakt. Er wordt een nieuwe wijziging bekendgemaakt die eerder in werking treedt dan de eerste wijziging. De regelingversie voor de toestand met latere inwerkingtreding is dan onbekend. De oplossing is om een revisie uit te wisselen voor die toestand.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon",
+            "gemaaktOp": "2022-05-01T07:00:00Z",
+            "beschrijving": "Patroon: Nieuwe versie sluit niet aan bij de geldige versie."
+        },
+        {
+            "naam": "Start",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Start: De uitgangspositie voordat het patroon optreedt."
+        },
+        {
+            "naam": "Oplossing",
+            "gemaaktOp": "2022-05-01T08:00:00Z",
+            "beschrijving": "Oplossing: De wijzigingen voor beide doelen zijn juririsch verenigbaar. Via een revisie kan een versie uitgewisseld worden waarin beide wijzigingen gecombineerd worden.",
+            "revisie": true
+        }
+    ],
+    "Procesopties": true
+}

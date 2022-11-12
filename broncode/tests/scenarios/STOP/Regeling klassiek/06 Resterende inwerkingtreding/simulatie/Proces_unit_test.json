@@ -1,3 +1,21 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit het voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Regeling klassiek//06 Resterende inwerkingtreding\">Klassiek 06 Resterende inwerkingtreding</a>.</p><p>In dit voorbeeld wordt middels een klassiek besluit de inwerkingstredingsdatum voor het resterende deel van de initiele regeling met GIO bekend gemaakt. Voor het publiceren van deze inwerkingtreding wordt ook het klassieke model gebruikt. De inwerkingtredingsregeling bevat geen zelfstandige bepalingen en wordt dus niet opgenomen in de consolidatie-informatie. Omdat de volledige regeling inwerking treedt zoals al eerder gepubliceerd, zie voorbeeld 03, wordt geen regelingversie of revisie meegeleverd.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Resterende inwerkingtreding initiele regeling met GIO",
+            "gemaaktOp": "2015-04-20T09:03:00Z",
+            "beschrijving": "Resterende inwerkingtredingsregeling van de initiele regeling met Geografisch Informatieobject (GIO). Omdat nu de volledige regeling inwerking treedt, wordt geen revisie meegeleverd. De regelingversie zoals deze nu in werking treedt was al bekend. Er vind ook een vervlechting plaats met de regeling versie van de eerdere gedeeltelijke inwerkingtreding om aan te geven dat de gedeeltelijk in werking getreden versie verwerkt is in deze versie."
+        },
+        {
+            "naam": "Vooraf - Gedeeltelijke inwerkingtreding initiele regeling met GIO",
+            "gemaaktOp": "2014-06-18T09:03:00Z",
+            "beschrijving": "Gedeeltelijke inwerkingtredingsregeling voor de initiele regeling met Geografisch Informatieobject (GIO). Omdat niet de volledige regeling inwerking treedt, wordt met een revisie de regelingversie meegeleverd zoals deze luidt op moment van gedeeltelijke inwerkingtreding. (Voorbeeld 05)"
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able regeling met GIO",
+            "gemaaktOp": "2012-06-25T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling met Geografisch Informatieobject (GIO), zonder inwerkingtredingsdatum. (Voorbeeld 03)"
+        }
+    ],
     "Procesopties": true
 }

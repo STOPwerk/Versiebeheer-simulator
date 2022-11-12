@@ -1,0 +1,38 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/gm9999/2020/REG0001": {
+            "BekendOp": "2020-01-28",
+            "OntvangenOp": "2020-01-28",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-01-30",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-01-28",
+                    "GeldigVanaf": "2020-01-30",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2020-01-30",
+                    "OntvangenOp": "2020-01-28"
+                }
+            ]
+        }
+    }
+}

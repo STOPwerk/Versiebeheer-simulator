@@ -1,0 +1,159 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/akn/nl/act/gm9999/2020/REG0001": {
+            "BekendOp": "2020-04-20",
+            "OntvangenOp": "2020-04-20",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-03-01;2020-05-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-15;2020-05-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-03-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan"
+                    ]
+                },
+                {
+                    "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan",
+                        "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-04-15;3",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ],
+                    "IsNietInWerking": false,
+                    "OnvolledigeVersies": [
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                            "TeOntvlechtenPublicaties": [],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen",
+                                    "LaatstBekend": "2020-04-20T09:05:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb003#art_I"
+                            ]
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-04-15;3",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan",
+                                    "LaatstVerwerkt": "2020-02-18T09:03:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb002#art_I"
+                            ],
+                            "TeVerwerkenPublicaties": []
+                        },
+                        {
+                            "Basisversiedoelen": [
+                                "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                            ],
+                            "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-28;2",
+                            "TeOntvlechtenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan",
+                                    "LaatstVerwerkt": "2020-02-18T09:03:00Z"
+                                }
+                            ],
+                            "TeOntvlechtenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb002#art_I"
+                            ],
+                            "TeVerwerkenDoelen": [
+                                {
+                                    "Doel": "/join/id/proces/gm9999/2020/ToevoegenVuurwerkevenementen",
+                                    "LaatstBekend": "2020-04-20T09:05:00Z"
+                                }
+                            ],
+                            "TeVerwerkenPublicaties": [
+                                "https://www.officielebekendmakingen.nl/pb003#art_I"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                    ],
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-28;2",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2020-04-20",
+                    "GeldigVanaf": "2020-03-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2020-05-01",
+                    "OntvangenOp": "2020-04-20"
+                },
+                {
+                    "BekendOp": "2020-04-20",
+                    "GeldigVanaf": "2020-02-15",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2020-05-01",
+                    "OntvangenOp": "2020-04-20"
+                },
+                {
+                    "BekendOp": "2020-02-18",
+                    "GeldigVanaf": "2020-03-01",
+                    "Identificatie": 2,
+                    "Inhoud": 2,
+                    "JuridischWerkendVanaf": "2020-03-01",
+                    "OntvangenOp": "2020-02-18"
+                },
+                {
+                    "BekendOp": "2020-01-21",
+                    "GeldigVanaf": "2020-02-01",
+                    "Identificatie": 3,
+                    "Inhoud": 3,
+                    "JuridischWerkendVanaf": "2020-02-01",
+                    "OntvangenOp": "2020-01-21"
+                }
+            ]
+        }
+    }
+}

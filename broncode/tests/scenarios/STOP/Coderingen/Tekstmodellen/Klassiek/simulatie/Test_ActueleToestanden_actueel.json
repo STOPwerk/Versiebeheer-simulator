@@ -16,6 +16,36 @@
                         "NietMeerActueel": false
                     }
                 ]
+            },
+            {
+                "BekendOp": "2021-05-21",
+                "OntvangenOp": "2021-05-21",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/land/2021/regeling1/nld@2021-01-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2020/VRACT/nld@2020-03-12;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling"
+                        ],
+                        "JuridischWerkendTot": "2021-07-01",
+                        "JuridischWerkendVanaf": "2021-01-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/mnre1034/2020/InstellingVoorbeeldregeling"
+                        ],
+                        "ExpressionId": "/akn/nl/act/land/2021/regeling1/nld@2021-07-01",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/akn/nl/act/mnre1034/2020/VRACT/nld@2020-10-05;2",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/mnre1034/2021/WijzigingVoorbeeldregeling"
+                        ],
+                        "JuridischWerkendVanaf": "2021-07-01",
+                        "NietMeerActueel": false
+                    }
+                ]
             }
         ]
     }

@@ -1,0 +1,123 @@
+{
+    "Testresultaat - ActueleToestanden": {
+        "/akn/nl/act/gm9999/2020/REG0001": [
+            {
+                "BekendOp": "2020-01-21",
+                "OntvangenOp": "2020-01-21",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "JuridischWerkendVanaf": "2020-02-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2020-02-18",
+                "OntvangenOp": "2020-02-18",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "JuridischWerkendTot": "2020-03-01",
+                        "JuridischWerkendVanaf": "2020-02-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-03-01",
+                        "Identificatie": 1,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-28;2",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan"
+                        ],
+                        "JuridischWerkendVanaf": "2020-03-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2020-02-28",
+                "OntvangenOp": "2020-02-28",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "JuridischWerkendTot": "2020-03-01",
+                        "JuridischWerkendVanaf": "2020-02-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-03-01;2",
+                        "Identificatie": 2,
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan",
+                            "/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan"
+                        ],
+                        "JuridischWerkendVanaf": "2020-03-01",
+                        "NietMeerActueel": false,
+                        "TegensprekendeDoelen": [
+                            {
+                                "Doel": "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan",
+                                "LaatstBekend": "2020-02-18T09:03:00Z"
+                            },
+                            {
+                                "Doel": "/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan",
+                                "LaatstBekend": "2020-02-28T09:03:00Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "BekendOp": "2020-02-28",
+                "OntvangenOp": "2020-02-28",
+                "Toestanden": [
+                    {
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-02-01",
+                        "Identificatie": 0,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-01-15;1",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "JuridischWerkendTot": "2020-03-01",
+                        "JuridischWerkendVanaf": "2020-02-01",
+                        "NietMeerActueel": false
+                    },
+                    {
+                        "Basisversiedoelen": [
+                            "/join/id/proces/gm9999/2020/InstellingOmgevingsplan"
+                        ],
+                        "ExpressionId": "/akn/nl/act/gemeente/2020/regeling1/nld@2020-03-01;2",
+                        "Identificatie": 2,
+                        "Instrumentversie": "/akn/nl/act/gm9999/2020/REG0001/nld@2020-03-03;4",
+                        "Inwerkingtredingsdoelen": [
+                            "/join/id/proces/gm9999/2020/ToevoegenFopAanOmgevingsplan",
+                            "/join/id/proces/gm9999/2020/ToevoegenKwetsbareObjectenAanOmgevingsplan"
+                        ],
+                        "JuridischWerkendVanaf": "2020-03-01",
+                        "NietMeerActueel": false
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -294,7 +294,7 @@
         }));
     }
 
-    // Swelectie van momentopnamen
+    // Selectie van momentopnamen in het versiebeheer van LVBB
     Applicatie.SelecteerMomentopname = function (wid, mid) {
         window.dispatchEvent(new CustomEvent('momentopname', {
             detail: {
@@ -325,6 +325,15 @@
                 Applicatie.SelecteerToestand(geselecteerdeToestand.Identificatie, uniekId);
             }
         }
+        // Uitwisselingen en projectacties delen dezelfde tijdlijn
+        window.dispatchEvent(new CustomEvent('projectactie', {
+            detail: gemaaktOp
+        }));
+    }
+
+    // Selectie van projectacties
+    Applicatie.SelecteerProjectactie = function (uitgevoerdOp) {
+        Applicatie.SelecteerUitwisseling(uitgevoerdOp);
     }
 
     // Initialisatie van een diagram
@@ -370,16 +379,16 @@
 <body>
 <h1>Demo-GM</h1><p>Inhoudsopgave? <span id="accordion-sluiten" class="aslink">Verberg</span> alle teksten.<br><a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a> - ontwikkelversie</p>
 <div id="intro">
-<table><tr><td><button data-accordion="2744" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2744" class="accordion_t_titel" style="display: none">&#8678;Beschrijving van het scenario</td>
-<td data-accordion-paneel="2744" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4455" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4455" class="accordion_t_titel" style="display: none">&#8678;Beschrijving van het scenario</td>
+<td data-accordion-paneel="4455" class="accordion_t_paneel" style="display: block">
 <p>Demonstratie van de werking van projectmatig werken gezien vanuit het bevoegd gezag</p>
 </td></tr></table>
 
 </div>
-<table><tr><td><button data-accordion="2745" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2745" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
-<td data-accordion-paneel="2745" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4456" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4456" class="accordion_t_titel" style="display: none">&#8678;Over deze pagina</td>
+<td data-accordion-paneel="4456" class="accordion_t_paneel" style="display: block">
 <b>Over deze pagina</b>
 <p>
     Deze pagina is aangemaakt door de geautomatiseerde consolidatie toe te passen op de
@@ -474,8 +483,8 @@
 <p>Er zijn 
 4 foutmeldingen
 ; klik op <i>Uitvoering van de applicatie</i> om deze te bekijken</p>
-<button data-accordion="2746" class="accordion_h">Uitvoering van de applicatie</button>
-<div data-accordion-paneel="2746" class="accordion_h_paneel">
+<button data-accordion="4457" class="accordion_h">Uitvoering van de applicatie</button>
+<div data-accordion-paneel="4457" class="accordion_h_paneel">
 <p>
     Een overzicht van de meldingen uit de applicatie die zijn gedaan bij het inlezen en verwerken van
     het scenario. Ze zijn vooral van belang als er fouten in de invoer zijn gevonden. De applicatie
@@ -491,6 +500,7 @@
 <div id="log_detail">
 
 <table id="meldingen_tabel">
+<tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheer.Simulator\Demo-GM\Proces_unit_test.json' bevat valide procesopties</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheer.Simulator\Demo-GM\10 Eerste project - ontwerpbesluit.xml' bevat valide ConsolidatieInformatie</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheer.Simulator\Demo-GM\11 Eerste project - besluit.xml' bevat valide ConsolidatieInformatie</td></tr>
 <tr style="display: none" class="entry_DETAIL"><td class="level_DETAIL">DETAIL</td><td class="message_DETAIL main">Bestand '.\Versiebeheer.Simulator\Demo-GM\50 Overige projecten - Instelling.xml' bevat valide ConsolidatieInformatie</td></tr>
@@ -524,9 +534,9 @@
 </div>
 
 <div class="sectie_op"><h1>Publiceren</h1>
-<table><tr><td><button data-accordion="2747" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2747" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
-<td data-accordion-paneel="2747" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4458" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4458" class="accordion_t_titel" style="display: none">&#8678;Over publiceren</td>
+<td data-accordion-paneel="4458" class="accordion_t_paneel" style="display: block">
 <p>
     Deze sectie geeft informatie over de uitwisseling van besluiten, rectificaties, mededelingen en revisies
     en de publicaties die daarvan het gevolg zijn. De publicaties zijn voor het uitvoeren van de consolidatie
@@ -536,11 +546,11 @@
 
 </td></tr></table>
 
-<button data-accordion="2748" class="accordion_h active">Overzicht van uitwisselingen en publicaties</button>
-<div data-accordion-paneel="2748" class="accordion_h_paneel" style="display: block">
-<table><tr><td><button data-accordion="2749" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2749" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
-<td data-accordion-paneel="2749" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4459" class="accordion_h active"><h3>Overzicht van uitwisselingen en publicaties</h3></button>
+<div data-accordion-paneel="4459" class="accordion_h_paneel" style="display: block">
+<table><tr><td><button data-accordion="4460" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4460" class="accordion_t_titel" style="display: none">&#8678;Over het overzicht</td>
+<td data-accordion-paneel="4460" class="accordion_t_paneel" style="display: block">
 <p>
     Dit overzicht laat alle uitwisselingen zien en de nummers van de publicatiebladen waarin
     het besluit, rectificatie of mededeling uit de uitwisseling is gepubliceerd.
@@ -556,11 +566,11 @@
 </table></p>
 </div>
 
-<button data-accordion="2750" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
-<div data-accordion-paneel="2750" class="accordion_h_paneel">
-<table><tr><td><button data-accordion="2751" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2751" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
-<td data-accordion-paneel="2751" class="accordion_t_paneel" style="display: block">
+<button data-accordion="4461" class="accordion_h">STOP-module: ConsolidatieInformatie</button>
+<div data-accordion-paneel="4461" class="accordion_h_paneel">
+<table><tr><td><button data-accordion="4462" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4462" class="accordion_t_titel" style="display: none">&#8678;Over de module</td>
+<td data-accordion-paneel="4462" class="accordion_t_paneel" style="display: block">
 <p>
     Dit is de inhoud van de STOP-module met consolidatie-informatie die onderdeel is van de geselecteerde uitwisseling.
 </p>
@@ -571,9 +581,9 @@
 
 </div>
 <div class="sectie_lv"><h1>Beschikbaar stellen</h1>
-<table><tr><td><button data-accordion="2752" class="accordion_t active">?</button></td>
-<td data-accordion-titel="2752" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
-<td data-accordion-paneel="2752" class="accordion_t_paneel" style="display: block">
+<table><tr><td><button data-accordion="4463" class="accordion_t active">?</button></td>
+<td data-accordion-titel="4463" class="accordion_t_titel" style="display: none">&#8678;Over beschikbaar stellen</td>
+<td data-accordion-paneel="4463" class="accordion_t_paneel" style="display: block">
 <p>
     De resultaten in deze sectie laten zien wat systemen uit de consolidatie-informatie kunnen afleiden
     en aan anderen kunnen tonen. De systemen zullen in het algemeen landelijke voorzieningen zijn (zoals de LVBB).

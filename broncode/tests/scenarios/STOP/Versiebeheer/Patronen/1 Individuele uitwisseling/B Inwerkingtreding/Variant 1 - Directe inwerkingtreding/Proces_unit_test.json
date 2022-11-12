@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1iwt.html\">patroon 1B Inwerkingtreding van een besluit - Variant 1 - Directe inwerkingtreding</a>: In dit scenario worden twee besluiten bekendgemaakt. De eerste formuleert een nieuwe regeling inclusief inwerkingtredingsbepaling. Het tweede besluit betreft een versie voor een wijziging van de regeling, met een inwerkingtredingsbepaling van de wijziging.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - wijziging met (directe) iwt",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Het tweede besluit voor een wijziging van de regeling inclusief inwerkingtredingsbepaling."
+        },
+        {
+            "naam": "Start - instelling met iwt",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een nieuwe regeling en inwerkingtredingsbepaling."
+        }
+    ],
+    "Procesopties": true
+}

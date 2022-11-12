@@ -1,3 +1,21 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//03 Proces rondom besluit//05 Scenarios mbt gerechtelijke macht//03 Gedeeltelijke vernietiging\">03 05 03 Gedeeltelijke vernietiging</a>.</p><p>In dit voorbeeld wordt er beroep aangetekend tegen een besluit waarna de uitkomst van de beroepsprocedure is dat de rechter het wijzigingsbesluit gedeeltelijk vernietigd: De uitbreiding van het vuurwerkverbodsgebied naar de gehele bebouwde kom is niet rechtmatig gezien het beoogde doel: overlast verminderen voor bewoners. De uitbreiding van het vuurwerkverbodsgebied moet zich beperken tot woonwijken.</p><p>Het bevoegd gezag publiceert een mededeling over de uitkomst van de gerechtelijke procedure, inclusief een aangepaste regeling met GIO waarin de uitspraak van de rechter is verwerkt. De uitspraak geldt met terugwerkende kracht, dus in de consolidatie worden de regeling en GIO-versies van de bestaande toestand vervangen.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - gedeeltelijke vernietiging",
+            "gemaaktOp": "2020-12-15T09:03:00Z",
+            "beschrijving": "Mededeling van de uitkomst van de gerechtelijke procedure, inclusief de naar aanleiding van de uitspraak aangepaste GIO en regeling."
+        },
+        {
+            "naam": "Vooraf - gewijzigde versie",
+            "gemaaktOp": "2020-06-20T09:03:00Z",
+            "beschrijving": "Besluit van een gewijzigde regeling + GIO, met inwerkingtredingsdatum. Tegen dit besluit wordt beroep ingesteld."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able versie",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling + GIO, met inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

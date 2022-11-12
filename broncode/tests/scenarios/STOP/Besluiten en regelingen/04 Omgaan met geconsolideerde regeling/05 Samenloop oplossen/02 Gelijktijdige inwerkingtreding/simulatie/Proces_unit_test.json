@@ -1,3 +1,26 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//04 Omgaan met geconsolideerde regeling//05 Samenloop oplossen//02 Gelijktijdige inwerkingtreding\">04 05 02 Gelijktijdige inwerkingtreding</a>.</p><p>Dit voorbeeld laat zien hoe samenloop ontstaat en opgelost kan worden als twee besluiten allebei wijzigingen op dezelfde, meest recente regelingversie beschrijven EN tegelijk in werking treden. De consolidatie kan dan niet geautomatiseerd worden uitgevoerd: er is samenloop ontstaan.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Gelijktijdige inwerkingtreding",
+            "gemaaktOp": "2020-02-28T09:03:00Z",
+            "beschrijving": "Tweede wijzigingsbesluit ook gebaseerd op de initiele versie dat tegelijk met het vorige wijzigingsbesluit in werkingtreedt. De geautomatiseerde consolidatie kan de geconsolideerde regelingversie niet samenstellen omdat er twee kandidaten zijn ('TegensprekendeDoelen')."
+        },
+        {
+            "naam": "Oplossing - Revisie met samenvoeging",
+            "gemaaktOp": "2020-02-28T11:03:00Z",
+            "beschrijving": "Om de samenloop op te lossen, levert het bevoegd gezag met een revisie de samenvoeging van beide gewijzigde regelingversies. In de consolidatie-informatie wordt aangegeven dat het een samenvoeging betreft door <i>twee</i> 'Basisversies' op te nemen."
+        },
+        {
+            "naam": "Vooraf - Gewijzigde regeling",
+            "gemaaktOp": "2020-02-18T09:03:00Z",
+            "beschrijving": "Wijzigingsbesluit met de gewijzigde regelingversie."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able regeling",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van de initi\u00c3\u00able regelingversie."
+        }
+    ],
     "Procesopties": true
 }

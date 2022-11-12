@@ -8,13 +8,13 @@
       <eId>art_II</eId>
     </BeoogdeRegeling>
   </BeoogdeRegelgeving>
+  <!-- basisversie van de intrekking is de aanlevering van voorbeeld 01 Nieuwe regeling met IWT -->
   <Intrekkingen>
     <Intrekking>
       <doel>/join/id/proces/gm9999/2020/VervangenOmgevingsplan</doel>
       <instrument>/akn/nl/act/gm9999/2020/REG0001</instrument>
       <eId>art_I</eId>
       <gemaaktOpBasisVan>
-        <!-- basisversie is de aanlevering van voorbeeld 01 Nieuwe regeling met IWT -->
         <Basisversie>
             <doel>/join/id/proces/gm9999/2020/InstellingOmgevingsplan</doel>
             <gemaaktOp>2020-01-21T09:03:00Z</gemaaktOp>

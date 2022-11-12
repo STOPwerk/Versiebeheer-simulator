@@ -495,6 +495,7 @@ class _MaakToestanden (MaakToestanden):
             completeToestanden.BekendOp = self._BekendOp
         if completeToestanden.OntvangenOp is None or completeToestanden.OntvangenOp < self._OntvangenOp:
             completeToestanden.OntvangenOp = self._OntvangenOp
+        completeToestanden.MaterieelUitgewerktOp = self._Consolidatie.Instrument.MaterieelUitgewerkt
 
         meldingen = [] # Alleen voor weergave: cumulatieve meldingen zodat elke toestand de historie tot en met de creatie van de toestand krijgt
         def _MaakMelding (tekst, ernst = None):

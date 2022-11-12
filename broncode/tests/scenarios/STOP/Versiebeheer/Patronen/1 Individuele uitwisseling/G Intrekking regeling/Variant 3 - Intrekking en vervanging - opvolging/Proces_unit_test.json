@@ -1,0 +1,16 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 1G Intrekking van een regeling (of informatieobject) - Variant 3 - Intrekking en vervanging: opvolging</a>: In dit scenario wordt er middels \u00c3\u00a9\u00c3\u00a9n besluit zowel een intrekking als de formulering van een nieuwe regeling bekend gemaakt. Hiervoor kan gekozen worden wanneer er een ingrijpende wijziging nodig is en een wijziging van de bestaande regeling slecht te begrijpen zou zijn. Een meer uitgewerkt voorbeeld van dit scenario is <a href=\"@@@REPOSITORY_URL@@@voorbeelden/Besluiten en regelingen/01 Proces van aanleveren tm consolidatie/04 Intrekken en instellen nieuwe regeling\">elders</a> te vinden.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - Tweede besluit met intrekking en opvolging",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Het tweede besluit met de intrekking van de bestaande regeling (REG_A)per 01-04-2022 en de introductie van een nieuwe regeling (REG_B)."
+        },
+        {
+            "naam": "Vooraf - nieuwe versie regeling",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "Het eerste besluit met een nieuwe versie van de regeling."
+        }
+    ],
+    "Procesopties": true
+}

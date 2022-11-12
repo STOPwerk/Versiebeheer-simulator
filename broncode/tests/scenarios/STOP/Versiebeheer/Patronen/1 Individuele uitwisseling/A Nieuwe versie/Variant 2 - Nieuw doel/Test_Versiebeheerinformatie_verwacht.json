@@ -1,0 +1,98 @@
+{
+    "Testresultaat - Versiebeheerinformatie": {
+        "Instrumenten": {
+            "/akn/nl/act/gm9999/2022/REG_A": {
+                "BekendOp": [
+                    "2022-01-01",
+                    "2022-03-01"
+                ],
+                "Branches": {
+                    "/join/id/proces/gm9999/2022/Instelling": {
+                        "Momentopnamen": [
+                            {
+                                "BekendOp": "2022-01-01",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Instelling"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1",
+                                "GemaaktOp": "2022-01-01T07:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    },
+                    "/join/id/proces/gm9999/2022/Wijziging": {
+                        "Momentopnamen": [
+                            {
+                                "Basisversies": {
+                                    "/join/id/proces/gm9999/2022/Instelling": "2022-01-01T07:00:00Z"
+                                },
+                                "BekendOp": "2022-03-01",
+                                "Doelen": [
+                                    "/join/id/proces/gm9999/2022/Wijziging"
+                                ],
+                                "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2",
+                                "GemaaktOp": "2022-03-01T07:00:00Z",
+                                "IsIngetrokken": false,
+                                "IsTeruggetrokken": false
+                            }
+                        ]
+                    }
+                },
+                "InitieleDoelen": [
+                    "/join/id/proces/gm9999/2022/Instelling"
+                ]
+            }
+        },
+        "Tijdstempels": {
+            "/join/id/proces/gm9999/2022/Instelling": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2022-01-01",
+                        "Doel": "/join/id/proces/gm9999/2022/Instelling",
+                        "GemaaktOp": "2022-01-01T07:00:00Z",
+                        "JuridischWerkendVanaf": "2022-02-01"
+                    }
+                ]
+            },
+            "/join/id/proces/gm9999/2022/Wijziging": {
+                "Momentopnamen": [
+                    {
+                        "BekendOp": "2022-03-01",
+                        "Doel": "/join/id/proces/gm9999/2022/Wijziging",
+                        "GemaaktOp": "2022-03-01T07:00:00Z",
+                        "JuridischWerkendVanaf": "2022-04-01"
+                    }
+                ]
+            }
+        },
+        "Uitwisselingen": [
+            {
+                "BekendOp": "2022-01-01",
+                "GemaaktOp": "2022-01-01T07:00:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2022/Instelling"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v1"
+                    }
+                ],
+                "OntvangenOp": "2022-01-01"
+            },
+            {
+                "BekendOp": "2022-03-01",
+                "GemaaktOp": "2022-03-01T07:00:00Z",
+                "Instrumentversies": [
+                    {
+                        "Doelen": [
+                            "/join/id/proces/gm9999/2022/Wijziging"
+                        ],
+                        "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;v2"
+                    }
+                ],
+                "OntvangenOp": "2022-03-01"
+            }
+        ]
+    }
+}

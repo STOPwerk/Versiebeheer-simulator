@@ -1,0 +1,21 @@
+{
+    "Beschrijving": "Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_2nieuwbesluit.html\">Patroon 2D  - Variant 1</a>: Juridisch niet-verenigbare besluiten, variant 1: geen mogelijkheid tot bezwaar/beroep.<p>In dit voorbeeld is een regeling ingesteld (doel A) en is een wijziging bekendgemaakt (doel C). Er wordt een nieuwe wijziging bekendgemaakt (doel B) die eerder in werking treedt dan de eerste wijziging. De regelingversie voor de toestand met latere inwerkingtreding is dan onbekend. In dit scenario is er geen bezwaar/beroep mogelijk tegen het nieuwe besluit en het besluit wordt tijdig bekendgemaakt, dus uiterlijk op de juridischWerkendVanaf datum voor doel C minus een eventuele wettelijk verplichte periode tussen bekendmaking en inwerkingtreding van het besluit.</p><p>In deze variant kan de juiste versie gemaakt worden doormiddel van een vervolgpublicatie voor de eerste wijziging (doel C). In de vervolgpublicatie worden de wijzigingen uit doel B overgenomen.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon",
+            "gemaaktOp": "2022-05-01T07:00:00Z",
+            "beschrijving": "Patroon: Nieuwe versie sluit niet aan bij de geldige versie."
+        },
+        {
+            "naam": "Start",
+            "gemaaktOp": "2022-03-01T07:00:00Z",
+            "beschrijving": "Start: De uitgangspositie voordat het patroon optreedt."
+        },
+        {
+            "naam": "Oplossing",
+            "gemaaktOp": "2022-05-15T07:00:00Z",
+            "beschrijving": "Oplossing: vervolgpublicatie."
+        }
+    ],
+    "Procesopties": true
+}

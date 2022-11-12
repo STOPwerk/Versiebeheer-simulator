@@ -1,0 +1,11 @@
+{
+    "Beschrijving": "<p>Demonstratie van het <a href=\"@@@DOCUMENTATIE_URL@@@consolideren_patronen_1intrekking.html\">patroon 1G Intrekking van een regeling (of informatieobject) - Variant 2 - Intrekking van rechtswege</a>: In wet- en regelgeving kan voor een type regeling bepaald zijn dat de regeling automatisch vervalt onder bepaalde condities. Bijvoorbeeld een vaste periode na inwerkingtreding, zoals bij voorbeschermingsregels. In dit scenario wordt bij de bekendmaking van een nieuwe regeling ook direct een intrekking van rechtswege doorgegeven, ook al staat het niet vermeld in het besluit.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Patroon - nieuwe versie regeling en intrekking van rechtswege",
+            "gemaaktOp": "2022-01-01T07:00:00Z",
+            "beschrijving": "In dit besluit wordt naast een nieuwe versie van de regeling een intrekking van rechtswege voor dit instrument bepaald per 01-07-2023."
+        }
+    ],
+    "Procesopties": true
+}

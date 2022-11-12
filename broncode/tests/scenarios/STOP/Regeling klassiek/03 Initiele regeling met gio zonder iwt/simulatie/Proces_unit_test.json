@@ -1,3 +1,11 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit het voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Regeling klassiek//03 Initiele regeling met GIO zonder iwt\">Klassiek 03 Initiele regeling met GIO zonder iwt</a>.</p><p>In dit voorbeeld wordt middels een klassiek besluit de eerste versie van een nieuwe regeling bekend gemaakt. Deze regeling gebruikt een Geografisch Informatieobject (GIO) om het  werkingsgebied vast te leggen. Het GIO wordt gelijk met de instellingsregeling bekend gemaakt. Het besluit bevat geen inwerkingtredingsdatum voor de initiele regeling met GIO.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Initi\u00c3\u00able versie met GIO",
+            "gemaaktOp": "2012-06-25T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van een nieuwe regeling met Geografisch Informatieobject (GIO), zonder inwerkingtredingsdatum."
+        }
+    ],
     "Procesopties": true
 }

@@ -1,3 +1,26 @@
 {
+    "Beschrijving": "<p>Demonstratie van de consolidatie uit voorbeeld <a href=\"@@@REPOSITORY_URL@@@//voorbeelden//Besluiten en regelingen//04 Omgaan met geconsolideerde regeling//05 Samenloop oplossen//01 Verkeerde was\">04 05 01 Verkeerde was</a>.</p><p>Dit voorbeeld laat zien hoe samenloop ontstaat en opgelost kan worden als een besluit de wijzigingen niet op de meest recente regelingversie baseert. Kortom, de verkeerde 'was' wordt gebruikt. De consolidatie kan dan niet geautomatiseerd worden uitgevoerd: er is samenloop ontstaan.</p>",
+    "Uitwisselingen": [
+        {
+            "naam": "Voorbeeld - Verkeerde was",
+            "gemaaktOp": "2020-02-28T09:03:00Z",
+            "beschrijving": "Besluit met de verkeerde basisversie voor de nieuwe regelingversie. Het besluit kan hierdoor niet automatisch geconsolideerd worden, de consolidatie creert een toestand met onbekende inhoud. De automatische consolidatie kan wel aangeven wat er mis is: 'TeVerwerkenDoelen B' (klik op de toestand met de blauwe, onbekende inhoud.)"
+        },
+        {
+            "naam": "Oplossing - Oplossen samenloop",
+            "gemaaktOp": "2020-02-28T11:03:00Z",
+            "beschrijving": "Bevoegd gezag kan de samenloop oplossen door een revisie van de regelingversie aan te leveren die wel de wijzigingen van alle besluiten bevat. Dat deze versie ook de wijzigingen van het ontbrekende doel bevat wordt in de consolidatie-informatie aangegeven door het voorheen ontbrekende doel nu als 'VervlochtenVersie' op te nemen."
+        },
+        {
+            "naam": "Vooraf - Gewijzigde regeling",
+            "gemaaktOp": "2020-02-18T09:03:00Z",
+            "beschrijving": "Wijzigingsbesluit met de gewijzigde regelingversie."
+        },
+        {
+            "naam": "Vooraf - Initi\u00c3\u00able regeling",
+            "gemaaktOp": "2020-01-21T09:03:00Z",
+            "beschrijving": "Instellingsbesluit van de initi\u00c3\u00able regelingversie."
+        }
+    ],
     "Procesopties": true
 }

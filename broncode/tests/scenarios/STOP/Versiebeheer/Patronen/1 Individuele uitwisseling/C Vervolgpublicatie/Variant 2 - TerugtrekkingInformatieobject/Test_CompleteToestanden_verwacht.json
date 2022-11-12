@@ -1,0 +1,67 @@
+{
+    "Testresultaat - CompleteToestanden": {
+        "/join/id/regdata/gm9999/2022/gio993859238": {
+            "BekendOp": "2022-02-15",
+            "OntvangenOp": "2022-02-15",
+            "Tijdreisfilter": {
+                "BekendOpAanwezig": true,
+                "GeldigVanafAanwezig": true,
+                "OntvangenOpAanwezig": true,
+                "SoortTijdreis": "https://identifier.overheid.nl/tooi/def/thes/kern/c_nntb_ct"
+            },
+            "ToestandIdentificatie": [
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io1/nld@2022-02-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ]
+                },
+                {
+                    "ExpressionId": "/join/id/regdata/consolidatie/2022/io1/nld@2022-03-01",
+                    "Inwerkingtredingsdoelen": [
+                        "/join/id/proces/gm9999/2022/Wijziging"
+                    ]
+                }
+            ],
+            "ToestandInhoud": [
+                {
+                    "Instrumentversie": "/join/id/regdata/gm9999/2022/gio993859238/nld@2022-01-01;v1",
+                    "IsNietInWerking": false
+                },
+                {
+                    "Basisversiedoelen": [
+                        "/join/id/proces/gm9999/2022/Instelling"
+                    ],
+                    "Instrumentversie": "/join/id/regdata/gm9999/2022/gio993859238/nld@2022-01-01;v2",
+                    "IsNietInWerking": false
+                }
+            ],
+            "Toestanden": [
+                {
+                    "BekendOp": "2022-02-15",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-02-15"
+                },
+                {
+                    "BekendOp": "2022-02-01",
+                    "GeldigVanaf": "2022-03-01",
+                    "Identificatie": 1,
+                    "Inhoud": 1,
+                    "JuridischWerkendVanaf": "2022-03-01",
+                    "OntvangenOp": "2022-02-01"
+                },
+                {
+                    "BekendOp": "2022-01-01",
+                    "GeldigVanaf": "2022-02-01",
+                    "Identificatie": 0,
+                    "Inhoud": 0,
+                    "JuridischWerkendVanaf": "2022-02-01",
+                    "OntvangenOp": "2022-01-01"
+                }
+            ]
+        }
+    }
+}

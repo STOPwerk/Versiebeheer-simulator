@@ -1,0 +1,4 @@
+De documentatie wordt gemaakt op de development branch van het hoofdproject
+https://github.com/STOPwerk/Versiebeheer-simulator.git
+en van daar uit naar deze repo gecommit. Daarbij worden parameters als
+het versienummer en de URLs naar STOP ingevuld.
