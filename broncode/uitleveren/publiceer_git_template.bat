@@ -14,7 +14,7 @@ git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
 
 @echo Update wiki
-python.exe ..\tools\pas_configuratie_toe.py . wiki
+python.exe pas_configuratie_toe.py . wiki
 @if errorlevel 1 goto Pause
 @cd wiki
 git config user.mail "@@@STOPwerk_Github_email@@@"
@@ -39,9 +39,9 @@ git merge --strategy-option theirs --squash -m "Release @@@VERSIE@@@" developmen
 @echo Los de merge conflicten op en ga verder
 pause
 :GaVerder
-python.exe ..\tools\pas_configuratie_toe.py . ..\..
+python.exe pas_configuratie_toe.py . ..\..
 @if errorlevel 1 goto Pause
-python.exe ..\tools\pas_configuratie_toe.py . ..\simulator
+python.exe pas_configuratie_toe.py . ..\simulator
 @if errorlevel 1 goto Pause
 rd /s /q ..\wiki
 git add -A

@@ -20,7 +20,7 @@ echo.
 goto Pause
 
 :Start
-python.exe ..\..\tools\voorbeelden_naar_unittests.py ..\..\..\voorbeelden Versiebeheer.Simulator
+python.exe voorbeelden_naar_unittests.py ..\..\..\voorbeelden Versiebeheer.Simulator
 if errorlevel 1 goto Pause
 if errorlevel 0 goto End
 
