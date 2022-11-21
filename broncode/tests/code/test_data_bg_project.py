@@ -160,8 +160,8 @@ class Test_data_bg_project(unittest.TestCase):
                 { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_A" },
                 { "OnbekendeVersie": "/akn/nl/act/gm9999/2022/REG_E" },
                 { "OnbekendeVersie": "/join/id/regdata/2022/IO_F" },
-                { "Teruggetrokken": "/join/id/regdata/2022/IO_C" },
-                { "Teruggetrokken": "/join/id/regdata/2022/IO_D" }
+                { "BestaatNiet": "/join/id/regdata/2022/IO_C" },
+                { "BestaatNiet": "/join/id/regdata/2022/IO_D" }
             ],
             "JuridischWerkendVanaf": "2022-08-01",
             "GeldigVanaf": "2022-06-01"
@@ -179,36 +179,36 @@ class Test_data_bg_project(unittest.TestCase):
                 "/akn/nl/act/gm9999/2022/REG_B": {
                     "ExpressionId": "/akn/nl/act/gm9999/2022/REG_B/nld@2022;P1",
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/join/id/regdata/2022/IO_B": {
                     "ExpressionId": "/join/id/regdata/2022/IO_B@2022;P1",
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/akn/nl/act/gm9999/2022/REG_A": {
                     "IsJuridischUitgewerkt": true,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/join/id/regdata/2022/IO_A": {
                     "IsJuridischUitgewerkt": true,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/akn/nl/act/gm9999/2022/REG_E": {
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/join/id/regdata/2022/IO_F": {
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/join/id/regdata/2022/IO_C": {
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": true
+                    "BestaatNiet": true
                 },
                 "/join/id/regdata/2022/IO_D": {
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": true
+                    "BestaatNiet": true
                 }
             },
             "JuridischWerkendVanaf": "2022-08-01",
@@ -283,7 +283,7 @@ class Test_data_bg_project(unittest.TestCase):
             "Instrumentversies": [
                 { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" },
                 { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_A" },
-                { "Teruggetrokken": "/join/id/regdata/2022/IO_B" }
+                { "BestaatNiet": "/join/id/regdata/2022/IO_B" }
             ]
         }
     ]
@@ -300,15 +300,15 @@ class Test_data_bg_project(unittest.TestCase):
                 "/akn/nl/act/gm9999/2022/REG_A": {
                     "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1",
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/join/id/regdata/2022/IO_A": {
                     "IsJuridischUitgewerkt": true,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/join/id/regdata/2022/IO_B": {
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": true
+                    "BestaatNiet": true
                 }
             }
         }
@@ -327,7 +327,7 @@ class Test_data_bg_project(unittest.TestCase):
             "Instrumentversies": [
                 { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" },
                 { "JuridischUitgewerkt": "/join/id/regdata/2022/IO_A" },
-                { "Teruggetrokken": "/join/id/regdata/2022/IO_B" }
+                { "BestaatNiet": "/join/id/regdata/2022/IO_B" }
             ]
         }
     ]
@@ -343,15 +343,15 @@ class Test_data_bg_project(unittest.TestCase):
                 "/akn/nl/act/gm9999/2022/REG_A": {
                     "ExpressionId": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1",
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/join/id/regdata/2022/IO_A": {
                     "IsJuridischUitgewerkt": true,
-                    "IsTeruggetrokken": false
+                    "BestaatNiet": false
                 },
                 "/join/id/regdata/2022/IO_B": {
                     "IsJuridischUitgewerkt": false,
-                    "IsTeruggetrokken": true
+                    "BestaatNiet": true
                 }
             }
         }
@@ -992,7 +992,7 @@ class Test_data_bg_project(unittest.TestCase):
         }
     ]
 }''',None)
-    def test_Fout_Instrumentversies_Teruggetrokken_GeenString(self):
+    def test_Fout_Instrumentversies_BestaatNiet_GeenString(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
     "Acties": [
@@ -1002,13 +1002,13 @@ class Test_data_bg_project(unittest.TestCase):
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
             "Instrumentversies": [
-                { "Teruggetrokken": true }
+                { "BestaatNiet": true }
             ]
         }
     ]
 }''',None)
 
-    def test_Fout_Instrumentversies_Teruggetrokken_GeenInstrument(self):
+    def test_Fout_Instrumentversies_BestaatNiet_GeenInstrument(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
     "Acties": [
@@ -1018,13 +1018,13 @@ class Test_data_bg_project(unittest.TestCase):
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
             "Instrumentversies": [
-                { "Teruggetrokken": "/geen/work" }
+                { "BestaatNiet": "/geen/work" }
             ]
         }
     ]
 }''',None)
 
-    def test_Fout_Instrumentversies_Teruggetrokken_GeenWork(self):
+    def test_Fout_Instrumentversies_BestaatNiet_GeenWork(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
     "Acties": [
@@ -1034,7 +1034,7 @@ class Test_data_bg_project(unittest.TestCase):
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
             "Instrumentversies": [
-                { "Teruggetrokken": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" }
+                { "BestaatNiet": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" }
             ]
         }
     ]
@@ -1074,7 +1074,7 @@ class Test_data_bg_project(unittest.TestCase):
     ]
 }''',None)
 
-    def test_Fout_Instrumentversies_Instrumentversie_Teruggetrokken_Dubbel(self):
+    def test_Fout_Instrumentversies_Instrumentversie_BestaatNiet_Dubbel(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
     "Acties": [
@@ -1085,7 +1085,7 @@ class Test_data_bg_project(unittest.TestCase):
             "Doel": "/join/id/proces/gm9999/2022/Project",
             "Instrumentversies": [
                 { "Instrumentversie": "/akn/nl/act/gm9999/2022/REG_A/nld@2022;P1" },
-                { "Teruggetrokken": "/akn/nl/act/gm9999/2022/REG_A" }
+                { "BestaatNiet": "/akn/nl/act/gm9999/2022/REG_A" }
             ]
         }
     ]
@@ -1108,7 +1108,7 @@ class Test_data_bg_project(unittest.TestCase):
     ]
 }''',None)
 
-    def test_Fout_Instrumentversies_JuridischUitgewerkt_Teruggetrokken_Dubbel(self):
+    def test_Fout_Instrumentversies_JuridischUitgewerkt_BestaatNiet_Dubbel(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
     "Acties": [
@@ -1119,13 +1119,13 @@ class Test_data_bg_project(unittest.TestCase):
             "Doel": "/join/id/proces/gm9999/2022/Project",
             "Instrumentversies": [
                 { "JuridischUitgewerkt": "/akn/nl/act/gm9999/2022/REG_A" },
-                { "Teruggetrokken": "/akn/nl/act/gm9999/2022/REG_A" }
+                { "BestaatNiet": "/akn/nl/act/gm9999/2022/REG_A" }
             ]
         }
     ]
 }''',None)
 
-    def test_Fout_Instrumentversies_Teruggetrokken_Dubbel(self):
+    def test_Fout_Instrumentversies_BestaatNiet_Dubbel(self):
         self._Test_LeesJson ('''{
     "Project": "P1",
     "Acties": [
@@ -1135,8 +1135,8 @@ class Test_data_bg_project(unittest.TestCase):
             "Beschrijving": "Enige actie",
             "Doel": "/join/id/proces/gm9999/2022/Project",
             "Instrumentversies": [
-                { "Teruggetrokken": "/akn/nl/act/gm9999/2022/REG_A" },
-                { "Teruggetrokken": "/akn/nl/act/gm9999/2022/REG_A" }
+                { "BestaatNiet": "/akn/nl/act/gm9999/2022/REG_A" },
+                { "BestaatNiet": "/akn/nl/act/gm9999/2022/REG_A" }
             ]
         }
     ]
