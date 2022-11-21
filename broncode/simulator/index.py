@@ -32,7 +32,7 @@ def index():
 
 @app.route('/invoer')
 def invoer():
-    return WebApplicatie.InvoerPagine ()
+    return WebApplicatie.InvoerPagina ()
 
 @app.route('/resultaat', methods = ['POST'])
 def simuleer():

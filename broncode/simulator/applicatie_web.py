@@ -27,7 +27,7 @@ class WebApplicatie:
 #
 #======================================================================
     @staticmethod
-    def IndexPagine():
+    def IndexPagina():
         """Startpagina"""
         generator = WebpaginaGenerator ("Versiebeheer-simulator online", WebApplicatie.FAVICON)
         generator.LeesHtmlTemplate ('index')
