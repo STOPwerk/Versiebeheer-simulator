@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a00fa148-8f87-4637-aea6-1a4774de7551</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>tools\maak_release_artefacts.py</StartupFile>
+    <StartupFile>uitleveren\maak_release_artefacts.py</StartupFile>
     <SearchPath>tests\code</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -87,8 +87,18 @@
     <Content Include="simulator\weergave_webpagina_einde.html" />
     <Content Include="simulator\weergave_webpagina_start.html" />
     <Content Include="tests\code\README.md" />
+    <Content Include="tests\scenarios\kopieer_STOP_voorbeelden.bat" />
+    <Content Include="tests\scenarios\kopieer_voorbeelden.bat" />
     <Content Include="tests\scenarios\README.md" />
-    <Content Include="tools\README.md" />
+    <Content Include="uitleveren\configuratie.json" />
+    <Content Include="uitleveren\download\LEESMIJ.txt" />
+    <Content Include="uitleveren\download\voer_simulator_uit_voor_mijn_voorbeelden.bat" />
+    <Content Include="uitleveren\download\voer_simulator_uit_voor_mijn_voorbeelden.sh" />
+    <Content Include="uitleveren\publiceer.bat" />
+    <Content Include="uitleveren\publiceer_git_template.bat" />
+    <Content Include="uitleveren\README.md" />
+    <Content Include="uitleveren\wiki_extra\Maak STOPwerk git user.bat" />
+    <Content Include="uitleveren\wiki_extra\__LEESMIJ.txt" />
     <Content Include="Versiebeheer.Simulator.pyproj.vsspell" />
     <Content Include="tests\scenarios\voer_alle_testen_uit.bat" />
     <Content Include="tests\scenarios\voer_alle_testen_uit.sh" />
@@ -101,6 +111,7 @@
     <Compile Include="simulator\data_bg_project.py" />
     <Compile Include="simulator\data_bg_projectvoortgang.py" />
     <Compile Include="simulator\proces_bg_consolidatie.py" />
+    <Compile Include="simulator\proces_bg_versiebeheer.py" />
     <Compile Include="simulator\weergave_data_bg_versiebeheer.py" />
     <Compile Include="simulator\data_bg_versiebeheer.py" />
     <Compile Include="simulator\data_lv_actueleannotaties.py" />
@@ -185,16 +196,18 @@
     <Compile Include="tests\code\test_stop_naamgeving.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tools\pas_configuratie_toe.py" />
-    <Compile Include="tools\maak_release_artefacts.py" />
-    <Compile Include="tools\voorbeelden_naar_unittests.py" />
+    <Compile Include="uitleveren\pas_configuratie_toe.py" />
+    <Compile Include="uitleveren\maak_release_artefacts.py" />
+    <Compile Include="tests\scenarios\voorbeelden_naar_unittests.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="simulator\" />
     <Folder Include="tests\" />
-    <Folder Include="tools\" />
     <Folder Include="tests\code\" />
     <Folder Include="tests\scenarios\" />
+    <Folder Include="uitleveren\" />
+    <Folder Include="uitleveren\download\" />
+    <Folder Include="uitleveren\wiki_extra\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.9" />

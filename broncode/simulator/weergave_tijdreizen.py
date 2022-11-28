@@ -148,10 +148,12 @@ class Weergave_Tijdreizen ():
             toestandHtml += '<td>#' + str(toestand.Inhoud) + '</td><td class="s">'
             if inhoud.IsNietInWerking:
                 toestandHtml += Weergave_Symbolen.Toestand_Uitgewerkt
-            elif inhoud.Instrumentversie is None:
-                toestandHtml += Weergave_Symbolen.Toestand_OnbekendeInhoud
             else:
-                toestandHtml += '<span title="' + inhoud.Instrumentversie + '">' + Weergave_Symbolen.Toestand_BekendeInhoud + '</span>'
+                symbool = Weergave_Symbolen.ToestandBekendOfOnbekend (inhoud.Instrumentversie)
+                if symbool == Weergave_Symbolen.Toestand_BekendeInhoud:
+                    toestandHtml += '<span title="' + inhoud.Instrumentversie + '">' + symbool + '</span>'
+                else:
+                    toestandHtml += symbool
             if toestand._Beschrijving:
                 toestandHtml += '<span title="' + toestand._Beschrijving + '">' + Weergave_Symbolen.BenoemdeTijdreis + '</span>'
             toestandHtml += '</td></tr>'
@@ -271,10 +273,12 @@ class Weergave_Tijdreizen ():
                 inhoud = self._CompleteToestanden.ToestandInhoud[toestand.Inhoud]
                 if inhoud.IsNietInWerking:
                     inhoud = Weergave_Symbolen.Toestand_Uitgewerkt
-                elif inhoud.Instrumentversie is None:
-                    inhoud = Weergave_Symbolen.Toestand_OnbekendeInhoud
                 else:
-                    inhoud = '<title>' + inhoud.Instrumentversie + '</title>' + Weergave_Symbolen.Toestand_BekendeInhoud
+                    symbool = Weergave_Symbolen.ToestandBekendOfOnbekend (inhoud.Instrumentversie)
+                    if symbool == Weergave_Symbolen.Toestand_BekendeInhoud:
+                        inhoud = '<title>' + inhoud.Instrumentversie + '</title>' + symbool
+                    else:
+                        inhoud = symbool
                 identificatie = self._CompleteToestanden.ToestandIdentificatie[toestand.Identificatie]
                 inhoud += ','.join (letter for _, letter in self._InstrumentData.WeergaveData.Branches (identificatie.Inwerkingtredingsdoelen))
                 svg += svgFragment.format (x=x, y=y, xt=xt, yt=yt, w=svgBreedte-x, ob=ob, j=toestand.JuridischWerkendVanaf, g=toestand.GeldigVanaf, t = ' uw' if toestand.GemaaktOp == uitwisseling.GemaaktOp else '', ti=toestand.Identificatie, tid=toestand._UniekId, inhoud=inhoud)

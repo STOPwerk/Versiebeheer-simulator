@@ -37,8 +37,14 @@ class Weergave_Symbolen:
 
     @staticmethod
     def ToestandSymbool (toestand : ToestandActueel):
-        if not toestand.Instrumentversie is None:
+        if not toestand.Instrumentversie is None and toestand.Instrumentversie != '(onbekend)':
             return Weergave_Symbolen.Toestand_BekendeInhoud
         if len (toestand.TegensprekendeDoelen) > 0:
             return Weergave_Symbolen.Toestand_MeerdereVersies
+        return Weergave_Symbolen.Toestand_OnbekendeInhoud
+
+    @staticmethod
+    def ToestandBekendOfOnbekend (instrumentversie):
+        if not instrumentversie is None and instrumentversie != '(onbekend)':
+            return Weergave_Symbolen.Toestand_BekendeInhoud
         return Weergave_Symbolen.Toestand_OnbekendeInhoud

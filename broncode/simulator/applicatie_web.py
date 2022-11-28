@@ -27,14 +27,14 @@ class WebApplicatie:
 #
 #======================================================================
     @staticmethod
-    def IndexPagine():
+    def IndexPagina():
         """Startpagina"""
         generator = WebpaginaGenerator ("Versiebeheer-simulator online", WebApplicatie.FAVICON)
         generator.LeesHtmlTemplate ('index')
         return generator.Html ()
 
     @staticmethod
-    def InvoerPagine():
+    def InvoerPagina():
         """Invoerpagina"""
         generator = WebpaginaGenerator ("Versiebeheer-simulator invoer", WebApplicatie.FAVICON)
         # Bron: https://bdwm.be/drag-and-drop-upload-files/

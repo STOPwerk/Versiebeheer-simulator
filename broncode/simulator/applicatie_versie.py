@@ -9,7 +9,7 @@ def Applicatie_versie ():
     # In een uitgeleverde versie van de simulator bevat de eerste string
     # het specifieke versienummer; het is een van de parameters die
     # bij het uitleveren vervangen wordt
-    versie = '2022-11-12 22:22:08'
+    versie = '2022-11-28 22:59:41'
     if versie == '@@@VER' + 'SIE@@@':
         versie = '- ontwikkelversie'
     return versie

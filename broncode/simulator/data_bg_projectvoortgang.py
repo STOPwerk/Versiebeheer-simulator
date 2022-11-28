@@ -20,7 +20,7 @@
 
 from typing import Dict, List, Tuple
 from data_doel import Doel
-from data_bg_project import Project, ProjectActie, Instrumentversie
+from data_bg_project import Project, ProjectActie
 from data_bg_versiebeheer import Versiebeheer, Branch as VersiebeheerBranch
 
 #----------------------------------------------------------------------
@@ -161,3 +161,18 @@ class Branch (VersiebeheerBranch):
         self._ViaProject = False
         # Degene die op dit moment aan de branch werkt: adviesbureau of bevoegd gezag
         self.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
+        # Als de branch een versie van regelgeving beschrijft die als uitgangssituatie
+        # het resultaat van een ander doel heeft, dan is dat doel opgegeven als:
+        self.Uitgangssituatie_Doel : Branch = None
+        # Als de branch een versie van regelgeving beschrijft die als uitgangssituatie
+        # de publiek bekende geldende regelgeving heeft, dan is de datum waarop de
+        # regelgeving geldig is gegeven als:
+        self.Uitgangssituatie_GeldigOp = None
+        #--------------------------------------------------------------
+        # Ondersteuning consolidatieproces
+        #--------------------------------------------------------------
+        # Tijdstip van de laatste wijziging van de branches waar de Uitgangssituatie
+        # van afkomstig is. Latere wijzigingen in de uitgangssituatie zijn (nog)
+        # niet in deze branch verwerkt.
+        # None als deze branch geen uitgangssituatie kent.
+        self.Uitgangssituatie_LaatstGewijzigdOp : List[Tuple[Branch,str]] = None

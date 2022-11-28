@@ -24,7 +24,7 @@ echo Zorg dat de laatste versie van de voorbeelden uit de juiste STOP-ontwikkeli
 echo gehaald zijn en in Versiebeheer-simulator-STOP-voorbeelden staan.
 pause
 
-python.exe ..\..\tools\voorbeelden_naar_unittests.py ..\..\..\..\Versiebeheer-simulator-STOP-voorbeelden\STOP\voorbeelden STOP
+python.exe voorbeelden_naar_unittests.py ..\..\..\..\Versiebeheer-simulator-STOP-voorbeelden\STOP\voorbeelden STOP
 if errorlevel 1 goto Pause
 
 if errorlevel 0 goto End
