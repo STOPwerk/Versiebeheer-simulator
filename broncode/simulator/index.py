@@ -28,7 +28,7 @@ wsgi_app = app.wsgi_app
 #----------------------------------------------------------------------
 @app.route('/')
 def index():
-    return WebApplicatie.IndexPagine ()
+    return WebApplicatie.IndexPagina ()
 
 @app.route('/invoer')
 def invoer():

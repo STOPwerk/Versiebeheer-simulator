@@ -132,10 +132,12 @@ class Weergave_CompleteToestanden ():
                         html += '<td>#' + str(toestand.Inhoud) + '</td><td class="s">'
                         if inhoud.IsNietInWerking:
                             html += Weergave_Symbolen.Toestand_Uitgewerkt
-                        elif inhoud.Instrumentversie is None:
-                            html += Weergave_Symbolen.Toestand_OnbekendeInhoud
                         else:
-                            html += '<span title="' + inhoud.Instrumentversie + '">' + Weergave_Symbolen.Toestand_BekendeInhoud + '</span>'
+                            symbool = Weergave_Symbolen.ToestandBekendOfOnbekend (inhoud.Instrumentversie)
+                            if symbool == Weergave_Symbolen.Toestand_BekendeInhoud:
+                                html += '<span title="' + inhoud.Instrumentversie + '">' + symbool + '</span>'
+                            else:
+                                html += symbool
                         if toestand._Beschrijving:
                             html += Weergave_Symbolen.BenoemdeTijdreis
                         html += '</td></tr>\n'

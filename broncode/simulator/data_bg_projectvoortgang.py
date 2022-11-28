@@ -20,7 +20,7 @@
 
 from typing import Dict, List, Tuple
 from data_doel import Doel
-from data_bg_project import Project, ProjectActie, Instrumentversie
+from data_bg_project import Project, ProjectActie
 from data_bg_versiebeheer import Versiebeheer, Branch as VersiebeheerBranch
 
 #----------------------------------------------------------------------

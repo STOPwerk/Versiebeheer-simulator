@@ -254,7 +254,7 @@ class Weergave_Annotaties ():
             actueleToestand = self._ActueleToestandenMetAnnotarties.ActueleToestanden.ToestandInhoud[toestand.Inhoud]
             elt = _TabelElement ()
             elt.Tekst = ' '.join (letter for _, letter in self._InstrumentData.WeergaveData.Branches (actueleToestand.Inwerkingtredingsdoelen))
-            elt.ExtraSubkolommen = [ Weergave_Symbolen.Toestand_OnbekendeInhoud if actueleToestand.Instrumentversie is None else Weergave_Symbolen.Toestand_BekendeInhoud ]
+            elt.ExtraSubkolommen = [ Weergave_Symbolen.ToestandBekendOfOnbekend (actueleToestand.Instrumentversie) ]
             elt.ActueleToestand = actueleToestand
             _TabelRij.VoegToe (tabelrijen, toestand).Elementen[len(self._Tabelkolommen)] = elt
         self._Tabelkolommen.append (_TabelKolom ("Toestand", "Actuele toestand", 2))
