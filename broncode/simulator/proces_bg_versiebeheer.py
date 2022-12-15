@@ -231,7 +231,7 @@ class Versiebeheer:
                             sync.SimultaanBeheerdeBranches = None
             branch.SimultaanBeheerdeBranches = None if len(branches) == 1 else set (branches)
             if len(branches) > 1:
-                alleInstrumenten.union (branch.Instrumentversies.keys ())
+                alleInstrumenten.update (branch.Instrumentversies.keys ())
 
         # Controleer dat op alle branches dezelfde informatie staat, dwz dat de merge conflicten opgelost zijn.
         succes = True

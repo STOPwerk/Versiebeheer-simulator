@@ -343,7 +343,7 @@ class Procesbegeleiding:
             alleWorkId = set (nieuweInstrumentversies.keys ()).union (onbepaaldeVersies).union (valideVersies.keys ())
             if neemUitgangspuntOver:
                 # - alle instrumenten die op de branch aanwezig zijn
-                alleWorkId.union (branch.Instrumentversies.keys ())
+                alleWorkId.update (branch.Instrumentversies.keys ())
 
             # Bepaal de nieuwe versies van alle instrumenten
             succes = True
