@@ -16,6 +16,8 @@
     <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
     <Name>FlaskWebProject1</Name>
     <RootNamespace>FlaskWebProject1</RootNamespace>
+    <WebBrowserPort>8888</WebBrowserPort>
+    <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,12 +32,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="applicatie_web.py" />
+    <Compile Include="applicatie_web_voorbeelden.py" />
     <Compile Include="index.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="applicatie_web_index.html" />
+    <Content Include="applicatie_web_project_invoer_voorbeeld.js" />
+    <Content Include="applicatie_web_project_invoer_voorbeeld.html" />
+    <Content Include="applicatie_web_project_invoer_data.js" />
+    <Content Include="applicatie_web_project_invoer.css" />
+    <Content Include="applicatie_web_project_invoer.js" />
+    <Content Include="applicatie_web_project_invoer.html" />
     <Content Include="applicatie_web_invoer.css" />
     <Content Include="applicatie_web_invoer.html" />
     <Content Include="applicatie_web_invoer.js" />

@@ -10,8 +10,15 @@ insert_final_newline = true
 
 # Matches multiple files with brace expansion notation
 # Set default charset
-[*.{html,md,py}]
+[*.{html,css,js,md,py}]
 charset = utf-8
 # 4 space indentation
 indent_style = space
 indent_size = 4
+
+# VS spell checker
+spelling_languages = nl-nl, en-us
+#spelling_checkable_types = strings,identifiers,comments
+spelling_checkable_types = strings,comments
+spelling_error_severity = warning
+spelling_exclusion_path = spelling_exclusion.dic

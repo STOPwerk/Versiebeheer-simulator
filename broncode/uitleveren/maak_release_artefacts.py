@@ -112,8 +112,8 @@ with zipfile.ZipFile (downloadPad, 'w') as zip:
             if file.startswith ('Versiebeheer.Simulator'):
                 # Visual Studio bestanden
                 pass
-            elif file == 'index.py' or file.startswith ('applicatie_web') or file == 'requirements.txt' or file == 'vercel.json':
-                # Web bestanden
+            elif file == 'vercel.json':
+                # Web deployment bestanden
                 pass
             else:
                 try:

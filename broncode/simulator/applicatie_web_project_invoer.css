@@ -1,0 +1,65 @@
+#startknop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 3px solid #82b366;
+    background-color: #d5e8d4;
+    font-size: large;
+    font-weight: bolder;
+    padding: 1em;
+    cursor: pointer;
+}
+
+    #startknop:hover {
+        border-color: #d79b00;
+        background-color: #ffe6cc;
+    }
+
+.box {
+    background-color: white;
+    outline: 2px dashed black;
+    width: 75em;
+    height: 15em;
+}
+
+    .box.is-dragover {
+        background-color: #dae8fc;
+    }
+
+.box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .box input {
+        display: none;
+    }
+
+
+strong {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+    strong:hover {
+        color: blue;
+    }
+
+#voorbeeld {
+    display: none;
+}
+
+.onlineInvoer {
+    display: none;
+}
+
+.download {
+    text-align: right;
+}
+
+textarea.tekst {
+    width: 75em;
+    height: 15em;
+}

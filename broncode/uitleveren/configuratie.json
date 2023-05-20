@@ -1,8 +1,9 @@
 {
-    "Simulator_Online_Url": "https://versiebeheer-simulator.vercel.app/",
-    "STOP_Documentatie_Url": "https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/",
-    "STOP_Voorbeelden_Url": "https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/voorbeelden",
-    "STOPwerk_Github_user": "STOPwerk",
-    "STOPwerk_Github_email": "frank.robijn@koop.overheid.nl",
-    "VERSIE": "2022-11-28 22:56:27"
+  "Simulator_Url": "https://github.com/STOPwerk/versiebeheer-simulator/",
+  "Simulator_Online_Url": "https://versiebeheer-simulator.vercel.app/",
+  "STOP_Documentatie_Url": "https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/",
+  "STOP_Voorbeelden_Url": "https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/voorbeelden",
+  "STOPwerk_Github_user": "STOPwerk",
+  "STOPwerk_Github_email": "frank.robijn@koop.overheid.nl",
+  "VERSIE": "2022-11-28 22:56:27"
 }

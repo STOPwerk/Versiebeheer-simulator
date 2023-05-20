@@ -11,6 +11,7 @@
         }, {
             "naam": "Oplossing samenloop",
             "gemaaktOp": "2022-03-16T08:30:00Z",
+			"revisie": true,
             "beschrijving": "De samenloop wordt volgens het boekje opgelost. Het nieuwe informatieobject wordt ook voor de oplossing van de samenloop gebruikt."
         }, {
             "naam": "Gelijktijdig (1)",
@@ -19,7 +20,8 @@
         }, {
             "naam": "Gelijktijdig (2)",
             "gemaaktOp": "2022-05-02T08:00:00Z",
-            "beschrijving": "Een nieuwe publicatie (in de praktijk vaak een revisie) lost de samenloop (in de juridische informatie) tussen de twee gelijktijdig in werking tredende wijzigingsbesluiten op; er is een regelingversie bekend voor de geconsolideerde regeling. De samenloop in annotatie wordt niet opgelost. Dat kan in productie-waardige applicatie niet toegestaan zijn; in deze applicatie wel om het effect ervan te kunnen tonen."
+			"revisie": true,
+            "beschrijving": "Een nieuwe publicatie (een revisie) lost de samenloop (in de juridische informatie) tussen de twee gelijktijdig in werking tredende wijzigingsbesluiten op; er is een regelingversie bekend voor de geconsolideerde regeling. De samenloop in annotatie wordt niet opgelost. Dat kan in productie-waardige applicatie niet toegestaan zijn; in deze applicatie wel om het effect ervan te kunnen tonen."
         }, {
             "naam": "Terugwerkend",
             "gemaaktOp": "2022-07-14T07:00:00Z",
@@ -31,6 +33,7 @@
         }, {
             "naam": "Doorwerking vernietiging",
             "gemaaktOp": "2022-07-16T07:00:00Z",
+			"revisie": true,
             "beschrijving": "De vernietiging van het tweede wijzigingsbesluit wordt pas later verwerkt in de versie die nu nog niet maar op  een later tijdstip geldig zal worden."
         }
     ],

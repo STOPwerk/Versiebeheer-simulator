@@ -11,6 +11,7 @@
 #======================================================================
 
 from applicatie_web import WebApplicatie
+from applicatie_web_voorbeelden import Voorbeeld
 
 
 #----------------------------------------------------------------------
@@ -34,9 +35,21 @@ def index():
 def invoer():
     return WebApplicatie.InvoerPagina ()
 
+@app.route('/project_invoer')
+def project_invoer():
+    return WebApplicatie.ProjectInvoerPagina ()
+
 @app.route('/resultaat', methods = ['POST'])
 def simuleer():
     return WebApplicatie.Simuleer (request)
+
+@app.route('/voorbeeld')
+def voorbeeld():
+    return Voorbeeld.SelectieHtml ()
+
+@app.route('/start_voorbeeld')
+def start_voorbeeld():
+    return Voorbeeld.VoerUit (request.args)
 
 #----------------------------------------------------------------------
 #

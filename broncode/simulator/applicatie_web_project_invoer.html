@@ -1,0 +1,54 @@
+<p>
+    In ontwikkeling
+</p>
+<p>
+    Met deze pagina kan de invoer samengesteld worden voor de <a href="https://github.com/STOPwerk/Versiebeheer-simulator">Versiebeheer-simulator</a>.
+    Op elk moment tijdens de invoer kan de simulator gestart worden; de resultaten worden in een aparte pagina getoond.
+    De simulator kan een groot aantal scenario's naspelen. Via deze pagina kunnen de meest gebruikelijke scenario's
+    ingevoerd worden.
+</p>
+<div id="_start_soortBG">
+    <p>
+        De verschillende bevoegd gezagen hebben een andere manier van werken. De twee uitersten zijn:
+    </p>
+    <p>
+        <dl>
+            <dt><input type="radio" name="_soortBG" id="_soortBG_Gemeente" value="Gemeente" /> <label for="_soortBG_Gemeente">Gemeente</label></dt>
+            <dd>
+                Een gemeente werkt tegelijk aan één of meer wijzigingen van een regeling, besluiten altijd van een inwerkingtredingsdatum
+                voorziet, en die te maken heeft met rechters of hogere bevoegd gezagen die besluiten kunnen bijstellen.
+            </dd>
+            <dt><input type="radio" name="_soortBG" id="_soortBG_Rijk" value="Rijk" /> <label for="_soortBG_Rijk">Rijk</label></dt>
+            <dd>
+                De Rijksoverheid werkt tegelijk aan één of meer wijzigingen van een regeling, besluiten worden zonder inwerkingtredingsdatum
+                gepubliceerd, over de (gedeeltelijke) inwerkingtreding wordt pas op een later moment besloten.
+            </dd>
+        </dl>
+    </p>
+    <p>
+        Selecteer een bevoegd gezag om verder te gaan.
+    </p>
+</div>
+<div id="_start_specificatie" class="box">
+    <p>Om verder te werken aan een eerder samengestelde invoer:</p>
+    <label>
+        <strong>selecteer het invoerbestand</strong>
+        <span>(meestal bg_proces.json)</span>
+        <span>of sleep het hier naar toe.</span>
+        <input class="box__file" type="file" id="_start_specificatie_json" accept="application/json" />
+    </label>
+    <p id="_specificatie_fout">
+        Kan de specificatie niet lezen:
+        <div id="_specificatie_foutmelding"></div>
+    </p>
+</div>
+<div id="_specificatie">
+    <form id="Invoer" action="resultaat" method="post" target="_blank" class="invoer" enctype="multipart/form-data">
+        <button id="startknop">Start simulator</button>
+        <textarea name="onlineInvoer1" class="onlineInvoer" id="_bg_proces_data"></textarea>
+        <div class="download"><a href="#" id="_download_specificatie" download="bg_proces.json">Download specificatie</a></div>
+    </form>
+    <div id="_bg_proces">
+
+    </div>
+</div>

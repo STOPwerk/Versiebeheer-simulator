@@ -16,9 +16,17 @@ De simulator is een Python script dat toegepast wordt op een set invoerbestanden
 ### Offline / eigen computer
 - Zorg dat Python geïnstalleerd is. Dat is op Unix en MacOS meestal het geval. Voor Windows kan de laatste versie van Python [hier](https://www.python.org/downloads/) gedownload worden.
 
-- [Download](download.zip) de simulator en pak het zip bestand uit. Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_simulator_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken.
+- [Download](download.zip) de simulator en pak het zip bestand uit.
+
+Nu is er de keuze hoe verder te gaan. Om de [online versie](@@@Simulator_Online_Url@@@) lokaal te draaien:
+
+- Voer `start_webserver` uit om de webserver te starten. De online versie is daarna beschikbaar via [http://localhost:5555/](http://localhost:5555/).
+
+De script kunnen ook op voorbeeldbestanden toegepast worden:
 
 - Lees de [documentatie](../../wiki) waarin staat hoe de invoerbestanden gemaakt moeten worden.
 
-- Bekijk de [voorbeelden](voorbeelden) om inspiratie op te doen. De simulator is ook gebruikt voor een deel van de [STOP voorbeelden](@@@STOP_Voorbeelden_Url@@@).
+- Maak eigen voorbeelden in de `mijn voorbeelden` map en voer `voer_simulator_uit_voor_mijn_voorbeelden` uit om de resultaat-webpagina te maken.
+
+- Bekijk de [voorbeelden](broncode/simulator/voorbeelden) om inspiratie op te doen. De simulator is ook gebruikt voor een deel van de [STOP voorbeelden](@@@STOP_Voorbeelden_Url@@@).
 

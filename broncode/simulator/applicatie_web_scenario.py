@@ -6,7 +6,9 @@
 #======================================================================
 
 from typing import Dict
+from io import BytesIO
 import os.path
+from zipfile import ZipFile
 
 from applicatie_scenario import ScenarioIterator
 
@@ -33,17 +35,37 @@ class ScenarioPostedDataIterator (ScenarioIterator):
             files = files.getlist('files[]')
             for file in files:
                 fileType = os.path.splitext (file.filename)[1]
-                try:
-                    data = file.stream.read ().decode("utf-8").strip ()
-                    if fileType == '.json' or fileType == '.xml':
-                        if len(data) == 0:
-                            self._Log.Waarschuwing ("Leeg bestand '" + file.filename + "' genegeerd")
-                        else:
-                            self._Data.append ((file.filename, data))
-                    elif file.filename != '':
-                        self._Log.Waarschuwing ("Bestand '" + file.filename + "' genegeerd; is geen .xml of .json bestand")
-                except Exception as e:
-                    self._Log.Fout ("Bestand '" + file.filename + "' bevat geen valide utf-8: " + str(e))
+                if fileType == '.zip':
+                    try:
+                        with ZipFile(BytesIO(file.stream.read ()), 'r') as zipData:
+                            for zipFile in zipData.infolist ():
+                                fileType = os.path.splitext (zipFile.filename)[1]
+                                if fileType == '.json' or fileType == '.xml':
+                                    try:
+                                        data = zipData.read(zipFile.filename).strip ()
+                                    except Exception as e:
+                                        self._Log.Fout ("Kan bestand '" + zipFile.filename + "' in '" + file.filename + "' niet lezen: " + str(e))
+                                        continue
+                                    if len(data) == 0:
+                                        self._Log.Waarschuwing ("Leeg bestand '" + zipFile.filename + "' in '" + file.filename + "' genegeerd")
+                                    else:
+                                        self._Data.append ((zipFile.filename, data))
+                                elif zipFile.filename != '':
+                                    self._Log.Waarschuwing ("Bestand '" + zipFile.filename + "' in '" + file.filename + "' genegeerd; is geen .xml of .json bestand")
+                    except Exception as e:
+                        self._Log.Fout ("Bestand '" + file.filename + "' is geen valide zip bestand: " + str(e))
+                else:
+                    try:
+                        data = file.stream.read ().decode("utf-8").strip ()
+                        if fileType == '.json' or fileType == '.xml':
+                            if len(data) == 0:
+                                self._Log.Waarschuwing ("Leeg bestand '" + file.filename + "' genegeerd")
+                            else:
+                                self._Data.append ((file.filename, data))
+                        elif file.filename != '':
+                            self._Log.Waarschuwing ("Bestand '" + file.filename + "' genegeerd; is geen .xml of .json bestand")
+                    except Exception as e:
+                        self._Log.Fout ("Bestand '" + file.filename + "' bevat geen valide utf-8: " + str(e))
         if not onlineInvoer is None:
             fileData = [(d, t.strip ()) for d, t in onlineInvoer.items () if d.startswith ('onlineInvoer')]
             self._Data.extend ((d,t) for d,t in fileData if len(t) > 0)

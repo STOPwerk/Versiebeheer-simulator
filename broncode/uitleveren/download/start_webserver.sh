@@ -24,4 +24,5 @@ then
 	fi
 fi
 
-"$SCRIPT_PYTHON" ../broncode/simulator/applicatie.py --meldingen logs --alle .
+"$SCRIPT_PYTHON" -m webbrowser https://localhost:5555/
+"$SCRIPT_PYTHON" simulator/index.py

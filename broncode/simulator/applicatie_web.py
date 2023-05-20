@@ -11,7 +11,7 @@
 #======================================================================
 
 from applicatie_meldingen import Meldingen
-from applicatie_scenario import Scenario
+from applicatie_scenario import Scenario, ScenarioMappenIterator
 from applicatie_uitvoeren import Uitvoering
 from applicatie_web_scenario import ScenarioPostedDataIterator
 from weergave_resultaat import ResultaatGenerator
@@ -44,11 +44,48 @@ class WebApplicatie:
         return generator.Html ()
 
     @staticmethod
+    def ProjectInvoerPagina():
+        """Invoerpagina voor BG-projecten"""
+        generator = WebpaginaGenerator ("Versiebeheer-simulator @bevoegd gezag", WebApplicatie.FAVICON)
+        generator.LeesHtmlTemplate ('project_invoer')
+        generator.LeesCssTemplate ('project_invoer')
+        generator.LeesJSTemplate ('project_invoer')
+        generator.LeesJSTemplate ('project_invoer_data', True, True)
+        return generator.Html ()
+
+    @staticmethod
+    def ProjectInvoerPaginaVoorbeeld(voorbeeldFilePad):
+        """Invoerpagina voor BG-projecten, te vullen met een voorbeeld"""
+        generator = WebpaginaGenerator ("Versiebeheer-simulator @bevoegd gezag", WebApplicatie.FAVICON)
+        generator.LeesHtmlTemplate ('project_invoer_voorbeeld')
+        generator.VoegHtmlToe ('<textarea id="voorbeeld">')
+        with open (voorbeeldFilePad, 'r', encoding='utf-8') as jsonFile:
+            generator.VoegHtmlToe (jsonFile.read ())
+        generator.VoegHtmlToe ('</textarea>')
+        generator.LeesCssTemplate ('project_invoer')
+        generator.LeesJSTemplate ('project_invoer_voorbeeld')
+        generator.LeesJSTemplate ('project_invoer_data', True, True)
+        return generator.Html ()
+
+    @staticmethod
     def Simuleer(request):
         """Voer de simulator uit"""
         generator = []
         applicatieLog = Meldingen (True)
         Scenario.VoorElkScenario (applicatieLog, ScenarioPostedDataIterator (applicatieLog, request.form, request.files), lambda s: Uitvoering.VoerUit (s, lambda s2: generator.append (ResultaatGenerator.MaakPagina (s2, WebApplicatie.FAVICON))))
+        if len (generator) > 0:
+            generator = generator[0]
+        else:
+            generator = WebpaginaGenerator ("Versiebeheer-simulator resultaat", WebApplicatie.FAVICON)
+            applicatieLog.MaakHtml (generator, None)
+        return generator.Html ()
+
+    @staticmethod
+    def SimuleerVoorbeeld(voorbeeldMapPad):
+        """Voer de simulator uit voor een voorbeeld"""
+        generator = []
+        applicatieLog = Meldingen (True)
+        Scenario.VoorElkScenario (applicatieLog, ScenarioMappenIterator (applicatieLog, [voorbeeldMapPad] , False), lambda s: Uitvoering.VoerUit (s, lambda s2: generator.append (ResultaatGenerator.MaakPagina (s2, WebApplicatie.FAVICON))))
         if len (generator) > 0:
             generator = generator[0]
         else:

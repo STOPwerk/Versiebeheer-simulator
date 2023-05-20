@@ -59,30 +59,62 @@ De beschrijving van het scenario wordt alleen gebruikt voor de weergave van de r
 ```
 * `Beschrijving` is HTML die opgenomen wordt in  de webpagina met het resultaat.
 
-## Specificatie van een project
-Een project wordt gespecificeerd door een .json bestand dat een object bevat:
+## Specificatie van het bevoegd gezag proces
+Een project wordt gespecificeerd door een .json bestand (meestal `bg_proces.json`) dat een object bevat:
 ```
 {
-    "Project": "<code>",
-    "Beschrijving": "<beschrijving van het project>",
-    "Acties": [
-        { 
-            "SoortActie": "<soort actie>",
-            "Beschrijving": "<beschrijving van de actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
-            ...
+    "BevoegdGezag": "Gemeente" | "Rijk",
+    "Beschrijving": "... beschrijving (html) ...",
+    "Start" : {
+        "doel-code": <Momentopname>,
+        ...
+    },
+    "Projecten": {
+        "<code>" : {
+            "Beschrijving": "<beschrijving van het project>",
+            "Acties": [
+                { 
+                    "SoortActie": "<soort actie>",
+                    "Beschrijving": "<beschrijving van de actie>",
+                    "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
+                    ...
+                },
+                { 
+                    "SoortActie": "<soort actie>",
+                    "Beschrijving": "<beschrijving van de actie>",
+                    "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
+                    ...
+                },
+                ...
+            ]
         },
-        { 
-            "SoortActie": "<soort actie>",
-            "Beschrijving": "<beschrijving van de actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
-            ...
+        ...
+    },
+    "Interventies" : [
+        {
+            "Beschrijving": "<beschrijving van de interventie>",
+            "Acties": [
+                { 
+                    "SoortActie": "<soort actie>",
+                    "Beschrijving": "<beschrijving van de actie>",
+                    "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
+                    ...
+                },
+                { 
+                    "SoortActie": "<soort actie>",
+                    "Beschrijving": "<beschrijving van de actie>",
+                    "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
+                    ...
+                },
+                ...
+            ]
         },
         ...
     ]
 }
 ```
 waarbij:
+* `Beschrijving` is HTML die opgenomen wordt in  de webpagina met het resultaat, indien er geen [beschrijving](#beschrijving-van-het-scenario) van het scenario aanwezig is. Is dat wel het geval, dan wordt de beschrijving genegeerd.
 * `Project` is een code of zeer korte naam van het project, bijvoorbeeld _P1_.
 * `Beschrijving` van het project is optioneel
 * `Acties` is een lijst met acties die in het project plaatsvinden. De specificatie van de actie hangt af van het type actie maar bevat in ieder geval:
@@ -90,6 +122,39 @@ waarbij:
     * `Beschrijving` is verplicht en beschrijft wat het bevoegd gezag (of het adviesbureau) precies doet of waarom de actie uitgevoerd wordt.
     * `UitgevoerdOp` is het (begin)tijdstip waarop de actie uitgevoerd wordt. Het tijdstip moet opgegeven worden als: yyyy-MM-ddThh:mm:ssZ, net als `gemaaktOp` van het STOP versiebeheer. Als de actie een uitwisseling betreft, dan is dit tijdstip gelijk aan de `gemaaktOp` uit het versiebeheer. Voor andere acties wordt het tijdstip alleen gebruikt om de acties in de juiste volgorde te kunnen simuleren.
 
+Op sommige plaatsen komt `... Momentopname ...`. Dit bestaat uit een opgave van de actuele versies van regelingen, GIO's en PDF-IO's met bijbehorende annotaties (voor zover ze ondersteund worden door de simulator):
+```
+<Momentopname> = {
+        "gemaaktOp": "<begintijdstip van uitwisselen>",
+        "Regelingen" : {
+            "<regeling-work-code>": {
+                "Versie": "<versie-code>",
+                "Metadata_Citeertitel": "<citeertitel>",
+                "Toelichtingrelaties": "<versie-code van laatste toekenning Toelichtingrelaties>",
+                "NonSTOP": {
+                    "<code>" : "<versie-code van laatste toekenning>",
+                    ...
+                }
+            },
+            ...
+        },
+        "GIO" : {
+            "<GIO-work-code>": {
+                "Versie": "<versie-code>",
+                "Metadata_Citeertitel": "<citeertitel>",
+                "Symbolisatie": "<versie-code van laatste toekenning symbolisatie>"
+            },
+            ...
+        },
+        "PDF" : {
+            "<IO-work-code>": {
+                "Versie": "<versie-code>",
+                "Metadata_Citeertitel": "<citeertitel>"
+            },
+            ...
+        }
+    }
+```
 De lijst met acties moet rekening houden met de beperkingen van de simulator:
 
 * De eerste actie is `Nieuw doel` of `Download`

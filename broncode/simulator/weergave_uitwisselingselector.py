@@ -77,7 +77,7 @@ class Weergave_Uitwisselingselector:
         html = html.replace ("<!--START-->", self._StartWaarde)
         html = html.replace ("<!--BENOEMD-->", ''.join ('<div class="uitwisselingselectorknop" data-uw="' + b.GemaaktOp + ('" title="' + b.Beschrijving if b.Beschrijving else '') + '">' + b.Naam + '</div>'for b in sorted (self._Benoemd, key = lambda x: x.GemaaktOp)))
         opties = ''
-        for gemaaktOp in self._Waarden:
+        for gemaaktOp in sorted (self._Waarden, key=lambda gm: self._Optie[gm]):
             opties += '<option value="' + gemaaktOp + '"' + (' selected' if gemaaktOp == self._StartWaarde else '') + '>' + self._Optie[gemaaktOp] + '</option>\n'
         html = html.replace ("<!--OPTIES-->", opties)
 
