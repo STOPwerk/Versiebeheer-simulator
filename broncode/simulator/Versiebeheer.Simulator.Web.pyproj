@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="applicatie_web_index.html" />
+    <Content Include="applicatie_web_project_invoer_help.html" />
     <Content Include="applicatie_web_project_invoer_voorbeeld.js" />
     <Content Include="applicatie_web_project_invoer_voorbeeld.html" />
     <Content Include="applicatie_web_project_invoer_data.js" />

@@ -65,7 +65,7 @@ Een project wordt gespecificeerd door een .json bestand (meestal `bg_proces.json
 {
     "BevoegdGezag": "Gemeente" | "Rijk",
     "Beschrijving": "... beschrijving (html) ...",
-    "Start" : {
+    "Uitgangssituatie" : {
         "doel-code": <Momentopname>,
         ...
     },
@@ -90,24 +90,18 @@ Een project wordt gespecificeerd door een .json bestand (meestal `bg_proces.json
         },
         ...
     },
-    "Interventies" : [
-        {
-            "Beschrijving": "<beschrijving van de interventie>",
-            "Acties": [
-                { 
-                    "SoortActie": "<soort actie>",
-                    "Beschrijving": "<beschrijving van de actie>",
-                    "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
-                    ...
-                },
-                { 
-                    "SoortActie": "<soort actie>",
-                    "Beschrijving": "<beschrijving van de actie>",
-                    "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
-                    ...
-                },
-                ...
-            ]
+    "Overig" : [
+        { 
+            "SoortActie": "<soort actie>",
+            "Beschrijving": "<beschrijving van de niet-projectgebonden actie>",
+            "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
+            ...
+        },
+        { 
+            "SoortActie": "<soort actie>",
+            "Beschrijving": "<beschrijving van de niet-projectgebonden actie>",
+            "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
+            ...
         },
         ...
     ]

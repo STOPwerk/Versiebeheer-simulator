@@ -29,14 +29,14 @@ class WebApplicatie:
     @staticmethod
     def IndexPagina():
         """Startpagina"""
-        generator = WebpaginaGenerator ("Versiebeheer-simulator online", WebApplicatie.FAVICON)
+        generator = WebpaginaGenerator ("Simulator online", WebApplicatie.FAVICON)
         generator.LeesHtmlTemplate ('index')
         return generator.Html ()
 
     @staticmethod
     def InvoerPagina():
         """Invoerpagina"""
-        generator = WebpaginaGenerator ("Versiebeheer-simulator invoer", WebApplicatie.FAVICON)
+        generator = WebpaginaGenerator ("Simulator invoer", WebApplicatie.FAVICON)
         # Bron: https://bdwm.be/drag-and-drop-upload-files/
         generator.LeesHtmlTemplate ('invoer')
         generator.LeesCssTemplate ('invoer')
@@ -46,24 +46,26 @@ class WebApplicatie:
     @staticmethod
     def ProjectInvoerPagina():
         """Invoerpagina voor BG-projecten"""
-        generator = WebpaginaGenerator ("Versiebeheer-simulator @bevoegd gezag", WebApplicatie.FAVICON)
-        generator.LeesHtmlTemplate ('project_invoer')
-        generator.LeesCssTemplate ('project_invoer')
-        generator.LeesJSTemplate ('project_invoer')
-        generator.LeesJSTemplate ('project_invoer_data', True, True)
-        return generator.Html ()
+        return WebApplicatie.ProjectInvoerPaginaVoorbeeld (None)
 
     @staticmethod
     def ProjectInvoerPaginaVoorbeeld(voorbeeldFilePad):
         """Invoerpagina voor BG-projecten, te vullen met een voorbeeld"""
-        generator = WebpaginaGenerator ("Versiebeheer-simulator @bevoegd gezag", WebApplicatie.FAVICON)
-        generator.LeesHtmlTemplate ('project_invoer_voorbeeld')
-        generator.VoegHtmlToe ('<textarea id="voorbeeld">')
-        with open (voorbeeldFilePad, 'r', encoding='utf-8') as jsonFile:
-            generator.VoegHtmlToe (jsonFile.read ())
-        generator.VoegHtmlToe ('</textarea>')
+        generator = WebpaginaGenerator ("Simulator @bevoegd gezag", WebApplicatie.FAVICON)
+        einde = generator.StartToelichting ("Help", voorbeeldFilePad is None)
+        generator.LeesHtmlTemplate ('project_invoer_help')
+        generator.VoegHtmlToe (einde)
+        if voorbeeldFilePad is None:
+            generator.LeesHtmlTemplate ('project_invoer')
+            generator.LeesJSTemplate ('project_invoer')
+        else:
+            generator.LeesHtmlTemplate ('project_invoer_voorbeeld')
+            generator.VoegHtmlToe ('<textarea id="voorbeeld">')
+            with open (voorbeeldFilePad, 'r', encoding='utf-8') as jsonFile:
+                generator.VoegHtmlToe (jsonFile.read ())
+            generator.VoegHtmlToe ('</textarea>')
+            generator.LeesJSTemplate ('project_invoer_voorbeeld')
         generator.LeesCssTemplate ('project_invoer')
-        generator.LeesJSTemplate ('project_invoer_voorbeeld')
         generator.LeesJSTemplate ('project_invoer_data', True, True)
         return generator.Html ()
 
@@ -76,7 +78,7 @@ class WebApplicatie:
         if len (generator) > 0:
             generator = generator[0]
         else:
-            generator = WebpaginaGenerator ("Versiebeheer-simulator resultaat", WebApplicatie.FAVICON)
+            generator = WebpaginaGenerator ("Simulator resultaat", WebApplicatie.FAVICON)
             applicatieLog.MaakHtml (generator, None)
         return generator.Html ()
 
@@ -89,6 +91,6 @@ class WebApplicatie:
         if len (generator) > 0:
             generator = generator[0]
         else:
-            generator = WebpaginaGenerator ("Versiebeheer-simulator resultaat", WebApplicatie.FAVICON)
+            generator = WebpaginaGenerator ("Simulator resultaat", WebApplicatie.FAVICON)
             applicatieLog.MaakHtml (generator, None)
         return generator.Html ()
