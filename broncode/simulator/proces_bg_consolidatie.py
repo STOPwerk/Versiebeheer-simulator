@@ -14,12 +14,12 @@
 #======================================================================
 
 from typing import Dict
-from data_bg_versiebeheer import Versiebeheer, Branch, InstrumentInformatie, Consolidatie, GeconsolideerdeVersie, Instrumentversie
+from data_bg_versiebeheer import Versiebeheerinformatie, Branch, InstrumentInformatie, Consolidatie, GeconsolideerdeVersie, Instrumentversie
 
 class Consolideren:
 
     @staticmethod
-    def VoerUit (versiebeheer : Versiebeheer, vandaag : str):
+    def VoerUit (versiebeheer : Versiebeheerinformatie, vandaag : str):
         """Voer de consolidatie uit op basis van het interen versiebeheer
 
         Argumenten:
@@ -39,7 +39,7 @@ class Consolideren:
         # Index om de consolidatie voor een branch te vinden die eerder in werking is getreden
         self._BranchConsolidatie : Dict[Branch,Consolidatie] = {}
 
-    def _VoerUit (self, versiebeheer : Versiebeheer, vandaag : str):
+    def _VoerUit (self, versiebeheer : Versiebeheerinformatie, vandaag : str):
         """Voer de consolidatie uit
 
         Argumenten:

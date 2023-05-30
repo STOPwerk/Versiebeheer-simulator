@@ -17,8 +17,8 @@
 from typing import Dict, List
 from copy import copy
 from data_doel import Doel
-from data_bg_projectvoortgang import Branch
-from data_bg_versiebeheer import Versiebeheer, InstrumentInformatie, Instrumentversie, Tijdstempels, Consolidatie
+from data_bg_procesverloop import Branch
+from data_bg_versiebeheer import Versiebeheerinformatie, InstrumentInformatie, Instrumentversie, Tijdstempels, Consolidatie
 
 #----------------------------------------------------------------------
 #
@@ -26,9 +26,9 @@ from data_bg_versiebeheer import Versiebeheer, InstrumentInformatie, Instrumentv
 #               bijgehouden moet worden c.q. afleidbaar moet zijn.
 #
 #----------------------------------------------------------------------
-class VersiebeheerWeergave (Versiebeheer):
+class VersiebeheerWeergave (Versiebeheerinformatie):
 
-    def __init__ (self, origineel : Versiebeheer):
+    def __init__ (self, origineel : Versiebeheerinformatie):
         """Maak een kopie van het versiebeheer bij het bevoegd gezag voor weergave.
 
         Argumenten:

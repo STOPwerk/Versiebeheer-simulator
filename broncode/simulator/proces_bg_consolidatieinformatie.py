@@ -12,7 +12,7 @@
 # Voor de uitwisseling van informatie met de LVBB wordt de
 # consolidatie-informatie afgeleid uit het interne versiebeheer
 # zoals de software van het bevoegd gezag dat bijhoudt. Dat is
-# war de ConsolidatieInformatieMaker doet.
+# wat de ConsolidatieInformatieMaker doet.
 #
 # De simulator kan, voor branches die niet via een project beheerd
 # worden, ook overweg met specificaties van consolidatie-informatie
@@ -32,7 +32,7 @@ from copy import copy
 
 from applicatie_meldingen import Meldingen
 from data_bg_project import ProjectActie
-from data_bg_projectvoortgang import Projectvoortgang, ProjectactieResultaat, UitgewisseldeSTOPModule, Branch
+from data_bg_procesverloop import Procesvoortgang, Activiteitverloop, UitgewisseldeSTOPModule, Branch
 from data_bg_versiebeheer import InstrumentInformatie, Instrumentversie
 from data_doel import Doel
 from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Intrekking, Terugtrekking, TerugtrekkingIntrekking, Tijdstempel, TerugtrekkingTijdstempel, Momentopname as CI_Momentopname
@@ -51,7 +51,7 @@ from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, 
 class ConsolidatieInformatieMaker:
 
     @staticmethod
-    def VoerUit (logFout, voortgang: Projectvoortgang, branches: List[Branch]) -> ConsolidatieInformatie:
+    def VoerUit (logFout, voortgang: Procesvoortgang, branches: List[Branch]) -> ConsolidatieInformatie:
         """Leidt de consolidatie-informatie af uit de staat van het interne versiebeheer
         
         Argumenten:
@@ -68,7 +68,7 @@ class ConsolidatieInformatieMaker:
 # Implementatie
 #
 #----------------------------------------------------------------------
-    def __init__(self, logFout, voortgang: Projectvoortgang, branches: List[Branch]):
+    def __init__(self, logFout, voortgang: Procesvoortgang, branches: List[Branch]):
         """Maak een instantie van de maker
         
         Argumenten:
@@ -231,24 +231,30 @@ class ConsolidatieInformatieVerwerker:
 #
 #----------------------------------------------------------------------
     @staticmethod
-    def WerkBij (log: Meldingen, voortgang: Projectvoortgang, consolidatieInformatie: ConsolidatieInformatie, actie: ProjectActie) -> Tuple[bool, ProjectactieResultaat]:
+    def WerkBij (log: Meldingen, scenario, consolidatieInformatie: ConsolidatieInformatie) -> Tuple[bool, Activiteitverloop]:
         """Werk de BG-versiebeheerinformatie bij aan de hand van consolidatie-informatie.
 
         Argumenten:
 
         log Meldingen  Verzameling van meldingen over de uitvoering van het scenario
-        voortgang Projectvoortgang  Informatie over de projectvoortgang en het versiebeheer zoals bevoegd gezag dat uitvoert.
+        scenario Scenario  Gegevens over het scenario en de resultaten daarvan
         consolidatieInformatie ConsolidatieInformatie  De consolidatie-informatie voor een uitwisseling 
                                                        die als invoer voor het scenario is opgegeven
-        actie ProjectActie  De actie die correspondeert met de consolidatie-informatie
 
-        Geeft aan of de verwerking goed is verlopen en het resultaat van de actie
+        Geeft aan of de verwerking goed is verlopen en het resultaat van de activiteit
         """
-        resultaat = ProjectactieResultaat (actie)
-        resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (consolidatieInformatie, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_LVBB))
-        voortgang.Projectacties.append (resultaat)
+        resultaat = None
+        if len (scenario.Procesvoortgang.Activiteiten) > 0:
+            resultaat = scenario.Procesvoortgang.Activiteiten[-1]
+            if resultaat.UitgevoerdOp == consolidatieInformatie.GemaaktOp:
+                resultaat = None
+        if resultaat is None:
+            resultaat = Activiteitverloop (consolidatieInformatie.GemaaktOp)
+            scenario.Procesvoortgang.Activiteiten.append (resultaat)
+            resultaat.Instrument = 'Revisie' if consolidatieInformatie.IsRevisie else 'Gepubliceerd instrument'
+        resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (resultaat.Instrument, consolidatieInformatie, Activiteitverloop._Uitvoerder_BevoegdGezag, Activiteitverloop._Uitvoerder_LVBB))
 
-        maker = ConsolidatieInformatieVerwerker (log, voortgang, consolidatieInformatie)
+        maker = ConsolidatieInformatieVerwerker (log, scenario, consolidatieInformatie)
         return (maker._WerkVersiebeheerBij (), resultaat)
 
 #----------------------------------------------------------------------
@@ -256,17 +262,17 @@ class ConsolidatieInformatieVerwerker:
 # Implementatie
 #
 #----------------------------------------------------------------------
-    def __init__(self, log: Meldingen, voortgang: Projectvoortgang, consolidatieInformatie : ConsolidatieInformatie):
+    def __init__(self, log: Meldingen, scenario, consolidatieInformatie : ConsolidatieInformatie):
         """Maak een nieuwe instantie aan.
 
         Argumenten:
 
         log Meldingen  Verzameling van meldingen over de uitvoering van het scenario
-        voortgang Projectvoortgang  Informatie over de projectvoortgang en het versiebeheer zoals bevoegd gezag dat uitvoert.
+        scenario Scenario  Gegevens over het scenario en de resultaten daarvan
         consolidatieInformatie ConsolidatieInformatie  De consolidatie-informatie voor een uitwisseling
         """
         self._Log = log
-        self._Voortgang = voortgang
+        self._Scenario = scenario
         self._ConsolidatieInformatie = consolidatieInformatie
 
 #----------------------------------------------------------------------
@@ -283,12 +289,12 @@ class ConsolidatieInformatieVerwerker:
 
         def __Branch (doel: Doel, moetBestaan : bool) -> Branch:
             """Geef de branch die hoort bij het doel"""
-            branch = self._Voortgang.Versiebeheer.Branches.get (doel)
+            branch = self._Scenario.BGVersiebeheerinformatie.Branches.get (doel)
             if branch is None:
                 if moetBestaan:
                     self._Log.Fout ("Tijdstempel voor doel '" + str(doel) + "' voordat er een terugtrekking of beoogde instrumentversie is uitgewisseld. Bestand: '" + self._ConsolidatieInformatie.Pad + "'")
                 else:
-                    self._Voortgang.Versiebeheer.Branches[doel] = branch = Branch (doel)
+                    self._Scenario.BGVersiebeheerinformatie.Branches[doel] = branch = Branch (doel)
                     branch.Tijdstempels = branch.UitgewisseldeTijdstempels # Hou de tijdstempels in sync
             elif branch._ViaProject:
                 self._Log.Fout ("Doel '" + str(doel) + "' wordt via projecten beheerd; daarvoor kan geen ConsolidatieInformatie gespecificeerd worden. Bestand: '" + self._ConsolidatieInformatie.Pad + "'")
@@ -323,9 +329,9 @@ class ConsolidatieInformatieVerwerker:
                 instrumentInfo = __WerkInstrumentInformatieBij (doel, beoogdeVersie.ExpressionId, False)
                 if instrumentInfo is None:
                     isValide = False
-                self._Voortgang.BekendeInstrumenten.add (beoogdeVersie.WorkId)
+                self._Scenario.Procesvoortgang.BekendeInstrumenten.add (beoogdeVersie.WorkId)
                 if not beoogdeVersie.ExpressionId is None:
-                    self._Voortgang.PubliekeInstrumentversies.add (beoogdeVersie.ExpressionId)
+                    self._Scenario.Procesvoortgang.PubliekeInstrumentversies.add (beoogdeVersie.ExpressionId)
 
         # Intrekkingen
         for intrekking in self._ConsolidatieInformatie.Intrekkingen:

@@ -21,7 +21,7 @@ from typing import Dict, List, Set, Tuple
 
 from applicatie_meldingen import Meldingen
 from data_bg_project import InstrumentversieSpecificatie
-from data_bg_projectvoortgang import Projectvoortgang, Branch
+from data_bg_procesverloop import Projectvoortgang, Branch
 from data_bg_versiebeheer import InstrumentInformatie, Instrumentversie, Tijdstempels
 from data_doel import Doel
 from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
@@ -33,7 +33,7 @@ from stop_consolidatieinformatie import ConsolidatieInformatie
 # Uitvoeren van het versiebeheer
 #
 #======================================================================
-class Versiebeheer:
+class Versiebeheerinformatie:
 
     def __init__ (self, log : Meldingen, projectvoortgang: Projectvoortgang):
         """Maak een nieuwe versiebeheerder aan
@@ -82,7 +82,7 @@ class Versiebeheer:
             return None
 
         # Maak de head
-        head = Versiebeheer.Head ()
+        head = Versiebeheerinformatie.Head ()
         head.Branches.add (branch)
         head.Instrumentversies = { w: i.Instrumentversie for w, i in branch.Instrumentversies.items () }
         return head
@@ -112,7 +112,7 @@ class Versiebeheer:
             return None
 
         # Maak de head 
-        head = Versiebeheer.Head ()
+        head = Versiebeheerinformatie.Head ()
         head.Branches = consolidatie.Branches
         for workId, info in consolidatie.Instrumentversies.items ():
             versie = Instrumentversie ()
@@ -204,7 +204,7 @@ class Versiebeheer:
                     instrumentinfo = branch.Instrumentversies.get (workId)
                     if instrumentinfo is None:
                         branch.Instrumentversies[workId] = instrumentinfo = InstrumentInformatie (branch)
-                    instrumentinfo.Instrumentversie = Versiebeheer.Instrumentversie (instrumentversie)
+                    instrumentinfo.Instrumentversie = Versiebeheerinformatie.Instrumentversie (instrumentversie)
                     # In het STOP versiebeheer wordt altijd een nieuwe versie doorgegeven,
                     # behalve als er op deze branch geen versie is gespecificeerd (en dus 
                     # ook niet is overgenomen van een de uitgangspositie)
@@ -308,7 +308,7 @@ class Versiebeheer:
 
             elif teMergenVersie.IsJuridischUitgewerkt:
                 # Er mag geen in werking zijnde versie voor dit instrument zijn
-                versie = Versiebeheer.MaakInstrumentversie (nieuweInstrumentversies.get (workId))
+                versie = Versiebeheerinformatie.MaakInstrumentversie (nieuweInstrumentversies.get (workId))
                 if not versie is None and not versie.IsJuridischInWerking ():
                     # De nieuwe versie is niet in werking
                     continue

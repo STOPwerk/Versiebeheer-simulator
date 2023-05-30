@@ -1,5 +1,14 @@
 <div id="_start_soortBG">
     <p>
+        Geef aan of het scenario gaat over
+        <label for="_optie_regelingen"><input type="checkbox" id="_optie_regelingen"> meerdere regelingen</label>,
+        <label for="_optie_io"><input type="checkbox" id="_optie_io"> informatieobjecten</label>,
+        <label for="_optie_annotaties"><input type="checkbox" id="_optie_annotaties"> STOP annotaties</label>
+        en/of
+        <label for="_optie_nonstop"><input type="checkbox" id="_optie_nonstop"> non-STOP annotaties</label>
+        bij regeling-/informatieobjectversies.
+    </p>
+    <p>
         De verschillende bevoegd gezagen hebben een andere manier van werken. De twee uitersten zijn:
     </p>
     <p>
@@ -17,21 +26,20 @@
         </dl>
     </p>
     <p>
-        Selecteer een bevoegd gezag om verder te gaan.
+        Selecteer een bevoegd gezag om verder te gaan, of werk verder aan een eerder samengestelde specificatie:
     </p>
-</div>
-<div id="_start_specificatie" class="box">
-    <p>Om verder te werken aan een eerder samengestelde invoer:</p>
-    <label>
-        <strong>selecteer het invoerbestand</strong>
-        <span>(meestal bg_proces.json)</span>
-        <span>of sleep het hier naar toe.</span>
-        <input class="box__file" type="file" id="_start_specificatie_json" accept="application/json" />
-    </label>
-    <p id="_specificatie_fout">
-        Kan de specificatie niet lezen:
-        <div id="_specificatie_foutmelding"></div>
-    </p>
+    <div id="_start_specificatie" class="box">
+        <label>
+            <strong>selecteer het invoerbestand</strong>
+            <span>(meestal bg_proces.json)</span>
+            <span>of sleep het hier naar toe.</span>
+            <input class="box__file" type="file" id="_start_specificatie_json" accept="application/json" />
+        </label>
+        <p id="_specificatie_fout">
+            Kan de specificatie niet lezen:
+            <div id="_specificatie_foutmelding"></div>
+        </p>
+    </div>
 </div>
 <div id="_specificatie">
     <form id="Invoer" action="resultaat" method="post" target="_blank" class="invoer" enctype="multipart/form-data">

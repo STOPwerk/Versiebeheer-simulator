@@ -8,7 +8,7 @@
 #======================================================================
 
 from applicatie_scenario import Scenario
-from data_bg_projectvoortgang import ProjectactieResultaat
+from data_bg_procesverloop import Activiteitverloop
 from weergave_webpagina import WebpaginaGenerator
 
 class Weergave_Projecten:
@@ -35,7 +35,7 @@ class Weergave_Projecten:
         # Overzicht van de projectacties
         toonUitvoerder = False
         for resultaat in scenario.Projectvoortgang.Projectacties:
-            if resultaat.UitgevoerdDoor != ProjectactieResultaat._Uitvoerder_BevoegdGezag:
+            if resultaat.UitgevoerdDoor != Activiteitverloop._Uitvoerder_BevoegdGezag:
                 toonUitvoerder = True
                 break
         generator.VoegHtmlToe ('<p><table class="prj_overzicht"><tr>')

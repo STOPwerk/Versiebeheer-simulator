@@ -108,8 +108,9 @@
     <Compile Include="simulator\applicatie_meldingen.py" />
     <Compile Include="simulator\applicatie_versie.py" />
     <Compile Include="simulator\data_bg_project.py" />
-    <Compile Include="simulator\data_bg_projectvoortgang.py" />
+    <Compile Include="simulator\data_bg_procesverloop.py" />
     <Compile Include="simulator\proces_bg_consolidatie.py" />
+    <Compile Include="simulator\proces_bg_activiteiten.py" />
     <Compile Include="simulator\proces_bg_versiebeheer.py" />
     <Compile Include="simulator\weergave_data_bg_versiebeheer.py" />
     <Compile Include="simulator\data_bg_versiebeheer.py" />

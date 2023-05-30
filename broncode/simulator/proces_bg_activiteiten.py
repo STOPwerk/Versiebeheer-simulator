@@ -1,12 +1,12 @@
 #======================================================================
 #
-# Simulatie van de procesbegeleiding, waarbij productie-waardige
+# Simulatie van het proces bij BG, waarbij productie-waardige
 # software de eindgebruiker bij de hand neemt om een volgende stap
 # te zetten in het opstellen/consolideren van regelgeving.
 #
 #======================================================================
 #
-# De acties die het bevoegd gezag kan uitvoeren zijn geformuleerd
+# De activiteiten die het bevoegd gezag kan uitvoeren zijn geformuleerd
 # als stappen in het proces van opstellen, uitwisselen en 
 # consolideren van regelgeving. Productie-waardige software
 # zou een eindgebruiker aan de hand nemen en aangeven welke versies
@@ -17,26 +17,319 @@
 # De Procesbegeleiding in deze module valideert of een actie 
 # uitgevoerd kan worden, en bepaalt daarna het effect van de actie 
 # op (de simulatie van) het interne versiebeheer van het bevoegd
-# gezag.
+# gezag. Het laat ook zien welke aanvullende instructies aan BG 
+# gegeven moeten worden om de activiteit uit te voeren.
+#
+# De systematiek is: de specificatie (typisch bg_proces.json) bevat
+# de specificatie van een Activiteit. De klasse voor een specifieke
+# Activiteit implementeert ook de uitvoering ervan. Die resulteert
+# enerzijds in een Procesbegeleiding - een beschrijving van de
+# activiteit plus instructies voor de uitvoering ervan - en anderzijds
+# in het bijwerken van het BG-versiebeheer.
 #
 #======================================================================
 
-from typing import Dict, List, Tuple
+from typing import Dict, List, Set, Tuple
+
+from datetime import datetime, timedelta
+from math import floor
 
 from applicatie_meldingen import Meldingen
-from data_bg_project import ProjectActie, ProjectActie_NieuwDoel, ProjectActie_Download, ProjectActie_Uitwisseling, ProjectActie_Wijziging, ProjectActie_Publicatie
-from data_bg_procesverloop import Projectvoortgang, Branch, Projectstatus, Activiteitverloop, UitgewisseldeSTOPModule, UitgewisseldMaarNietViaSTOP
-from data_bg_versiebeheer import InstrumentInformatie, Instrumentversie
+from data_bg_procesverloop import Activiteitverloop, Projectstatus, Branch
 from data_doel import Doel
-from proces_bg_consolidatieinformatie import ConsolidatieInformatieMaker
 from stop_momentopname import DownloadserviceModules, Momentopname, InstrumentversieInformatie
 from stop_consolidatieinformatie import ConsolidatieInformatie
 
 #======================================================================
 #
-# Basisklasse voor de uitvoering van acties
+# Representatie van de specificatie van het proces bij een BG
+# (inclusief adviesbureaus).
 #
 #======================================================================
+
+class BGProces:
+#----------------------------------------------------------------------
+# Inlezen specificatie
+#----------------------------------------------------------------------
+    @staticmethod
+    def LeesJson (log : Meldingen, pad : str, data):
+        """Lees de inhoud van de module uit het json bestand.
+        
+        Argumenten:
+        log Meldingen  Verzameling van meldingen
+        pad string  Pad van het JSON bestand
+        data string  JSON specificatie van het proces
+        
+        Resultaat van de methode is een BGProces instantie, of None als de JSON 
+        geen specificatie van het BG proces is
+        """
+        if not "BevoegdGezag" in data:
+            return None
+        bgprocess = BGProces ()
+        bgprocess.Soort = data["BevoegdGezag"]
+        if "BGCode" in data:
+            bgprocess.BGCode = data["BGCode"]
+        else:
+            log.Fout ("BGCode ontbreekt in '" + pad + "'")
+            bgprocess._IsValide = False
+        if "Beschrijving" in data:
+            bgprocess.BGCode = data["Beschrijving"]
+        if "Startdatum" in data:
+            try:
+                bgprocess._Startdatum = datetime (int (data["Startdatum"][0:4]), int (data["Startdatum"][4:6]), int (data["Startdatum"][6:8]))
+            except Exception as e:
+                log.Fout ("Startdatum is geen valide datum in '" + pad + "': " + str(e))
+                bgprocess._IsValide = False
+        else:
+            log.Fout ("Startdatum ontbreekt in '" + pad + "'")
+            bgprocess._IsValide = False
+
+        if "Projecten" in data:
+            for project, activiteiten in data["Projecten"]:
+                bgprocess.Projecten.add (project)
+                for activiteit in activiteiten:
+                    a = Activiteit.LeesJson (log, pad, bgprocess, project, activiteit)
+                    if a is None:
+                        bgprocess._IsValide = False
+                    else:
+                        bgprocess.Activiteiten.append (a)
+        if "Overig" in data:
+            for activiteit in data["Overig"]:
+                a = Activiteit.LeesJson (log, pad, bgprocess, None, activiteit)
+                if a is None:
+                    bgprocess._IsValide = False
+                else:
+                    bgprocess.Activiteiten.append (a)
+
+        if bgprocess._IsValide:
+            if len (bgprocess.Activiteiten) == 0:
+                log.Waarschuwing ("Geen activiteiten gespecificeerd in '" + pad + "': " + str(e))
+            else:
+                bgprocess.Activiteiten.sort (key = lambda x: x.UitgevoerdOp)
+        return bgprocess
+
+#----------------------------------------------------------------------
+# Initialisatie en overige eigenschappen
+#----------------------------------------------------------------------
+    def __init__ (self):
+        # Soort van het bevoegd gezag
+        self.Soort: str = None
+        # Code te gebruiken bij het bepalen van de AKN/JOIN workId
+        self.BGCode: str = None
+        # Beschrijving van het scenario, als alternatief voor de beschrijving in 
+        self.Beschrijving: str = None
+        # Startdatum van het scenario; wordt overschreven door de specificatie
+        self._Startdatum = datetime.now ()
+        # De namen van de projecten in de specificatie
+        self.Projecten : Set[str] = set()
+        # Ingelezen activiteiten, gesorteerd op het tijdstip van uitvoering
+        self.Activiteiten : List[Activiteit] = []
+        # Geeft aan of de specificatie valide is
+        self._IsValide = True
+
+
+
+#======================================================================
+#
+# Basisklasse voor de specificatie en uitvoering van een BG-activiteit
+#
+#======================================================================
+class Activiteit:
+
+#----------------------------------------------------------------------
+# Inlezen specificatie
+#----------------------------------------------------------------------
+    @staticmethod
+    def LeesJson (log : Meldingen, pad : str, bgprocess : BGProces, project: str, data) -> 'Activiteit':
+        """Lees de inhoud van de module uit het json bestand.
+        
+        Argumenten:
+        log Meldingen  Verzameling van meldingen
+        pad string  Pad van het JSON bestand
+        bgprocess BGProces Proces waar dit een activiteit voor is
+        project string Naam van het project
+        data {}  JSON specificatie van de activiteit
+        
+        Resultaat van de methode is een Activiteit instantie, of None als de JSON 
+        geen specificatie van een (bekende) activiteit is
+        """
+        ok = True
+        if "Tijdstip" in data:
+            dag = floor (data["Tijdstip"])
+            uur = round (100*(data["Tijdstip"] - dag))
+            tijdstip = bgprocess._Startdatum + timedelta (days = 0 if dag < 0 else dag, hours = uur if uur < 24 else 24)
+            del data["Tijdstip"]
+        else:
+            log.Fout ("Tijdstip ontbreekt in een activiteit van " + ("'Overig'" if project is None else "project '" + project + "'") + " in '" + pad + "'")
+            ok = False
+            tijdstip = bgprocess._Startdatum
+
+        if not "Soort" in data:
+            log.Fout ("Soort ontbreekt in een activiteit van " + ("'Overig'" if project is None else "project '" + project + "'") + " in '" + pad + "'")
+            return
+        constructor = Activiteit._Constructors.get (data["Soort"])
+        if constructor is None:
+            log.Fout ("Onbekende Soort='" + data["Soort"] + "' voor een activiteit van " + ("'Overig'" if project is None else "project '" + project + "'") + " in '" + pad + "'")
+            return
+        activiteit : Activiteit = constructor ()
+        activiteit._BGProcess = bgprocess
+        activiteit._Soort = data["Soort"]
+        del data["Soort"]
+        activiteit._Data = data
+        activiteit.Project = project
+        activiteit.UitgevoerdOp = tijdstip.strftime ("%Y%m%dT%H:%M:SZ")
+
+        if not activiteit._LeesData (log, pad):
+            ok = False
+        if ok:
+            return activiteit
+
+    _Constructors = {
+        "MaakBranch": lambda : Versiebeheer_MaakBranch (),
+        "Wijziging": lambda : Versiebeheer_Commit ()
+    }
+
+    def _LeesData (self, log, pad) -> bool:
+        """Lees de specificatie van de activiteit uit het json bestand.
+        
+        Argumenten:
+        log Meldingen  Verzameling van meldingen
+        pad string  Pad van het JSON bestand
+        
+        Resultaat van de methode geeft aan of het inlezen geslaagd is
+        """
+        raise "_LeesData niet geïmplementeerd"
+
+#----------------------------------------------------------------------
+# Initialisatie en overige eigenschappen
+#----------------------------------------------------------------------
+    def __init__(self):
+        super().__init__()
+        # Specificatie van het proces
+        self._BGProcess : BGProces = None
+        # Soort activiteit
+        self._Soort : str = None
+        # Specificatie van de activiteit voor zover niet bij het inlezen omgezets
+        self._Data = None
+        # Tijdstip waarop de activiteit uitgevoerd is
+        self.UitgevoerdOp : str = None
+        # De naam van de activiteit; bij None wordt _Soort gebruikt
+        self.Naam : str = None
+        # Project waarvoor de activiteit uitgevoerd wordt
+        self.Project : str = None
+        # Soort publicatie die volgt uit deze activiteit
+        self.SoortPublicatie : str = None
+
+    def VoerUit (self, log : Meldingen, scenario, gebeurtenis) -> Tuple[bool,Activiteitverloop]:
+        """Voer de activiteit uit
+        
+        Argumenten:
+        log Meldingen  Verzameling van meldingen
+        scenario Scenario  Informatie over en uitkomsten van het scenario
+        gebeurtenis Scenario.Gebeurtenis Gebeurtenis waarvan deze activiteit onderdeel is
+        
+        Resultaat van de methode geeft aan of de uitvoering geslaagd is, en geeft het resulterende Activiteitverloop
+        """
+        context = Activiteit._VoerUitContext (log, scenario, Activiteitverloop (self.UitgevoerdOp, self._Soort if self.Naam is None else self.Naam))
+        
+        if not self.Project is None:
+            context.ProjectStatus = scenario.Procesvoortgang.Projecten.get (self.Project)
+            if context.ProjectStatus is None:
+                context.ProjectStatus = Projectstatus (self.Project, self.UitgevoerdOp)
+                scenario.Procesvoortgang.Projecten[self.Project] = context.ProjectStatus
+        self._VoerUit (context)
+        gebeurtenis.ConsolidatieInformatie = context.ConsolidatieInformatie
+        return (context.Succes, context.Activiteitverloop)
+
+    class _VoerUitContext:
+        def __init__(self, log : Meldingen, scenario, resultaat: Activiteitverloop):
+            self.Log = log;
+            self.Scenario = scenario
+            # Rapportage over de activiteit
+            self.Activiteitverloop = resultaat
+            # Status van het project waartoe de activiteit behoort
+            self.ProjectStatus : Projectstatus = None 
+            # Resulterende consolidatie-informatie
+            self.ConsolidatieInformatie : ConsolidatieInformatie = None
+            # Geeft aan of de uitvoering succesvol was.
+            self.Succes = True
+
+    def _VoerUit (self, context: _VoerUitContext):
+        """Voer de activiteit uit
+
+        Argumenten:
+
+        context _VoerUitContext Status van de simulatie en en resultaat van de activiteit
+        """
+        raise "_VoerUit niet geïmplementeerd"
+
+
+#======================================================================
+#
+# Activiteiten tbv versiebeheer
+#
+#======================================================================
+
+class Versiebeheer_Commit (Activiteit):
+    """Commit nieuwe instrumentversies en evt annotaties voor één of meer branches. 
+    Deze activiteit is tevens de basis voor een aantal andere activiteiten die daarna (of 
+    daarvoor) iets met de branches doen.
+    """
+    def __init__ (self):
+        super ().__init__ ()
+
+    def _LeesData (self, log, pad) -> bool:
+        # De rest van de specificatie wordt bij uitvoering gelezen
+        return True
+
+class Versiebeheer_MaakBranch (Versiebeheer_Commit):
+    """Maak een nieuwe branch voor een project
+    """
+    def __init__ (self):
+        super ().__init__ ()
+        self.BranchSoort : Dict[str,Tuple[str,List[str]]] = {}
+
+    def _LeesData (self, log, pad) -> bool:
+        ok = True
+        for naam, specificatie in self._Data.items ():
+            if isinstance (specificatie, dict):
+                if "Soort" in specificatie:
+                    branches = None
+                    if specificatie["Soort"] == "VolgendOp":
+                        if not "Branch" in specificatie:
+                            log.Fout ("Branch onbreekt voor branch '" + naam + "' in activiteit met Soort='" + self._Soort + "' in '" + pad + "'")
+                            ok = False
+                        else:
+                            branches = [specificatie["Branch"]]
+                            del specificatie["Branch"]
+                    elif specificatie["Soort"] == "TegelijkMet":
+                        if not "Branches" in specificatie or not isinstance (specificatie["Branches", list]) or len (specificatie["Branches", list]) == 0:
+                            log.Fout ("Branches onbreekt/moet een niet-leeg array zijn voor branch '" + naam + "' in activiteit met Soort='" + self._Soort + "' in '" + pad + "'")
+                            ok = False
+                        else:
+                            branches = specificatie["Branches"]
+                            del specificatie["Branches"]
+                    elif specificatie["Soort"] != "Regulier":
+                        log.Fout ("Soort onbreekt voor branch '" + naam + "' in activiteit met Soort='" + self._Soort + "' in '" + pad + "'")
+                        ok = False
+                    self.BranchSoort[naam] = (specificatie["Soort"], branches)
+        return ok
+
+
+
+
+
+
+
+
+
+
+#************************
+#************************
+#************************ Rest nog opschonen
+#************************
+#************************
+
 class Procesbegeleiding:
 
 #----------------------------------------------------------------------
@@ -45,7 +338,7 @@ class Procesbegeleiding:
 #
 #----------------------------------------------------------------------
     @staticmethod
-    def VoerUit (log: Meldingen, scenario, actie: ProjectActie) -> Tuple[bool, ConsolidatieInformatie, Activiteitverloop]:
+    def VoerUit (log: Meldingen, scenario, actie: ProjectActie) -> Tuple[bool, ConsolidatieInformatie, ProjectactieResultaat]:
         """Voer de projectactie uit.
 
         Argumenten:
@@ -68,7 +361,7 @@ class Procesbegeleiding:
             uitvoerder._Projectstatus = uitvoerder._Projectvoortgang.Projecten.get (actie._Project.Code)
             if uitvoerder._Projectstatus is None:
                 uitvoerder._Projectvoortgang.Projecten[actie._Project.Code] = uitvoerder._Projectstatus = Projectstatus (actie._Project)
-            uitvoerder._Resultaat = Activiteitverloop (actie)
+            uitvoerder._Resultaat = ProjectactieResultaat (actie)
 
             # Voer de actie uit en geef de resulterende ConsolidatieInformatie terug
             if not uitvoerder.VoerUit (actie):
@@ -104,7 +397,7 @@ class Procesbegeleiding:
         # De status van het project bij de start van de actie
         self._Projectstatus : Projectstatus = None
         # Het resultaat van de actie
-        self._Resultaat : Activiteitverloop = None
+        self._Resultaat : ProjectactieResultaat = None
 
     def _LogFout (self, melding):
         """Meld een fout bij de uitvoering van de actie. Hierbij wordt de projectcode en
@@ -414,7 +707,7 @@ class _VoerUit_NieuwDoel (Procesbegeleiding):
     def VoerUit (self, actie: ProjectActie_NieuwDoel):
         """Start een nieuwe branch door het bevoegd gezag
         """
-        self._Resultaat.UitgevoerdDoor = Activiteitverloop._Uitvoerder_BevoegdGezag
+        self._Resultaat.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_BevoegdGezag
         succes = True
 
         # Maak een nieuwe branch
@@ -424,7 +717,7 @@ class _VoerUit_NieuwDoel (Procesbegeleiding):
         self._Projectvoortgang.Versiebeheer.Branches[actie.Doel] = branch = Branch (actie.Doel)
         self._Projectstatus.Branches[actie.Doel] = branch
         branch._ViaProject = True
-        branch.Uitvoerder = Activiteitverloop._Uitvoerder_BevoegdGezag
+        branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
         self._Resultaat.Data.append (('Doel', [actie.Doel]))
 
         for workId in actie.Instrumenten:
@@ -486,7 +779,7 @@ class _VoerUit_Download (Procesbegeleiding):
     def VoerUit (self, actie: ProjectActie_Download):
         """Start een nieuwe branch bij/door een adviesbureau op basis van de gedownloade regelgeving
         """
-        self._Resultaat.UitgevoerdDoor = Activiteitverloop._Uitvoerder_Adviesbureau
+        self._Resultaat.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_Adviesbureau
         succes = True
 
         # Maak een nieuwe branch
@@ -495,12 +788,12 @@ class _VoerUit_Download (Procesbegeleiding):
             return False
         branch = self._Projectstatus.ExterneBranches.get (actie.Doel)
         self._Projectstatus.ExterneBranches[actie.Doel] = branch = Branch (actie.Doel)
-        branch.Uitvoerder = Activiteitverloop._Uitvoerder_Adviesbureau
+        branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_Adviesbureau
         self._Resultaat.Data.append (('Doel', [actie.Doel]))
 
         # Gebruik als STOP-module de momentopnames die de downloadservice meelevert
         module = DownloadserviceModules ()
-        self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (module, Activiteitverloop._Uitvoerder_LVBB, branch.Uitvoerder))
+        self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (module, ProjectactieResultaat._Uitvoerder_LVBB, branch.Uitvoerder))
 
         # Zoek de geldende versie op van elk van de instrumenten
         branch.Uitgangssituatie_GeldigOp = actie.actie.GebaseerdOp_GeldigOp
@@ -576,7 +869,7 @@ class _VoerUit_Uitwisseling (Procesbegeleiding):
         self._Resultaat.Data.append (('Doel', [actie.Doel]))
 
         self._Resultaat.UitgevoerdDoor = branch.Uitvoerder
-        if branch.Uitvoerder == Activiteitverloop._Uitvoerder_Adviesbureau:
+        if branch.Uitvoerder == ProjectactieResultaat._Uitvoerder_Adviesbureau:
             #----------------------------------------------------------
             # Van adviesbureau naar bevoegd gezag
             #----------------------------------------------------------
@@ -585,7 +878,7 @@ class _VoerUit_Uitwisseling (Procesbegeleiding):
             if bgBranch is None:
                 # Door adviesbureau gedownload, neem branch over
                 self._Projectstatus.Branches[actie.Doel] = branch
-                branch.Uitvoerder = Activiteitverloop._Uitvoerder_BevoegdGezag
+                branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
             else:
                 # Eerder door BG uitgeleverd, neem instrumentversies over
                 for workId, instrumentinfo in branch.Instrumentversies.items ():
@@ -604,7 +897,7 @@ class _VoerUit_Uitwisseling (Procesbegeleiding):
 
             # Stel de momentopname voor de uitwisseling op
             stop_mo = Momentopname ()
-            self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (stop_mo, Activiteitverloop._Uitvoerder_Adviesbureau, Activiteitverloop._Uitvoerder_BevoegdGezag))
+            self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (stop_mo, ProjectactieResultaat._Uitvoerder_Adviesbureau, ProjectactieResultaat._Uitvoerder_BevoegdGezag))
             stop_mo.Doel = actie.Doel
             stop_mo.GemaaktOp = actie.UitgevoerdOp
             if bgBranch is None:
@@ -625,7 +918,7 @@ class _VoerUit_Uitwisseling (Procesbegeleiding):
             #----------------------------------------------------------
             # Maak een aparte branch voor het adviesbureau aan
             self._Projectstatus.ExterneBranches[actie.Doel] = abBranch = Branch (actie.Doel) 
-            abBranch.UitgevoerdDoor = Activiteitverloop._Uitvoerder_Adviesbureau
+            abBranch.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_Adviesbureau
             for workId, instrumentinfo in branch.Instrumentversies.items ():
                 # Neem de instrumentversies over
                 if not instrumentinfo.Instrumentversie.IsJuridischUitgewerkt:
@@ -640,7 +933,7 @@ class _VoerUit_Uitwisseling (Procesbegeleiding):
 
             # Stel de momentopname voor de uitwisseling op
             stop_mo = Momentopname ()
-            self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (stop_mo, Activiteitverloop._Uitvoerder_BevoegdGezag, Activiteitverloop._Uitvoerder_Adviesbureau))
+            self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (stop_mo, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_Adviesbureau))
             stop_mo.Doel = actie.Doel
             stop_mo.GemaaktOp = actie.UitgevoerdOp
 
@@ -672,7 +965,7 @@ class _VoerUit_Wijziging (Procesbegeleiding):
         self._Resultaat.Data.append (('Doel', [actie.Doel]))
 
         self._Resultaat.UitgevoerdDoor = branch.Uitvoerder
-        if branch.Uitvoerder == Activiteitverloop._Uitvoerder_Adviesbureau:
+        if branch.Uitvoerder == ProjectactieResultaat._Uitvoerder_Adviesbureau:
             if not self._NeemInstrumentversiesOver (branch, actie.Instrumentversies, False):
                 succes = False
             if not actie.JuridischWerkendVanaf is None or not actie.GeldigVanaf is None:
@@ -723,7 +1016,7 @@ class _VoerUit_Publicatie (Procesbegeleiding):
 
         succes = True
         consolidatieInformatie = ConsolidatieInformatie (self._Log, '(gemaakt voor projectactie)')
-        self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (consolidatieInformatie, Activiteitverloop._Uitvoerder_BevoegdGezag, Activiteitverloop._Uitvoerder_LVBB))
+        self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (consolidatieInformatie, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_LVBB))
         consolidatieInformatie.GemaaktOp = actie.UitgevoerdOp
         consolidatieInformatie.OntvangenOp = consolidatieInformatie._BekendOp = actie.UitgevoerdOp[0:10]
 
@@ -738,7 +1031,7 @@ class _VoerUit_Publicatie (Procesbegeleiding):
                 self._LogFout ("onbekend doel '" + str(doel) + "'")
                 succes = False
                 continue
-            if branch.Uitvoerder != Activiteitverloop._Uitvoerder_BevoegdGezag:
+            if branch.Uitvoerder != ProjectactieResultaat._Uitvoerder_BevoegdGezag:
                 self._LogFout ("instrumentversies voor doel '" + str(doel) + "' zijn nog onderhanden bij een adviesbureau; dit scenario wordt niet ondersteund door deze simulator")
                 succes = False
                 continue

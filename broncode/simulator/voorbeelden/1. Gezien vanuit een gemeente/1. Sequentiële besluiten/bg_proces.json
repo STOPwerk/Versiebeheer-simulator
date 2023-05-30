@@ -1,4 +1,135 @@
 {
-	"BevoegdGezag": "Gemeente",
-	"Beschrijving": "Voorbeeld nog niet beschikbaar"
+  "BevoegdGezag": "Gemeente",
+  "Beschrijving": "Voorbeeld nog niet beschikbaar",
+  "Startdatum": "20240101",
+  "Projecten": {
+    "Project #01": [
+      {
+        "Soort": "MaakBranch",
+        "Tijdstip": 0,
+        "p01_1": {
+          "Soort": "Regulier",
+          "reg_01": {
+            "Metadata_Citeertitel": "Omgevingsplan Pyrodam",
+            "NonSTOP": {
+              "#01": true,
+              "#02": true
+            }
+          }
+        }
+      },
+      {
+        "Soort": "Wijziging",
+        "Tijdstip": 4,
+        "p01_1": {
+          "reg_01": true
+        }
+      },
+      {
+        "Soort": "Ontwerpbesluit",
+        "Tijdstip": 7,
+        "EindeInzage": 35
+      },
+      {
+        "Soort": "Wijziging",
+        "Tijdstip": 30,
+        "p01_1": {
+          "reg_01": true,
+          "JuridischWerkendVanaf": 63
+        }
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 35,
+        "EindeBeroep": 77
+      }
+    ],
+    "Project #02": [
+      {
+        "Soort": "MaakBranch",
+        "Tijdstip": 1,
+        "p02_1": {
+          "Soort": "VolgendOp",
+          "Branch": "p01_1"
+        }
+      },
+      {
+        "Soort": "Synchronisatie bron",
+        "Tijdstip": 14,
+        "p02_1": {
+          "reg_01": {
+            "NonSTOP": {
+              "#02": false,
+              "#03": true
+            }
+          }
+        }
+      },
+      {
+        "Soort": "Ontwerpbesluit",
+        "Tijdstip": 71,
+        "EindeInzage": 99
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 105,
+        "p02_1": {
+          "JuridischWerkendVanaf": 133
+        },
+        "EindeBeroep": 175
+      },
+      {
+        "Soort": "Beroep",
+        "Tijdstip": 168
+      },
+      {
+        "Soort": "Geschorst",
+        "Tijdstip": 210
+      },
+      {
+        "Soort": "Einde beroepsprocedures",
+        "Tijdstip": 465
+      }
+    ],
+    "Project #03": [
+      {
+        "Soort": "MaakBranch",
+        "Tijdstip": 140,
+        "p03_1": {
+          "Soort": "Regulier"
+        }
+      },
+      {
+        "Soort": "Ontwerpbesluit",
+        "Tijdstip": 168,
+        "p03_1": {
+          "reg_01": true
+        },
+        "EindeInzage": 196
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 203,
+        "p03_1": {
+          "reg_01": {
+            "NonSTOP": {
+              "#04": true
+            }
+          }
+          "JuridischWerkendVanaf": 231
+        },
+        "EindeBeroep": 245
+      }
+    ]
+  },
+  "Overig": [
+    {
+      "Soort": "Uitspraak rechter",
+      "Tijdstip": 456,
+      "Betreft": [ 105 ],
+      "r01": {
+        "reg_01": true
+      }
+    }
+  ]
 }

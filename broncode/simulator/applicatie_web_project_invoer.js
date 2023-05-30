@@ -70,9 +70,12 @@ window.addEventListener('load', function () {
 
     function startInvoer(bgpg) {
         if (bgpg) {
-            start_file.style.display = 'none';
             start_BG.style.display = 'none';
             specInput.style.display = '';
+            bgpg.Optie_MeerdereRegelingenWordt(document.getElementById('_optie_regelingen').checked);
+            bgpg.Optie_InformatieObjectenWordt(document.getElementById('_optie_io').checked);
+            bgpg.Optie_AnnotatiesWordt(document.getElementById('_optie_annotaties').checked);
+            bgpg.Optie_NonStopAnnotatiesWordt(document.getElementById('_optie_nonstop').checked);
             bgpg.Start(bgSpecData, startknop, download);
         }
     }

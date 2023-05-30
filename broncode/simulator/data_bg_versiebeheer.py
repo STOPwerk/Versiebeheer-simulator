@@ -7,27 +7,25 @@
 # De bevoegd gezag software zal moeten beschikken over een intern 
 # versiebeheer dat tenminste een bepaalde hoeveelheid informatie
 # bevat (of kan afleiden). Deze module bevat het datamodel voor
-# het interne versiebeheer voor deze applicatie.
-#
-# Het datamodel kent geen historie; projectacties overschrijven
-# oude informatie. In deze applicatie wordt er na elke projectactie
-# wel een kloon gemaakt, maar dat is alleen voor de weergave van de
-# resultaten en dus applicatie-specifiek. 
+# het interne versiebeheer voor deze applicatie. Het datamodel 
+# kent geen historie; activiteiten overschrijven oude informatie.
+# Waar het versiebeheer in de landelijke voorzieningen per instrument
+# uitgevoerd wordt en tot toestanden leidt, is dat hier per branch 
+# en per datum (met mogelijk meerdere instrumenten).
 #
 #======================================================================
 
 from typing import Dict, List, Set, Tuple
 from applicatie_meldingen import Meldingen
 from data_doel import Doel
-from stop_consolidatieinformatie import Momentopname
 
 #======================================================================
 #
-# Versiebeheer: minimale informatie die in de bevoegd gezag software
-#               bijgehouden moet worden c.q. afleidbaar moet zijn.
+# Versiebeheerinformatie: minimale informatie die in de bevoegd gezag
+#                         software beschikbaar moet zijn.
 #
 #======================================================================
-class Versiebeheer:
+class Versiebeheerinformatie:
 
     def __init__ (self):
         """Maak een nieuwe instantie van het versiebeheer bij het bevoegd gezag.
@@ -43,7 +41,7 @@ class Versiebeheer:
         # De consolidatie kan bij het bevoegd gezag op het niveau van branches
         # worden bijgehouden. Dat wordt vertaald naar informatie per instrument
         # bij het omzetten naar STOP consolidatie-informatie.
-        # Lijst is gesorteerd op volgorde van inwerkingtreding - juridischGeldigVanaf
+        # Lijst is gesorteerd op volgorde van inwerkingtreding/juridischGeldigVanaf
         self.Consolidatie : List[Consolidatie] = {}
 
 #======================================================================
@@ -60,31 +58,49 @@ class Versiebeheer:
 #----------------------------------------------------------------------
 class Branch:
 
-    def __init__(self, doel : Doel):
+    def __init__(self, doel : Doel, viaProject : bool):
         """Maak een nieuwe branch aan
 
         Argumenten:
 
         doel Doel  Instantie van het doel waar de branch voor aangemaakt is
+        viaProject bool Geeft aan of de branch als onderdeel van een project wordt bijgehouden
         """
-        #--------------------------------------------------------------
-        # Intern versiebeheer
-        #--------------------------------------------------------------
         self._Doel = doel
-        # De actuele (interne, binnen de creatie-keten) stand van de instrumentversies
-        # key = work-Id
-        self.Instrumentversies : Dict[str,InstrumentInformatie] = {}
-        # De actuele (interne, binnen de creatie-keten) waarden van de tijdstempels
-        self.Tijdstempels = Tijdstempels ()
+        #--------------------------------------------------------------
+        # Relatie met andere branches
+        #--------------------------------------------------------------
+        # Als de branch een versie van regelgeving beschrijft die als uitgangssituatie
+        # het resultaat van een ander doel heeft, dan is dat doel opgegeven als:
+        self.Uitgangssituatie_Doel : Branch = None
+        # Als de branch een versie van regelgeving beschrijft die als uitgangssituatie
+        # de publiek bekende geldende regelgeving heeft, dan is de datum waarop de
+        # regelgeving geldig is gegeven als:
+        self.Uitgangssituatie_GeldigOp = None
+        # Geeft aan dat de branch in werking treedt als alle opgegeven branches in werking getreden zijn
+        self.TreedtConditioneelInWerkingMet : Set[Branch] = None
         # Branches waarvan de inhoud gelijkgehouden wordt omdat ze tegelijk in werking
         # zijn getreden / zullen treden. Deze branch is daar onderdeel van.
         # None als er geen sprake is van gelijktijdige inwerkingtreding.
         self.SimultaanBeheerdeBranches : Set[Branch] = None
         #--------------------------------------------------------------
+        # Intern versiebeheer
+        #--------------------------------------------------------------
+        # De actuele (interne, binnen de creatie-keten) stand van de instrumentversies
+        # key = work-Id
+        self.Instrumentversies : Dict[str,InstrumentInformatie] = {}
+        # De actuele (interne, binnen de creatie-keten) waarden van de tijdstempels
+        self.Tijdstempels = Tijdstempels ()
+        #--------------------------------------------------------------
         # Ondersteuning consolidatieproces
         #--------------------------------------------------------------
         # Tijdstip van de laatste keer dat de inhoud van deze branch is gewijzigd 
         self.LaatstGewijzigdOp : str = None
+        # Tijdstip van de laatste wijziging van de branches waar de Uitgangssituatie
+        # van afkomstig is. Latere wijzigingen in de uitgangssituatie zijn (nog)
+        # niet in deze branch verwerkt.
+        # None als deze branch geen uitgangssituatie kent.
+        self.Uitgangssituatie_LaatstGewijzigdOp : List[Tuple[Branch,str]] = None
         #--------------------------------------------------------------
         # Voortgang van uitwisseling met LVBB
         #--------------------------------------------------------------
@@ -92,7 +108,7 @@ class Branch:
         # voor deze branch
         self.UitgewisseldeTijdstempels = Tijdstempels ()
         # Datum waarop de inhoud van deze branch publiek bekend is geworden.
-        # None als dat pas bij publicatie het geval is 
+        # None als dat pas bij publicatie het geval is; heeft een waarde bij de uitspraak van de rechter
         self.BekendOp : str = None
         
 

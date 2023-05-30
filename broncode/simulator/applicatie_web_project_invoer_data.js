@@ -23,9 +23,7 @@ class BGProcesGenerator {
         BGProcesGenerator.#This = this;
         this.#spec_invoer = elt_invoer;
         this.#spec_invoer.innerHTML = '<h3>' + titel + '</h3>';
-        this.#startdatum = new Date(Date.now());
-        this.#startdatum.setHours(0, 0, 0, 0);
-        let doel = new Identificatie(`/join/id/proces/${this.BGCode()}/`, 'uitgangssituatie');
+        let doel = new Identificatie(`/join/id/proces/${this.#data.BGCode}/`, 'uitgangssituatie');
         this.#uitgangssituatie = new Momentopname(this.#data.Uitgangssituatie, doel.Specificatie(), new GemaaktOp(undefined, 0, 0));
     }
     #spec_invoer = undefined;
@@ -64,14 +62,16 @@ class BGProcesGenerator {
         if (data.Beschrijving) {
             bgpg.#data.Beschrijving = data.Beschrijving;
         }
+        if (data.Startdatum) {
+            bgpg.#data.Startdatum = data.Startdatum;
+        }
 
         let instrumenten = {}; // vertaling van workId naar instrumenten
 
         if (data.Uitgangssituatie) {
-            let prefix = '/join/id/proces/' + bgpg.BGCode() + '/';
+            let prefix = `/join/id/proces/${bgpg.#data.BGCode}/`;
             for (doel in Object.keys(data.Uitgangssituatie)) {
                 if (doel === this.StartDoel()) {
-                    this.WerkTijdstippenBij(new Date(parseInt(this.Specificatie().substring(0, 4)), parseInt(this.Specificatie().substring(4, 2)), parseInt(this.Specificatie().substring(6, 2))));
                     this.#uitgangssituatie.LeesSpecificatie(data.Uitgangssituatie[doel], instrumenten);
                 }
             }
@@ -111,6 +111,10 @@ class BGProcesGenerator {
      * @param {HTMLAnchorElement} downloadLink - element met de downloadlink voor de specificatie
      */
     Start(elt_data, startknop, downloadLink) {
+        if (!this.Optie_MeerdereRegelingen() && this.Instrumenten(new Regeling()).length == 0) {
+            this, this.MaakNieuwInstrument(new Regeling(), new GemaaktOp(undefined, 0, 0));
+        }
+
         this.#spec_invoer.addEventListener('change', e => this.#Invoer_Event(e.target, (im, a) => im.OnChange(a)));
         this.#spec_invoer.addEventListener('click', e => this.#Invoer_Event(e.target, (im, a) => im.OnClick(a)));
 
@@ -168,6 +172,50 @@ ${new UitgangspuntInvoerManager(this.#uitgangssituatie).Html()}
     static #This;
 
     /**
+     * Geeft aan dat het scenario over meerdere regelingen gaat
+     */
+    Optie_MeerdereRegelingen() {
+        return this.#optie_MeerdereRegelingen;
+    }
+    Optie_MeerdereRegelingenWordt(ja) {
+        this.#optie_MeerdereRegelingen = ja;
+    }
+    #optie_MeerdereRegelingen = false;
+
+    /**
+     * Geeft aan dat het scenario ook over informatieobjecten
+     */
+    Optie_InformatieObjecten() {
+        return this.#optie_InformatieObjecten;
+    }
+    Optie_InformatieObjectenWordt(ja) {
+        this.#optie_InformatieObjecten = ja;
+    }
+    #optie_InformatieObjecten = false;
+
+    /**
+     * Geeft aan dat het scenario annotaties bij regelingen en informatieobjecten kent
+     */
+    Optie_Annotaties() {
+        return this.#optie_Annotaties;
+    }
+    Optie_AnnotatiesWordt(ja) {
+        this.#optie_Annotaties = ja;
+    }
+    #optie_Annotaties = false;
+
+    /**
+     * Geeft aan dat het scenario annotaties bij regelingen en informatieobjecten kent
+     */
+    Optie_NonStopAnnotaties() {
+        return this.#optie_NonStopAnnotaties;
+    }
+    Optie_NonStopAnnotatiesWordt(ja) {
+        this.#optie_NonStopAnnotaties = ja;
+    }
+    #optie_NonStopAnnotaties = false;
+
+    /**
      * Manager van de gehele specificatie, te gebruiken om de specificatie
      * opnieuw te maken als er ergens iets wijzigt.
      */
@@ -193,15 +241,21 @@ ${new UitgangspuntInvoerManager(this.#uitgangssituatie).Html()}
     #uitgangssituatie;
 
     /**
-     * Geef een (gesorteerde) lijst met bekende instrumenten weer
-     * @param {any} soortInstrument
-     * @returns
+     * Geef een lijst met projecten
+     */
+    Projecten() {
+        return this.#projecten;
+    }
+    #projecten = [];
+
+    /**
+     * Geef een (gesorteerde) lijst met bekende instrumenten
      */
     Instrumenten(soortInstrument) {
         if (soortInstrument === undefined) {
-            return instrumenten;
+            return this.#instrumenten;
         } else {
-            return instrumenten.filter(i => i.SoortInstrument().Naam() == soortInstrument.Naam());
+            return this.#instrumenten.filter(i => i.SoortInstrument().Naam() == soortInstrument.Naam());
         }
     }
     #instrumenten = [];
@@ -213,12 +267,32 @@ ${new UitgangspuntInvoerManager(this.#uitgangssituatie).Html()}
      -------------------------------------------------------------------------*/
 
     /**
+    * Vind een vrije naamindex voor een nieuw object
+    * @param {any} alBekend - lijst met al bekende objecten met een NaamIndex() methode.
+    * @returns De vrije naamIndex
+    */
+    static VrijeNaamIndex(alBekend) {
+        for (let idx = 1; true; idx++) {
+            let naamIndex = ('00' + idx).slice(-2);
+            let ok = true;
+            for (const bekend of alBekend) {
+                if (naamIndex == bekend.NaamIndex()) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok) {
+                return naamIndex;
+            }
+        }
+    }
+
+    /**
      * Maak een nieuw instrument
      * @param {SoortInstrument} soortInstrument - Soort instrument
-     * @param {GemaaktOp} gemaaktOp - tijdstip van de momentopname waarvoor een versie van de regeling gemaakt wordt.
      */
-    MaakNieuwInstrument(soortInstrument, gemaaktOp) {
-        let instrument = new Instrument(soortInstrument, gemaaktOp);
+    MaakNieuwInstrument(soortInstrument) {
+        let instrument = new Instrument(soortInstrument);
         this.#instrumenten.push(instrument);
         this.#instrumenten.sort((a, b) => a.WorkId().Specificatie().localeCompare(b.WorkId().Specificatie()));
     }
@@ -307,10 +381,7 @@ ${new UitgangspuntInvoerManager(this.#uitgangssituatie).Html()}
 class GemeenteProcesGenerator extends BGProcesGenerator {
     constructor(elt_invoer) {
         super(elt_invoer, 'Invoer voor een gemeente');
-    }
-
-    BGCode() {
-        return "gm9999";
+        this.#data.BGCode = 'gm9999';
     }
 }
 
@@ -327,10 +398,7 @@ class GemeenteProcesGenerator extends BGProcesGenerator {
 class RijkProcesGenerator extends BGProcesGenerator {
     constructor(elt_invoer) {
         super(elt_invoer, 'Invoer voor de rijksoverheid');
-    }
-
-    BGCode() {
-        return "mnre9999";
+        this.#data.BGCode = 'mnre9999';
     }
 }
 
@@ -600,6 +668,83 @@ s     */
 
 /*==============================================================================
  *
+ * Project, Branch en Activiteit zijn een model voor de activiteiten die een 
+ * bevoegd gezag kan uitvoeren
+ * 
+ =============================================================================*/
+
+class Project extends SpecificatieElement {
+    /**
+     * Maak een nieuw project aan
+     */
+    constructor() {
+        let projecten = BGProcesGenerator.This().Projecten();
+        let idx = BGProcesGenerator.VrijeNaamIndex(projecten);
+        let naam = `Project #${idx}`;
+        super(BGProcesGenerator.This().SpecificatieManager().Specificatie().Projecten, naam, {
+            Branches: [],
+            Activiteiten: []
+        });
+        this.Specificatie()._This = this;
+        projecten.push(this);
+        this.#naam = naam;
+        this.#naamIndex = idx;
+    }
+
+    /**
+     * Geef de naam van het project
+     * @returns
+     */
+    Naam() {
+        return this.#naam;
+    }
+    #naam;
+
+    /**
+     * Geef de unieke index van het project binnen de projecten
+     */
+    NaamIndex() {
+        return this.#naamIndex;
+    }
+    #naamIndex;
+
+    /**
+     * Geef de branches die in het project actief zijn
+     */
+    Branches() {
+        return this.#branches;
+    }
+    #branches = [];
+}
+
+class Branch extends SpecificatieElement {
+    /* Normale branch, gebaseerd op vigerende regelgeving */
+    Soort_Regulier = "Regulier";
+    /* Branch die na een andere branch in werking zal treden */
+    Soort_VolgtOp = "VolgtOp";
+    /* Branch die de */
+    Soort_Samenloop = "Conditioneel";
+
+    /**
+     * Maak een nieuwe branch aan
+     */
+    constructor(eigenaarObject, naam, soortSamenloop) {
+        let projecten = BGProcesGenerator.This().Projecten();
+        let idx = BGProcesGenerator.VrijeNaamIndex(projecten);
+        let naam = `Project #${idx}`;
+        super(eigenaarObject, naam, {
+            Activiteiten: []
+        });
+        this.Specificatie()._This = this;
+        projecten.push(this);
+        this.#naam = naam;
+        this.#naamIndex = idx;
+    }
+
+}
+
+/*==============================================================================
+ *
  * Instrument en gerelateerde klassen geven alle informatie over de instrumenten
  * die door deze pagina ondersteund worden.
  * 
@@ -644,28 +789,18 @@ class SoortInstrument {
     }
 
     /**
-    * Maak een unieke afkorting voor een nieuw instrument
+    * Geef de prefix voor de afkorting van de identificatie van het instrument
     */
-    MaakAfkorting() {
-        throw new Error('MaakAfkorting ontbreekt');
-    }
-    /**
-     * Reset alle indices gebruikt voor MaakAfkorting
-     */
-    static ResetIndex() {
-        Regeling.ResetIndex();
-        GIO.ResetIndex();
-        PDF.ResetIndex();
+    AfkortingPrefix() {
+        throw new Error('AfkortingPrefix ontbreekt');
     }
 
     /**
-     * Maak de prefix nodig om een Identificatie voor een work identificatie 
+     * Geef de prefix nodig om een Identificatie voor een work identificatie 
      * voor een instrument te maken.
-     * @param {string} gemaaktOp - Volledig tijdstip van uitwisseling
-     * @returns Prefix te gebruiken in de constructor van Identificatie
      */
-    MaakWorkIdPrefix(gemaaktOp) {
-        throw new MaakWorkIdPrefix('Naam ontbreekt');
+    WorkIdPrefix() {
+        throw new Error('WorkIdPrefix ontbreekt');
     }
 
     /**
@@ -703,28 +838,18 @@ class Regeling extends SoortInstrument {
     }
 
     /**
-    * Maak een unieke afkorting voor een nieuw instrument
+    * Geef de prefix voor de afkorting van de identificatie van het instrument
     */
-    MaakAfkorting() {
-        Regeling.#index += 1;
-        return `reg_${Regeling.#index}`;
+    AfkortingPrefix() {
+        return 'reg_';
     }
-    /**
-     * Reset de index gebruikt voor MaakAfkorting
-     */
-    static ResetIndex() {
-        Regeling.#index = 0;
-    }
-    static #index = 0;
 
     /**
-     * Maak de prefix nodig om een Identificatie voor een work identificatie 
+     * Geef de prefix nodig om een Identificatie voor een work identificatie 
      * voor een instrument te maken.
-     * @param {string} gemaaktOp - Volledig tijdstip van uitwisseling
-     * @returns Prefix te gebruiken in de constructor van Identificatie
      */
-    MaakWorkIdPrefix(gemaaktOp) {
-        return '/akn/nl/act/' + BGProcesGenerator.This().BGCode() + '/' + gemaaktOp.substring(0, 4) + '/';
+    WorkIdPrefix() {
+        return `/akn/nl/act/${BGProcesGenerator.This().#data.BGCode}/${BGProcesGenerator.This().Startdatum().getFullYear()}/`;
     }
 
     /**
@@ -762,28 +887,18 @@ class GIO extends SoortInstrument {
     }
 
     /**
-    * Maak een unieke afkorting voor een nieuw instrument
+    * Geef de prefix voor de afkorting van de identificatie van het instrument
     */
-    MaakAfkorting() {
-        GIO.#index += 1;
-        return `gio_${GIO.#index}`;
+    AfkortingPrefix() {
+        return 'gio_';
     }
-    /**
-     * Reset de index gebruikt voor MaakAfkorting
-     */
-    static ResetIndex() {
-        GIO.#index = 0;
-    }
-    static #index = 0;
 
     /**
-     * Maak de prefix nodig om een Identificatie voor een work identificatie 
+     * Geef de prefix nodig om een Identificatie voor een work identificatie 
      * voor een instrument te maken.
-     * @param {string} gemaaktOp - Volledig tijdstip van uitwisseling
-     * @returns Prefix te gebruiken in de constructor van Identificatie
      */
-    MaakWorkIdPrefix(gemaaktOp) {
-        return '/join/regdata/' + BGProcesGenerator.This().BGCode() + '/' + gemaaktOp.substring(0, 4) + '/';
+    WorkIdPrefix() {
+        return `/join/regdata/${BGProcesGenerator.This().#data.BGCode}/${BGProcesGenerator.This().Startdatum().getFullYear()}/`;
     }
 
     /**
@@ -803,28 +918,18 @@ class PDF extends SoortInstrument {
     }
 
     /**
-    * Maak een unieke afkorting voor een nieuw instrument
+    * Geef de prefix voor de afkorting van de identificatie van het instrument
     */
-    MaakAfkorting() {
-        PDF.#index += 1;
-        return `pdf_${PDF.#index}`;
+    AfkortingPrefix() {
+        return 'pdf_';
     }
-    /**
-     * Reset de index gebruikt voor MaakAfkorting
-     */
-    static ResetIndex() {
-        PDF.#index = 0;
-    }
-    static #index = 0;
 
     /**
-     * Maak de prefix nodig om een Identificatie voor een work identificatie 
+     * Geef de prefix nodig om een Identificatie voor een work identificatie 
      * voor een instrument te maken.
-     * @param {string} gemaaktOp - Volledig tijdstip van uitwisseling
-     * @returns Prefix te gebruiken in de constructor van Identificatie
      */
-    MaakWorkIdPrefix(gemaaktOp) {
-        return '/join/regdata/' + BGProcesGenerator.This().BGCode() + '/' + gemaaktOp.substring(0, 4) + '/';
+    WorkIdPrefix() {
+        return `/join/regdata/${BGProcesGenerator.This().#data.BGCode}/${BGProcesGenerator.This().Startdatum().getFullYear()}/`;
     }
 
     /**
@@ -842,13 +947,21 @@ class Instrument {
     /**
      * Maak een nieuw instrument aan
      * @param {SoortInstrument} soortInstrument - Soort instrument
-     * @param {GemaaktOp} gemaaktOp - tijdstip van de momentopname waar de eerste versie van het instrument voorkomt
      */
-    constructor(soortInstrument, gemaaktOp) {
+    constructor(soortInstrument) {
+        this.#naamIndex = BGProcesGenerator.VrijeNaamIndex(BGProcesGenerator().This().Instrumenten(soortInstrument));
         this.#soortInstrument = soortInstrument;
-        this.#workId = new Identificatie(undefined, undefined, soortInstrument.MaakWorkIdPrefix(gemaaktOp.Specificatie()), soortInstrument.MaakAfkorting());
-        this.#eerstGemaaktOp = gemaaktOp;
+        this.#workId = new Identificatie(undefined, undefined, soortInstrument.WorkIdPrefix(), soortInstrument.AfkortingPrefix() + this.#naamIndex);
     }
+
+    /**
+     * Geef de unieke index van het instrument binnen de instrumenten
+     * @returns
+     */
+    NaamIndex() {
+        return this.#naamIndex;
+    }
+    #naamIndex;
 
     /**
      * Geeft aan welk soort instrument het is
@@ -876,45 +989,11 @@ class Instrument {
     }
 
     /**
-     * Geeft aan dat een versie van het instrument gemaakt/gewijzigd wordt in een momentopname
-     * @param {GemaaktOp} gemaaktOp - tijdstip van de momentopname
-     */
-    HeeftVersieInMomentopname(gemaaktOp) {
-        if (this.#eerstGemaaktOp === undefined || this.#eerstGemaaktOp.Vergelijk(gemaaktOp) > 0) {
-            this.#eerstGemaaktOp = gemaaktOp;
-            this.#workId.PrefixWordt(this.#soortInstrument.MaakWorkIdPrefix(gemaaktOp.Specificatie()))
-            BGProcesGenerator.This().VoorElkeInstrumentversie(this, (versie) => versie.WerkIdentificatieBij());
-        }
-    }
-    /**
      * Werk de identificatie bij als de startdatum van het scenario is aangepast
      * @param {Date} startdatum
      */
     WerkTijdstipBij(startdatum) {
-        this.#eerstGemaaktOp.WerkTijdstipBij(startdatum);
-        this.#workId.PrefixWordt(this.#soortInstrument.MaakWorkIdPrefix(this.#eerstGemaaktOp.Specificatie()))
-    }
-
-    /**
-     * Op een aantal momenten wordt het gebruik van het instrument opnieuw bepaald en afkortingen herzien op 
-     * basis van eerste voorkomen.
-     * ResetGebruik moet aangeroepen worden aan het begin van dat proces.
-     */
-    ResetGebruik() {
-        this.#eerstGemaaktOp = undefined;
-    }
-    /**
-     * Geeft aan of het instrument nog gebruikt wordt
-     */
-    InGebruikt() {
-        return this.#eerstGemaaktOp !== undefined;
-    }
-    #eerstGemaaktOp;
-    /**
-     * Maak opnieuw de afkorting voor het workId
-     */
-    MaakAfkorting() {
-        this.#workId.AfkortingWordt(this.#soortInstrument.MaakAfkorting());
+        this.#workId.PrefixWordt(this.#soortInstrument.WorkIdPrefix())
     }
 }
 
@@ -1000,6 +1079,13 @@ class Momentopname extends SpecificatieElement {
             }
         }
     }
+    /**
+     * Geeft alle instrumentversies
+     * @returns
+     */
+    Instrumentversies() {
+        return this.Specificatie().Instrumentversies;
+    }
 
     /**
      * Geeft aan of de in-memory Data valide is en onderdeel kan zijn van de specificatie
@@ -1084,15 +1170,20 @@ class Instrumentversie extends SpecificatieElement {
                 let instrument = instrumenten[workId];
                 if (instrument === undefined) {
                     if (workId.startsWith('/akn/')) {
-                        instrument = BGProcesGenerator.This().MaakNieuwInstrument(new Regeling(), momentopname.GemaaktOp());
+                        instrument = BGProcesGenerator.This().MaakNieuwInstrument(new Regeling());
+                        if (BGProcesGenerator.This().Instrumenten(instrument.SoortInstrument()).length == 2) {
+                            BGProcesGenerator.This().Optie_MeerdereRegelingenWordt(true);
+                        }
                     } else {
                         idx = workId.lastIndexOf('/');
                         workId = workId.substring(idx + 1);
                         if (workId.startsWith('gio')) {
-                            instrument = BGProcesGenerator.This().MaakNieuwInstrument(new GIO(), momentopname.GemaaktOp());
+                            instrument = BGProcesGenerator.This().MaakNieuwInstrument(new GIO());
+                            BGProcesGenerator.This().Optie_InformatieObjectenWordt(true);
                         }
                         else if (workId.startsWith('pdf')) {
-                            instrument = BGProcesGenerator.This().MaakNieuwInstrument(new PDF(), momentopname.GemaaktOp());
+                            instrument = BGProcesGenerator.This().MaakNieuwInstrument(new PDF());
+                            BGProcesGenerator.This().Optie_InformatieObjectenWordt(true);
                         }
                     }
                 }
@@ -1101,11 +1192,13 @@ class Instrumentversie extends SpecificatieElement {
                     for (const annotatie of instrument.ToegestaneAnnotaties()) {
                         if (data[annotatie]) {
                             versie.Specificatie()[annotatie] = data[annotatie];
+                            BGProcesGenerator.This().Optie_AnnotatiesWordt(true);
                         }
                     }
                     if (instrument.NonSTOPAnnotatiesToegestaan() && data[NonSTOP] !== undefined) {
                         for (const objIdx in data.NonSTOP) {
                             versie.Specificatie().NonSTOP[objIdx] = (data.NonSTOP[objIdx] ? true : false);
+                            BGProcesGenerator.This().Optie_NonStopAnnotatiesWordt(true);
                         }
                     }
                     return versie;
@@ -1366,37 +1459,38 @@ class StartdatumInvoerManager extends InvoerManager {
      * Maak de invoermanager aan
      */
     constructor() {
-        super(BGProcesGenerator.This().SpecificatieManager());
-    }
-
-    Specificatie() {
-        return BGProcesGenerator.This().Startdatum();
-    }
-
-    IsValide() {
-        return true;
+        super(BGProcesGenerator.This().SpecificatieManager(), BGProcesGenerator.This().SpecificatieManager().Specificatie(), 'Startdatum');
+        if (this.Specificatie() === undefined) {
+            let datum = new Date(Date.now());
+            datum.setHours(0, 0, 0, 0);
+            this.#WerkBij(datum);
+        }
     }
 
     Html() {
         return `<span ${this.DataSet()}>
-        <input type="number" class="number2" min="1" max="31" id="${this.ElementPrefix()}_D" value="${this.Specificatie().getDate()}"/> -
-        <input type="number" class="number2" min="1" max="12" id="${this.ElementPrefix()}_M" value="${this.Specificatie().getMonth() + 1}"/> -
-        <input type="number" class="number4" min="2020" id="${this.ElementPrefix()}_J" value="${this.Specificatie().getFullYear()}"/>
+        <input type="number" class="number2" min="1" max="31" id="${this.ElementPrefix()}_D" value="${this.Specificatie().substring(6, 2)}"/> -
+        <input type="number" class="number2" min="1" max="12" id="${this.ElementPrefix()}_M" value="${this.Specificatie().substring(4, 2)}"/> -
+        <input type="number" class="number4" min="2020" id="${this.ElementPrefix()}_J" value="${this.Specificatie().substring(0, 4)}"/>
         </span>`;
     }
 
     OnChange(elt) {
-        let dag = (elt.id.endsWith('D') ? parseInt(elt.value) : this.Specificatie().getDate());
-        let maand = (elt.id.endsWith('M') ? parseInt(elt.value) : this.Specificatie().getMonth() + 1);
-        let jaar = (elt.id.endsWith('J') ? parseInt(elt.value) : this.Specificatie().getFullYear());
+        let dag = parseInt(elt.id.endsWith('D') ? elt.value : this.Specificatie().substring(6, 2));
+        let maand = parseInt(elt.id.endsWith('M') ? elt.value : this.Specificatie().substring(4, 2));
+        let jaar = parseInt(elt.id.endsWith('J') ? elt.value : this.Specificatie().substring(0, 4));
         let datum = new Date(jaar, maand - 1, dag);
         document.getElementById(`${this.ElementPrefix()}_D`).value = datum.getDate();
         document.getElementById(`${this.ElementPrefix()}_M`).value = datum.getMonth() + 1;
         document.getElementById(`${this.ElementPrefix()}_J`).value = datum.getFullYear();
+        this.#WerkBij(datum);
         if (this.Specificatie() !== datum) {
-            BGProcesGenerator.This().WerkTijdstippenBij(datum);
             super.OnChange();
         }
+    }
+
+    #WerkBij(startdatum) {
+        this.SpecificatieWordt(`${startdatum.getFullYear()}${startdatum.getMonth() + 1}${startdatum.getDate()}`);
     }
 }
 
@@ -1532,8 +1626,10 @@ class MomentopnameInvoerManager extends InvoerManager {
             InvoerManager.OpenModal(`Verwijder de momentopname?`, (ok) => this.#MomentopnameIngevoerd(ok));
         } else if (elt.id == this.ElementPrefix() + '_N' || elt.id == this.ElementPrefix() + '_W') {
             this.#nieuweMomentopname = this.#momentopname.Kloon();
+            let bgpg = BGProcesGenerator.This();
+            let html = '';
             InvoerManager.OpenModal(`<span ${this.DataSet()}>
-            NNTB
+            ${html}
             </span>`, (ok) => this.#MomentopnameIngevoerd(ok));
         }
     }

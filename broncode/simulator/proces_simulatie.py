@@ -18,7 +18,7 @@ from pickle import NONE
 from applicatie_scenario import Scenario
 import applicatie_versie
 from data_bg_project import ProjectActie
-from data_bg_projectvoortgang import ProjectactieResultaat, UitgewisseldeSTOPModule
+from data_bg_procesverloop import Activiteitverloop, UitgewisseldeSTOPModule
 from weergave_data_bg_versiebeheer import VersiebeheerWeergave
 from weergave_resultaat_data import WeergaveData
 from proces_bg_consolidatie import Consolideren
@@ -56,52 +56,47 @@ class Proces_Simulatie:
             self.Scenario.WeergaveData = WeergaveData (self.Scenario)
 
             publicatiebladNummer = 0
-            for idx, consolidatieInformatieBron in enumerate (self.Scenario.ConsolidatieInformatie):
+            for idx, gebeurtenis in enumerate (self.Scenario.Gebeurtenissen):
 
-                publicatieblad = None
-                actieResultaat = None
+                publicatie = None
+                activiteit = None
 
-                if not consolidatieInformatieBron.Module is None:
-                    # Specificatie van consolidatie-informatie
-                    consolidatieInformatie = consolidatieInformatieBron.Module
-                    if self.Scenario.Opties.Versiebeheer:
-                        # Verwerk dat in het versiebeheer van het bevoegd gezag
-                        isValide, actieResultaat = ConsolidatieInformatieVerwerker.WerkBij (self.Scenario.Log, self.Scenario.Projectvoortgang, consolidatieInformatie, consolidatieInformatieBron.Actie)
-                        if not isValide:
-                            # Er is iets fout gegaan
-                            return
-                else:
-                    # Project actie: voer de actie uit
-                    isValide, consolidatieInformatie, actieResultaat = Procesbegeleiding.VoerUit (self.Scenario.Log, self.Scenario, consolidatieInformatieBron.Actie)
+                if not gebeurtenis.Activiteit is None:
+                    # BG activiteit: voer de actie uit
+                    isValide, activiteit = gebeurtenis.Activiteit.VoerUit (self.Scenario.Log, self.Scenario, gebeurtenis)
+                    if not isValide:
+                        # Er is iets fout gegaan
+                        return
+                    instrument = activiteit.Instrument
+
+                if gebeurtenis.ConsolidatieInformatie is None:
+                    # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
+                    continue
+
+                # Specificatie van consolidatie-informatie
+                if self.Scenario.Opties.Versiebeheer:
+                    # Verwerk dat in het versiebeheer van het bevoegd gezag
+                    isValide, activiteit = ConsolidatieInformatieVerwerker.WerkBij (self.Scenario.Log, self.Scenario, gebeurtenis.ConsolidatieInformatie)
                     if not isValide:
                         # Er is iets fout gegaan
                         return
 
-                if self.Scenario.Opties.Versiebeheer:
-                    # Maak opnieuw de consolidatie aan op basis van intern versiebeheer
-                    # Dit hoeft eigenlijk niet altijd, maar het is teveel moeite voor de ontwikkelaar van de simulator
-                    # om precies bij te houden wanneer het wel en niet hoeft.
-                    Consolideren.VoerUit (self.Scenario.Projectvoortgang.Versiebeheer, consolidatieInformatieBron.GemaaktOp())
-                    # Bewaar een kopie van het interne versiebeheer voor weergave
-                    actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
-
-                if consolidatieInformatie is None:
-                    # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
-                    continue
-                # Verwerk de uitgewisselde consolidatie-informatie. Een productie-waardige (ontvangende) applicatie begint
-                # hier met de verwerking na ontvangst van een uitwisseling
-                self.Scenario.Log.Informatie ("Verwerk de consolidatie-informatie ontvangen op " + consolidatieInformatie.OntvangenOp + " (@" + consolidatieInformatie.GemaaktOp + ")")
-
                 # Zit er een publicatie aan vast?
-                if self.Scenario.Opties.IsRevisie (consolidatieInformatie.GemaaktOp):
-                    publicatieblad = None
-                    consolidatieInformatie.IsRevisie = True
+                if self.Scenario.Opties.IsRevisie (gebeurtenis.ConsolidatieInformatie.GemaaktOp):
+                    publicatie = None
+                    gebeurtenis.ConsolidatieInformatie.IsRevisie = True
                 else:
                     publicatiebladNummer += 1
-                    publicatieblad = 'pb{:03d}'.format (publicatiebladNummer)
+                    publicatie = 'pb{:03d}'.format (publicatiebladNummer)
+                if not activiteit is None:
+                    activiteit.Publicatie = publicatie
+
+                # Verwerk de uitgewisselde consolidatie-informatie. Een productie-waardige (ontvangende) applicatie begint
+                # hier met de verwerking na ontvangst van een uitwisseling
+                self.Scenario.Log.Informatie ("Verwerk de consolidatie-informatie ontvangen op " + gebeurtenis.ConsolidatieInformatie.OntvangenOp + " (@" + gebeurtenis.ConsolidatieInformatie.GemaaktOp + ")")
 
                 # Voeg de uitwisseling toe aan het interne versiebeheer-datamodel van het ontvangende systeem
-                uitwisseling = WerkVersiebeheerinformatieBij.VoerUit (self.Scenario.Log, self.Scenario.Versiebeheerinformatie, publicatieblad, consolidatieInformatie)
+                uitwisseling = WerkVersiebeheerinformatieBij.VoerUit (self.Scenario.Log, self.Scenario.Versiebeheerinformatie, publicatie, gebeurtenis.ConsolidatieInformatie)
                 if not uitwisseling.IsValide:
                     return
 
@@ -149,8 +144,8 @@ class Proces_Simulatie:
                             self.Scenario.Log.Informatie ("Bepaal de actuele toestanden voor " + workId)
                             MaakActueleToestanden.VoerUit (self.Scenario.Log, geconsolideerd, uitwisseling.Uitwisseling.GemaaktOp, uitwisseling.Uitwisseling.OntvangenOp, uitwisseling.Uitwisseling.BekendOp)
                             
-                            if not actieResultaat is None:
-                                actieResultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (geconsolideerd.ActueleToestanden, ProjectactieResultaat._Uitvoerder_LVBB, ProjectactieResultaat._Uitvoerder_BevoegdGezag))
+                            if not activiteit is None:
+                                activiteit.Uitgewisseld.append (UitgewisseldeSTOPModule (workId, geconsolideerd.ActueleToestanden, Activiteitverloop._Uitvoerder_LVBB, Activiteitverloop._Uitvoerder_BevoegdGezag))
 
                             if len (self.Scenario.Annotaties) > 0:
                                 # De volgendeGemaaktOp is in productie-waardige applicaties bij de verwerking op dit moment natuurlijk

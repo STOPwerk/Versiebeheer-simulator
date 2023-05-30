@@ -70,7 +70,7 @@ Een project wordt gespecificeerd door een .json bestand (meestal `bg_proces.json
         ...
     },
     "Projecten": {
-        "<code>" : {
+        "<naam>" : {
             "Beschrijving": "<beschrijving van het project>",
             "Acties": [
                 { 
