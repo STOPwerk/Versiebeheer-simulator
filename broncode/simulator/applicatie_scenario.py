@@ -442,12 +442,12 @@ class Scenario:
         if self.Opties is None:
             self.Opties = ProcesOpties (None if self.IsValide else False)
 
-        self.Opties.Versiebeheer = False
+        self.Opties.BGProces = False
         if not self.BGProces is None:
             if self.IsValide and not self.Opties.ActueleToestanden:
                 self.Log.Waarschuwing ("Bepaling van actuele toestanden wordt altijd uitgevoerd als BG activiteiten zijn gespecificeerd")
                 self.Opties.ActueleToestanden = True
-            self.Opties.Versiebeheer = True
+            self.Opties.BGProces = True
             if self.Opties.Beschrijving is None:
                 self.Opties.Beschrijving = self.BGProces.Beschrijving
             self.BGVersiebeheerinformatie = BGVersiebeheerinformatie ()

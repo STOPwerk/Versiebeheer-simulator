@@ -17,8 +17,10 @@
 # van uitwisselen (d.w.z. op volgorde van gemaaktOp).
 #
 #======================================================================
+from typing import List, Dict, Set, Tuple 
 
-from applicatie_meldingen import Melding
+from applicatie_meldingen import Melding, Meldingen
+from data_doel import Doel
 from data_lv_versiebeheerinformatie import Versiebeheerinformatie, Uitwisseling, UitgewisseldeInstrumentversie, Instrument, Branch, MomentopnameInstrument, MomentopnameTijdstempels
 from proces_lv_branchescumulatief import AccumuleerBranchInformatie
 from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Terugtrekking, Intrekking, TerugtrekkingIntrekking, VoorTijdstempel, Tijdstempel, TerugtrekkingTijdstempel, MaterieelUitgewerkt
@@ -256,23 +258,21 @@ class UitwisselingInformatie:
         # Geeft aan of de vertaling goed is gegaan
         self.IsValide = True
         # De beschrijving van de uitwisseling
-        # Instantie van Uitwisseling
-        self.Uitwisseling = None
+        self.Uitwisseling : Uitwisseling = None
         # Eerste datum dat aspecten van de uitwisseling voor het eerst publiek bekend zijn,
         # per instrument. Als tijdreizen op bekendOp ondersteund wordt moeten vanaf deze datum
         # de complete toestanden opnieuw berekend worden.
         # key = work-Id, value = datum (string)
-        self.EersteBekendOp = {}
+        self.EersteBekendOp : Dict[str,str] = {}
         # De instrumenten waarvoor de consolidatie verandert. De instrumenten zijn nodig om 
         # te weten welke consolidaties uitgevoerd moeten worden.
         # Set van work-id
-        self.Instrumenten = set ()
+        self.Instrumenten : Set[str] = set ()
         # De doelen waarvoor consolidatie-informatie is uitgewisseld
-        # Lijst met instanties van Doel
-        self.Doelen = set()
+        self.Doelen :Set[Doel] = set()
         # De bijdragen aan de juridische verantwoording 
-        # Key = workId, value = JuridischeVerantwoording
-        self.Verantwoording = {}
+        # Key = workId
+        self.Verantwoording : Dict[str,JuridischeVerantwoording] = {}
 
 class WerkVersiebeheerinformatieBij:
 
@@ -295,7 +295,7 @@ class WerkVersiebeheerinformatieBij:
 #----------------------------------------------------------------------
 # Implementatie
 #----------------------------------------------------------------------
-    def __init__ (self, log, versiebeheerinformatie : Versiebeheerinformatie, publicatieblad : str):
+    def __init__ (self, log : Meldingen, versiebeheerinformatie : Versiebeheerinformatie, publicatieblad : str):
         """Maak een instantie met alle informatie nodig tijdens de vertaling"""
         # Versiebeheerinformatie die bijgewerkt moet worden
         self.Versiebeheerinformatie = versiebeheerinformatie
@@ -308,8 +308,7 @@ class WerkVersiebeheerinformatieBij:
         self.Resultaat = UitwisselingInformatie ()
         # Tijdens de verwerking van een ConsolidatieInformatie module:
         # de instrument-gerelateerde wijzigingen
-        # Lijst van instanties van MomentopnameInstrument
-        self._ToegevoegdeMomentopnamen = []
+        self._ToegevoegdeMomentopnamen : List[MomentopnameInstrument] = []
 
 #----------------------------------------------------------------------
 # Verwerk een enkele ConsolidatieInformatie module

@@ -14,8 +14,11 @@
 # van de data die later nog kan wijzigen.
 #
 #======================================================================
+from typing import List, Dict, Set, Tuple
+from data_bg_versiebeheer import Instrument
 
 from data_doel import Doel
+from data_bg_versiebeheer import Consolidatie
 from data_lv_versiebeheerinformatie import Uitwisseling
 from proces_lv_tijdreisfilter import Filter_CompleteToestanden, Filtervoorschrift
 from stop_completetoestanden import CompleteToestanden, Toestand
@@ -36,24 +39,24 @@ class WeergaveData:
         """
         self.Scenario = scenario
         # Resultaten per instrument
-        # key = workId, value = lijst met instanties van InstrumentData
-        self.InstrumentData = {}
+        # key = workId
+        self.InstrumentData : Dict[str,List[InstrumentData]] = {}
         # Bewaar voor elk doel de eerste datum juridischWerkendVanaf en
         # de eerste gemaaktOp van aanlevering, om een volgorde van de doelen
         # voor de illustraties en voor korte naamgeving te maken.
-        # key = doel, value = eerste gemaaktOp
-        self._DoelEersteGemaaktOp = {}
-        # key = doel, value = eerste juridischWerkendVanaf
-        self._DoelEersteJuridischWerkendVanaf= {}
+        # value = eerste gemaaktOp
+        self._DoelEersteGemaaktOp : Dict[Doel,str] = {}
+        # value = eerste juridischWerkendVanaf
+        self._DoelEersteJuridischWerkendVanaf : Dict[Doel,str]= {}
         # Symbolen en namen van de doelen
         # Gesorteerde lijst met (doel, letter)
-        self._DoelSymbool = None
+        self._DoelSymbool : List[Tuple[Doel,str]] = None
         # Uniek ID voor een toestand, zodat dezelfde toestand in alle weergaven herkend kan worden.
         # Laatst uitgegeven waarde
         self._LaatsteToestandUniekId = 0
         # Uniek ID voor een actuele toestand, als bepaald op basis van de informatie in de complete toestanden
         # key = toestandidentificatie, value = uniek ID (int)
-        self._ActueleToestandUniekId = {}
+        self._ActueleToestandUniekId : Dict[str,int] = {}
         # Uniek ID voor alle elementen die een uniek ID moeten krijgen zodat ze in de verschillende 
         # overzichten als hetzelfde herkend kunnen worden
         self._LaatsteUniekId = 0
@@ -78,7 +81,7 @@ class WeergaveData:
         return gemaaktOp
 
 
-    def WerkBij (self, uitwisseling : Uitwisseling, instrumentWorkId, alleDoelen, proefversies):
+    def WerkBij (self, uitwisseling : Uitwisseling, instrumentWorkId : Set[str], alleDoelen : Set[Doel], proefversies : Dict[str, List[Proefversie]]):
         """Werk de gegevens voor presentatie bij.
 
         Argumenten:
@@ -107,7 +110,7 @@ class WeergaveData:
                 self._LaatsteUniekId += 1
                 data.Uitwisselingen.append (InstrumentUitwisseling (str(self._LaatsteUniekId), data, uitwisseling, workId, proefversies.get (workId)))
 
-    def Branches (self, doelen):
+    def Branches (self, doelen : List[Doel]):
         """Geeft de volgorde waarin de doelen getoond moeten worden, en het symbool voor het tonen van het doel.
 
         Argumenten:

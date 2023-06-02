@@ -28,20 +28,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="README.md" />
+    <Content Include="simulator\applicatie_meldingen.js" />
     <Content Include="simulator\applicatie_meldingen_einde.html" />
+    <Content Include="simulator\applicatie_meldingen_filter.html" />
     <Content Include="simulator\applicatie_meldingen_start.html" />
     <Content Include="simulator\weergave_annotaties.css" />
     <Content Include="simulator\weergave_annotaties.js" />
     <Content Include="simulator\weergave_annotaties_help.html" />
-    <Content Include="simulator\weergave_bg_versiebeheer_help_consolidatie.html" />
     <Content Include="simulator\weergave_proefversies.css" />
     <Content Include="simulator\weergave_proefversies.js" />
     <Content Include="simulator\weergave_proefversies_help.html" />
     <Content Include="simulator\weergave_actueletoestanden_help.html" />
     <Content Include="simulator\weergave_bg_versiebeheer.js" />
-    <Content Include="simulator\weergave_bg_versiebeheer_help_versiebeheer.html" />
+    <Content Include="simulator\weergave_bg_versiebeheer_help.html" />
     <Content Include="simulator\weergave_bg_versiebeheer.css" />
-    <Content Include="simulator\weergave_project_uitwisselingen_help.html" />
+    <Content Include="simulator\weergave_bg_uitwisselingen_help.html" />
     <Content Include="simulator\weergave_resultaat_Applicatie.js" />
     <Content Include="simulator\weergave_resultaat_help_meldingen.html" />
     <Content Include="simulator\weergave_resultaat_help_sectie_op.html" />
@@ -68,11 +69,11 @@
     <Content Include="simulator\weergave_toestandbepaling_completetoestanden.js" />
     <Content Include="simulator\weergave_toestandbepaling_completetoestanden.css" />
     <Content Include="simulator\weergave_consolidatieinformatie_help.html" />
-    <Content Include="simulator\weergave_projecten_help.html" />
-    <Content Include="simulator\weergave_projecten.css" />
+    <Content Include="simulator\weergave_bg_proces_help.html" />
+    <Content Include="simulator\weergave_bg_proces.css" />
     <Content Include="simulator\weergave_uitwisselingen_help.html" />
     <Content Include="simulator\weergave_uitwisselingen.css" />
-    <Content Include="simulator\weergave_projecten.js" />
+    <Content Include="simulator\weergave_bg_proces.js" />
     <Content Include="simulator\weergave_uitwisselingselector.html" />
     <Content Include="simulator\weergave_uitwisselingselector.css" />
     <Content Include="simulator\weergave_uitwisselingselector.js" />
@@ -109,10 +110,9 @@
     <Compile Include="simulator\applicatie_versie.py" />
     <Compile Include="simulator\data_bg_project.py" />
     <Compile Include="simulator\data_bg_procesverloop.py" />
+    <Compile Include="simulator\data_validatie.py" />
     <Compile Include="simulator\proces_bg_consolidatie.py" />
     <Compile Include="simulator\proces_bg_activiteiten.py" />
-    <Compile Include="simulator\proces_bg_versiebeheer.py" />
-    <Compile Include="simulator\weergave_data_bg_versiebeheer.py" />
     <Compile Include="simulator\data_bg_versiebeheer.py" />
     <Compile Include="simulator\data_lv_actueleannotaties.py" />
     <Compile Include="simulator\data_lv_proefversies.py" />
@@ -146,9 +146,9 @@
     <Compile Include="simulator\stop_toestand.py" />
     <Compile Include="simulator\weergave_actueletoestanden.py" />
     <Compile Include="simulator\weergave_bg_versiebeheer.py" />
-    <Compile Include="simulator\weergave_project_uitwisselingen.py" />
+    <Compile Include="simulator\weergave_bg_uitwisselingen.py" />
     <Compile Include="simulator\weergave_proefversies.py" />
-    <Compile Include="simulator\weergave_projecten.py" />
+    <Compile Include="simulator\weergave_bg_proces.py" />
     <Compile Include="simulator\weergave_tijdreisfilter.py" />
     <Compile Include="simulator\weergave_completetoestanden.py" />
     <Compile Include="simulator\weergave_resultaat.py" />

@@ -86,4 +86,4 @@ else:
     Scenario.VoorElkScenario (log, scenarioIterator, Uitvoering.VoerUit)
     log.Informatie ("Consolidaties: " + str (scenarioIterator.AantalSucces) + " uitgevoerd, " + str (scenarioIterator.AantalScenarios - scenarioIterator.AantalSucces) + " niet (volledig) uitgevoerd")
 
-log.ToonHtml (meldingen_pad)
+log.ToonHtml ('applicatie_meldingen', meldingen_pad)

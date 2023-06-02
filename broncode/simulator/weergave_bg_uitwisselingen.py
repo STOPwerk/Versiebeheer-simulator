@@ -11,11 +11,11 @@ from weergave_stopmodule import Weergave_STOPModule
 from weergave_uitwisselingselector import Weergave_Uitwisselingselector
 from weergave_webpagina import WebpaginaGenerator
 
-class Weergave_Project_Uitwisselingen:
+class Weergave_BG_Uitwisselingen:
     
     def VoegToe (generator: WebpaginaGenerator, scenario : Scenario):
         """Voeg een overzicht van de uitwisselingen toe die gedaan worden 
-        in het kader van de projecten bij BG.
+        in het kader van de activiteiten van BG en adviesbureaus.
 
         Argumenten:
 
@@ -30,7 +30,7 @@ class Weergave_Project_Uitwisselingen:
         # Overzicht van de projectacties
         selector = Weergave_Uitwisselingselector (scenario)
         moduleMaker = Weergave_STOPModule (generator)
-        for resultaat in scenario.Projectvoortgang.Projectacties:
+        for resultaat in scenario.Procesvoortgang.Activiteiten:
             if len (resultaat.Uitgewisseld) > 0:
                 generator.VoegHtmlToe ('<div ' + selector.AttributenToonVoor (resultaat._Projectactie.UitgevoerdOp) + '>')
                 for module in resultaat.Uitgewisseld:

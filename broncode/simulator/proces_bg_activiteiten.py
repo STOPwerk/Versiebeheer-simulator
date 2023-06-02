@@ -35,9 +35,10 @@ from datetime import datetime, timedelta
 from math import floor
 
 from applicatie_meldingen import Meldingen
-from data_bg_procesverloop import Activiteitverloop, Projectstatus, Branch
+from data_bg_procesverloop import Activiteitverloop, Procesvoortgang, Projectstatus, Branch
+from data_bg_versiebeheer import Versiebeheerinformatie, Commit, Instrument, InstrumentInformatie, Instrumentversie, Consolidatie
 from data_doel import Doel
-from stop_momentopname import DownloadserviceModules, Momentopname, InstrumentversieInformatie
+from data_validatie import Valideer
 from stop_consolidatieinformatie import ConsolidatieInformatie
 
 #======================================================================
@@ -63,29 +64,28 @@ class BGProces:
         Resultaat van de methode is een BGProces instantie, of None als de JSON 
         geen specificatie van het BG proces is
         """
-        if not "BevoegdGezag" in data:
+        if not "BGCode" in data:
             return None
         bgprocess = BGProces ()
-        bgprocess.Soort = data["BevoegdGezag"]
-        if "BGCode" in data:
-            bgprocess.BGCode = data["BGCode"]
-        else:
-            log.Fout ("BGCode ontbreekt in '" + pad + "'")
-            bgprocess._IsValide = False
+        bgprocess.BGCode = data["BGCode"]
         if "Beschrijving" in data:
-            bgprocess.BGCode = data["Beschrijving"]
+            bgprocess.Beschrijving = data["Beschrijving"]
         if "Startdatum" in data:
-            try:
-                bgprocess._Startdatum = datetime (int (data["Startdatum"][0:4]), int (data["Startdatum"][4:6]), int (data["Startdatum"][6:8]))
-            except Exception as e:
-                log.Fout ("Startdatum is geen valide datum in '" + pad + "': " + str(e))
+            if Valideer.Datum (data["Startdatum"]) is None:
+                log.Fout ("Startdatum (" + data["Startdatum"] + ") is geen valide datum in '" + pad + "'")
                 bgprocess._IsValide = False
+            else:
+                try:
+                    bgprocess._Startdatum = datetime (int (data["Startdatum"][0:4]), int (data["Startdatum"][5:7]), int (data["Startdatum"][8:10]))
+                except Exception as e:
+                    log.Fout ("Startdatum is geen valide datum in '" + pad + "': " + str(e))
+                    bgprocess._IsValide = False
         else:
             log.Fout ("Startdatum ontbreekt in '" + pad + "'")
             bgprocess._IsValide = False
 
         if "Projecten" in data:
-            for project, activiteiten in data["Projecten"]:
+            for project, activiteiten in data["Projecten"].items ():
                 bgprocess.Projecten.add (project)
                 for activiteit in activiteiten:
                     a = Activiteit.LeesJson (log, pad, bgprocess, project, activiteit)
@@ -112,8 +112,6 @@ class BGProces:
 # Initialisatie en overige eigenschappen
 #----------------------------------------------------------------------
     def __init__ (self):
-        # Soort van het bevoegd gezag
-        self.Soort: str = None
         # Code te gebruiken bij het bepalen van de AKN/JOIN workId
         self.BGCode: str = None
         # Beschrijving van het scenario, als alternatief voor de beschrijving in 
@@ -126,8 +124,6 @@ class BGProces:
         self.Activiteiten : List[Activiteit] = []
         # Geeft aan of de specificatie valide is
         self._IsValide = True
-
-
 
 #======================================================================
 #
@@ -177,7 +173,7 @@ class Activiteit:
         del data["Soort"]
         activiteit._Data = data
         activiteit.Project = project
-        activiteit.UitgevoerdOp = tijdstip.strftime ("%Y%m%dT%H:%M:SZ")
+        activiteit.UitgevoerdOp = tijdstip.strftime ("%Y-%m-%dT%H:%M:%SZ")
 
         if not activiteit._LeesData (log, pad):
             ok = False
@@ -198,7 +194,7 @@ class Activiteit:
         
         Resultaat van de methode geeft aan of het inlezen geslaagd is
         """
-        raise "_LeesData niet geïmplementeerd"
+        raise Exception ("_LeesData niet geïmplementeerd")
 
 #----------------------------------------------------------------------
 # Initialisatie en overige eigenschappen
@@ -211,15 +207,20 @@ class Activiteit:
         self._Soort : str = None
         # Specificatie van de activiteit voor zover niet bij het inlezen omgezets
         self._Data = None
+        # Geeft aan dat de activiteit binnen een project uitgevoerd dient te worden
+        self._ProjectVerplicht : bool = True
         # Tijdstip waarop de activiteit uitgevoerd is
         self.UitgevoerdOp : str = None
-        # De naam van de activiteit; bij None wordt _Soort gebruikt
-        self.Naam : str = None
         # Project waarvoor de activiteit uitgevoerd wordt
         self.Project : str = None
+        # Als de activiteit leidt tot een uitwisseling: de naam van de uitwisseling
+        self.UitwisselingNaam = None
         # Soort publicatie die volgt uit deze activiteit
         self.SoortPublicatie : str = None
 
+#----------------------------------------------------------------------
+# Uitvoering
+#----------------------------------------------------------------------
     def VoerUit (self, log : Meldingen, scenario, gebeurtenis) -> Tuple[bool,Activiteitverloop]:
         """Voer de activiteit uit
         
@@ -230,14 +231,22 @@ class Activiteit:
         
         Resultaat van de methode geeft aan of de uitvoering geslaagd is, en geeft het resulterende Activiteitverloop
         """
-        context = Activiteit._VoerUitContext (log, scenario, Activiteitverloop (self.UitgevoerdOp, self._Soort if self.Naam is None else self.Naam))
+        activiteitverloop = Activiteitverloop (self.UitgevoerdOp, )
+        context = Activiteit._VoerUitContext (log, scenario, activiteitverloop)
         
         if not self.Project is None:
             context.ProjectStatus = scenario.Procesvoortgang.Projecten.get (self.Project)
             if context.ProjectStatus is None:
                 context.ProjectStatus = Projectstatus (self.Project, self.UitgevoerdOp)
                 scenario.Procesvoortgang.Projecten[self.Project] = context.ProjectStatus
+            context.Activiteitverloop.UitgevoerdDoor = context.ProjectStatus.UitgevoerdDoor
+            context.Activiteitverloop.Projecten.add (self.Project)
+        elif self._ProjectVerplicht:
+            self._LogFout (context, "de activiteit moet als onderdeel van een project uitgevoerd worden")
+            return
         self._VoerUit (context)
+        if activiteitverloop.Naam is None:
+            activiteitverloop.Naam = self._Soort
         gebeurtenis.ConsolidatieInformatie = context.ConsolidatieInformatie
         return (context.Succes, context.Activiteitverloop)
 
@@ -245,14 +254,31 @@ class Activiteit:
         def __init__(self, log : Meldingen, scenario, resultaat: Activiteitverloop):
             self.Log = log;
             self.Scenario = scenario
+            self.Procesvoortgang : Procesvoortgang = scenario.Procesvoortgang
+            self.Versiebeheer : Versiebeheerinformatie = scenario.BGVersiebeheerinformatie
             # Rapportage over de activiteit
             self.Activiteitverloop = resultaat
+            self.Procesvoortgang.Activiteiten.append (resultaat)
             # Status van het project waartoe de activiteit behoort
             self.ProjectStatus : Projectstatus = None 
             # Resulterende consolidatie-informatie
             self.ConsolidatieInformatie : ConsolidatieInformatie = None
             # Geeft aan of de uitvoering succesvol was.
             self.Succes = True
+
+        def MaakCommit (self, branch : Branch, volgnummer : int = 1):
+            """Maak een commit voor weergave in de resultaatpagina.
+
+            Argumenten:
+
+            branch Branch  Branch waarvoor de commit aangemaakt is
+            gemaaktOp string  Tijdstip van wijziging van de branch
+            volgnummer int  Volgnummer van de commit
+            """
+            commit = Commit (branch, self.Activiteitverloop.UitgevoerdOp, volgnummer)
+            self.Activiteitverloop.Commits.append (commit)
+            return commit
+
 
     def _VoerUit (self, context: _VoerUitContext):
         """Voer de activiteit uit
@@ -261,7 +287,14 @@ class Activiteit:
 
         context _VoerUitContext Status van de simulatie en en resultaat van de activiteit
         """
-        raise "_VoerUit niet geïmplementeerd"
+        raise Exception ("_VoerUit niet geïmplementeerd")
+
+    def _LogFout (self, context: _VoerUitContext, tekst : str):
+        context.Log.Fout (self._MaakMelding (tekst))
+        context.Succes = False
+
+    def _MaakMelding (self, tekst : str):
+        return "BG activiteit " + self._Soort + " (" + self.UitgevoerdOp + "): " + tekst
 
 
 #======================================================================
@@ -270,6 +303,11 @@ class Activiteit:
 #
 #======================================================================
 
+#----------------------------------------------------------------------
+#
+# Wijziging van instrumentversies en/of tijdstempels in de branch
+#
+#----------------------------------------------------------------------
 class Versiebeheer_Commit (Activiteit):
     """Commit nieuwe instrumentversies en evt annotaties voor één of meer branches. 
     Deze activiteit is tevens de basis voor een aantal andere activiteiten die daarna (of 
@@ -277,34 +315,192 @@ class Versiebeheer_Commit (Activiteit):
     """
     def __init__ (self):
         super ().__init__ ()
+        # Branches waarvoor wijzigingen zijn opgegeven
+        # key = naam, value = specificatie van de wijziging (lezen bij uitvoeren van de activiteit)
+        self.CommitSpecificatie : Dict[str,object] = {}
 
     def _LeesData (self, log, pad) -> bool:
         # De rest van de specificatie wordt bij uitvoering gelezen
+        for naam, specificatie in self._Data.items ():
+            if isinstance (specificatie, dict):
+                self.CommitSpecificatie[naam] = specificatie
         return True
 
+    def _VoerUit (self, context: Activiteit._VoerUitContext):
+        """Voer de activiteit uit.
+        """
+        # Voor weergave in de resultaatpagina:
+        if context.Activiteitverloop.Naam is None:
+            context.Activiteitverloop.Naam = "Wijzig regelgeving"
+        if len (self.CommitSpecificatie) > 0:
+            if context.Activiteitverloop.Beschrijving is None:
+                context.Activiteitverloop.Beschrijving = "De eindgebruiker wijzigt de kopie van de regelgeving waaraan binnen het project wordt gewerkt."
+
+        # Valideer dat de branches bestaan waarvoor wijzigigen zijn opgegeven
+        onbekendeNamen = set(self.CommitSpecificatie.keys()).difference (b._Doel.Naam for b in context.ProjectStatus.Branches)
+        if len (onbekendeNamen) > 0:
+            self._LogFout (context, "het wijzigen van regelgeving moet beperkt zijn tot de branches van het project '" + self.Project + "', dus niet: '" + "', '".join (onbekendeNamen) + "'")
+            return
+
+        # Voor weergave in de resultaatpagina:
+        if len (context.ProjectStatus.Branches) > 1:
+            context.Activiteitverloop.MeldInteractie (True, 'Pas de regelgeving aan voor één of meer van de beoogde inwerkingtredingsmomenten (branches) in het project')
+        else:
+            context.Activiteitverloop.MeldInteractie (True, 'Pas de regelgeving aan in het project')
+
+        # Pas de wijzigingen toe
+        # Als dit een zelfstandige actie is zijn tijdstempels niet toegestaan, die mogen pas bij een vaststellingsbesluit toegevoegd worden.
+        for naam in sorted (self.CommitSpecificatie.keys ()):
+            self._VoerWijzigingenUit (context, naam, None, False)
+
+    def _VoerWijzigingenUit (self, context: Activiteit._VoerUitContext, naam: str, commit: Commit, tijdstempelsToegestaan: bool):
+        """Neem wijzigingen voor de branches over. Alle (overgebleven) attributen 
+        van de specificatie die als waarde een JSON object hebben
+        worden geacht specificaties van instrumentversies voor een
+        bestaande branch te zijn.
+
+        Argumenten:
+
+        context _VoerUitContext Context van de uitvoering
+        naam string  Naam van de branch (moet in self.CommitSpecificatie voorkomen)
+        commit Commit  Commit waar de wijziging deel van uitmaakt. None om een nieuwe commit aan te maken.
+        tijdstempelsToegestaan boolean  Geeft aan of ook tijdstempels opgegeven mogen worden
+        """
+        # Valideer dat de branch bestaat, er wijzigingen zijn, en de wijzigingen toegepast mogen worden
+        specificatie = self.CommitSpecificatie.get (naam)
+        if specificatie is None:
+            return
+        doel = Doel.DoelInstantie ('/join/id/proces/' + self._BGProcess.BGCode + '/' + naam)
+        branch = context.Versiebeheer.Branches.get (doel)
+        if branch is None:
+            self._LogFout (context, "branch '" + naam + "' is (nog) niet aangemaakt")
+            return
+        if branch.Project is None:
+            self._LogFout (context, "branch '" + naam + "' wordt niet via BG activiteiten beheerd maar via uitgewisselde ConsolidatieInformatie modules")
+            return
+        elif not self.Project is None and branch.Project != self.Project:
+            self._LogFout (context, "branch '" + naam + "' wordt in project '" + branch.Project + "' beheerd maar deze activiteit is voor project '" + self.Project + "'")
+            return
+
+        regelgevingGewijzigd = False
+        tijdstempelsGewijzigd = False
+        # Pas de wijzigingen per instrument toe
+        for workIdNaam, versie in specificatie.items ():
+            instrument = context.Versiebeheer.Instrumenten.get (workIdNaam)
+            if instrument is None:
+                instrument = Instrument.Bepaal (self, context.Versiebeheer, workIdNaam)
+                if instrument is None:
+                    self._LogFout (context, "Soort instrument kan niet bepaald worden voor '" + workIdNaam + "'")
+                    continue
+            info = branch.Instrumentversies.get (instrument.WorkId)
+            regelgevingGewijzigd = True
+            if commit is None:
+                commit = context.MaakCommit (branch)
+
+            # Invoer kan zijn:
+            #   null: intrekken van instrument
+            #   false: terugtrekken van instrument
+            #   true: onbekende versie
+            #   { ... }: bekende versie, evt met annotaties
+            if versie is None:
+                # Intrekking van het instrument
+                if info is None:
+                    self._LogFout (context, "geen informatie over instrument '" + workIdNaam + "' bekend voor branch '" + branch._Doel.Naam + "'; kan het instrument niet intrekken")
+                    continue
+                context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Branch '" + naam + "': markeer instrument '" + workIdNaam + "' als juridisch uitgewerkt")
+                # Leg de intrekking vast in een nieuwe Instrumentversie
+                info.TrekInstrumentIn (commit)
+            else:
+                instrumentversie = None
+                if isinstance (versie, bool):
+                    if versie:
+                        # Nieuwe maar onbekende/niet-ingevoerde versie van het instrument
+                        if info is None:
+                            self._LogFout (context, "geen informatie over instrument '" + workIdNaam + "' bekend voor branch '" + branch._Doel.Naam + "'; kan geen onbekende versie specificeren")
+                            continue
+                        info.WijzigInstrument (commit, None)
+                        context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Branch '" + naam + "': markeer versie als onbekend voor instrument '" + workIdNaam + "'")
+                    else:
+                        # Terugtrekking van de wijziging voor deze branch
+                        if info is None:
+                            self._LogFout (context, "geen informatie over instrument '" + workIdNaam + "' bekend voor branch '" + branch._Doel.Naam + "'; kan wijziging van instrument niet terugtrekken")
+                            continue
+                        info.TrekWijzigingTerug (commit)
+                        context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Branch '" + naam + "': trek wijziging voor instrument '" + workIdNaam + "' terug")
+                else:
+                    # Nieuwe ingevoerde versie van het instrument
+                    if info is None:
+                        branch.Instrumentversies[instrument.WorkId] = info = InstrumentInformatie (branch, instrument)
+                    expressionId = instrument.MaakExpressionId (self, branch)
+                    instrumentversie = info.WijzigInstrument (commit, expressionId)
+                    context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Branch '" + naam + "': nieuwe versie voor instrument '" + workIdNaam + "': " + expressionId)
+
+                if not instrumentversie is None and isinstance (versie, dict):
+                    # TODO: Annotaties gespecificeerd?
+                    pass
+
+        if tijdstempelsToegestaan:
+            if "JuridischWerkendVanaf" in specificatie:
+                juridischWerkendVanaf = None
+                geldigVanaf = None
+                if isinstance (specificatie["JuridischWerkendVanaf"], str):
+                    if Valideer.Datum (specificatie["JuridischWerkendVanaf"]) is None:
+                        self._LogFout (context, "JuridischWerkendVanaf (" + specificatie["JuridischWerkendVanaf"] + ") is geen valide datum")
+                    else:
+                        juridischWerkendVanaf = specificatie["JuridischWerkendVanaf"]
+                    if "GeldigVanaf" in specificatie and isinstance (specificatie["GeldigVanaf"], str):
+                        if Valideer.Datum (specificatie["GeldigVanaf"]) is None:
+                            self._LogFout (context, "GeldigVanaf (" + specificatie["GeldigVanaf"] + ") is geen valide datum")
+                        else:
+                            geldigVanaf = specificatie["GeldigVanaf"]
+                            if geldigVanaf == juridischWerkendVanaf:
+                                geldigVanaf = None
+                if commit is None:
+                    commit = context.MaakCommit (branch)
+                branch.WijzigTijdstempels (commit, juridischWerkendVanaf, geldigVanaf)
+                tijdstempelsGewijzigd = True
+
+                context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Branch '" + naam + "': nieuwe tijdstempels JuridischWerkendVanaf " + ("-" if juridischWerkendVanaf is None else juridischWerkendVanaf) + ", GeldigVanaf " + ("-" if geldigVanaf is None else geldigVanaf))
+
+            elif "GeldigVanaf" in specificatie:
+                self._LogFout (context, "branch '" + naam + "': GeldigVanaf mag alleen in combinatie met JuridischWerkendVanaf gespecificeerd worden")
+        else:
+            if "JuridischWerkendVanaf" in specificatie or "GeldigVanaf" in specificatie:
+                self._LogFout (context, "Tijdstempels voor branch '" + naam + "' mogen voor deze activiteit niet gespecificeerd worden")
+
+        if regelgevingGewijzigd or tijdstempelsGewijzigd:
+            context.Activiteitverloop.MeldInteractie (False, 'Wijzigt ' + ('regelgeving ' if regelgevingGewijzigd else '')+ ('en ' if regelgevingGewijzigd and tijdstempelsGewijzigd else '')+ ('geldigheidsinformatie ' if tijdstempelsGewijzigd else '') + 'voor ' + branch.InteractieNaam)
+
+#----------------------------------------------------------------------
+#
+# Aanmaken van een nieuwe branch
+#
+#----------------------------------------------------------------------
 class Versiebeheer_MaakBranch (Versiebeheer_Commit):
     """Maak een nieuwe branch voor een project
     """
     def __init__ (self):
         super ().__init__ ()
-        self.BranchSoort : Dict[str,Tuple[str,List[str]]] = {}
+        # Branches die aangemaakt moeten worden
+        # key = naam, value = soort, branches waarvan de branch afhankelijk is
+        self.BranchSpecificatie : Dict[str,Tuple[str,Set[str]]] = {}
 
     def _LeesData (self, log, pad) -> bool:
         ok = True
         for naam, specificatie in self._Data.items ():
             if isinstance (specificatie, dict):
                 if "Soort" in specificatie:
-                    branches = None
+                    branches = []
                     if specificatie["Soort"] == "VolgendOp":
-                        if not "Branch" in specificatie:
-                            log.Fout ("Branch onbreekt voor branch '" + naam + "' in activiteit met Soort='" + self._Soort + "' in '" + pad + "'")
+                        if not "Branch" in specificatie or not isinstance (specificatie["Branch"], str):
+                            log.Fout ("Branch onbreekt/moet een string zijn voor branch '" + naam + "' in activiteit met Soort='" + self._Soort + "' in '" + pad + "'")
                             ok = False
                         else:
                             branches = [specificatie["Branch"]]
                             del specificatie["Branch"]
                     elif specificatie["Soort"] == "TegelijkMet":
-                        if not "Branches" in specificatie or not isinstance (specificatie["Branches", list]) or len (specificatie["Branches", list]) == 0:
-                            log.Fout ("Branches onbreekt/moet een niet-leeg array zijn voor branch '" + naam + "' in activiteit met Soort='" + self._Soort + "' in '" + pad + "'")
+                        if not "Branches" in specificatie or not isinstance (specificatie["Branches"], list) or len (specificatie["Branches"]) <= 1:
+                            log.Fout ("Branches onbreekt/moet een array zijn (met minimaal 2 branchnamen) voor branch '" + naam + "' in activiteit met Soort='" + self._Soort + "' in '" + pad + "'")
                             ok = False
                         else:
                             branches = specificatie["Branches"]
@@ -312,872 +508,136 @@ class Versiebeheer_MaakBranch (Versiebeheer_Commit):
                     elif specificatie["Soort"] != "Regulier":
                         log.Fout ("Soort onbreekt voor branch '" + naam + "' in activiteit met Soort='" + self._Soort + "' in '" + pad + "'")
                         ok = False
-                    self.BranchSoort[naam] = (specificatie["Soort"], branches)
+                    self.BranchSpecificatie[naam] = (specificatie["Soort"], branches)
+                    del specificatie["Soort"]
+        if not super()._LeesData (log, pad):
+            ok = False
         return ok
 
-
-
-
-
-
-
-
-
-
-#************************
-#************************
-#************************ Rest nog opschonen
-#************************
-#************************
-
-class Procesbegeleiding:
-
-#----------------------------------------------------------------------
-#
-# Uitvoering van de actie.
-#
-#----------------------------------------------------------------------
-    @staticmethod
-    def VoerUit (log: Meldingen, scenario, actie: ProjectActie) -> Tuple[bool, ConsolidatieInformatie, ProjectactieResultaat]:
-        """Voer de projectactie uit.
-
-        Argumenten:
-
-        log Meldingen  Verzameling van meldingen over de uitvoering van het scenario
-        scenario Scenario  Invoer en uitvoer van het scenario, bevat informatie over het versiebeheer zoals bevoegd gezag dat uitvoert.
-        actie ProjectActie  De actie die in het project wordt uitgevoerd
-
-        Geeft (isValide,ConsolidatieInformatie, ProjectactieResultaat) terug die volgt uit de actie.
+    def _VoerUit (self, context: Activiteit._VoerUitContext):
+        """Voer de activiteit uit.
         """
-
-        # Maak de uitvoerder van de actie aan
-        if not actie.SoortActie in Procesbegeleiding._Uitvoerders:
-            log.Fout ("Geen code beschikbaar om actie uit te voeren: '" + actie.SoortActie + "'")
+        isNieuwProject = self.UitgevoerdOp == context.ProjectStatus.GestartOp
+        if isNieuwProject:
+            if context.Activiteitverloop.Naam is None:
+                context.Activiteitverloop.Naam = "Maak nieuw project"
+            if not context.Activiteitverloop.Beschrijving:
+                context.Activiteitverloop.Beschrijving = "De eindgebruiker start een project om aan nieuwe regelgeving te werken."
+            context.Activiteitverloop.MeldInteractie (False, '''Maakt een nieuw project aan.''')
         else:
-            uitvoerder = Procesbegeleiding._Uitvoerders[actie.SoortActie] ()
-            uitvoerder._Log = log
-            uitvoerder._Scenario = scenario
-            uitvoerder._Projectvoortgang = scenario.Projectvoortgang
-            uitvoerder._Projectstatus = uitvoerder._Projectvoortgang.Projecten.get (actie._Project.Code)
-            if uitvoerder._Projectstatus is None:
-                uitvoerder._Projectvoortgang.Projecten[actie._Project.Code] = uitvoerder._Projectstatus = Projectstatus (actie._Project)
-            uitvoerder._Resultaat = ProjectactieResultaat (actie)
+            if context.Activiteitverloop.Naam is None:
+                context.Activiteitverloop.Naam = "Bereid nieuwe inwerkingtredingsmomenten voor"
+            if not context.Activiteitverloop.Beschrijving:
+                context.Activiteitverloop.Beschrijving = "De eindgebruiker maakt een kopie van de regelgeving om binnen het project aan te werken."
 
-            # Voer de actie uit en geef de resulterende ConsolidatieInformatie terug
-            if not uitvoerder.VoerUit (actie):
-                return (False, None, None)
-            uitvoerder._Projectvoortgang.Projectacties.append (uitvoerder._Resultaat)
-            if len (uitvoerder._Resultaat.Uitgewisseld) > 0 and isinstance (uitvoerder._Resultaat.Uitgewisseld[0].Module, ConsolidatieInformatie):
-                return (True, uitvoerder._Resultaat.Uitgewisseld[0].Module, uitvoerder._Resultaat)
-            return (True, None, uitvoerder._Resultaat)
+        context.Activiteitverloop.MeldInteractie (True, '''Maak voor elk beoogde inwerkingtredingsmoment een kopie van de regelgeving.
+Binnen het project wordt de kopie gewijzigd zonder dat dit meteen invloed heeft op de werkzaamheden in andere projecten.''')
+        context.Activiteitverloop.MeldInteractie (True, '''Geef per beoogd inwerkingtredingsmoment aan op welke manier de inwerkingtreding beoogd is. In deze simulator kan gekozen worden uit:
+<ol>
+  <li>Als volgende versie van de geldende regelgeving<br/>
+  Er wordt een kopie gemaakt van de nu geldende regelgeving. Als deze niet voor alle regelingen en informatieobjecten beschikbaar is omdat de consolidatie daarvan
+  nog niet is afgerond, dan wordt een eerder geldige versie gebruikt.</li>
+  <li>Als vervolg op een ander beoogd inwerkingtredingsmoment binnen of buiten dit project.<br/>
+  Er wordt een kopie gemaakt van de regelgeving voor dat inwerkingtredingsmoment.</li>
+  <li>Als oplossing van samenloop van regelgeving voor twee of meer beoogde inwerkingtredingsmomenten; aan één ervan wordt binnen dit project gewerkt.<br/>
+  Het is de bedoeling dat de samenloop-oplossing alleen in werking treedt als de laatste van de andere inwerkingtredingsmomenten in werking treedt.
+  Er wordt een kopie gemaakt van de regelgeving voor het inwerkingtredingsmoment binnen dit project.</li>
+</ol>
+''')
+        context.Activiteitverloop.MeldInteractie (True, 'Pas eventueel de regelgeving aan na het aanmaken van de kopie')
+        self._VoerMaakBranchUit (context)
 
-    # Constructors om de uitvoerders van de acties te maken op basis van de SoortActie
-    _Uitvoerders = {
-        ProjectActie._SoortActie_NieuwDoel: (lambda : _VoerUit_NieuwDoel()),
-        ProjectActie._SoortActie_Download: (lambda : _VoerUit_Download()),
-        ProjectActie._SoortActie_Uitwisseling: (lambda : _VoerUit_Uitwisseling()),
-        ProjectActie._SoortActie_Wijziging: (lambda : _VoerUit_Wijziging()),
-        #ProjectActie._SoortActie_BijwerkenUitgangssituatie: (lambda : _VoerUit_BijwerkenUitgangssituatie()),
-        ProjectActie._SoortActie_Publicatie: (lambda : _VoerUit_Publicatie())
-    }
-
-#----------------------------------------------------------------------
-#
-# Implementatie van gemeenschappelijke functionaliteit
-#
-#----------------------------------------------------------------------
-    def __init__ (self):
-        """Maak een nieuwe uitvoerder aan"""
-        # Verzameling van meldingen over de uitvoering van het scenario
-        self._Log : Meldingen = None
-        # Via het scenario is de geldende regelgeving uit de LVBB beschikbaar.
-        self._Scenario = None
-        # Informatie over het versiebeheer zoals bevoegd gezag dat uitvoert.
-        self._Projectvoortgang : Projectvoortgang = None
-        # De status van het project bij de start van de actie
-        self._Projectstatus : Projectstatus = None
-        # Het resultaat van de actie
-        self._Resultaat : ProjectactieResultaat = None
-
-    def _LogFout (self, melding):
-        """Meld een fout bij de uitvoering van de actie. Hierbij wordt de projectcode en
-        de actie voor de melding geplaatst.
-
-        Argumenten:
-
-        melding string Tekst van de foutmelding
+    def _VoerMaakBranchUit (self, context: Activiteit._VoerUitContext):
+        """Maak de opgegeven branches aan
         """
-        self._Log.Fout ("Project '" + self._Projectstatus._Project.Code + "', actie '" + self._Resultaat._Projectactie.SoortActie + "' @" + self._Resultaat._Projectactie.UitgevoerdOp + ": " + melding)
+        # Klaar = branches die geïnitialiseerd zijn
+        klaar : Set[Doel] = set (context.Versiebeheer.Branches.keys ())
+        # nogInitialiseren = branches die niet meteen geïnitialiseerd worden
+        nogInitialiseren : List[Tuple[Branch,str,Set[Doel]]] = []
+        # Nu geldig: huidig geldende regelgeving
+        nuGeldig : Consolidatie = None
 
-    def _LogInfo (self, melding):
-        """Geef een melding over de uitvoering van de actie. Hierbij wordt de projectcode en
-        de actie voor de melding geplaatst.
-
-        Argumenten:
-
-        melding string Tekst van de melding
-        """
-        self._Log.Info ("Project '" + self._Projectstatus._Project.Code + "', actie '" + self._Resultaat._Projectactie.SoortActie + "' @" + self._Resultaat._Projectactie.UitgevoerdOp + ": " + melding)
-
-    def _Branch (self, doel: Doel) -> Branch:
-        """Geef de branch terug. De branch moet eerder gemaakt zijn in een project of uit een ConsolidatieInformatie module.
-        Een bestaande branch wordt onderdeel gemaakt van het project als dat nog niet gebeurd is.
-
-        Argumenten:
-
-        doel Doel  Doel als identificatie van de branch
-        """
-        branch = self._Projectstatus.ExterneBranches.get (doel)
-        if branch is None:
-            branch = self._Projectstatus.Branches.get (doel)
-            if branch is None:
-                branch = self._Projectvoortgang.Versiebeheer.Branches.get (doel)
-                if not branch is None:
-                    if not branch._ViaProject:
-                        self.LogFout ("branch '" + str(doel) + "' wordt niet via projecten beheerd en kan hier niet gebruikt worden,")
-                    else:
-                        self._Projectstatus.Branches[doel] = branch
-        return branch
-
-    def _VindInstrumentversie_Branch (self, workId : str, branch : Branch) -> Instrumentversie:
-        """Vind de instrumentversie voor een instrument als die overgenomen moet worden van een branch
-
-        Argumenten:
-
-        workId string  Work-identificatie van het instrument
-        branch Branch  Branch waarvan het instrument overgenomen moet worden
-
-        Geef de instrumentversie terug, of None als er geen instrumentversie gevonden is of het instrument 
-        juridisch uitgewerkt is.
-        """
-        instrumentinfo = branch.Instrumentversies.get (workId)
-        if instrumentinfo is None:
-            # Instrument onbekend
-            self._LogFout ("instrument '" + workId + "' wordt niet beheerd op branch " + str(branch._Doel))
-            return None
-        if instrumentinfo.Instrumentversie is None:
-            # Instrumentversie onbekend
-            self._LogFout ("instrument '" + workId + "' heeft een onbekende instrumentversie voor branch " + str(branch._Doel))
-            return None
-        if instrumentinfo.Instrumentversie.IsJuridischUitgewerkt:
-            # Juridisch uitgewerkt, dus geen versie
-            self._LogFout ("instrument '" + workId + "' is juridisch uitgewerkt op branch " + str(branch._Doel))
-            return None
-        if instrumentinfo.IsGewijzigd:
-            # Geef de instrumentversie instantie terug, die zal later de gegevens over de uitwisseling bevatten
-            return instrumentinfo.Instrumentversie
-        # Geef de uitgangssituatie terug, die bevat al de gegevens over de uitwisseling van de instrumentversie
-        return instrumentinfo.Uitgangssituatie
-
-
-    def _VindInstrumentversie_GeldigOp (self, workId: str, geldigOp : str) -> Instrumentversie:
-        """Vind de geldige versie voor een instrument op basis van de publiek gemaakte informatie;
-        de interne nog niet gepubliceerde gegevens worden niet meegenomen.
-
-        Argumenten:
-
-        workId string  Work-identificatie van het instrument
-        geldigOp string  Datum waarop de regelgeving geldig moet zijn
-
-        Geef een lijst met de geldende momentopnamen terug, of None als er geen versie gevonden is of als het 
-        instrument juridisch uitgewerkt is.
-        """
-        geldigeMomentopnamen : List[Instrumentversie] = None
-        juridischGeldigVanaf = None # Grootste jwv-datum die kleiner of gelijk aan geldigOp
-        juridischUitgewerktVanaf = None # Grootste jwv-datum die kleiner of gelijk aan geldigOp waarop het instrument juridisch uitgewerkt is
-
-        # Onderzoek alle bekende branches en momentopnamen
-        for branch in self._Projectvoortgang.Versiebeheer.Branches.values ():
-            if not branch.PubliekeTijdstempels.JuridischWerkendVanaf is None and branch.PubliekeTijdstempels.JuridischWerkendVanaf <= geldigOp:
-                momentopname = branch.PubliekeInstrumentversies.get (workId)
-                if not momentopname is None:
-                    # Branch is in werking en weet iets over het instrument
-                    if juridischUitgewerktVanaf is None or juridischUitgewerktVanaf < branch.PubliekeTijdstempels.JuridischWerkendVanaf:
-                        # Instrument is al juridisch uitgewerkt
-                        continue
-                    if momentopname.IsJuridischUitgewerkt:
-                        # Is er sprake van een nieuwe of eerdere uitwerkingtreding?
-                        if juridischUitgewerktVanaf is None or juridischUitgewerktVanaf > branch.PubliekeTijdstempels.JuridischWerkendVanaf:
-                            # Instrument is vanaf dit (eerdere) moment juridisch uitgewerkt
-                            juridischUitgewerktVanaf = branch.PubliekeTijdstempels.JuridischWerkendVanaf
-                            geldigeMomentopnamen = None
-
-                    elif juridischUitgewerktVanaf is None: # Wijzigingen na uitwerkingtreding worden genegeerd
-                        # Is er sprake van een nieuwe of latere inwerkingtreding?
-                        if juridischGeldigVanaf is None or juridischGeldigVanaf < branch.PubliekeTijdstempels.JuridischWerkendVanaf:
-                            # Nieuwe grootste jwv-datum
-                            juridischGeldigVanaf = branch.PubliekeTijdstempels.JuridischWerkendVanaf
-                            geldigeMomentopnamen = [MomentopnameVerwijzing(momentopname)]
-                        elif juridischGeldigVanaf == branch.PubliekeTijdstempels.JuridischWerkendVanaf:
-                            # Nog een doel voor de instrumentversie
-                            geldigeMomentopnamen.append (MomentopnameVerwijzing(momentopname))
-
-        return geldigeMomentopnamen
-
-    def _WerkUitgangspuntBij (self, branch : Branch, uitgangssituatie_doel : Doel, uitgangssituatie_geldigOp : str, nieuweInstrumentversies : Dict[str,Instrumentversie], registreerNieuweWorks : bool = True) -> bool:
-        """Update of zet het uitgangspunt van de branch door het overnemen van de instrumentversies voor ongewijzigde instrumenten
-        en bewaar het nieuwe uitgangspunt. Als het eerdere uitgangspunt een branch was, dan moet dat nu ook zo zijn.
-        Als het eerdere uitgangspunt de geldige regelingverrsie is, dan nu ook.
-
-        Argumenten:
-
-        branch Branch  Branch waarin de specificaties verwerkt moeten worden
-        uitgangssituatie_doel Doel  Indien niet None: de instrumentversies geven de wijziging aan ten opzichte van de inhoud van de aangegeven branch.
-                                    Als er nog geen instrumentversies door de branch beheerd worden, dan worden de instrumentversies van de branch overgenomen.
-        uitgangssituatie_geldigOp str  Indien niet None: de instrumentversies geven de wijziging aan ten opzichte van de regelgeving die op het aangegeven tijdstip geldig is.
-                                    Als er nog geen instrumentversies door de branch beheerd worden, dan worden de geldige instrumentversies overgenomen.
-        nieuweInstrumentversies {}  Specificatie van de instrumentversies zoals ze na afloop van de actie moeten zijn
-        registreerNieuweWorks bool  Geeft aan dat een nieuw work als bekend bij het BG geregistreerd moet worden.
-
-        Geeft terug of het overnemen zonder fouten is gebeurd.
-        """
-        if not uitgangssituatie_doel is None:
-            #
-            # Uitgangssituatie: versies van een andere branch
-            #
-            if not uitgangssituatie_geldigOp is None:
-                self._LogFout ("Dubbele uitgangssituatie opgegeven: doel '" + str(uitgangssituatie_doel) + "' en geldig op " + uitgangssituatie_geldigOp)
-                return False
-            if not branch.Uitgangssituatie_Doel is None and branch.Uitgangssituatie_Doel._Doel != uitgangssituatie_doel:
-                self._LogFout ("De simulator staat niet toe dat als uitgangspunt een doel '" + str(uitgangssituatie_doel) + "' anders dan het eerder opgegeven doel '" + str(branch.Uitgangssituatie_Doel) + "' gekozen wordt")
-                return False
-            if not branch.Uitgangssituatie_GeldigOp is None:
-                self._LogFout ("De simulator staat niet toe dat als uitgangspunt een doel '" + str(uitgangssituatie_doel) + "' gekozen wordt terwijl eerder voor de geldende regeling is gekozen")
-                return False
-            uitgangssituatie_branch = self._Projectvoortgang.Versiebeheer.Branches.get (uitgangssituatie_doel)
-            if uitgangssituatie_branch is None:
-                self._LogFout ("onbekend doel: '" + str(uitgangssituatie_doel) + "'")
-                return False
-            branch.Uitgangssituatie_Doel = uitgangssituatie_branch
-
-        elif not uitgangssituatie_geldigOp is None:
-            #
-            # Uitgangssituatie: geldende regeling op een bepaald moment
-            #
-            if not branch.Uitgangssituatie_Doel is None:
-                self._LogFout ("De simulator staat niet toe dat als uitgangspunt de op " + uitgangssituatie_geldigOp + " geldende regeling gekozen wordt terwijl eerder een doel '" + str(branch.Uitgangssituatie_Doel) + "' is gekozen")
-                return False
-            branch.Uitgangssituatie_GeldigOp = uitgangssituatie_geldigOp
-        elif not branch.Uitgangssituatie_GeldigOp is None:
-            #
-            # Uitgangspunt is geldige regelgeving; update naar huidige versie 
-            #
-            branch.Uitgangssituatie_GeldigOp = uitgangssituatie_geldigOp = self._Resultaat._Projectactie.UitgevoerdOp[0:10]
-        elif not branch.Uitgangssituatie_Doel is None:
-            uitgangssituatie_doel = branch.Uitgangssituatie_Doel._Doel
-
-        # Bepaal nu de versies
-        return self._NeemInstrumentversiesOver (branch, uitgangssituatie_doel, uitgangssituatie_geldigOp, nieuweInstrumentversies, True, registreerNieuweWorks)
-
-
-    def _NeemInstrumentversiesOver (self, branch : Branch, uitgangssituatie_doel : Doel, uitgangssituatie_geldigOp : str, nieuweInstrumentversies : Dict[str,Instrumentversie], neemUitgangspuntOver : bool, registreerNieuweWorks : bool) -> bool:
-        """Gebruik de opgegeven uitgangssituatie en de opgegeven instrumentversies om de inhoud van de branch bij te werken.
-
-        Argumenten:
-
-        branch Branch  Branch waarin de specificaties verwerkt moeten worden
-        uitgangssituatie_doel Doel  Indien niet None: de instrumentversies geven de wijziging aan ten opzichte van de inhoud van de aangegeven branch.
-                                    Als er nog geen instrumentversies door de branch beheerd worden, dan worden de instrumentversies van de branch overgenomen.
-        uitgangssituatie_geldigOp str  Indien niet None: de instrumentversies geven de wijziging aan ten opzichte van de regelgeving die op het aangegeven tijdstip geldig is.
-                                    Als er nog geen instrumentversies door de branch beheerd worden, dan worden de geldige instrumentversies overgenomen.
-        nieuweInstrumentversies {}  Specificatie van de instrumentversies zoals ze na afloop van de actie moeten zijn
-        neemUitgangspuntOver bool Werk de uitgangspunten voor de branch bij
-        registreerNieuweWorks bool  Geeft aan dat een nieuw work als bekend bij het BG geregistreerd moet worden.
-
-        Geeft terug of het overnemen zonder fouten is gebeurd.
-        """
-
-        if uitgangssituatie_doel is None and uitgangssituatie_geldigOp is None:
-            # Dit is een gewone update van de branch
-            for workId, instrumentversie in nieuweInstrumentversies:
-                instrumentinfo = branch.Instrumentversies.get (workId)
-                if instrumentinfo is None:
-                    branch.Instrumentversies[workId] = instrumentinfo = InstrumentInformatie (branch)
-                instrumentinfo.Instrumentversie = instrumentversie
-                instrumentinfo.IsGewijzigd = Instrumentversie.ZijnGelijk (instrumentinfo.Instrumentversie, instrumentinfo.Uitgangssituatie)
-            return True
-
-        else:
-            # Dit is een vervlechting van de nieuwe uitgangssituatie met de instrumentversies op de branch,
-            # waarbij de nieuweInstrumentversies de oplossing van eventuele merge conflicten zijn.
-            # In productie-waardige software gebeurt dat in het interne versiebeheer van het bevoegd gezag.
-            # De simulator probeert dat na te bootsen.
-
-            # Bepaal de collectie van instrumentversies die de uitgangssituatie vormen
-            valideVersies : Dict[str,Instrumentversie] = {}
-            onbepaaldeVersies : set()
-            if not uitgangssituatie_doel is None:
-                uitgangssituatie_branch = self._Projectvoortgang.Versiebeheer.Branches.get (uitgangssituatie_doel)
-                if uitgangssituatie_branch is None:
-                    self._LogFout ("onbekend doel: '" + str(uitgangssituatie_doel) + "'")
-                    return False
-                # De instrumentversies op de branch
-                valideVersies = uitgangssituatie_branch.Instrumentversies
-
-            elif not uitgangssituatie_geldigOp is None:
-                # Zoek de consolidatie met de grootste jwv kleiner dan de geldigOp datum
-                geldigeConsolidatie = None
-                for consolidatie in self._Projectvoortgang.Versiebeheer.Consolidatie:
-                    if consolidatie.JuridischGeldigVanaf > branch.Uitgangssituatie_GeldigOp:
-                        break
-                    geldigeConsolidatie = consolidatie 
-                if not geldigeConsolidatie is None:
-                    for workId, versie in geldigeConsolidatie.Instrumentversies.items ():
-                        if not versie._Instrumentversie is None:
-                            valideVersies[workId] = geldigeConsolidatie._Instrumentversie
-                        elif versie.IsJuridischUitgewerkt:
-                            valideVersies[workId] = None # Geen versie meer aanwezig
-                        else:
-                            onbepaaldeVersies.add (workId)
-
-            # Bepaal welke instrumenten (potentieel) bijgewerkt moeten worden:
-            # - alle instrumenten met nieuwe versies
-            # - alle instrumenten die in het uitgangspunt zitten
-            alleWorkId = set (nieuweInstrumentversies.keys ()).union (onbepaaldeVersies).union (valideVersies.keys ())
-            if neemUitgangspuntOver:
-                # - alle instrumenten die op de branch aanwezig zijn
-                alleWorkId.update (branch.Instrumentversies.keys ())
-
-            # Bepaal de nieuwe versies van alle instrumenten
-            succes = True
-        
-            for workId in alleWorkId:
-                # Dit instrument moet vanaf nu op de branch voorkomen
-                instrumentinfo = branch.Instrumentversies.get (workId)
-                if instrumentinfo is None:
-                    branch.Instrumentversies[workId] = instrumentinfo = InstrumentInformatie (branch)
-
-                nieuweVersie = nieuweInstrumentversies.get (workId)
-                if not nieuweVersie is None:
-                    # Neem deze over
-                    instrumentinfo.Instrumentversie = nieuweVersie
-
-                if neemUitgangspuntOver or (nieuweVersie is None and not instrumentinfo.IsGewijzigd):
-                    # Het uitgangspunt wordt gebruikt voor de branch
-                    if workId in onbepaaldeVersies:
-                        self._LogFout ("Geen instrumentversie opgegeven voor '" + workId + "' voor doel '" + str(branch._Doel) + "' terwijl er geen geldige versie bekend is op " + branch.Uitgangssituatie_GeldigOp)
-                        succes = False
-                        continue
-
-                    # De uitgangssituatie is None (geen versie) of een versie
-                    uitgangssituatie = valideVersies.get (workId)
-                    if nieuweVersie is None and not instrumentinfo.IsGewijzigd:
-                        if instrumentinfo.UitgewisseldeVersie is None and uitgangssituatie is None:
-                            # Nooit uitgewisseld, geen versie in de uitgangssituatie: haal het instrument weg
-                            branch.Instrumentversies.pop (workId)
-                            continue
-                        else:
-                            # Gebruik de uitgangssituatie als versie
-                            instrumentinfo.Instrumentversie = uitgangssituatie
-
-                    if neemUitgangspuntOver:
-                        instrumentinfo.Uitgangssituatie = uitgangssituatie
-
-                    if not instrumentinfo.UitgewisseldeVersie is None:
-                        # Eerder uitgewisseld, dus dit is een vervlechting
-                        instrumentinfo.VervlochtenVersie.append (nieuweVersie)
-
-                instrumentinfo.IsGewijzigd = Instrumentversie.ZijnGelijk (instrumentinfo.Instrumentversie, instrumentinfo.Uitgangssituatie)
-
-            
-            return succes 
-
-
-#======================================================================
-#
-# Implementatie van de specifieke acties
-#
-#======================================================================
-
-#----------------------------------------------------------------------
-#
-# Projectactie: nieuw doel
-#
-#----------------------------------------------------------------------
-#
-# Deze actie wordt uitgevoerd door het bevoegd gezag om in een project 
-# aan een (nieuwe) branch te gaan werken.
-#
-#----------------------------------------------------------------------
-class _VoerUit_NieuwDoel (Procesbegeleiding):
-
-    def __init__ (self):
-        super ().__init__ ()
-
-    def VoerUit (self, actie: ProjectActie_NieuwDoel):
-        """Start een nieuwe branch door het bevoegd gezag
-        """
-        self._Resultaat.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_BevoegdGezag
-        succes = True
-
-        # Maak een nieuwe branch
-        if actie.Doel in self._Projectvoortgang.Versiebeheer.Branches:
-            self._LogFout ("branch bestaat al voor doel: '" + str(actie.Doel) + "'")
-            return False
-        self._Projectvoortgang.Versiebeheer.Branches[actie.Doel] = branch = Branch (actie.Doel)
-        self._Projectstatus.Branches[actie.Doel] = branch
-        branch._ViaProject = True
-        branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
-        self._Resultaat.Data.append (('Doel', [actie.Doel]))
-
-        for workId in actie.Instrumenten:
-            # Maak de instrumentversies aan met een vooralsnog onbekende versie
-            branch.Instrumentversies[workId] = InstrumentInformatie (branch)
-
-
-        if not actie.GebaseerdOp_Doel is None:
-            # Het project is een expliciete aftakking van het opgegeven doel.
-            basisBranch = self._Projectvoortgang.Versiebeheer.Branches.get (actie.GebaseerdOp_Doel)
-            if basisBranch is None:
-                self._LogFout ("onbekend doel: '" + str(actie.GebaseerdOp_Doel) + "'")
-                return False
-            branch.Uitgangssituatie_Doel = basisBranch
-            self._Resultaat.Data.append (('Branch van', [actie.GebaseerdOp_Doel]))
-            for workId in actie.Instrumenten:
-                # Maak de instrumentinformatie voor dit instrument
-                instrumentinfo = branch.Instrumentversies[workId]
-                instrumentinfo.Uitgangssituatie = self._VindInstrumentversie_Branch (basisBranch)
-                if instrumentinfo.Uitgangssituatie is None:
-                    succes = False
-
-        elif not actie.GebaseerdOp_GeldigOp is None:
-            # Ga uit van de geldende regelgeving volgens de interne administratie
-            branch.Uitgangssituatie_GeldigOp = actie.actie.GebaseerdOp_GeldigOp
-            self._Resultaat.Data.append (('Uitgangssituatie d.d.', [actie.actie.GebaseerdOp_GeldigOp]))
-            for workId in actie.Instrumenten:
-                instrumentinfo = branch.Instrumentversies[workId]
-                instrumentinfo.Uitgangssituatie = self._VindInstrumentversie_GeldigOp (workId, actie.GebaseerdOp_GeldigOp)
-                if instrumentinfo.Uitgangssituatie is None:
-                    succes = False
-
-        for workId in actie.Instrumenten:
-            # Maak de actuele instrumentversies aan
-            instrumentinfo = branch.Instrumentversies[workId]
-            if not instrumentinfo.Uitgangssituatie is None:
-                instrumentinfo.Instrumentversie = Instrumentversie ()
-                instrumentinfo.Instrumentversie.ExpressionId = instrumentinfo.Uitgangssituatie.ExpressionId
-                instrumentinfo.Instrumentversie.UitgewisseldVoor = [branch._Doel]
-
-        return succes
-
-#----------------------------------------------------------------------
-#
-# Projectactie: download
-#
-#----------------------------------------------------------------------
-#
-# Deze actie wordt uitgevoerd door een adviesbureau. Een adviesbureau
-# voert zelf geen versiebeheer maar werkt aan een enkele (nieuwe)
-# versie.
-#
-#----------------------------------------------------------------------
-class _VoerUit_Download (Procesbegeleiding):
-
-    def __init__ (self):
-        super ().__init__ ()
-
-    def VoerUit (self, actie: ProjectActie_Download):
-        """Start een nieuwe branch bij/door een adviesbureau op basis van de gedownloade regelgeving
-        """
-        self._Resultaat.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_Adviesbureau
-        succes = True
-
-        # Maak een nieuwe branch
-        if actie.Doel in self._Projectvoortgang.Versiebeheer.Branches:
-            self._LogFout ("branch bestaat al voor doel: '" + str(actie.Doel) + "'")
-            return False
-        branch = self._Projectstatus.ExterneBranches.get (actie.Doel)
-        self._Projectstatus.ExterneBranches[actie.Doel] = branch = Branch (actie.Doel)
-        branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_Adviesbureau
-        self._Resultaat.Data.append (('Doel', [actie.Doel]))
-
-        # Gebruik als STOP-module de momentopnames die de downloadservice meelevert
-        module = DownloadserviceModules ()
-        self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (module, ProjectactieResultaat._Uitvoerder_LVBB, branch.Uitvoerder))
-
-        # Zoek de geldende versie op van elk van de instrumenten
-        branch.Uitgangssituatie_GeldigOp = actie.actie.GebaseerdOp_GeldigOp
-        self._Resultaat.Data.append (('Branch van', ['Geldig op ' + actie.GebaseerdOp_GeldigOp]))
-        for workId in actie.Instrumenten:
-            branch.Instrumentversies[workId] = instrumentinfo = InstrumentInformatie (branch)
-
-            geconsolideerd = self._Scenario.GeconsolideerdeInstrument (workId)
-            if geconsolideerd is None or geconsolideerd.ActueleToestanden is None:
-                self._LogFout ("onbekend instrument: '" + workId + "'")
-                succes = False
+        # Verifieer dat de nieuwe branches nog niet bestaan
+        for naam, (soort, doelen) in self.BranchSpecificatie.items ():
+            doel = Doel.DoelInstantie ('/join/id/proces/' + self._BGProcess.BGCode + '/' + naam)
+            branch = context.Versiebeheer.Branches.get (doel)
+            if not branch is None:
+                self._LogFout (context, "doel '" + naam + "' bestaat al")
                 continue
-            geldigeToestand = None
-            for toestand in geconsolideerd.ActueleToestanden.Toestanden:
-                if not toestand.NietMeerActueel and toestand.JuridischWerkendVanaf <= actie.GebaseerdOp_GeldigOp and (toestand.JuridischWerkendTot is None or actie.GebaseerdOp_GeldigOp < toestand.JuridischWerkendTot):
-                    geldigeToestand = toestand
-                    break
-            if geldigeToestand is None:
-                self._LogFout ("instrument: '" + workId + "' geen actuele toestand bekend die geldig is op " + actie.GebaseerdOp_GeldigOp)
-                succes = False
-                continue
-            if geldigeToestand.Instrumentversie is None:
-                self._LogFout ("instrument: '" + workId + "' geen instrumentversie bekend voor de actuele toestand die geldig is op " + actie.GebaseerdOp_GeldigOp)
-                succes = False
-                continue
+            # Maak de branch aan
+            context.Versiebeheer.Branches[doel] = branch = Branch (context.Versiebeheer, doel, self.UitgevoerdOp)
+            branch.Project = self.Project
+            # Stel initialisatie nog even uit
+            nogInitialiseren.append ((branch, soort, [Doel.DoelInstantie ('/join/id/proces/' + self._BGProcess.BGCode + '/' + b) for b in doelen]))
 
-            # Geldende toestand gevonden!
+        # Initialiseer de branches
+        volgnummer = 0
+        while len (nogInitialiseren) > 0:
+            nogSteedsInitialiseren : List[Tuple[Branch,str,Set[Doel]]] = []
+            nuKlaar : List[Doel] = []
+            volgnummer += 1
+            for branch, soort, doelen in nogInitialiseren:
+                if len (set(doelen).difference (klaar)) > 0:
+                    # Nog niet alle branches zijn geïnitialiseerd
+                    nogSteedsInitialiseren.append ((branch, soort, doelen))
+                    continue
+                commit = context.MaakCommit (branch, volgnummer)
 
-            # Maak de momentopname die de downloadservice meelevert
-            stop_mo = Momentopname ()
-            stop_mo.Doel = geldigeToestand.Inwerkingtredingsdoelen[0] # Downloadservice kiest er 1
-            # GemaaktOp is niet beschikbaar via actuele toestanden, maar de downloadservice geeft dit wel mee
-            # In deze simulator: haal het tijdstip uit het versiebeheer van BG
-            stop_mo.GemaaktOp = self._Projectvoortgang.Versiebeheer.Branches[stop_mo.Doel].Instrumentversies[workId].UitgewisseldeVersie.UitgewisseldOp
-            module.Modules[geldigeToestand.Instrumentversie] = stop_mo
-
-            # Maak de instrumentinformatie
-            instrumentinfo.Uitgangssituatie = Instrumentversie ()
-            instrumentinfo.Uitgangssituatie.ExpressionId = geldigeToestand.Instrumentversie
-            instrumentinfo.Uitgangssituatie.UitgewisseldOp = stop_mo.GemaaktOp
-            instrumentinfo.Uitgangssituatie.UitgewisseldVoor = [stop_mo.Doel]
-            instrumentinfo.Instrumentversie = Instrumentversie ()
-            instrumentinfo.Instrumentversie.ExpressionId = geldigeToestand.Instrumentversie
-            instrumentinfo.Instrumentversie.UitgewisseldVoor = [actie.Doel]
-
-        return succes
-
-#----------------------------------------------------------------------
-#
-# Projectactie: uitwisseling
-#
-#----------------------------------------------------------------------
-#
-# Deze actie wordt uitgevoerd door ofwel het adviesbureau om de 
-# aangepaste versie aan het bevoegd gezag te leveren, ofwel door
-# het bevoegd gezag om de startversie aan een adviesbureau te geven.
-#
-#----------------------------------------------------------------------
-class _VoerUit_Uitwisseling (Procesbegeleiding):
-
-    def __init__ (self):
-        super ().__init__ ()
-
-    def VoerUit (self, actie: ProjectActie_Uitwisseling):
-        """Wissel de instrumentversies in een branch uit
-        """
-        succes = True
-
-        branch = self._Branch (actie.Doel)
-        if branch is None:
-            self._LogFout ("onbekend doel '" + str(actie.Doel) + "'")
-            return False
-        self._Resultaat.Data.append (('Doel', [actie.Doel]))
-
-        self._Resultaat.UitgevoerdDoor = branch.Uitvoerder
-        if branch.Uitvoerder == ProjectactieResultaat._Uitvoerder_Adviesbureau:
-            #----------------------------------------------------------
-            # Van adviesbureau naar bevoegd gezag
-            #----------------------------------------------------------
-            del self._Projectstatus.ExterneBranches[actie.Doel]
-            bgBranch = self._Projectstatus.Branches.get (actie.Doel)
-            if bgBranch is None:
-                # Door adviesbureau gedownload, neem branch over
-                self._Projectstatus.Branches[actie.Doel] = branch
-                branch.Uitvoerder = ProjectactieResultaat._Uitvoerder_BevoegdGezag
-            else:
-                # Eerder door BG uitgeleverd, neem instrumentversies over
-                for workId, instrumentinfo in branch.Instrumentversies.items ():
-                    bgVersie = bgBranch.Instrumentversies.get (workId)
-                    if bgVersie is None:
-                        if not instrumentinfo.IsGewijzigd:
-                            continue
-                        if workId in self._Projectvoortgang.BekendeInstrumenten:
-                            self._LogFout ("Bestaand instrument '" + workId + "' is niet door BG aan het adviesbureau doorgegeven")
-                            succes = False
-                            continue
-                        bgBranch.Instrumentversies[workId] = bgVersie = InstrumentInformatie (bgBranch)
-                        self._Projectvoortgang.BekendeInstrumenten.add (workId)
-                    bgVersie.Instrumentversie = instrumentinfo.Instrumentversie
-                    bgVersie.IsGewijzigd = Instrumentversie.ZijnGelijk (bgVersie.Instrumentversie, bgVersie.Uitgangssituatie)
-
-            # Stel de momentopname voor de uitwisseling op
-            stop_mo = Momentopname ()
-            self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (stop_mo, ProjectactieResultaat._Uitvoerder_Adviesbureau, ProjectactieResultaat._Uitvoerder_BevoegdGezag))
-            stop_mo.Doel = actie.Doel
-            stop_mo.GemaaktOp = actie.UitgevoerdOp
-            if bgBranch is None:
-                # Voeg de uitgangssituatie alleen toe als gestart wordt met een download
-                for workId, instrumentinfo in branch.Instrumentversies.items ():
-                    if not instrumentinfo.Instrumentversie is None and not instrumentinfo.Instrumentversie.IsJuridischUitgewerkt:
-                        # Uitgangssituatie als gedownload, BranchBasisversie als geleverd door BG
-                        instrumentversieinfo = InstrumentversieInformatie ()
-                        instrumentversieinfo.Basisversie_Doel = instrumentinfo.Uitgangssituatie.UitgewisseldVoor[0]
-                        instrumentversieinfo.Basisversie_GemaaktOp = instrumentinfo.Uitgangssituatie.UitgewisseldOp
-                        instrumentversieinfo.WorkId = workId
-                        instrumentversieinfo._ExpressionId = instrumentinfo.Instrumentversie.ExpressionId
-                        stop_mo.Instrumentversies.append (instrumentversieinfo)
-
-        else:
-            #----------------------------------------------------------
-            # Van bevoegd gezag naar adviesbureau
-            #----------------------------------------------------------
-            # Maak een aparte branch voor het adviesbureau aan
-            self._Projectstatus.ExterneBranches[actie.Doel] = abBranch = Branch (actie.Doel) 
-            abBranch.UitgevoerdDoor = ProjectactieResultaat._Uitvoerder_Adviesbureau
-            for workId, instrumentinfo in branch.Instrumentversies.items ():
-                # Neem de instrumentversies over
-                if not instrumentinfo.Instrumentversie.IsJuridischUitgewerkt:
-                    abBranch.Instrumentversies[workId] = instrumentinfo = InstrumentInformatie (abBranch)
-                    instrumentinfo.Uitgangssituatie = Instrumentversie ()
-                    instrumentinfo.Uitgangssituatie.ExpressionId = instrumentinfo.Instrumentversie.ExpressionId
-                    instrumentinfo.Uitgangssituatie.UitgewisseldOp = actie.UitgevoerdOp
-                    instrumentinfo.Uitgangssituatie.UitgewisseldVoor = [actie.Doel]
-                    instrumentinfo.Instrumentversie = Instrumentversie ()
-                    instrumentinfo.Instrumentversie.ExpressionId = instrumentinfo.Instrumentversie.ExpressionId
-                    instrumentinfo.Instrumentversie.UitgewisseldVoor = [actie.Doel]
-
-            # Stel de momentopname voor de uitwisseling op
-            stop_mo = Momentopname ()
-            self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (stop_mo, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_Adviesbureau))
-            stop_mo.Doel = actie.Doel
-            stop_mo.GemaaktOp = actie.UitgevoerdOp
-
-        return succes
-
-#----------------------------------------------------------------------
-#
-# Projectactie: wijziging
-#
-#----------------------------------------------------------------------
-#
-# Deze actie wordt uitgevoerd door ofwel het adviesbureau ofwel het
-# bevoegd gezag. De instrumentversies op de branch worden aangepast.
-#
-#----------------------------------------------------------------------
-class _VoerUit_Wijziging (Procesbegeleiding):
-
-    def __init__ (self):
-        super ().__init__ ()
-
-    def VoerUit (self, actie: ProjectActie_Wijziging):
-        """Wissel de instrumentversies in een branch uit
-        """
-        succes = True
-        branch = self._Branch (actie.Doel)
-        if branch is None:
-            self._LogFout ("onbekend doel '" + str(actie.Doel) + "'")
-            return False
-        self._Resultaat.Data.append (('Doel', [actie.Doel]))
-
-        self._Resultaat.UitgevoerdDoor = branch.Uitvoerder
-        if branch.Uitvoerder == ProjectactieResultaat._Uitvoerder_Adviesbureau:
-            if not self._NeemInstrumentversiesOver (branch, actie.Instrumentversies, False):
-                succes = False
-            if not actie.JuridischWerkendVanaf is None or not actie.GeldigVanaf is None:
-                self._LogFout ("adviesbureau mag geen tijdstempels specificeren")
-        else:
-            if not self._NeemInstrumentversiesOver (branch, actie.Instrumentversies):
-                succes = False
-            if not actie.JuridischWerkendVanaf is None:
-                if actie.JuridischWerkendVanaf == '-':
-                    if not branch.Tijdstempels.JuridischWerkendVanaf is None:
-                        branch.Tijdstempels.JuridischWerkendVanaf = None
-                        # GeldigVanaf kan niet bestaan zonder JuridischWerkendVanaf
-                        branch.Tijdstempels.GeldigVanaf = None
-                elif actie.JuridischWerkendVanaf != branch.Tijdstempels.JuridischWerkendVanaf:
-                    branch.Tijdstempels.JuridischWerkendVanaf = actie.JuridischWerkendVanaf
-            if not branch.Tijdstempels.JuridischWerkendVanaf is None and not actie.GeldigVanaf is None:
-                if actie.GeldigVanaf == '-':
-                    if not branch.Tijdstempels.GeldigVanaf is None:
-                        branch.Tijdstempels.GeldigVanaf = None
-                elif actie.GeldigVanaf != branch.Tijdstempels.GeldigVanaf:
-                    branch.Tijdstempels.GeldigVanaf = actie.GeldigVanaf
-
-        return succes
-
-#----------------------------------------------------------------------
-#
-# Projectactie: Publicatie
-#
-#----------------------------------------------------------------------
-#
-# Deze actie wordt uitgevoerd door het bevoegd gezag. 
-# Er wordt een publicatie gemaakt voor de gewijzigde instrumenten voor
-# één of meer doelen binnen het project.
-#
-#----------------------------------------------------------------------
-class _VoerUit_Publicatie (Procesbegeleiding):
-
-    def __init__ (self):
-        super ().__init__ ()
-
-    def VoerUit (self, actie: ProjectActie_Publicatie):
-        """Neem wijzigingen uit een andere branch over
-        """
-        if not actie.SoortPublicatie in ProjectActie_Publicatie._SoortPublicatie_ViaSTOPVersiebeheer:
-            self._Resultaat.Uitgewisseld.append (UitgewisseldMaarNietViaSTOP ())
-            return True
-        isConceptOfOntwerp = not actie.SoortPublicatie in ProjectActie_Publicatie._SoortPublicatie_GeenConceptOfOntwerp
-
-        succes = True
-        consolidatieInformatie = ConsolidatieInformatie (self._Log, '(gemaakt voor projectactie)')
-        self._Resultaat.Uitgewisseld.append (UitgewisseldeSTOPModule (consolidatieInformatie, ProjectactieResultaat._Uitvoerder_BevoegdGezag, ProjectactieResultaat._Uitvoerder_LVBB))
-        consolidatieInformatie.GemaaktOp = actie.UitgevoerdOp
-        consolidatieInformatie.OntvangenOp = consolidatieInformatie._BekendOp = actie.UitgevoerdOp[0:10]
-
-        # Lijst met alle elementen (en extra info) in de module
-        elementen : List[_VoerUit_Publicatie._ElementMetRelaties] = []
-
-        doelen = sorted (actie.Doelen, key = lambda d: str(d))
-        self._Resultaat.Data.append (('Doel', doelen))
-        for doel in doelen:
-            branch = self._Branch (doel)
-            if branch is None:
-                self._LogFout ("onbekend doel '" + str(doel) + "'")
-                succes = False
-                continue
-            if branch.Uitvoerder != ProjectactieResultaat._Uitvoerder_BevoegdGezag:
-                self._LogFout ("instrumentversies voor doel '" + str(doel) + "' zijn nog onderhanden bij een adviesbureau; dit scenario wordt niet ondersteund door deze simulator")
-                succes = False
-                continue
-
-            for workId in sorted (branch.InterneInstrumentversies.keys ()):
-                momentopname = branch.InterneInstrumentversies[workId]
-                gepubliceerd = branch.PubliekeInstrumentversies.get (workId)
-
-                # Bepaal de basisversie(s) voor een eventueel element in de consolidatie-informatie
-                basisversies = None
-                if not gepubliceerd is None:
-                    if gepubliceerd.Versie == momentopname.Versie:
-                        # De informatie is niet gewijzigd sinds de laatste publicatie
-                        # De informatie hoeft niet opgenomen te worden in deze publicatie/revisie
-                        continue
-                    # Basisversie is vorige publicatie/revisie
-                    basisversies = [gepubliceerd]
+                # Voeg de branch toe aan de branches voor het project
+                # en maak een naam die voor eindgebruikers herkenbaar is
+                context.ProjectStatus.Branches.append (branch)
+                kopieNummer = len (context.ProjectStatus.Branches)
+                if kopieNummer == 1:
+                    # Eerste branch
+                    branch.InteractieNaam = context.ProjectStatus.Naam
+                    kopieNaam = 'kopie'
                 else:
-                    # Eerste publicatie, kies momentopname van laatstgebruikte uitgangssituatie
-                    # Die is None voor een initiële versie van een regeling/informatieobject
-                    if not momentopname.Uitgangssituatie is None:
-                        # Een van de basisversies is genoeg
-                        basisversies = [momentopname.Uitgangssituatie[0].Momentopname]
+                    if kopieNummer == 2:
+                        # Geef eerste branch ander nummer
+                        context.ProjectStatus.Branches[0].InteractieNaam = 'inwerkingtredingmoment #1 in ' + context.ProjectStatus.Naam
+                    branch.InteractieNaam = 'inwerkingtredingmoment #' + str(kopieNummer) + ' in ' + context.ProjectStatus.Naam
+                    kopieNaam = 'kopie voor inwerkingtredingmoment #' + str(kopieNummer)
 
-                # Bepaal de vermelding in de consolidatie-informatie
-                if momentopname.IsTeruggetrokken:
-                    #--------------------------------------------------
-                    # Eerder gepubliceerde wijziging is teruggetrokken
-                    #--------------------------------------------------
-                    if gepubliceerd.IsJuridischUitgewerkt:
-                        element = _VoerUit_Publicatie._ElementMetRelaties (TerugtrekkingIntrekking (consolidatieInformatie, [branch._Doel], workId), basisversies)
-                        consolidatieInformatie.TerugtrekkingenIntrekking.append (element.Element)
-                    else:
-                        element = _VoerUit_Publicatie._ElementMetRelaties (Terugtrekking (consolidatieInformatie, [branch._Doel], workId), basisversies)
-                        consolidatieInformatie.Terugtrekkingen.append (element.Element)
-
-                elif momentopname.IsJuridischUitgewerkt:
-                    #--------------------------------------------------
-                    # Intrekking is nog niet gepubliceerd
-                    #--------------------------------------------------
-                    element = _VoerUit_Publicatie._ElementMetRelaties (Intrekking (consolidatieInformatie, [branch._Doel], workId), basisversies)
-                    consolidatieInformatie.Intrekkingen.append (element.Element)
-
+                if soort == "Regulier":
+                    # Voor weergave op de resultaatpagina:
+                    context.Activiteitverloop.MeldInteractie (False, "Maakt " + kopieNaam + " bedoeld als volgende versie van de geldende regelgeving")
+                    context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Er wordt een nieuwe branch '" + branch._Doel.Naam + "' aangemaakt voor regelgeving bedoeld als volgende versie van de geldende regelgeving")
+                    context.Activiteitverloop.VersiebeheerVerslag.Informatie ("De branch '" + branch._Doel.Naam + "' wordt geïdentificeerd met het doel " + branch._Doel.Identificatie)
+                    if nuGeldig is None:
+                        # Zoek de geldige consolidatie op
+                        isLaatste = True
+                        for consolidatie in context.Versiebeheer.Consolidatie:
+                            if consolidatie.JuridischGeldigVanaf > self.UitgevoerdOp:
+                                break
+                            isLaatste = False
+                            if consolidatie.IsCompleet:
+                                nuGeldig = consolidatie
+                                isLaatste = True
+                        if not isLaatste:
+                            context.Activiteitverloop.VersiebeheerVerslag.Waarschuwing ("Er is geen valide consolidatie voor de nu geldende regelgeving beschikbaar - de simulatie gaat uit van de laatst beschikbare consolidatie")
+                    # Neem de huidige regelgeving als uitgangspunt
+                    branch.BaseerOpGeldendeVersie (context.Activiteitverloop.VersiebeheerVerslag, commit, nuGeldig)
                 else:
-                    #--------------------------------------------------
-                    # Beoogde versie is nog niet gepubliceerd
-                    #--------------------------------------------------
-                    if branch.TreedtGelijktijdigInWerkingMet is None:
-                        doelen = [branch._Doel]
+                    # Voor weergave op de resultaatpagina:
+                    branches = [context.Versiebeheer.Branches[d] for d in doelen]
+                    if len(doelen) > 1:
+                        context.Activiteitverloop.MeldInteractie (False, "Maakt " + kopieNaam + " die in werking treedt zodra alle regelgeving in werking getreden is van: " + ", ".join (b.InteractieNaam for b in branches))
+                        context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Er wordt een nieuwe branch '" + branch._Doel.Naam + "' aangemaakt als oplossing van de samenloop van branches '" + "', '".join (d.Naam for d in doelen) + "'")
+                        # Verifieer dat de eerste branch bij het project hoort
+                        if not doelen[0] in set (b._Doel for b in context.ProjectStatus.Branches):
+                            self._LogFout (context, "branch '" + branch._Doel.Naam + "': de eerste branch '" + doelen[0].Naam + "' waarvoor samenloop opgelost moet worden moet binnen het project liggen")
+                        branch.TreedtConditioneelInWerkingMet = set (branches)
                     else:
-                        # Versie voor meerdere doelen, nl alle doelen waarvoor dit work beheerd wordt
-                        doelen = []
-                        nieuweBasisversies = []
-                        for andereBranch in branch.TreedtGelijktijdigInWerkingMet:
-                            # Alleen eerder gepubliceerde doelen/versies kunnen als basisversie worden gebruikt
-                            andereMO = branch.PubliekeInstrumentversies.get (workId)
-                            if not andereMO is None:
-                                doelen.append (andereBranch._Doel)
-                                nieuweBasisversies.append (andereMO.BasisVoorWijziging)
-                        if len (doelen) > 1:
-                            # De versie is inderdaad van toepassing voor meerdere doelen
-                            basisversies = nieuweBasisversies
-                    
-                    element = _VoerUit_Publicatie._ElementMetRelaties (BeoogdeVersie (consolidatieInformatie, doelen, workId, momentopname.ExpressionId), basisversies)
-                    consolidatieInformatie.BeoogdeVersies.append (element.Element)
-
-                    # TODO: vervlechtingen e.d.
-
-                # Markeer als gepubliceerd
-                momentopname.IsGepubliceerd (actie.UitgevoerdOp, isConceptOfOntwerp)
-
-                # Stel het leggen van relaties uit, want er kan naar andere elementen in deze consolidatie-informatie verwezen worden
-                # waarvan de gemaaktOp nog niet gezet is.
-                if not element is None:
-                    elementen.append (element)
-
-        # Nu zouden de relaties gelegd moeten kunnen worden
-        for element in elementen:
-            element.VoegRelatiesToe ()
-        
-        # Voeg tijdstempels toe
-        for doel in doelen:
-            branch = self._Branch (doel)
-            if branch.InterneTijdstempels.Versie != branch.PubliekeTijdstempels.Versie:
-                # Tijdstempels zijn gewijzigd
-                if not branch.InterneTijdstempels.JuridischWerkendVanaf is None:
-                    if branch.InterneTijdstempels.JuridischWerkendVanaf != branch.PubliekeTijdstempels.JuridischWerkendVanaf:
-                        #--------------------------------------------------
-                        # Tijdstempel heeft een (nieuwe) waarde
-                        #--------------------------------------------------
-                        element = Tijdstempel (consolidatieInformatie)
-                        element.Doel = doel
-                        element.Datum = branch.InterneTijdstempels.JuridischWerkendVanaf
-                        element.IsGeldigVanaf = False
-                        consolidatieInformatie.Tijdstempels.append (element)
-
-                    if not branch.InterneTijdstempels.GeldigVanaf is None and branch.InterneTijdstempels.GeldigVanaf != branch.PubliekeTijdstempels.GeldigVanaf:
-                        #--------------------------------------------------
-                        # Tijdstempel heeft een (nieuwe) waarde
-                        #--------------------------------------------------
-                        element = Tijdstempel (consolidatieInformatie)
-                        element.Doel = doel
-                        element.Datum = branch.InterneTijdstempels.GeldigVanaf
-                        element.IsGeldigVanaf = True
-                        consolidatieInformatie.Tijdstempels.append (element)
-
-                elif not branch.PubliekeTijdstempels.JuridischWerkendVanaf is None:
-                    #--------------------------------------------------
-                    # Tijdstempel is teruggetrokken
-                    #--------------------------------------------------
-                    element = TerugtrekkingTijdstempel (consolidatieInformatie)
-                    element.Doel = doel
-                    element.IsGeldigVanaf = False
-                    consolidatieInformatie.TijdstempelTerugtrekkingen.append ()
-
-                if branch.InterneTijdstempels.GeldigVanaf is None and not branch.PubliekeTijdstempels.GeldigVanaf is None:
-                    #--------------------------------------------------
-                    # Tijdstempel is teruggetrokken
-                    #--------------------------------------------------
-                    element = TerugtrekkingTijdstempel (consolidatieInformatie)
-                    element.Doel = doel
-                    element.IsGeldigVanaf = True
-                    consolidatieInformatie.TijdstempelTerugtrekkingen.append (element)
-
-                # Markeer als gepubliceerd
-                branch.InterneTijdstempels.IsGepubliceerd ()
-
-        return succes
- 
-    class _ElementMetRelaties:
-        def __init__ (self, element, basisversies):
-            """Maak een nieuw in-memory bakje met de te leggen relaties
-            """
-            self.Element = element
-            self.Basisversies = basisversies
-            self.VervlochtenMet = []
-            self.OntvlochtenMet = []
-
-        def VoegRelatiesToe (self):
-            # Voeg de relaties toe aan de consolidatie-informatie
-            if not self.Basisversies is None:
-                for momentopname in self.Basisversies:
-                    self.Element.Basisversies[momentopname._Branch._Doel] = CI_Momentopname (momentopname._Branch._Doel, momentopname.GemaaktOp)
-
-
-
-
-
+                        context.Activiteitverloop.MeldInteractie (False, "Maakt " + kopieNaam + " die in werking treedt na " + branches[0].InteractieNaam)
+                        context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Er wordt een nieuwe branch '" + branch._Doel.Naam + "' aangemaakt die in werking treedt na branch '" + doelen[0].Naam + "'")
+                    context.Activiteitverloop.VersiebeheerVerslag.Informatie ("De branch '" + branch._Doel.Naam + "' wordt geïdentificeerd met het doel " + branch._Doel.Identificatie)
+                    branch.BaseerOpBranch (context.Activiteitverloop.VersiebeheerVerslag, commit, context.Versiebeheer.Branches[doelen[0]])
+                nuKlaar.append (branch._Doel)
+                self._VoerWijzigingenUit (context, branch._Doel.Naam, commit, False)
+            if len (nogSteedsInitialiseren) == len (nogInitialiseren):
+                self._LogFout (context, "branches kunnen niet aangemaakt worden (ze verwijzen circulair naar elkaar?): '" + "', '".join (branch._Doel.Naam for branch, soort, branches in nogInitialiseren) + "'")
+                return
+            nogInitialiseren = nogSteedsInitialiseren
+            klaar.update (nuKlaar)
+            nuKlaar = []
 

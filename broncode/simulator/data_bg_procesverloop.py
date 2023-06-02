@@ -12,9 +12,10 @@
 #
 #======================================================================
 from typing import Dict, List, Set, Tuple
+from applicatie_meldingen import Meldingen
 
 from data_doel import Doel
-from data_bg_versiebeheer import Branch as VersiebeheerBranch
+from data_bg_versiebeheer import Branch as VersiebeheerBranch, Commit, Versiebeheerinformatie
 
 #----------------------------------------------------------------------
 #
@@ -56,7 +57,7 @@ class Projectstatus:
         self.Naam = naam
         self.GestartOp = gestartOp
         # Degene die als laatste een activiteit voor dit project heeft uitgevoerd: adviesbureau of bevoegd gezag
-        self.UitgevoerdDoor : str = None
+        self.UitgevoerdDoor : str = Activiteitverloop._Uitvoerder_BevoegdGezag
         # De branches die in dit project beheerd worden
         self.Branches : List[Branch] = []
 
@@ -94,7 +95,7 @@ class UitgewisseldMaarNietViaSTOP:
 
 class Activiteitverloop:
 
-    def __init__(self, uitgevoerdOp : str, naam : str):
+    def __init__(self, uitgevoerdOp : str):
         """Maak een nieuw verslag van een activiteit aan
 
         Argumenten:
@@ -104,21 +105,49 @@ class Activiteitverloop:
                  Als dit None is, wordt de activiteit niet weergegeven.
         """
         self.UitgevoerdOp = uitgevoerdOp
-        self.Naam = naam
+        # Naam waarmee de activiteit in een overzicht van BG activiteiten weergegeven moet worden.
+        # Als dit None is, wordt de activiteit niet weergegeven op de resultaatpagina.
+        self.Naam : str = None
         # Beschrijving van de actie
         self.Beschrijving : str = None
-        # Work-ID van het instrument waar deze activiteit betrekking op heeft
-        self.Instrument : str = None
+        # Project(en) waar de activiteit onderdeel van uitmaakt/betrekking op heeft
+        self.Projecten : Set[str] = set ()
+        # Verslag van de interactie tussen de eindgebruiker en de software bij de uitvoering van de actie
+        self.InteractieVerslag : List[Activiteitverloop.InteractieMelding] = []
+        # Verslag van de uitvoering van de activiteit door de simulator
+        self.VersiebeheerVerslag = Meldingen (False)
+        # Commits gedaan in het versiebeheer
+        self.Commits : List[Commit] = []
         # Degene die de actie heeft uitgevoerd: adviesbureau of bevoegd gezag
         self.UitgevoerdDoor = Activiteitverloop._Uitvoerder_BevoegdGezag
         # Alleen voor weergave: de STOP module(s) die in de keten uitgewisseld worden
         self.Uitgewisseld : List[UitgewisseldeSTOPModule] = []
+        # Als de activiteit tot een publicatie leidt: de bron van de publicatie 
+        self.Publicatiebron : str = None
         # De publicatie die is uitgegeven naar aanleiding van de activiteit
         self.Publicatie : str = None
 
     _Uitvoerder_BevoegdGezag = 'Bevoegd gezag'
     _Uitvoerder_Adviesbureau = 'Adviesbureau'
+    _Uitvoerder_BGSoftware = 'BG-software'
     _Uitvoerder_LVBB = 'LVBB'
+
+    class InteractieMelding:
+
+        def __init__(self, isInstructie : bool, melding : str):
+            self.IsInstructie = isInstructie
+            self.Melding = melding
+
+    def MeldInteractie (self, isInstructie : bool, melding : str):
+        """Voeg een interactiemelding toe aan het activiteitenverloop
+
+        Argumenten:
+
+        isInstructie bool  Geeft aan of het een melding van de software aan de eindgebruiker is.
+                           Zo niet, dan is het een interactie geïnitieerd door de eindgebruiker
+        melding string  Tekst van de melding
+        """
+        self.InteractieVerslag.append (Activiteitverloop.InteractieMelding (isInstructie, melding))
 
 #======================================================================
 #
@@ -129,20 +158,23 @@ class Activiteitverloop:
 
 class Branch (VersiebeheerBranch):
 
-    def __init__(self, doel : Doel):
+    def __init__(self, versiebeheer: Versiebeheerinformatie, doel : Doel, ontstaanOp : str):
         """Maak een nieuwe branch aan
 
         Argumenten:
 
+        versiebeheer Versiebeheerinformatie Versiebeheer waar deze branch onderdeel van is
         doel Doel  Instantie van het doel waar de branch voor aangemaakt is
+        ontstaanOp string  Tijdstip waarop de branch is aangemaakt
         """
-        super().__init__ (doel)
-        # Geeft aan of de branch via projecten wordt beheerd. In deze simulator kan 
-        # een branch ofwel via een project beheerd worden, ofwel geheel via 
+        super().__init__ (versiebeheer, doel, ontstaanOp)
+        # Geeft aan of de branch in een projecten wordt beheerd. In deze simulator 
+        # kan een branch ofwel via een project beheerd worden, ofwel geheel via 
         # ConsolidatieInformatie modules worden bestuurd. Voor de besturing via
-        # projecten maakt het niet uit of dat door één of door meerdere projecten
-        # gedaan wordt - het is dus mogelijk een naorog/redactie als apart project
-        # op te nemen.
-        self._ViaProject = False
+        # een project kan de inhoud alleen via activiteiten in dat project of via
+        # andere BG-activiteiten gewijzigd worden.
+        self.Project : str = None
         # Degene die op dit moment aan de branch werkt: adviesbureau of bevoegd gezag
         self.Uitvoerder = Activiteitverloop._Uitvoerder_BevoegdGezag
+        # De aanduiding van de branch in het verslag van de interactie met de eindgebruiker
+        self.InteractieNaam : str = None

@@ -13,19 +13,17 @@
 # interne in-memory datamodel, waarin ook de resultaten worden opgeslagen.
 #
 #======================================================================
+from typing import List, Dict, Set, Tuple
 
-from pickle import NONE
 from applicatie_scenario import Scenario
 import applicatie_versie
 from data_bg_project import ProjectActie
 from data_bg_procesverloop import Activiteitverloop, UitgewisseldeSTOPModule
-from weergave_data_bg_versiebeheer import VersiebeheerWeergave
 from weergave_resultaat_data import WeergaveData
-from proces_bg_consolidatie import Consolideren
+from proces_bg_activiteiten import BGProces
 from proces_bg_consolidatieinformatie import ConsolidatieInformatieVerwerker
-from proces_bg_procesbegeleiding import Procesbegeleiding
 from proces_lv_versiebeheerinformatie import WerkVersiebeheerinformatieBij
-from proces_lv_proefversies import MaakProefversies
+from proces_lv_proefversies import MaakProefversies, Proefversie
 from proces_lv_completetoestanden import MaakCompleteToestanden
 from proces_lv_actueletoestanden import MaakActueleToestanden
 from proces_lv_actueleannotaties import MaakActueleToestandenMetAnnotaties
@@ -59,6 +57,7 @@ class Proces_Simulatie:
             for idx, gebeurtenis in enumerate (self.Scenario.Gebeurtenissen):
 
                 publicatie = None
+                publicatiebron = None
                 activiteit = None
 
                 if not gebeurtenis.Activiteit is None:
@@ -67,14 +66,14 @@ class Proces_Simulatie:
                     if not isValide:
                         # Er is iets fout gegaan
                         return
-                    instrument = activiteit.Instrument
+                    publicatiebron = activiteit.Publicatiebron
 
                 if gebeurtenis.ConsolidatieInformatie is None:
                     # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
                     continue
 
                 # Specificatie van consolidatie-informatie
-                if self.Scenario.Opties.Versiebeheer:
+                if self.Scenario.Opties.BGProces:
                     # Verwerk dat in het versiebeheer van het bevoegd gezag
                     isValide, activiteit = ConsolidatieInformatieVerwerker.WerkBij (self.Scenario.Log, self.Scenario, gebeurtenis.ConsolidatieInformatie)
                     if not isValide:
@@ -88,6 +87,8 @@ class Proces_Simulatie:
                 else:
                     publicatiebladNummer += 1
                     publicatie = 'pb{:03d}'.format (publicatiebladNummer)
+                    if publicatiebron is None:
+                        publicatiebron = 'Bekendmaking'
                 if not activiteit is None:
                     activiteit.Publicatie = publicatie
 
@@ -100,7 +101,7 @@ class Proces_Simulatie:
                 if not uitwisseling.IsValide:
                     return
 
-                alleProefversies = {} # key = workId, value = lijst met proefversies
+                alleProefversies : Dict[str, List[Proefversie]] = {} # key = workId, value = lijst met proefversies
                 if self.Scenario.Opties.Proefversies or self.Scenario.Opties.ActueleToestanden or self.Scenario.Opties.CompleteToestanden:
                     # Doe de consolidatie alleen voor de geraakte instrumenten
                     for workId in sorted (uitwisseling.Instrumenten): # Sortering om zeker te zijn van iedere keer dezelfde volgorde van uitvoering

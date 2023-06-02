@@ -12,10 +12,10 @@
 #
 #======================================================================
 
-import re
 from typing import Dict, List
 
 from data_doel import Doel
+from data_validatie import Valideer
 from stop_naamgeving import Naamgeving
 
 #======================================================================
@@ -218,12 +218,10 @@ class ConsolidatieInformatie:
 
         Geeft de waarde terug als de waarde valide is, anders None
         """
-        if gemaaktOp and ConsolidatieInformatie._GemaaktOpPatroon.match (gemaaktOp):
-            return gemaaktOp
-        log.Fout ("Bestand '" + pad + "': " + naam + " moet een UTC tijdstip zijn in plaats van '" + (gemaaktOp if gemaaktOp else 'null') + "'")
-        return None
-
-    _GemaaktOpPatroon = re.compile ('^[1-9][0-9]{3}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$')
+        ok = Valideer.GemaaktOp (gemaaktOp)
+        if ok is None:
+            log.Fout ("Bestand '" + pad + "': " + naam + " moet een UTC tijdstip zijn in plaats van '" + (gemaaktOp if gemaaktOp else 'null') + "'")
+        return ok
 
     @staticmethod
     def ValideerDatum (log, pad, naam, datum):
@@ -237,13 +235,10 @@ class ConsolidatieInformatie:
 
         Geeft de waarde terug als de waarde valide is, anders None
         """
-        if datum:
-            if ConsolidatieInformatie._DatumPatroon.match (datum):
-                return datum
+        ok = Valideer.Datum (datum)
+        if ok is None:
             log.Fout ("Bestand '" + pad + "': " + naam + " moet een datum zonder tijdinformatie zijn in plaats van '" + datum + "'")
-        return None
-
-    _DatumPatroon = re.compile ('^[1-9][0-9]{3}-[0-9]{2}-[0-9]{2}$')
+        return ok
 
     def _LeesBekendOp (self, containerElement):
         """Lees de waarde van het gemaaktOp element dat als kind onder het containerElement hangt"""

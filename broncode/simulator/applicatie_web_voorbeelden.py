@@ -44,6 +44,7 @@ class Voorbeeld:
         specificatie = lijst.AlleSpecificaties[idx]
         if specificatie.IsBGProces:
             try:
+                return WebApplicatie.SimuleerVoorbeeld (os.path.dirname (specificatie.Pad))
                 return WebApplicatie.ProjectInvoerPaginaVoorbeeld (specificatie.Pad) 
             except Exception as e:
                 generator = WebpaginaGenerator ("Voorbeeld kan niet geopend worden")
@@ -75,16 +76,16 @@ class Voorbeeld:
             self.Specificatie : Voorbeeld.VoorbeeldSpecificatie = None
             self.AlleSpecificaties : List[Voorbeeld.VoorbeeldSpecificatie] = []
 
-            def _Lees_Beschrijving (path):
+            def _Lees_Beschrijving_BGCode (path):
                 try:
                     with open (path, 'r', encoding='utf-8') as jsonFile:
                         data = json.load(jsonFile)
                 except:
-                    return
-                if "Beschrijving" in data:
-                    return data["Beschrijving"]
+                    return (None, False)
+                return (data["Beschrijving"] if "Beschrijving" in data else None, "BevoegdGezag" in data)
 
             beschrijving = None
+            openSpecificatie = False
             file_bg_process = None
             file_anders = False
             for fd in sorted (os.scandir(self.Pad), key=lambda f: f.name):
@@ -97,11 +98,11 @@ class Voorbeeld:
                     if fd.name.lower () == "bg_proces.json":
                         file_bg_process = fd.path
                         if beschrijving is None:
-                            beschrijving = _Lees_Beschrijving (fd.path)
+                            beschrijving, openSpecificatie = _Lees_Beschrijving_BGCode (fd.path)
                     elif fd.name.lower ().endswith ("beschrijving.json"):
                         file_anders = True
                         if beschrijving is None:
-                            beschrijving = _Lees_Beschrijving (fd.path)
+                            beschrijving, _ = _Lees_Beschrijving_BGCode (fd.path)
                     elif fd.name.lower ().endswith (".json") or fd.name.lower ().endswith (".xml"):
                         file_anders = True
             if file_anders:
@@ -109,7 +110,7 @@ class Voorbeeld:
                 top.AlleSpecificaties.append (spec)
                 self.Specificatie = spec
             elif not file_bg_process is None:
-                spec = Voorbeeld.VoorbeeldSpecificatie (True, None, file_bg_process, self.Naam, beschrijving, len (top.AlleSpecificaties))
+                spec = Voorbeeld.VoorbeeldSpecificatie (openSpecificatie, None, file_bg_process, self.Naam, beschrijving, len (top.AlleSpecificaties))
                 top.AlleSpecificaties.append (spec)
                 self.Specificatie = spec
 

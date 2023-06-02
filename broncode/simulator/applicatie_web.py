@@ -73,24 +73,30 @@ class WebApplicatie:
     def Simuleer(request):
         """Voer de simulator uit"""
         generator = []
+        def _MaakResultaatPagina (scenario : Scenario):
+            if scenario.IsValide:
+                generator.append (ResultaatGenerator.MaakPagina (scenario, WebApplicatie.FAVICON))
         applicatieLog = Meldingen (True)
-        Scenario.VoorElkScenario (applicatieLog, ScenarioPostedDataIterator (applicatieLog, request.form, request.files), lambda s: Uitvoering.VoerUit (s, lambda s2: generator.append (ResultaatGenerator.MaakPagina (s2, WebApplicatie.FAVICON))))
+        Scenario.VoorElkScenario (applicatieLog, ScenarioPostedDataIterator (applicatieLog, request.form, request.files), lambda s: Uitvoering.VoerUit (s, _MaakResultaatPagina))
         if len (generator) > 0:
             generator = generator[0]
         else:
             generator = WebpaginaGenerator ("Simulator resultaat", WebApplicatie.FAVICON)
-            applicatieLog.MaakHtml (generator, None)
+            applicatieLog.MaakHtml (generator, 'request_meldingen', None)
         return generator.Html ()
 
     @staticmethod
     def SimuleerVoorbeeld(voorbeeldMapPad):
         """Voer de simulator uit voor een voorbeeld"""
         generator = []
+        def _MaakResultaatPagina (scenario : Scenario):
+            if scenario.IsValide:
+                generator.append (ResultaatGenerator.MaakPagina (scenario, WebApplicatie.FAVICON))
         applicatieLog = Meldingen (True)
-        Scenario.VoorElkScenario (applicatieLog, ScenarioMappenIterator (applicatieLog, [voorbeeldMapPad] , False), lambda s: Uitvoering.VoerUit (s, lambda s2: generator.append (ResultaatGenerator.MaakPagina (s2, WebApplicatie.FAVICON))))
+        Scenario.VoorElkScenario (applicatieLog, ScenarioMappenIterator (applicatieLog, [voorbeeldMapPad] , False), lambda s: Uitvoering.VoerUit (s, _MaakResultaatPagina))
         if len (generator) > 0:
             generator = generator[0]
         else:
             generator = WebpaginaGenerator ("Simulator resultaat", WebApplicatie.FAVICON)
-            applicatieLog.MaakHtml (generator, None)
+            applicatieLog.MaakHtml (generator, 'request_meldingen', None)
         return generator.Html ()

@@ -79,14 +79,14 @@ Applicatie = (function () {
                 Applicatie.SelecteerToestand(geselecteerdeToestand.Identificatie, uniekId);
             }
         }
-        // Uitwisselingen en projectacties delen dezelfde tijdlijn
-        window.dispatchEvent(new CustomEvent('projectactie', {
+        // Uitwisselingen en activiteiten delen dezelfde tijdlijn
+        window.dispatchEvent(new CustomEvent('activiteit', {
             detail: gemaaktOp
         }));
     }
 
     // Selectie van projectacties
-    Applicatie.SelecteerProjectactie = function (uitgevoerdOp) {
+    Applicatie.SelecteerActiviteit = function (uitgevoerdOp) {
         Applicatie.SelecteerUitwisseling(uitgevoerdOp);
     }
 

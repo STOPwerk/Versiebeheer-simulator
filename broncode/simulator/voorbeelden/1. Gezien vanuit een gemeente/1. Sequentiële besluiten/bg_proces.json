@@ -1,5 +1,6 @@
 {
   "BevoegdGezag": "Gemeente",
+  "BGCode": "gm9999",
   "Beschrijving": "Voorbeeld nog niet beschikbaar",
   "Startdatum": "20240101",
   "Projecten": {
@@ -115,7 +116,7 @@
             "NonSTOP": {
               "#04": true
             }
-          }
+          },
           "JuridischWerkendVanaf": 231
         },
         "EindeBeroep": 245

@@ -25,7 +25,7 @@ from weergave_data_proefversies import Proefversie, ProefversieAnnotatie
 class MaakProefversies:
 
     @staticmethod
-    def VoerUit (uitwisseling : Uitwisseling, annotaties : List[Annotatie]):
+    def VoerUit (uitwisseling : Uitwisseling, annotaties : List[Annotatie]) -> List[Proefversie]:
         """Maak de STOP module met proefversies voor een Uitwisseling
 
         Argumenten:
@@ -35,7 +35,7 @@ class MaakProefversies:
 
         Geeft een lijst van instanties van Proefversie terug
         """
-        proefversies = []
+        proefversies : List[Proefversie] = []
         for instrumentversie in uitwisseling.Instrumentversies:
             # Maak alleen proefversies als er annotaties zijn voor dit instrument die van versiebeheer gebruik maken
             instrumentAnnotaties = [a for a in annotaties if a.WorkId == instrumentversie._Instrument.WorkId and a.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer]
