@@ -47,7 +47,7 @@ class Weergave_BG_Proces:
         self._ActiviteitUitvoering ()
         self._Generator.VoegHtmlToe ('</td><td class="nw" style="height: 1px">')
         self._Consolidatiestatus ()
-        self._Generator.VoegHtmlToe ('</td></tr><tr><th class="nw" style="height: 1px">Onderhanden besluiten</th></tr><tr><td class="nw">')
+        self._Generator.VoegHtmlToe ('</td></tr><tr><th class="nw" style="height: 1px">Status besluiten</th></tr><tr><td class="nw">')
         self._Besluiten ()
         self._Generator.VoegHtmlToe ('</td></tr></table></p>')
 
@@ -80,10 +80,7 @@ class Weergave_BG_Proces:
         self._Generator.VoegHtmlToe ('<tr><th class="ph2">&nbsp;</th><th class="nw">Activiteit</th></tr>')
             
         for activiteit in self._Procesverloop.Activiteiten:
-            self._Generator.VoegHtmlToe ('<tr data-bga="' + activiteit.UitgevoerdOp + '"')
-            if len (activiteit.Uitgewisseld) > 0:
-                self._Generator.VoegHtmlToe (' class="uw"')
-            self._Generator.VoegHtmlToe ('>')
+            self._Generator.VoegHtmlToe ('<tr data-bga="' + activiteit.UitgevoerdOp + '">')
             for project in projecten:
                 self._Generator.VoegHtmlToe ('<td class="c">' + ('&#x2714;' if project.Naam in activiteit.Projecten else '') + '</td>')
             self._Generator.VoegHtmlToe ('<td class="nw">' + activiteit.Naam)
@@ -105,13 +102,13 @@ class Weergave_BG_Proces:
                 self._Generator.VoegHtmlToe ('<p><b>Beschrijving</b><br/>' + activiteit.Beschrijving + '</p>')
             if len (activiteit.InteractieVerslag) > 0:
                 self._Generator.VoegHtmlToe ('<p><b>Interactie eindgebruiker - software</b></p><table>')
-                laatsteType = None
+                laatsteSoort = None
                 for melding in activiteit.InteractieVerslag:
-                    if melding.IsInstructie != laatsteType:
-                        if not laatsteType is None:
+                    if melding.SoortMelding != laatsteSoort:
+                        if not laatsteSoort is None:
                             self._Generator.VoegHtmlToe ('</ul></td></tr>')
-                        laatsteType = melding.IsInstructie
-                        self._Generator.VoegHtmlToe ('<tr><td>' + ('Instructie' if melding.IsInstructie else 'Eindgebruiker') + '</td><td><ul>')
+                        laatsteSoort = melding.SoortMelding
+                        self._Generator.VoegHtmlToe ('<tr><td>' + melding.SoortMelding + '</td><td><ul>')
                     self._Generator.VoegHtmlToe ('<li>' + melding.Melding + '</li>')
                 self._Generator.VoegHtmlToe ('</ul></td></tr></table>')
             self._Generator.VoegHtmlToe ('</div>')
@@ -122,7 +119,21 @@ class Weergave_BG_Proces:
 #
 #======================================================================
     def _Consolidatiestatus (self):
-        self._Generator.VoegHtmlToe ('TODO')
+        for activiteit in self._Procesverloop.Activiteiten:
+            self._Generator.VoegHtmlToe ('<div class="activiteit_uitvoering_status" data-bga="' + activiteit.UitgevoerdOp + '">')
+            nietsTeDoen = True
+            for consolidatie in activiteit.Consolidatie:
+                if not consolidatie.IsCompleet or not consolidatie.IsUitgewisseld:
+                    if nietsTeDoen:
+                        self._Generator.VoegHtmlToe ('<table><tr><td>Inwerkingtreding</td><td>Actie</td></tr>')
+                        nietsTeDoen = False
+                    self._Generator.VoegHtmlToe ('<tr><td class="nw">' + consolidatie.JuridischGeldigVanaf + '</td><td>' + ('Afronden' if not consolidatie.IsCompleet else 'Uitwisselen') + '</td></tr>')
+            if nietsTeDoen:
+                self._Generator.VoegHtmlToe ('Afgerond')
+            else:
+                self._Generator.VoegHtmlToe ('</table>')
+            self._Generator.VoegHtmlToe ('</div>')
+
 
 #======================================================================
 #

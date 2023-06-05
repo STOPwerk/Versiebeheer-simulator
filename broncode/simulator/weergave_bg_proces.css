@@ -60,3 +60,11 @@ table.activiteiten_overzicht > tbody > tr > th.ph2 {
     .activiteit_uitvoering_log.huidige-act {
         display: block;
     }
+
+.activiteit_uitvoering_status {
+    display: none;
+}
+
+    .activiteit_uitvoering_status.huidige-act {
+        display: block;
+    }

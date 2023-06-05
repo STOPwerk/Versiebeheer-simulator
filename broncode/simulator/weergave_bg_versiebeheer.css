@@ -16,6 +16,10 @@ table.bgvb_info {
         border: 1px solid #666666;
     }
 
+.bgvb_info .gewijzigd {
+    font-weight: bold
+}
+
 .bgvb_diagram {
     border: 1px solid #666666;
 }

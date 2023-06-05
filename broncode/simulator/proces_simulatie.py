@@ -14,14 +14,15 @@
 #
 #======================================================================
 from typing import List, Dict, Set, Tuple
+from applicatie_meldingen import Meldingen
 
-from applicatie_scenario import Scenario
+from applicatie_scenario import Scenario, BenoemdeUitwisseling
 import applicatie_versie
+from data_bg_versiebeheer import ConsolidatieInformatieVerwerker
 from data_bg_project import ProjectActie
 from data_bg_procesverloop import Activiteitverloop, UitgewisseldeSTOPModule
 from weergave_resultaat_data import WeergaveData
-from proces_bg_activiteiten import BGProces
-from proces_bg_consolidatieinformatie import ConsolidatieInformatieVerwerker
+from proces_bg_proces import BGProces
 from proces_lv_versiebeheerinformatie import WerkVersiebeheerinformatieBij
 from proces_lv_proefversies import MaakProefversies, Proefversie
 from proces_lv_completetoestanden import MaakCompleteToestanden
@@ -59,6 +60,7 @@ class Proces_Simulatie:
                 publicatie = None
                 publicatiebron = None
                 activiteit = None
+                voerConsolidatieUit = False
 
                 if not gebeurtenis.Activiteit is None:
                     # BG activiteit: voer de actie uit
@@ -68,17 +70,41 @@ class Proces_Simulatie:
                         return
                     publicatiebron = activiteit.Publicatiebron
 
+                    if not gebeurtenis.Activiteit.UitwisselingNaam is None:
+                        # Gebruik de actie als beschrijving indien aanwezig
+                        uwHeeftBeschrijving = False
+                        for uw in self.Scenario.Opties.Uitwisselingen:
+                            if uw.GemaaktOp == gebeurtenis.Activiteit.UitgevoerdOp:
+                                uwHeeftBeschrijving = True
+                                uw.IsRevisie = not activiteit.IsPublicatie ()
+                        if not uwHeeftBeschrijving:
+                            benoemd = BenoemdeUitwisseling ()
+                            benoemd.GemaaktOp = gebeurtenis.Activiteit.UitgevoerdOp 
+                            benoemd.Naam = gebeurtenis.Activiteit.UitwisselingNaam
+                            benoemd.Beschrijving = gebeurtenis.Activiteit.Beschrijving
+                            benoemd.IsRevisie = gebeurtenis.Activiteit.SoortPublicatie is None
+                            self.Scenario.Opties.Uitwisselingen.append (benoemd)
+
                 if gebeurtenis.ConsolidatieInformatie is None:
                     # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
                     continue
 
                 # Specificatie van consolidatie-informatie
-                if self.Scenario.Opties.BGProces:
+                if self.Scenario.Opties.BGProces and gebeurtenis.Activiteit is None:
                     # Verwerk dat in het versiebeheer van het bevoegd gezag
-                    isValide, activiteit = ConsolidatieInformatieVerwerker.WerkBij (self.Scenario.Log, self.Scenario, gebeurtenis.ConsolidatieInformatie)
+                    isValide = ConsolidatieInformatieVerwerker.WerkBij (self.Scenario.Log, self.Scenario, gebeurtenis.ConsolidatieInformatie)
                     if not isValide:
                         # Er is iets fout gegaan
                         return
+
+                voerConsolidatieUit = gebeurtenis.ConsolidatieInformatie.VoerConsolidatieUit
+                if self.Scenario.Opties.BGProces and voerConsolidatieUit:
+                    isValide = self.Scenario.BGVersiebeheerinformatie.WerkConsolidatieBij (self.Scenario.Log, Meldingen (False) if activiteit is None else activiteit.VersiebeheerVerslag, gebeurtenis.ConsolidatieInformatie.GemaaktOp)
+                    if not isValide:
+                        # Er is iets fout gegaan
+                        return
+                    if not activiteit is None:
+                        activiteit.Consolidatie = self.Scenario.BGVersiebeheerinformatie.Consolidatie
 
                 # Zit er een publicatie aan vast?
                 if self.Scenario.Opties.IsRevisie (gebeurtenis.ConsolidatieInformatie.GemaaktOp):
@@ -102,13 +128,13 @@ class Proces_Simulatie:
                     return
 
                 alleProefversies : Dict[str, List[Proefversie]] = {} # key = workId, value = lijst met proefversies
-                if self.Scenario.Opties.Proefversies or self.Scenario.Opties.ActueleToestanden or self.Scenario.Opties.CompleteToestanden:
+                if self.Scenario.Opties.Proefversies or voerConsolidatieUit and (self.Scenario.Opties.ActueleToestanden or self.Scenario.Opties.CompleteToestanden):
                     # Doe de consolidatie alleen voor de geraakte instrumenten
                     for workId in sorted (uitwisseling.Instrumenten): # Sortering om zeker te zijn van iedere keer dezelfde volgorde van uitvoering
                         geconsolideerd = self.Scenario.GeconsolideerdeInstrument (workId)
                         geconsolideerd.MaakIdentificatie (self.Scenario.Log, self.Scenario.Versiebeheerinformatie)
 
-                        if self.Scenario.Opties.ActueleToestanden or self.Scenario.Opties.CompleteToestanden:
+                        if voerConsolidatieUit and (self.Scenario.Opties.ActueleToestanden or self.Scenario.Opties.CompleteToestanden):
                             # De LVBB zal de juridische verantwoording bijwerken als de uitwisseling tot een
                             # publicatie leidt. In deze applicatie wordt aangenomen dat elke uitwisseling tot
                             # een publicatie leidt. De juridische verantwoording is in deze applicatie alleen
@@ -129,7 +155,7 @@ class Proces_Simulatie:
                                 geconsolideerd.Proefversies.extend (proefversies)
                                 alleProefversies[workId] = proefversies
 
-                        if self.Scenario.Opties.CompleteToestanden:
+                        if voerConsolidatieUit and self.Scenario.Opties.CompleteToestanden:
                             eersteBekendOp = uitwisseling.EersteBekendOp.get (workId)
                             if not eersteBekendOp is None: # is None bij alleen doorgifte MaterieelUitgewerkt
                                 self.Scenario.Log.Informatie ("Bepaal de complete toestanden voor " + workId)
@@ -139,7 +165,7 @@ class Proces_Simulatie:
                                 # toestanden te ondersteunen en deze stap over te slaan.
                                 MaakCompleteToestanden.VoerUit (self.Scenario.Log, geconsolideerd, uitwisseling.Uitwisseling.GemaaktOp, uitwisseling.Uitwisseling.OntvangenOp, eersteBekendOp)
 
-                        if self.Scenario.Opties.ActueleToestanden:
+                        if voerConsolidatieUit and self.Scenario.Opties.ActueleToestanden:
                             # De actuele toestanden zijn afleidbaar uit de complete toestanden. Een productie-waardige
                             # applicatie die tijdreizen ondersteunt zal deze bepaling daarom niet uitvoeren.
                             self.Scenario.Log.Informatie ("Bepaal de actuele toestanden voor " + workId)

@@ -120,7 +120,7 @@ class ResultaatGenerator (WebpaginaGenerator):
             self.VoegHtmlToe (self.Scenario.Opties.Beschrijving)
             self.VoegHtmlToe (einde)
         Weergave_Uitwisselingselector(self.Scenario).VoegSelectorToe (self)
-        self.VoegHeadScriptToe (self.LeesJSTemplate ('Applicatie', False).replace ('TOESTANDEN_DATA', self._MaakToestandenData()))
+        self.VoegHeadScriptToe (self.LeesJSTemplate ('Applicatie', False).replace ('TOESTANDEN_DATA', self._MaakToestandenData()).replace ('UITWISSELING_VOOR_ACTIVITEIT', self._MaakUitwisselingVoorActiviteit()))
         self.VoegHtmlToe ('</div>')
 
         einde = self.StartToelichting ('Over deze pagina')
@@ -154,12 +154,13 @@ class ResultaatGenerator (WebpaginaGenerator):
         # Simulatie van de uitwisselingen/publicaties
         #
         #--------------------------------------------------------------
-        self.VoegHtmlToe ('<div class="sectie_op"><h1>Publiceren</h1>')
-        einde = self.StartToelichting ('Over publiceren')
+        self.VoegHtmlToe ('<div class="sectie_op"><h1>Bekendmaken en beschikbaarstellen</h1>')
+        einde = self.StartToelichting ('Over bekendmaken en beschikbaarstellen')
         self.LeesHtmlTemplate ('help_sectie_op')
         self.VoegHtmlToe (einde)
         Weergave_Uitwisselingen.VoegToe (self, self.Scenario)
-        Weergave_ConsolidatieInformatie.VoegToe (self, self.Scenario)
+        if not self.Scenario.Opties.BGProces:
+            Weergave_ConsolidatieInformatie.VoegToe (self, self.Scenario)
         self.VoegHtmlToe ('</div>')
 
         #--------------------------------------------------------------
@@ -167,8 +168,8 @@ class ResultaatGenerator (WebpaginaGenerator):
         # Simulatie van landelijke voorzieningen
         #
         #--------------------------------------------------------------
-        self.VoegHtmlToe ('<div class="sectie_lv"><h1>Beschikbaar stellen</h1>')
-        einde = self.StartToelichting ('Over beschikbaar stellen')
+        self.VoegHtmlToe ('<div class="sectie_lv"><h1>Verwerking van publicatiebronnen</h1>')
+        einde = self.StartToelichting ('Over de verwerking van publicatiebronnen')
         self.LeesHtmlTemplate ('help_sectie_lv')
         self.VoegHtmlToe (einde)
 
@@ -208,7 +209,7 @@ class ResultaatGenerator (WebpaginaGenerator):
 
 #----------------------------------------------------------------------
 #
-# Informatie over toestanden
+# Informatie over toestanden en tijdstippen activiteiten/uitwisselingen
 #
 #----------------------------------------------------------------------
     def _MaakToestandenData (self):
@@ -227,3 +228,12 @@ class ResultaatGenerator (WebpaginaGenerator):
                         toestandData[toestand.GemaaktOp] = toestand._UniekId
 
         return ',\n'.join (str(d) + ': [' + ', '.join ('["' + g + '", ' + str (u) + ']' for g, u in sorted (gu.items(), key = lambda x: x[0])) + ']' for d, gu in data.items ())
+
+    def _MaakUitwisselingVoorActiviteit (self):
+        # Verzamel de tijdstippen van activiteiten met een uitwisseling naar de landelijke voorzieningen
+        data = []
+        if self.Scenario.Opties.BGProces:
+            for activiteit in self.Scenario.Procesvoortgang.Activiteiten:
+                if activiteit.UitwisselingMetLV:
+                    data.append (activiteit.UitgevoerdOp)
+        return '"' + '", "'.join (data) + '"';

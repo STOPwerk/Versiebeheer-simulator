@@ -16,7 +16,9 @@
               "#01": true,
               "#02": true
             }
-          }
+          },
+          "gio_01": {},
+          "pdf_01": {}
         }
       },
       {
@@ -27,11 +29,18 @@
         }
       },
       {
-        "Soort": "Wijziging",
-        "Tijdstip": 300,
+        "Soort": "Ontwerpbesluit",
+        "Tijdstip": 14,
+        "InzageVanaf": 15,
+        "EindeInzageOp": 43
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 50,
         "p01_1": {
-          "reg_01": true
-        }
+          "JuridischWerkendVanaf": 78
+        },
+        "EindeBeroepOp": 92
       }
     ],
     "Project #02": [
@@ -39,26 +48,22 @@
         "Soort": "MaakBranch",
         "Tijdstip": 100,
         "p02_1": {
-          "Soort": "VolgendOp",
-          "Branch": "p01_1"
-        },
-        "p02_2": {
-          "Soort": "VolgendOp",
-          "Branch": "p02_1"
-        },
-        "p02_3": {
-          "Soort": "TegelijkMet",
-          "Branches": [ "p02_2", "p01_1" ]
+          "Soort": "Regulier",
+          "reg_01": {}
         }
       },
       {
         "Soort": "Wijziging",
         "Tijdstip": 130,
         "p02_1": {
-          "reg_01": null
-        },
-        "p02_2": {
-          "reg_01": false
+          "reg_01": {}
+        }
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 150,
+        "p02_1": {
+          "JuridischWerkendVanaf": 178
         }
       }
     ],
@@ -73,11 +78,16 @@
       },
       {
         "Soort": "Wijziging",
-        "Tijdstip": 150,
+        "Tijdstip": 155,
         "p03_1": {
-          "reg_01": {
-
-          }
+          "reg_01": {}
+        }
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 200,
+        "p03_1": {
+          "JuridischWerkendVanaf": 228
         }
       }
     ]

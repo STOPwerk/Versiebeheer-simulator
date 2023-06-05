@@ -4,6 +4,7 @@
 # het bevoegd gezag, als onderdeel van de webpagina met resultaten. 
 #
 #======================================================================
+from pickle import FALSE
 from typing import List, Dict, Set, Tuple
 
 from data_bg_procesverloop import Activiteitverloop, Procesvoortgang, Branch
@@ -55,26 +56,24 @@ class Weergave_BG_Versiebeheer:
 
 #----------------------------------------------------------------------
 #
-# Verslag en momentopnamen
+# Verslag en commits
 #
 #----------------------------------------------------------------------
     def _Verslag (self, idx, activiteit : Activiteitverloop):
         self._Generator.VoegHtmlToe ('<div class="bgvb_verslag" data-bgvba="' + activiteit.UitgevoerdOp + '">')
-        if len (activiteit.VersiebeheerVerslag.Meldingen) > 0:
-            self._Generator.VoegHtmlToe ('<h4>Uitvoering van de activiteit</h4><table>')
-            self._Generator.VoegHtmlToe ('<tr><th>Activiteit</th><td>' + activiteit.Naam + '</td></tr>')
-            self._Generator.VoegHtmlToe ('<tr><th>Uitgevoerd op</th><td>' + activiteit.UitgevoerdOp.replace ("T00:00:00Z", "") + '</td></tr>')
-            if len (activiteit.Projecten) > 1:
-                self._Generator.VoegHtmlToe ('<tr><th>Projecten</th><td>' + ", ".join (sorted (activiteit.Projecten)) + '</td></tr>')
-            elif len (activiteit.Projecten) == 1:
-                self._Generator.VoegHtmlToe ('<tr><th>Project</th><td>' + list(activiteit.Projecten)[0] + '</td></tr>')
-            if activiteit.UitgevoerdDoor != Activiteitverloop._Uitvoerder_BevoegdGezag:
-                self._Generator.VoegHtmlToe ('<tr><th>Uitgevoerd door</th><td>' + activiteit.UitgevoerdDoor + '</td></tr>')
-            self._Generator.VoegHtmlToe ('</table>')
-            activiteit.VersiebeheerVerslag.MaakHtml (self._Generator, 'act_log_' + str(idx), None, toonFilter=False, toonSamenvatting = False)
+        self._Generator.VoegHtmlToe ('<table>')
+        self._Generator.VoegHtmlToe ('<tr><th>Activiteit</th><td>' + activiteit.Naam + '</td></tr>')
+        self._Generator.VoegHtmlToe ('<tr><th>Uitgevoerd op</th><td>' + activiteit.UitgevoerdOp.replace ("T00:00:00Z", "") + '</td></tr>')
+        if len (activiteit.Projecten) > 1:
+            self._Generator.VoegHtmlToe ('<tr><th>Projecten</th><td>' + ", ".join (sorted (activiteit.Projecten)) + '</td></tr>')
+        elif len (activiteit.Projecten) == 1:
+            self._Generator.VoegHtmlToe ('<tr><th>Project</th><td>' + list(activiteit.Projecten)[0] + '</td></tr>')
+        if activiteit.UitgevoerdDoor != Activiteitverloop._Uitvoerder_BevoegdGezag:
+            self._Generator.VoegHtmlToe ('<tr><th>Uitgevoerd door</th><td>' + activiteit.UitgevoerdDoor + '</td></tr>')
+        self._Generator.VoegHtmlToe ('</table>')
 
         if len (activiteit.Commits) > 0:
-            self._Generator.VoegHtmlToe ('<h4>Bijgewerkte versiebeheerinformatie</h4>')
+            self._Generator.VoegHtmlToe ('<p><b>Versiebeheerinformatie</b><br/>(Bijgewerkte informatie is vetgedrukt)</p>')
             commits = sorted (activiteit.Commits, key=lambda c: self._BranchSorteerKey (c._Branch))
 
             volgnummers = set (c.Volgnummer for c in commits)
@@ -94,9 +93,12 @@ class Weergave_BG_Versiebeheer:
                     self._Generator.VoegHtmlToe (startTR + '<td>Branch ' + commit._Branch._Doel.Naam + '<br/>(' + commit._Branch.InteractieNaam + ')</td><td><table>')
                     startTR = '<tr>'
 
-                    versies : Dict[Instrument,Instrumentversie] = { self._VersiebeheerInformatie.Instrumenten[w] : v for w, v in  commit.Instrumentversies.items() }
-                    for instrument, versie in sorted (versies.items (), key = lambda v: v[0].SorteerKey ()):
-                        self._Generator.VoegHtmlToe ('<tr><td>' + instrument._Soort + '</td><td>' + instrument.Naam + '</td><td>:')
+                    versies : Dict[Instrument,Tuple[Instrumentversie,bool]] = {
+                        **{ self._VersiebeheerInformatie.Instrumenten[w] : (v, False) for w, v in  commit.InstrumentversiesBijStart.items() },
+                        **{ self._VersiebeheerInformatie.Instrumenten[w] : (v, True) for w, v in  commit.Instrumentversies.items() }
+                    }
+                    for instrument, (versie, gewijzigd) in sorted (versies.items (), key = lambda v: v[0].SorteerKey ()):
+                        self._Generator.VoegHtmlToe ('<tr' + (' class="gewijzigd"' if gewijzigd else '') + '><td>' + instrument._Soort + '</td><td>' + instrument.Naam + '</td><td>:')
 
                         if versie.IsJuridischUitgewerkt:
                             if versie.ExpressionId is None:
@@ -110,20 +112,40 @@ class Weergave_BG_Versiebeheer:
 
                         self._Generator.VoegHtmlToe ('</td></tr>')
 
-                    if not commit.Tijdstempels is None:
-                        self._Generator.VoegHtmlToe ('<tr><td colspan="2">Tijdstempels</td><td>:')
-                        if commit.Tijdstempels.JuridischWerkendVanaf is None:
-                            self._Generator.VoegHtmlToe ('verwijderd; inwerkingtreding is onbekend')
-                        else:
-                            self._Generator.VoegHtmlToe ('juridisch werkend vanaf ' + commit.Tijdstempels.JuridischWerkendVanaf)
-                            if not commit.Tijdstempels.GeldigVanaf is None:
-                                self._Generator.VoegHtmlToe ('<br/>geldig vanaf ' + commit.Tijdstempels.GeldigVanaf)
-                        self._Generator.VoegHtmlToe ('</td></tr>')
+                    tijdstempels = commit.TijdstempelsBijStart
+                    gewijzigd = False
+                    if not commit.Tijdstempels is None and not commit.Tijdstempels.IsGelijkAan (commit.TijdstempelsBijStart):
+                        gewijzigd= True
+                        tijdstempels = commit.Tijdstempels
+                    self._Generator.VoegHtmlToe ('<tr' + (' class="gewijzigd"' if gewijzigd else '') + '><td colspan="2">Tijdstempels</td><td>:')
+                    if tijdstempels.JuridischWerkendVanaf is None:
+                        self._Generator.VoegHtmlToe ('inwerkingtreding is onbekend')
+                    else:
+                        self._Generator.VoegHtmlToe ('juridisch werkend vanaf ' + tijdstempels.JuridischWerkendVanaf)
+                        if not tijdstempels.GeldigVanaf is None:
+                            self._Generator.VoegHtmlToe ('<br/>geldig vanaf ' + tijdstempels.GeldigVanaf)
+                    self._Generator.VoegHtmlToe ('</td></tr>')
+
+                    uitgangssituatie_renvooi = commit.Uitgangssituatie_Renvooi_BijStart
+                    gewijzigd = False
+                    if not commit.Uitgangssituatie_Renvooi is None and not commit.Uitgangssituatie_Renvooi.IsGelijkAan (uitgangssituatie_renvooi):
+                        uitgangssituatie_renvooi = commit.Uitgangssituatie_Renvooi
+                        gewijzigd = True
+                    self._Generator.VoegHtmlToe ('<tr' + (' class="gewijzigd"' if gewijzigd else '') + '><td colspan="2">Renvooi ten opzichte van</td><td>:')
+                    if uitgangssituatie_renvooi is None:
+                        self._Generator.VoegHtmlToe ('geen renvooi mogelijk, eerste versie voor dit instrument')
+                    else:
+                        self._Generator.VoegHtmlToe ('branch ' + uitgangssituatie_renvooi._Branch._Doel.Naam + ', gemaaktOp = ' + uitgangssituatie_renvooi.GemaaktOp + '</td></tr>')
+                    self._Generator.VoegHtmlToe ('</td></tr>')
 
                     self._Generator.VoegHtmlToe ('</table></td>')
 
                 self._Generator.VoegHtmlToe ('</tr>')
             self._Generator.VoegHtmlToe ('</table>')
+
+        if len (activiteit.VersiebeheerVerslag.Meldingen) > 0:
+            self._Generator.VoegHtmlToe ('<p><b>Uitvoering van de activiteit</b></p>')
+            activiteit.VersiebeheerVerslag.MaakHtml (self._Generator, 'act_log_' + str(idx), None, toonFilter=False, toonSamenvatting = False)
 
         self._Generator.VoegHtmlToe ('</div>')
 

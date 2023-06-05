@@ -25,7 +25,8 @@ from data_bg_versiebeheer import Versiebeheerinformatie as BGVersiebeheerinforma
 from data_lv_annotatie import Annotatie
 from data_lv_consolidatie import GeconsolideerdInstrument
 from data_lv_versiebeheerinformatie import Versiebeheerinformatie
-from proces_bg_activiteiten import BGProces, Activiteit
+from proces_bg_activiteit import Activiteit
+from proces_bg_proces import BGProces
 from stop_consolidatieinformatie import ConsolidatieInformatie
 from weergave_data_toestanden import Toestandidentificatie
 
@@ -191,7 +192,7 @@ class ScenarioMappenIterator (ScenarioIterator):
 class Scenario:
     
     @staticmethod
-    def VoorElkScenario (log, iterator: ScenarioIterator, voer_uit):
+    def VoorElkScenario (log : Meldingen, iterator: ScenarioIterator, voer_uit):
         """Voer het proces uit voor elk gevonden scenario
         
         Argumenten:
@@ -214,6 +215,8 @@ class Scenario:
                     succes = voer_uit (scenario)
                     log.Informatie ("Uitvoering afgerond voor het scenario in '" + scenario.Pad + "'")
                 else:
+                    if iterator.MeldingenApart:
+                        log.Meldingen.extend (scenario.Log.Meldingen)
                     log.Fout ("Niet-valide invoer voor scenario in '" + scenario.Pad + "'")
                     succes = voer_uit (scenario)
                 if succes:
@@ -459,23 +462,6 @@ class Scenario:
                 else:
                     gebeurtenisPerGemaaktOp[activiteit.UitgevoerdOp] = Scenario.Gebeurtenis (None, activiteit)
 
-                if activiteit.UitwisselingNaam is None:
-                    continue
-
-                # Gebruik de actie als beschrijving indien aanwezig
-                uwHeeftBeschrijving = False
-                for uw in self.Opties.Uitwisselingen:
-                    if uw.GemaaktOp == activiteit.UitgevoerdOp:
-                        uwHeeftBeschrijving = True
-                        uw.IsRevisie = not activiteit.IsPublicatie ()
-                if not uwHeeftBeschrijving:
-                    benoemd = BenoemdeUitwisseling ()
-                    benoemd.GemaaktOp = activiteit.UitgevoerdOp 
-                    benoemd.Naam = activiteit.UitwisselingNaam
-                    benoemd.Beschrijving = activiteit.Beschrijving
-                    benoemd.IsRevisie = activiteit.SoortPublicatie is None
-                    self.Opties.Uitwisselingen.append (benoemd)
-
         # Sorteer de consolidatie-informatie op volgorde van uitwisseling
         self.Gebeurtenissen = [gebeurtenisPerGemaaktOp[gm] for gm in sorted (gebeurtenisPerGemaaktOp.keys ())]
 
@@ -483,7 +469,7 @@ class Scenario:
         self.Opties.Proefversies = False
         for workId, annotaties in annotatiesPerWorkId.items ():
             if not workId in instrumenten:
-                self.Log.Fout ("De annotatie(s) '" + "', '".join (a.Naam for a in annotatie) + "' hoort/horen bij een onbekend instrument " + workId)
+                self.Log.Fout ("De annotatie(s) '" + "', '".join (a.Naam for a in annotaties) + "' hoort/horen bij een onbekend instrument " + workId)
                 self.IsValide = False
             else:
                 for idx, a in enumerate (sorted (annotaties.values(), key = lambda a: a.Naam)):

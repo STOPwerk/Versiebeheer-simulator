@@ -15,7 +15,7 @@ from typing import Dict, List, Set, Tuple
 from applicatie_meldingen import Meldingen
 
 from data_doel import Doel
-from data_bg_versiebeheer import Branch as VersiebeheerBranch, Commit, Versiebeheerinformatie
+from data_bg_versiebeheer import Branch as VersiebeheerBranch, Commit, Consolidatie, Versiebeheerinformatie
 
 #----------------------------------------------------------------------
 #
@@ -34,9 +34,6 @@ class Procesvoortgang:
         self.Projecten : Dict[str,Projectstatus] = {}
         # De resultaten van de activiteiten, op volgorde van uitvoeren
         self.Activiteiten : List[Activiteitverloop] = []
-        # Alle gepubliceerde instrumentversies - deze versies hoeven niet
-        # opnieuw uitgewisseld te worden (althans niet in deze simulator)
-        self.PubliekeInstrumentversies = set ()
 
 #======================================================================
 #
@@ -113,15 +110,20 @@ class Activiteitverloop:
         # Project(en) waar de activiteit onderdeel van uitmaakt/betrekking op heeft
         self.Projecten : Set[str] = set ()
         # Verslag van de interactie tussen de eindgebruiker en de software bij de uitvoering van de actie
-        self.InteractieVerslag : List[Activiteitverloop.InteractieMelding] = []
+        self.InteractieVerslag : List[InteractieMelding] = []
         # Verslag van de uitvoering van de activiteit door de simulator
         self.VersiebeheerVerslag = Meldingen (False)
         # Commits gedaan in het versiebeheer
         self.Commits : List[Commit] = []
+        # De consolidatie na uitvoering van de activiteit.
+        # Lijst is gesorteerd op volgorde van inwerkingtreding/juridischGeldigVanaf
+        self.Consolidatie : List[Consolidatie] = {}
         # Degene die de actie heeft uitgevoerd: adviesbureau of bevoegd gezag
         self.UitgevoerdDoor = Activiteitverloop._Uitvoerder_BevoegdGezag
         # Alleen voor weergave: de STOP module(s) die in de keten uitgewisseld worden
         self.Uitgewisseld : List[UitgewisseldeSTOPModule] = []
+        # Geeft aan of het een uitwisseling met de landelijke voorzieningen betreft
+        self.UitwisselingMetLV : bool = False
         # Als de activiteit tot een publicatie leidt: de bron van de publicatie 
         self.Publicatiebron : str = None
         # De publicatie die is uitgegeven naar aanleiding van de activiteit
@@ -132,22 +134,25 @@ class Activiteitverloop:
     _Uitvoerder_BGSoftware = 'BG-software'
     _Uitvoerder_LVBB = 'LVBB'
 
-    class InteractieMelding:
-
-        def __init__(self, isInstructie : bool, melding : str):
-            self.IsInstructie = isInstructie
-            self.Melding = melding
-
-    def MeldInteractie (self, isInstructie : bool, melding : str):
+    def MeldInteractie (self, soortMelding : str, melding : str):
         """Voeg een interactiemelding toe aan het activiteitenverloop
 
         Argumenten:
 
-        isInstructie bool  Geeft aan of het een melding van de software aan de eindgebruiker is.
-                           Zo niet, dan is het een interactie geïnitieerd door de eindgebruiker
+        soortMelding str  Geeft aan wat voor soort melding/interactie het betreft
         melding string  Tekst van de melding
         """
-        self.InteractieVerslag.append (Activiteitverloop.InteractieMelding (isInstructie, melding))
+        self.InteractieVerslag.append (InteractieMelding (soortMelding, melding))
+
+class InteractieMelding:
+
+    def __init__(self, soortMelding : str, melding : str):
+        self.SoortMelding = soortMelding
+        self.Melding = melding
+
+    _Eindgebruiker = "Eindgebruiker"
+    _Instructie = "Instructie"
+    _Software = "BG software"
 
 #======================================================================
 #

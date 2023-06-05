@@ -65,6 +65,10 @@ class ConsolidatieInformatie:
         # Geeft aan of er fouten zijn gesignaleerd bij het inlezen van de module
         self.IsValide = True
 
+        # Geeft aan dat de consolidatie-informatie bij een instrument is gevoegd dat bijdraagt aan de geconsolideerde regelgeving.
+        # Dit volgt uit de context van de uitwisseling, niet uit de STOP module.
+        # In de simulator wordt het gezet vanuit de procesopties of vanuit de simulatie van de acties van het bevoegd gezag.
+        self.VoerConsolidatieUit = True
         # Geeft aan dat de consolidatie-informatie bij een revisie is gevoegd en niet bij een instrument dat gepubliceerd wordt.
         # Dit volgt uit de context van de uitwisseling, niet uit de STOP module.
         # In de simulator wordt het gezet vanuit de procesopties of vanuit de simulatie van de acties van het bevoegd gezag.
@@ -503,20 +507,20 @@ class BeoogdeVersie (VoorInstrument):
 #----------------------------------------------------------------------
 class Intrekking (VoorInstrument):
 
-    def __init__ (self, consolidatieInformatie, doelen, workId):
-        super ().__init__ (consolidatieInformatie, workId, doelen)
+    def __init__ (self, consolidatieInformatie, doel, workId):
+        super ().__init__ (consolidatieInformatie, workId, doel)
 
     @staticmethod
     def LeesXml (module, xml):
         """Lees Intrekking"""
-        doelen = module._LeesElement (xml, "doel")
+        doel = module._LeesElement (xml, "doel")
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
                 module._Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een regeling of informatieobject")
                 module.IsValide = False
                 return
-            return Intrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True, True)
+            return Intrekking (module, doel, workId)._LeesGemeenschappelijkeInformatie (module, xml, True, True)
 
     def ModuleXmlInCollectie (self):
         """Geeft de naam van de collectie in de STOP module waar dit element onderdeel van is.
@@ -539,13 +543,13 @@ class Intrekking (VoorInstrument):
 #----------------------------------------------------------------------
 class Terugtrekking (VoorInstrument):
 
-    def __init__ (self, consolidatieInformatie, doelen, workId):
-        super ().__init__ (consolidatieInformatie, workId, doelen)
+    def __init__ (self, consolidatieInformatie, doel, workId):
+        super ().__init__ (consolidatieInformatie, workId, doel)
 
     @staticmethod
     def LeesXml (module, xml, isRegeling):
         """Lees TerugtrekkingRegeling/TerugtrekkingInformatieobject/TerugtrekkingIntrekking"""
-        doelen = module._LeesElement (xml, "doel")
+        doel = module._LeesElement (xml, "doel")
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if isRegeling:
@@ -558,7 +562,7 @@ class Terugtrekking (VoorInstrument):
                     module._Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een informatieobject")
                     module.IsValide = False
                     return
-            return Terugtrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, True, True)
+            return Terugtrekking (module, doel, workId)._LeesGemeenschappelijkeInformatie (module, xml, True, True)
 
     def ModuleXmlInCollectie (self):
         """Geeft de naam van de collectie in de STOP module waar dit element onderdeel van is.
@@ -581,20 +585,20 @@ class Terugtrekking (VoorInstrument):
 #----------------------------------------------------------------------
 class TerugtrekkingIntrekking (VoorInstrument):
 
-    def __init__ (self, consolidatieInformatie, doelen, workId):
-        super ().__init__ (consolidatieInformatie, workId, doelen)
+    def __init__ (self, consolidatieInformatie, doel, workId):
+        super ().__init__ (consolidatieInformatie, workId, doel)
 
     @staticmethod
     def LeesXml (module, xml):
         """Lees TerugtrekkingRegeling/TerugtrekkingInformatieobject/TerugtrekkingIntrekking"""
-        doelen = module._LeesElement (xml, "doel")
+        doel = module._LeesElement (xml, "doel")
         workId = module._LeesElement (xml, "instrument")
         if not workId is None:
             if not Naamgeving.IsRegeling (workId) and not Naamgeving.IsInformatieobject (workId):
                 module._Log.Fout ("Bestand '" + module._Pad + "': work identificatie " + workId + " past niet bij een regeling")
                 module.IsValide = False
                 return
-            return TerugtrekkingIntrekking (module, doelen, workId)._LeesGemeenschappelijkeInformatie (module, xml, False, True)
+            return TerugtrekkingIntrekking (module, doel, workId)._LeesGemeenschappelijkeInformatie (module, xml, False, True)
 
     def ModuleXmlInCollectie (self):
         """Geeft de naam van de collectie in de STOP module waar dit element onderdeel van is.
@@ -620,16 +624,16 @@ class VoorTijdstempel(VoorInstrumentEnTijdstempel):
     def __init__(self, consolidatieInformatie):
         """Maak een lege tijdstempel aan"""
         super ().__init__ (consolidatieInformatie)
-        self.Doel = None
-        self.IsGeldigVanaf = None # In plaats van soortTijdstempel enumeratie
+        self.Doel : Doel = None
+        self.IsGeldigVanaf : bool = None # In plaats van soortTijdstempel enumeratie
         # Tijdstip waarop de informatie in de publicatie bekend is geworden
-        self._BekendOp = None
+        self._BekendOp : str = None
 
     def _LeesXml (self, module, xml):
         """Lees Tijdstempel/TerugtrekkingTijdstempel"""
         self.Doel = Doel.DoelInstantie (module._LeesElement (xml, "doel"))
         soort = module._LeesElement (xml, "soortTijdstempel")
-        self.IsGeldigVanaf = None
+        self.IsGeldigVanaf= None
         if not soort is None:
             if soort == "juridischWerkendVanaf":
                 self.IsGeldigVanaf = False
