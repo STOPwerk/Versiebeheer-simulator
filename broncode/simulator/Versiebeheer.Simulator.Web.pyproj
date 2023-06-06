@@ -50,6 +50,7 @@
     <Content Include="applicatie_web_invoer.html" />
     <Content Include="applicatie_web_invoer.js" />
     <Content Include="requirements.txt" />
+    <Content Include="start_webserver.bat" />
     <Content Include="static\applicatie_web_favicon.png" />
     <Content Include="vercel.json" />
   </ItemGroup>

@@ -31,16 +31,22 @@ Via een json bestand met opties kunnen bepaalde stappen in het proces overgeslag
 
 | Patroon | Rol |
 | ------- | ----- |
-| `applicatie_*` | Code die specifiek is voor deze applicatie, zoals de aansturing van het consolidatieproces en de interactie met de gebruiker. Startpunt van de applicatie is `applicatie.py`. | 
-| `stop_*` | Data structuren voor STOP modules. De data structuren volgen zo dicht mogelijk het STOP model, ook al is er voor de verwerking additionele informatie nodig. Voor de `ConsolidatieInformatie` module is ook code aanwezig om de XML modules te lezen en om te zetten naar de in-memory data structuren. |
-| `data_*` | Data structuren die dor de applicatie gebruikt worden om het consolidatieproces uit te voeren. Deze werken samen met of zijn uitbreidingen op de STOP modules. Instanties van de data structuren vormen een in-memory data-opslag die dezelfde rol heeft als het interne datamodel dat een STOP-gebruikend systeem nodig heeft om de STOP (uitwissel)modules te kunnen lezen en produceren. |
-| `weergave_data_*` | Data structuren die een aanvulling zijn op de data structuren uit `stop_*` en `data_*`. Deze applicatie houdt veel meer informatie bij over de uitvoering van de geautomatiseerde consolidatie dan strict noodzakelijk. De extra informatie wordt gebruikt om de resultaten toe te lichten en inzage te geven in de stappen die daadwerkelijk voor de consolidatie zijn uitgevoerd. Deze informatie zal niet (of niet op deze manier) in een STOP-gebruikend systeem aanwezig zijn. |
-| `proces_*` | Implementatie van de geautomatiseerde consolidatie, vanaf het inlezen van de `ConsolidatieInformatie` XML tot en met het vullen van het interne datamodel via het verwerken van de modules. Deze processtappen zullen ook in  STOP-gebruikende systemen voorkomen als die (een deel van) de consolidatie implementeren. Startpunt van het proces is `proces_consolidatie.py`. |
-| `weergave_*` | De overige `weergave_*` bestanden bevtten code om een enkele webpagina samen te stellen waarin de resultaten van de consolidatie zijn beschreven. In de `weergave_*` bestanden is geen consolidatielogica opgenomen, het betreft alleen het presenteren van de eerder bepaalde informatie. Startpunt voor het samenstellen van de pagina is `weergave_resultaat.py`. |
+| `applicatie_*.py` | Code die specifiek is voor deze applicatie, zoals de aansturing van het bevoegd gezag- en consolidatieproces en de interactie met de gebruiker van de Python code. Startpunt van de (offline) applicatie is `applicatie.py`. | 
+| `index.py` | Startpunt voor de online versie van de applicatie. |
+| `proces_simulatie.py` | Startpunt van het proces dat de specificaties van het scenario verwerkt is `proces_simulatie.py`. |
+| `proces_bg_*.py` | Implementatie van het proces zoals dat bij het bevoegd gezag en adviesbureaus kan plaatsvinden. Als dit onderdeel is van het scenario, zal de invoer voor de landelijke voorzieningen door deze simulatie gemaakt worden. |
+| `proces_lv_*.py` | Implementatie van de geautomatiseerde consolidatie, vanaf het inlezen van de `ConsolidatieInformatie` XML tot en met het vullen van het interne datamodel via het verwerken van de modules. Deze processtappen zullen ook in  STOP-gebruikende systemen voorkomen als die (een deel van) de consolidatie implementeren. |
+| `stop_*.py` | Data structuren voor STOP modules. De data structuren volgen zo dicht mogelijk het STOP model, ook al is er voor de verwerking additionele informatie nodig. Voor de `ConsolidatieInformatie` module is ook code aanwezig om de XML modules te lezen en om te zetten naar de in-memory data structuren. |
+| `data_bg_*.py` | Data structuren die door de applicatie gebruikt worden om het proces bij het bevoegd gezag te ondersteunen en de resultaten daarvan vast te leggen. |
+| `data_lv_*.py` | Data structuren die door de applicatie gebruikt worden om het consolidatieproces uit te voeren. Deze werken samen met of zijn uitbreidingen op de STOP modules. Instanties van de data structuren vormen een in-memory data-opslag die dezelfde rol heeft als het interne datamodel dat een STOP-gebruikend systeem nodig heeft om de STOP (uitwissel)modules te kunnen lezen en produceren. |
+| `weergave_*.py` | De overige `weergave_*` bestanden bevatten code om een enkele webpagina samen te stellen waarin de resultaten van de consolidatie zijn beschreven. In de `weergave_*` bestanden is geen consolidatielogica opgenomen, het betreft alleen het presenteren van de eerder bepaalde informatie. Startpunt voor het samenstellen van de pagina is `weergave_resultaat.py`. |
+| `weergave_data_*.py` | Data structuren die een aanvulling zijn op de data structuren uit `stop_*` en `data_*`. Deze applicatie houdt veel meer informatie bij over de uitvoering van de geautomatiseerde consolidatie dan strikt noodzakelijk. De extra informatie wordt gebruikt om de resultaten toe te lichten en inzage te geven in de stappen die daadwerkelijk voor de consolidatie zijn uitgevoerd. Deze informatie zal niet (of niet op deze manier) in een STOP-gebruikend systeem aanwezig zijn. |
+
+Naast de Python modules zijn er `*.html`, `*.css` en `*.js` bestanden die fragmenten van de resulterende webpagina bevatten. Ze worden door de bijbehorende Python module ingelezen en (aangevuld) toegevoegd aan de resultaatpagina.
 
 ### Datamodel
 
-De Python applicatie maakt gebruik van een intern datamodel dat waar mogelijk gebruik maakt van STOP modules. Deze data structuren zijn gecodeerd in aparte Pythom bestanden waarvan de namen die met *data_* of *stop_* beginnen.
+De Python applicatie maakt gebruik van een intern datamodel dat waar mogelijk gebruik maakt van STOP modules. Deze data structuren zijn gecodeerd in aparte Python bestanden waarvan de namen die met data_* of *stop_* beginnen.
 
 [[Datamodel.png|Datamodel]]
 

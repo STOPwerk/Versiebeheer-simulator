@@ -33,12 +33,11 @@ from proces_bg_activiteit_wijzig import Activiteit_Wijzig
 #
 #======================================================================
 class Activiteit_Publiceer (Activiteit_Wijzig):
-    """Maak een publicatie of revisie
-    """
     def __init__ (self, soortPublicatie : str):
         super ().__init__ ()
         self.SoortPublicatie = soortPublicatie
 
+    _Soort_Revisie = 'Revisie'
     _Soort_Ontwerpbesluit = 'Ontwerpbesluit'
     _Soort_Vaststellingsbesluit = 'Vaststellingsbesluit'
 
@@ -62,8 +61,8 @@ class Activiteit_Publiceer (Activiteit_Wijzig):
         if not context.ProjectStatus is None:
             # Maak de consolidatie informatie
             for branch in context.ProjectStatus.Branches:
-                if len (context.Activiteitverloop.Commits) == 0:
-                    context.MaakCommit (branch)
+                commit = context.MaakCommit (branch, True)
+                commit.SoortUitwisseling = Commit._Uitwisseling_BG_Naar_LVBB
                 renvooi = branch.Uitgangssituatie_Renvooi
                 if context.ConsolidatieInformatieMaker.VoegToe (branch, True):
                     if renvooi is None:

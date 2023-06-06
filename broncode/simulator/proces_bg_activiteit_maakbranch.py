@@ -49,8 +49,6 @@ from proces_bg_activiteit_wijzig import Activiteit_Wijzig
 #
 #======================================================================
 class Activiteit_MaakBranch (Activiteit_Wijzig):
-    """Maak een nieuwe branch voor een project
-    """
     def __init__ (self):
         super ().__init__ ()
         # Branches die aangemaakt moeten worden
@@ -130,8 +128,6 @@ en/of er beroep mogelijk is tegen de besluiten, waardoor een besluit uiteindelij
         klaar : Set[Doel] = set (context.Versiebeheer.Branches.keys ())
         # nogInitialiseren = branches die niet meteen geïnitialiseerd worden
         nogInitialiseren : List[Tuple[Branch,str,Set[Doel]]] = []
-        # Nu geldig: huidig geldende regelgeving
-        nuGeldig : Consolidatie = None
 
         # Verifieer dat de nieuwe branches nog niet bestaan
         for naam, (soort, doelen) in self.BranchSpecificatie.items ():
@@ -177,20 +173,8 @@ en/of er beroep mogelijk is tegen de besluiten, waardoor een besluit uiteindelij
                     context.Activiteitverloop.MeldInteractie (InteractieMelding._Eindgebruiker, "Maakt " + kopieNaam + " bedoeld als volgende versie van de geldende regelgeving")
                     context.Activiteitverloop.VersiebeheerVerslag.Informatie ("Er wordt een nieuwe branch '" + branch._Doel.Naam + "' aangemaakt voor regelgeving bedoeld als volgende versie van de geldende regelgeving")
                     context.Activiteitverloop.VersiebeheerVerslag.Informatie ("De branch '" + branch._Doel.Naam + "' wordt geïdentificeerd met het doel " + branch._Doel.Identificatie)
-                    if nuGeldig is None:
-                        # Zoek de geldige consolidatie op
-                        isLaatste = True
-                        for consolidatie in context.Versiebeheer.Consolidatie:
-                            if consolidatie.JuridischGeldigVanaf > self.UitgevoerdOp:
-                                break
-                            isLaatste = False
-                            if consolidatie.IsCompleet:
-                                nuGeldig = consolidatie
-                                isLaatste = True
-                        if not isLaatste:
-                            context.Activiteitverloop.VersiebeheerVerslag.Waarschuwing ("Er is geen valide consolidatie voor de nu geldende regelgeving beschikbaar - de simulatie gaat uit van de laatst beschikbare consolidatie")
                     # Neem de huidige regelgeving als uitgangspunt
-                    branch.BaseerOpGeldendeVersie (context.Activiteitverloop.VersiebeheerVerslag, commit, nuGeldig)
+                    branch.BaseerOpGeldendeVersie (context.Activiteitverloop.VersiebeheerVerslag, commit, context.HuidigeRegelgeving ())
                 else:
                     # Voor weergave op de resultaatpagina:
                     branches = [context.Versiebeheer.Branches[d] for d in doelen]

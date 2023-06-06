@@ -33,7 +33,9 @@ from proces_bg_activiteit import Activiteit
 #
 # Wijziging van instrumentversies en/of tijdstempels in de branch
 #
-# Deze activiteit wordt ook als basis voor andere activiteiten gebruikt.
+# Commit nieuwe instrumentversies en evt annotaties voor één of meer
+# branches. Deze activiteit is tevens de basis voor een aantal andere
+# activiteiten die daarna (of daarvoor) iets met de branches doen.
 #
 #======================================================================
 class Activiteit_Wijzig (Activiteit):
@@ -47,9 +49,12 @@ class Activiteit_Wijzig (Activiteit):
         # key = naam, value = specificatie van de wijziging (lezen bij uitvoeren van de activiteit)
         self.CommitSpecificatie : Dict[str,object] = {}
         # Geeft aan of deze activiteit tijdstempels accepteert
-        # Als dit een zelfstandige actie is zijn tijdstempels niet toegestaan, die mogen pas 
+        # Tijdstempels zijn in het algemeen niet toegestaan, die mogen pas 
         # bij een vaststellingsbesluit toegevoegd worden.
         self.AccepteerTijdstempels : bool = False
+        if type (self) == Activiteit_Wijzig:
+            # Zelfstandige activiteit, mag adviesbureau ook uitvoeren
+            self._AlleenBG = False
 
     def _LeesData (self, log, pad) -> bool:
         # De rest van de specificatie wordt bij uitvoering gelezen
@@ -78,9 +83,11 @@ class Activiteit_Wijzig (Activiteit):
             self._LogFout (context, "het wijzigen van regelgeving moet beperkt zijn tot de branches van het project '" + self.Project + "', dus niet: '" + "', '".join (onbekendeNamen) + "'")
             return
 
-        # Pas de wijzigingen toe
-        for naam in sorted (self.CommitSpecificatie.keys ()):
-            self._VoerWijzigingenUit (context, naam, None, self.AccepteerTijdstempels)
+        # Pas de wijzigingen toe, op volgorde van de branches in het project
+        # (dat is nodig voor afgeleide klassen)
+        for branch in context.ProjectStatus.Branches:
+            if branch._Doel.Naam in self.CommitSpecificatie:
+                self._VoerWijzigingenUit (context, branch._Doel.Naam, None, self.AccepteerTijdstempels)
 
     def _VoerWijzigingenUit (self, context: Activiteit._VoerUitContext, naam: str, commit: Commit, tijdstempelsToegestaan: bool):
         """Neem wijzigingen voor de branches over. Alle (overgebleven) attributen 
@@ -99,17 +106,17 @@ class Activiteit_Wijzig (Activiteit):
         specificatie = self.CommitSpecificatie.get (naam)
         if specificatie is None:
             return
-        doel = Doel.DoelInstantie ('/join/id/proces/' + self._BGProcess.BGCode + '/' + naam)
-        branch = context.Versiebeheer.Branches.get (doel)
+        branch = context.Versiebeheer.Branch (naam)
         if branch is None:
             self._LogFout (context, "branch '" + naam + "' is (nog) niet aangemaakt")
             return
-        if branch.Project is None:
-            self._LogFout (context, "branch '" + naam + "' wordt niet via BG activiteiten beheerd maar via uitgewisselde ConsolidatieInformatie modules")
-            return
-        elif not self.Project is None and branch.Project != self.Project:
-            self._LogFout (context, "branch '" + naam + "' wordt in project '" + branch.Project + "' beheerd maar deze activiteit is voor project '" + self.Project + "'")
-            return
+        if self._ProjectVerplicht:
+            if branch.Project is None:
+                self._LogFout (context, "branch '" + naam + "' wordt niet via BG activiteiten beheerd maar via uitgewisselde ConsolidatieInformatie modules")
+                return
+            elif not self.Project is None and branch.Project != self.Project:
+                self._LogFout (context, "branch '" + naam + "' wordt in project '" + branch.Project + "' beheerd maar deze activiteit is voor project '" + self.Project + "'")
+                return
 
         # Pas de wijzigingen per instrument toe
         regelgevingGewijzigd = False

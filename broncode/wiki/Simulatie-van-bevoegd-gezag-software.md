@@ -1,45 +1,21 @@
 _**Deze functionaliteit is nog in ontwikkeling**_
 
-De simulator kan uitgaan van de acties die een bevoegd gezag uitvoert. De simulator berekent dan de inhoud van de [ConsolidatieInformatie](@@@STOP_Documentatie_Url@@@data_xsd_Element_data_ConsolidatieInformatie.html) module voor de aanlevering aan LVBB.
+De simulator kan uitgaan van de activiteiten die een bevoegd gezag uitvoert. De simulator berekent dan de inhoud van de [ConsolidatieInformatie](@@@STOP_Documentatie_Url@@@data_xsd_Element_data_ConsolidatieInformatie.html) module voor de aanlevering aan LVBB.
 
-STOP schrijft niet voor hoe de software van het bevoegd gezag moet werken, maar stelt wel dat de consolidatie-informatie [afleidbaar](@@@STOP_Documentatie_Url@@@consolideren_bg_versiebeheer.html) is van het intern versiebeheer als dat goed is ingericht. Voor deze simulator is een van de vele mogelijke uitvoeringen gekozen voor het intern versiebeheer, en daaruit is inderdaad de consolidatie-informatie af te leiden. De [procesbegeleiding](@@@STOP_Documentatie_Url@@@consolideren_bg_procesbegeleiding.html) komt tot uitdrukking in de acties die gespecificeerd kunnen worden, en waarvan gecontroleerd wordt dat ze ook daadwerkelijk uit te voeren zijn.
+STOP schrijft niet voor hoe de software van het bevoegd gezag moet werken, maar vereist wel dat de consolidatie-informatie [afleidbaar](@@@STOP_Documentatie_Url@@@consolideren_bg_versiebeheer.html) een reflectie is van het BG-interne versiebeheer. Voor deze simulator is een van de vele mogelijke uitvoeringen gekozen voor het intern versiebeheer, en daaruit is inderdaad de consolidatie-informatie af te leiden. De [procesbegeleiding](@@@STOP_Documentatie_Url@@@consolideren_bg_procesbegeleiding.html) komt tot uitdrukking in de activiteiten die gespecificeerd kunnen worden, en waarvan gecontroleerd wordt dat ze ook daadwerkelijk uit te voeren zijn.
 
 In aanvulling op de resultaten die beschreven zijn voor de [simulatie van de LVBB](Simulatie-van-de-lvbb).bevat de resultaatpagina ook:
 
 * **Opstellen en consolideren**: een overzicht van de activiteiten in de projecten die als invoer dienen voor de simulatie.
 
 ## Werkwijze van het bevoegd gezag
-De aanname is dat een bevoegd gezag een proces heeft waarbij een besluit in een project wordt voorbereid, waarbij er op elk moment meerdere projecten (kunnen) lopen. Aan het begin van het project wordt een bevroren versie van de regelgeving als uitgangspunt genomen. Daarop worden wijzigingen aangebracht, totdat het moment is aangebroken om het besluit (of een ontwerp daarvan) op te stellen. Op zo'n moment worden de wijzigingen in de regelgeving overgenomen in het project die sinds de start van het project zijn doorgevoerd. Ook op latere momenten kan het nodig zijn de versie uit het project bij te werken met wijzigingen die in een van de projecten zijn ontstaan.
+De aanname is dat een bevoegd gezag een proces heeft waarbij een besluit in een project wordt voorbereid, waarbij er op elk moment meerdere projecten (kunnen) lopen. Aan het begin van het project wordt een beschikbare versie van de regelgeving als uitgangspunt genomen. Daarop worden wijzigingen aangebracht, totdat het moment is aangebroken om het besluit (of een ontwerp daarvan) op te stellen. Op zo'n moment worden de wijzigingen in de regelgeving overgenomen in het project die sinds de start van het project zijn doorgevoerd. Ook op latere momenten kan het nodig zijn de versie uit het project bij te werken met wijzigingen die in een van de projecten zijn ontstaan.
 
 Daarnaast zijn er gebeurtenissen waarop het bevoegd gezag moet reageren met het aanpassen van eerder bekendgemaakte besluiten. Bijvoorbeeld als niet de juiste versie van een besluit bekendgemaakt is (rectificatie) of als een rechter een besluit (gedeeltelijk) heeft vernietigd.
 
 Tot slot kan de simulator laten zien hoe het STOP versiebeheer eruit ziet als de start van een project door een adviesbureau gedaan wordt op basis van een download uit de LVBB.
 
-Binnen een project kan aan meerdere versies van hetzelfde instrument gewerkt worden die op andere momenten of onder andere condities in werking treden. In STOP termen: er kan aan versies voor meerdere doelen/branches gewerkt worden, met voor elk instrument één versie per doel/brnch.
-
-De acties die in een project kunnen voorkomen:
-
-| Actie | Beschrijving |
-| ----- | ------------ |
-| [Nieuw doel](#actie-nieuw-doel) | Richt het project zo in dat binnen een project gewerkt wordt aan instrumentversies voor een nieuw doel |
-| [Download](#actie-download) | Download de (nu of in de toekomst) geldende instrumentversies uit de LVBB (door een adviesbureau) |
-| [Wijziging](#actie-wijziging) | Aanpassing van instrumentversies binnen een project, en/of het maken van een nieuw doel/branch binnen het project. |
-| [Uitwisseling](#actie-uitwisseling) | Uitwisseling (van adviesbureau naar bevoegd gezag of omgekeerd) van bijgewerkte instrumentversies, die het bevoegd gezag (na eventuele aanpassing) zal opnemen in een besluit |
-| [Overnemen gewijzigde regelgeving](#actie-bijwerken-uitgangssituatie) | Verwerken van wijzigingen in de (nu of in de toekomst) geldende regelgeving in de (bevroren) instrumentversies in een project. De simulator gebruikt daarvoor de bekendgemaakte regelgeving; overnemen van nog niet gepubliceerde instrumentversies wordt niet ondersteund. |
-| [Overnemen aanpassingen](#actie-bijwerken-uitgangssituatie) | Overnemen van wijzigingen van een andere branch, ongeacht of de instrumentversies voor die branch al uitgewisseld zijn met andere systemen. De simulator gebruikt daarvoor de intern bekende instrumentversies.  |
-| [Publicatie](#actie-publicatie) | De publicatie van een besluit, mededeling of revisie via de LVBB en/of de publicatie van instrumentversies via andere systemen. |
-
-## Beperkingen van de simulator
-
-De simulator is niet gemaakt om te demonstreren dat versiebeheer op slechts een deel van de regelgeving mogelijk is. De simulator voert versiebeheer uit op alle bekende regelingen en informatieobjecten. Als in een scenario meerdere regelingen worden beschreven, dan is niet mogelijk een project te beginnen voor slechts een van de regelingen. 
-
-De simulator kan alleen een beperkt stel acties uitvoeren. Dit zijn de acties die in de praktijk het meest zullen voorkomen. Bepaalde acties zijn bewust niet opgenomen omdat ze een correctie zijn voor iets dat beter procedureel opgelost kan worden. Bijvoorbeeld als de ontwerpbesluit voor het ene project is geschreven met de aanname dat het project na een ander project in werking treedt, maar uiteindelijk de volgorde van inwerkingtreding omgedraaid blijkt te zijn. Er is een actie nodig om de wijzigingen van het andere project uit de versie van het ene project te halen (ontvlechting in STOP). Dit kan voorkomen worden door de geen aannames te doen over de onderlinge volgorde van inwerkingtreding totdat de besluiten voor beide projecten definitief vastgesteld zijn, en daarna de (wel door de simulator ondersteunde) acties voor het overnemen van wijzigingen te gebruiken.
-
-Het is mogelijk om een niet beschikbare actie toch uit te voeren door zelf de consolidatie-informatie voor een _Publicatie_-actie te specificeren. Dit wordt door de simulator verwerkt als ware het de uitkomst van een beschikbare actie. Het omdraaien van de inwerkingtreding is op die manier te simuleren.
-
-De consolidatie-informatie voor het STOP versiebeheer verwijst naar eerdere uitwisselingen/_Publicatie_-acties. Maar als de software van het bevegd gezag (en dus ook deze simulator) bij het uitvoeren van de acties intern verwijst naar andere momentopnamen, dan is bijvoorbeeld het `gemaaktOp`-tijdstip nog niet bekend. Bij andere acties, zoals het overnemen van de geldende regelgeving, heeft het bevoegd gezag de keuze om uit te gaan van wat de publiek bekende geldende regelgeving is, of wat de versie is die intern al klaarstaat maar nog niet is gepubliceerd. Afhankelijk van de werkwijze van het bevoegd gezag kan het nodig zijn onderscheid te maken tussen interne, publieke en voor-publicatie-klaargezet-maar-nog-niet-uitgewisselde versieinformatie.
-
-De simulator kent alleen het onderscheid tussen interne en publieke versieinformatie. Het bijhouden van een publicatie-wachtrij is erg complex en voegt weinig toe aan het inzicht dat de simulator probeert te geven in het afleiden van STOP-versiebeheerinformatie uit het interne versiebeheer. De simulator heeft daarom als beperking dat de acties die bij de voorbereiding van een publicatie horen (zoals _overnemen gewijzigde regelgeving_ en _Overnemen aanpassingen_) meteen gevolgd moeten worden door de _Publicatie_-actie. De simulator ondersteunt niet (althans niet in alle gevallen) het eerst klaarmaken voor publicatie van besluiten, mededelingen en revisies uit meerdere projecten, en daarna pas publiceren ervan. De simulator ondersteunt wel het opeenvolgend klaarmaken voor publicatie en publiceren per project, zelfs als de verschillende projecten dezelfde datum inwerkingtreding hebben.
+Binnen een project kan aan meerdere versies van hetzelfde instrument gewerkt worden die op andere momenten of onder andere condities in werking treden. In STOP termen: er kan aan versies voor meerdere doelen/branches gewerkt worden, met voor elk instrument één versie per doel/branch.
 
 ## Inhoud van het scenario
 Het scenario bestaat uit een map met invoerbestanden:
@@ -64,43 +40,39 @@ Een project wordt gespecificeerd door een .json bestand (meestal `bg_proces.json
 ```
 {
     "BevoegdGezag": "Gemeente" | "Rijk",
+    "BGCode": "gm9999",
     "Beschrijving": "... beschrijving (html) ...",
-    "Uitgangssituatie" : {
-        "doel-code": <Momentopname>,
-        ...
-    },
+    "Startdatum": "2024-01-01",
+    "Uitgangssituatie" : <Momentopname>,
     "Projecten": {
-        "<naam>" : {
-            "Beschrijving": "<beschrijving van het project>",
-            "Acties": [
-                { 
-                    "SoortActie": "<soort actie>",
-                    "Beschrijving": "<beschrijving van de actie>",
-                    "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
-                    ...
-                },
-                { 
-                    "SoortActie": "<soort actie>",
-                    "Beschrijving": "<beschrijving van de actie>",
-                    "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
-                    ...
-                },
+        "<naam>" : [
+            { 
+                "SoortActiviteit": "<soort activiteit>",
+                "Beschrijving": "<Optionele beschrijving van de activiteit>",
+                "Tijdstip": <tijdstip van de activiteit>,
                 ...
-            ]
-        },
+            },
+            { 
+                "SoortActiviteit": "<soort activiteit>",
+                "Beschrijving": "<Optionele beschrijving van de activiteit>",
+                "Tijdstip": <tijdstip van de activiteit>,
+                ...
+            },
+            ...
+        ],
         ...
     },
     "Overig" : [
         { 
-            "SoortActie": "<soort actie>",
-            "Beschrijving": "<beschrijving van de niet-projectgebonden actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
+            "SoortActiviteit": "<soort activiteit>",
+            "Beschrijving": "<Optionele beschrijving van de niet-projectgebonden activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>,
             ...
         },
         { 
-            "SoortActie": "<soort actie>",
-            "Beschrijving": "<beschrijving van de niet-projectgebonden actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie/uitwisseling>",
+            "SoortActiviteit": "<soort activiteit>",
+            "Beschrijving": "<Optionele beschrijving van de niet-projectgebonden activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>,
             ...
         },
         ...
@@ -108,188 +80,211 @@ Een project wordt gespecificeerd door een .json bestand (meestal `bg_proces.json
 }
 ```
 waarbij:
+* `Bevoegd gezag` is optioneel en kan `Gemeente`, `Rijk` zijn. Dit is nodig om de specificatie via een webpagina in te voeren.
+* `BGCode` is verplicht en is de code die voor het bevoegd gezag gebruikt moet worden. Die is bijvoorbeeld _gm9999_ voor een gemeente, _mnre9999_ voor de rijksoverheid, _pv99_ voor een provincie of _ws9999_ voor een waterschap.
 * `Beschrijving` is HTML die opgenomen wordt in  de webpagina met het resultaat, indien er geen [beschrijving](#beschrijving-van-het-scenario) van het scenario aanwezig is. Is dat wel het geval, dan wordt de beschrijving genegeerd.
-* `Project` is een code of zeer korte naam van het project, bijvoorbeeld _P1_.
-* `Beschrijving` van het project is optioneel
-* `Acties` is een lijst met acties die in het project plaatsvinden. De specificatie van de actie hangt af van het type actie maar bevat in ieder geval:
-    * `SoortActie` geeft het type actie.
-    * `Beschrijving` is verplicht en beschrijft wat het bevoegd gezag (of het adviesbureau) precies doet of waarom de actie uitgevoerd wordt.
-    * `UitgevoerdOp` is het (begin)tijdstip waarop de actie uitgevoerd wordt. Het tijdstip moet opgegeven worden als: yyyy-MM-ddThh:mm:ssZ, net als `gemaaktOp` van het STOP versiebeheer. Als de actie een uitwisseling betreft, dan is dit tijdstip gelijk aan de `gemaaktOp` uit het versiebeheer. Voor andere acties wordt het tijdstip alleen gebruikt om de acties in de juiste volgorde te kunnen simuleren.
+* `Startdatum` is verplicht en geeft de startdatum van het scenario.
+* `Uitgangssituatie` is optioneel en beschrijft welke regeling- en informatieobjectversies in werking zijn bij de start van het scenario. In de Momentopname mogen geen tijdstempels voorkomen. De versies worden in een branch met code _start_ ondergebracht, met inwerkingtreding op tijdstip 0 (dat daarna niet meer als tijdstip gebruikt kan worden).
+* `Projecten` bevat de activiteiten die voor een project uitgevoerd worden, met per project:
+    * `naam` is een code of zeer korte naam van het project, bijvoorbeeld _P1_.
+    * Een lijst met activiteiten voor een project, met voor elke activiteit tenminste:
+        * `SoortActiviteit` geeft het type activiteit.
+        * `Beschrijving` is een optionele beschrijving van de activiteit. Als er geen beschrijving wordt opgegeven zal de simulator een standaardbeschrijving hanteren.
+        * `UitgevoerdOp` is het tijdstip waarop de activiteit wordt uitgevoerd. Elk _UitgevoerdOp_ tijdstip moet uniek zijn in het scenario
+* `Overig` bevat de activiteiten die niet aan een project gebonden zijn.
 
-Op sommige plaatsen komt `... Momentopname ...`. Dit bestaat uit een opgave van de actuele versies van regelingen, GIO's en PDF-IO's met bijbehorende annotaties (voor zover ze ondersteund worden door de simulator):
+De tijdstippen en datums worden niet als absolute datum maar als een getal gespecificeerd. Het gehele deel van het getal is het aantal dagen sinds de startdatum, het aantal centi-eenheden het tijdstip op de dag. In het bovenstaande voorbeeld:
+
+* _UitgevoerdOp_ = 10 dus het tijdstip is 2024-01-11T00:00:00Z
+* _UitgevoerdOp_ = 31.09 dus het tijdstip is 2024-02-01T09:00:00Z
+
+De specificatie van `Uitgangssituatie` en van activiteiten die tevens tot een wijziging van regeling-/informatieobjectversies of tijdstempels kunnen leiden zijn van het type `<Momentopname>`. Dit bestaat uit een opgave van de actuele versies van regelingen, GIO's en PDF-IO's met bijbehorende annotaties (voor zover ze ondersteund worden door de simulator):
 ```
 <Momentopname> = {
-        "gemaaktOp": "<begintijdstip van uitwisselen>",
-        "Regelingen" : {
-            "<regeling-work-code>": {
-                "Versie": "<versie-code>",
-                "Metadata_Citeertitel": "<citeertitel>",
-                "Toelichtingrelaties": "<versie-code van laatste toekenning Toelichtingrelaties>",
-                "NonSTOP": {
-                    "<code>" : "<versie-code van laatste toekenning>",
-                    ...
-                }
-            },
-            ...
+        "reg_<nummer of code>" : null | true | false | {
+            "Metadata_Citeertitel": "<citeertitel>",
+            "Toelichtingrelaties": true | false,
+            "NonSTOP": {
+                "<code>" : true | false,
+                ...
+            }
         },
-        "GIO" : {
-            "<GIO-work-code>": {
-                "Versie": "<versie-code>",
-                "Metadata_Citeertitel": "<citeertitel>",
-                "Symbolisatie": "<versie-code van laatste toekenning symbolisatie>"
-            },
-            ...
+        ...,
+        "gio_<nummer of code>" : null | true | false | {
+            "Metadata_Citeertitel": "<citeertitel>",
+            "Symbolisatie": true | false
         },
-        "PDF" : {
-            "<IO-work-code>": {
-                "Versie": "<versie-code>",
-                "Metadata_Citeertitel": "<citeertitel>"
-            },
-            ...
-        }
+        ...
+        "pdf_<nummer of code>" : null | true | false | {
+            "Metadata_Citeertitel": "<citeertitel>"
+        },
+        ...
+        "JuridischWerkendVanaf": null | <datum (getal)>,
+        "GeldigVanaf": null | <datum (getal)>
     }
 ```
-De lijst met acties moet rekening houden met de beperkingen van de simulator:
+Hierbij staat:
 
-* De eerste actie is `Nieuw doel` of `Download`
-* De actie `Download` mag alleen als eerste actie voorkomen; `Nieuw doel` mag meermalen in een project voorkomen.
-* De actie `Nieuw doel` en de opvolgende acties worden uitgevoerd door het bevoegd gezag.
-* De actie `Download` en de opvolgende acties worden uitgevoerd door een adviesbureau.
-* Bij elke actie `Uitwisseling` wisselt ook de uitvoerder. Als een adviesbureau de actie `Uitwisseling` uitvoert, dan worden de acties daarna door het bevoegd gezag uitgevoerd. Als een bevoegd gezag `Uitwisseling` uitvoert, dan worden de acties daarna door het adviesbureau uitgevoerd.
-* Naast `Download` en `Uitwisseling` mag een adviesbureau alleen de actie `Wijziging` uitvoeren.
-* Na `Download` en `Nieuw doel` moet tenminste één `Wijziging` actie voor het betreffende doel/branch volgen.
-* Tussen de uitvoering van `Overnemen gewijzigde regelgeving`/`Overnemen aanpassingen` en de `Publicatie` van het resultaat mag geen wijziging worden doorgevoerd voor de projecten/doelen waarvan de wijzigen/aanpassingen overgenomen worden.
-* De simulator valideert niet of het juridisch correct is wat een bevoegd gezag doet. Bij de specificatie van het project moet erop gelet worden dat de acties juridisch mogelijk zijn.
+* `reg_<...>` is de work-aanduiding van een regeling. 
+* `gio_<...>` is de work-aanduiding van een GIO (een consolideerbaar informatieobject). 
+* `pdf_<...>` is de work-aanduiding van een PDF als consolideerbaar informatieobject. 
+* voor elk work kan de versie worden opgegeven als:
+    * `null`: het work wijzigt niet op de branch, dit resulteert in STOP-versiebeheer in een terugtrekking
+    * `false`: het work wordt ingetrokken
+    * `true`: er ontstaat een nieuwe versie van het work die niet uitgewerkt wordt; in STOP-versiebeheer is dit een onbekende versie.
+    * `{ ... }`: er ontstaat een nieuwe versie van het work. Als de annotaties niet wijzigen, dan kan met {} volstaan worden.
+* Voor elke versie van een work kunnen annotaties opgegeven worden:
+    * `Metadata_Citeertitel` is een alternatieve, leesbare titel voor het work
+    * `Toelichtingrelaties` (regeling) en `Symbolisatie` (GIO) zijn STOP annotaties. De simulator kent de inhoud ervan niet. Geef met `true` aan dat er een nieuwe versie van de annotatie wordt doorgegeven, en met `false` dat de annotatie wordt verwijderd.
+* Een regeling kan ook `NonSTOP`-annotaties zijn. Dit wordt als een verzameling objecten gemodelleerd, elk geïdentificeerd met een `code`, waarvoor bij elke versie een nieuwe instantie kan worden meegeleverd (met waarde `true`). Als de waarde `false` is, dan wordt het object uit de collectie verwijderd.
 
-### Actie: Nieuw doel
-Maak een nieuw doel aan, d.w.z.  een nieuwe branch in het versiebeheer.
+## Beperkingen van de simulator
+
+De simulator is niet gemaakt om te demonstreren hoe het interne versiebeheer bij een adviesbureau of bevoegd gezag er precies uit moet zien.De simulator voert een rudimentair versiebeheer uit waarbij de versies van alle bekende regelingen en informatieobjecten tegelijk in één branch beheerd wordt. Als in een scenario meerdere regelingen worden beschreven, dan is niet mogelijk een project te beginnen voor slechts een van de regelingen. 
+
+Een bevoegd gezag of adviesbureau kan in de simulator alleen een beperkt aantal soorten activiteiten uitvoeren. Dit zijn de activiteiten die in de praktijk het meest zullen voorkomen. Bepaalde activiteiten zijn bewust niet opgenomen omdat ze een correctie zijn voor iets dat beter procedureel opgelost kan worden. Bijvoorbeeld als de ontwerpbesluit voor het ene project is geschreven met de aanname dat het project na een ander project in werking treedt, maar uiteindelijk de volgorde van inwerkingtreding omgedraaid blijkt te zijn. Er is een activiteit nodig die niet alleen de wijzigingen van het andere project uit de versie van het ene project haalt (ontvlechting in STOP), maar ook de uitgangssituatie van het project wijzigt. Dit kan voorkomen worden door de geen aannames te doen over de onderlinge volgorde van inwerkingtreding totdat de besluiten voor beide projecten definitief vastgesteld zijn, en daarna de (wel door de simulator ondersteunde) activiteiten voor het overnemen van wijzigingen te gebruiken.
+
+Soms zijn de activiteiten beperkter dan wat in de praktijk mogelijk zal zijn. Als een branch bijvoorbeeld gebaseerd wordt op geldende regelgeving, zal de simulator de op dat moment geldende regelgeving nemen. In de praktijk zal ook gekozen worden voor de laatstbesloten versie die nog niet in werking is. Een besluit dat voor een project wordt opgesteld bevat alle wijzigingen uit het project; ook dat hoeft niet, in de praktijk kan bijvoorbeeld per branch of per regeling een apart besluit geformuleerd worden. Het mogelijk maken van meer opties zou de simulator complexer maken terwijl het geen scenario's mogelijk maakt.
+
+Het is mogelijk om een niet beschikbare activiteit toch uit te voeren door zelf de consolidatie-informatie als een invoerbestand voor het scenario toe te voegen. Dit wordt door de simulator verwerkt in het versiebeheer van het bevoegd gezag als een activiteit die niet in een van de projecten plaatsvindt.
+
+De simulator gaat uit van instantaan-publiceren. Als een activiteit een publicatie inhoudt of een uitwisseling met de landelijke voorzieningen, dan is de aanname dat de publicatie en verwerking direct uitgevoerd wordt. Het bijhouden van een publicatie-wachtrij is erg complex en voegt weinig toe aan het inzicht dat de simulator probeert te geven in het afleiden van STOP-versiebeheerinformatie uit het interne versiebeheer.
+
+Bij het gebruik van de downloadservice gaat de simulator ervan uit dat de geconsolideerde geldende regelgeving in de landelijke voorziening bij het bevoegd gezag op dat moment gelijk is, dat het bevoegd gezag geen consolidatieachterstand heeft voor de geldende regelgeving.
+
+## Activiteiten
+
+De activiteiten die in een project kunnen voorkomen:
+
+| Activiteit | Beschrijving |
+| ----- | ------------ |
+| [Maak branch](#activiteit-maak-branch) | Richt het project zo in dat binnen een project gewerkt wordt aan instrumentversies voor een nieuw doel |
+| [Download](#activiteit-download) | Download de (nu of in de toekomst) geldende instrumentversies uit de LVBB (door een adviesbureau) |
+| [Wijziging](#activiteit-wijziging) | Aanpassing van instrumentversies binnen een project, en/of het maken van een nieuw doel/branch binnen het project. |
+| [Uitwisseling](#activiteit-uitwisseling) | Uitwisseling (van adviesbureau naar bevoegd gezag of omgekeerd) van bijgewerkte instrumentversies, die het bevoegd gezag (na eventuele aanpassing) zal opnemen in een besluit |
+| [Bijwerken uitgangssituatie](#activiteit-bijwerken-uitgangssituatie) | Verwerken van wijzigingen die (afhankelijk van het soort branch) in de geldende regelgeving of de voorgaande branch zijn aangebracht. |
+| [Ontwerpbesluit](#activiteit-ontwerpbesluit) | De publicatie van een ontwerpbesluit dat alle wijzigingen bevat die in het project zijn aangebracht. |
+| [Vaststellingsbesluit](#activiteit-vaststellingsbesluit) | De publicatie van een vaststellingsbesluit (en later eventueel een inwerkingtredingsbesluit) dat alle wijzigingen bevat die in het project zijn aangebracht. |
+
+De lijst met activiteiten moet rekening houden met de beperkingen van de simulator:
+
+* De eerste activiteit voor een project is `Maak branch` of `Download`
+* De activiteit `Download` mag alleen als eerste activiteit voorkomen. De simulator gaat ervan uit dat deze activiteiten uitgevoerd worden door een adviesbureau.
+* `MaakBranch` wordt door het bevoegd gezag uitgevoerd. Het mag meermalen in een project voorkomen.
+* Bij elke activiteit `Uitwisseling` wisselt ook de uitvoerder. Als een adviesbureau de activiteit `Uitwisseling` uitvoert, dan worden de activiteiten daarna door het bevoegd gezag uitgevoerd. Als een bevoegd gezag `Uitwisseling` uitvoert, dan worden de activiteiten daarna door het adviesbureau uitgevoerd.
+* Naast `Download` en `Uitwisseling` mag een adviesbureau alleen de activiteit `Wijziging` uitvoeren.
+* De activiteit `Uitwisseling` mag alleen voorkomen in projecten met één branch.
+* De activiteit `Bijwerken uitgangssituatie` mag alleen gedaan worden voorafgaand aan een `Vaststellingsbesluit`.
+* De simulator valideert niet of het juridisch correct is wat een bevoegd gezag doet. Bij de specificatie van het project moet erop gelet worden dat de activiteiten juridisch mogelijk zijn.
+
+### Activiteit: Maak branch
+Maak een of meer nieuwe branches in het versiebeheer aan.
 ```
         { 
-            "SoortActie": "Nieuw doel",
-            "Beschrijving": "<beschrijving van de actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie>",
-            "Doel": "<identificatie van het doel>",
-            "Uitgangssituatie": "<datum van geldige regelgeving>" of "<identificatie van een doel>"
+            "SoortActiviteit": "Maak branch",
+            "Beschrijving": "<Optionele beschrijving van de activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>,
+            "<code>": <Momentopname> {
+                "Soort": "Regulier",
+                ...
+            },
+            "<code>": <Momentopname> {
+                "Soort": "VolgendOp",
+                "Branch": "<code>",
+                ...
+            },
+            "<code>": <Momentopname> {
+                "Soort": "TegelijkMet",
+                "Branches": ["<code>", "<code>", ...]
+                ...
+            }
+            ...
         }
 ```
 waarbij:
-* `Doel`: de identificatie van het nieuwe doel.
-* `GebaseerdOp` geeft aan welke instrumentversies als basis voor het nieuwe doel (branch) gebruikt worden, dus op welke versie van de instrumenten doorgewerkt wordt:
-    * Als de waarde een datum is, dan is de basis de regelgeving die op die datum geldig is.
-    * Als het de identificatie van een doel is, dan is de basis de meerst recente versie voor dat doel (voor alle instrumenten).
-* `Instrumenten`: de work-identificaties van elk instrument dat in de branch nodig is/bijgewerkt wordt. Er moet minimaal één instrument vermeld worden.
+* `<code>`: korte unieke naam voor de nieuwe branch.
+* `Soort` geeft aan wat de uitgangssituatie voor de branch is:
+    * `Regulier`: een besluit in het project zal de wijzigingen ten opzichte van de geldende regelgeving beschrijven. De eerste versies in de branch zijn de op dat moment geldende versies van de bekende works. Als de consolidatie van de geldende regelgeving onverhoopt niet beschikbaar is, dan wordt de voorgaande versie gebruikt.
+    * `VolgendOp`: een besluit in het project zal de wijzigingen ten opzichte van de regelgeving beschrijven die volgt uit (en later in werking treedt dan) een andere branch, die via `Branch` is opgegeven (en die bij een ander project kan horen). De eerste versies in de branch zijn de op dat moment beschikbare versies in de andere branch.
+    * `TegelijkMet`: een besluit in het project zal de regelgeving beschrijven die in werking treedt als de laatste van twee of meer andere branches in werking is getreden. De andere branches staan in `Branches`, waarbij de eerst opgegeven branch onderdeel moet zijn van het project. Wijzigingen worden ten opzichte van die branch beschreven. Een branch van dit type wordt gebruikt om pro-actief samenloop op te lossen waarvoor een nieuw besluit vereist is.
+* De overige inhoud is die van een _Momentopname_ per branch, waarbij tijdstempels nog niet zijn toegestaan.
 
-`GebaseerdOp` is verplicht tenzij het project tot een nieuwe regeling leidt.
-
-### Actie: Download
+### Activiteit: Download
 Haal de op een bepaald moment geldige regeling/informatieobjecten op uit de LVBB.
 ```
         { 
-            "SoortActie": "Download",
-            "Beschrijving": "<beschrijving van de actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie>",
-            "Doel": "<identificatie van het doel>",
-            "GeldigOp": "<datum van geldige regelgeving>",
-            "Instrumenten": [
-                "<work-identificatie>",
-                "<work-identificatie>",
-                ...
-            ]
+            "SoortActiviteit": "Download",
+            "Beschrijving": "<Optionele beschrijving van de activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>,
+            "Branch": "<code>"
         }
 ```
 waarbij:
-* `Doel`: de identificatie van het doel/branch dat het adviesbureau gebruikt om de wijzigingen aan te brengen.
-* `GeldigOp` is de datum waarop de regelgeving geldig is waarvan de instrumentversies gedownload moet worden. De datum moet groter of gelijk zijn aan de datum uit `UitgevoerdOp`
-* `Instrumenten`: de work-identificaties van elk instrument dat in de branch nodig is/bijgewerkt wordt. Er moet minimaal één instrument vermeld worden.
+* `<code>`: korte unieke naam voor de nieuwe branch
 
-### Actie: Wijziging
+Het adviesbureau krijgt de beschikking over alle geldende versies van de regelgeving. Het is in de simulator niet mogelijk aan te geven dat
+het adviesbureau slechts één regeling met bijbehorende informatieobjecten downloadt.
+
+### Activiteit: Wijziging
 Geef aan dat er nieuwe versies zijn gemaakt van de instrumenten, en/of dat er (gewijzigde) informatie over de geldigheid is.
 ```
         { 
-            "SoortActie": "Wijziging",
-            "Beschrijving": "<beschrijving van de actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie>",
-            "Doel": "<identificatie van het doel/branch>",
-            "Instrumentversies": [
-                { "Instrumentversie": "<expression-identificatie>" },
-                { "JuridischUitgewerkt": "work-identificatie" },
-                { "OnbekendeVersie": "work-identificatie" },
-                { "BestaatNiet": "work-identificatie" },
-                ...
-            ],
-            "JuridischWerkendVanaf": "<datum>",
-            "GeldigVanaf": "<datum>"
+            "SoortActiviteit": "Maak branch",
+            "Beschrijving": "<Optionele beschrijving van de activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>,
+            "<code>": <Momentopname>,
+            "<code>": <Momentopname>,
+            ...
         }
 ```
 waarbij:
-* `Doel`: de identificatie van het doel/branch waarvoor de wijzigingen zijn aangebracht.
-* `GeldigOp` is de datum waarop de regelgeving geldig is waarvan de instrumentversies gedownload moet worden. De datum moet groter of gelijk zijn aan de datum uit `UitgevoerdOp`.
-* `Instrumentversies` (optioneel): voor elk instrument dat in de branch van het project bijgewerkt wordt: de status van dat instrument. Een instrument dat niet in deze actie gewijzigd wordt hoeft niet vermeld te worden. Er zijn drie mogelijke statussen:
-    * `Instrumentversie`: de versie van het instrument.
-    * `JuridischUitgewerkt`: het instrument is juridisch uitgewerkt/ingetrokken.
-    * `OnbekendeVersie`: er is een nieuwe versie van het instrument, maar het is niet bekend hoe die er precies uitziet.
-    * `BestaatNiet`: er is geen versie van het instrument meer voor deze branch. Dat kan alleen als er ook voor de branches die eerder in werking treden (of zijn getreden) geen versie voor het instrument bestaat. Anders moet het instrument als juridisch uitgewerkt gemarkeerd worden.
-* `JuridischWerkendVanaf` (optioneel): de datum waarop de wijzigingen voor het doel in werking treden. Laat dit weg als de datum niet gewijzigd is. Geef '-' of '?' als datum als de datum eerder wel bekend was maar ni niet meer.
-* `GeldigVanaf` (optioneel): de datum waarop de wijzigingen voor het doel geldig worden. Laat dit weg als de datum (nog) niet bekend is of als `JuridischWerkendVanaf` niet bekend is. Geef '-' of '?' als datum als de datum eerder wel bekend was maar ni niet meer.
+* `<code>`: korte unieke naam voor de branch waarvan de inhoud wordt gewijzigd
+* De overige inhoud is die van een _Momentopname_ per branch, waarbij tijdstempels nog niet zijn toegestaan.
 
-Alleen het bevoegd gezag (dus niet een adviesbureau) mag `JuridischWerkendVanaf` en `GeldigVanaf` wijzigen. `GeldigVanaf` kan alleen een datum hebben als `JuridischWerkendVanaf` dat ook heeft.
-
-### Actie: Uitwisseling 
+### Activiteit: Uitwisseling 
+Stuurt de inhoud van de branch naar het bevoegd gezag (als de activiteit wordt uitgevoerd door een adviesbureau)
+of naar een adviesbureau (als de activiteit wordt uitgevoerd door het bevoegd gezag).
 ```
         { 
-            "SoortActie": "Uitwisseling",
-            "Beschrijving": "<beschrijving van de actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie>",
-            "Doel": "<identificatie van het doel>"
+            "SoortActiviteit": "Uitwisseling",
+            "Beschrijving": "<Optionele beschrijving van de activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>
         }
 ```
-waarbij:
-* `Doel`: de identificatie van het doel/branch waarvan de instrumentversies uitgewisseld worden.
 
-### Actie: Bijwerken uitgangssituatie
+### Activiteit: Bijwerken uitgangssituatie
+Werkt de uitgangssituatie voor elke branch in het project bij door de branch (afhankelijk van de soort branch) te baseren op de op dat moment geldende regelgeving of inhoud van een andere branch waar de project-branch op volgt. Daarbij worden de wijzigingen die tussen de oude en nieuwe uitgangssituatie zijn aangebracht overgenomen in de project-branch.
 ```
         { 
-            "SoortActie": "Bijwerken uitgangssituatie",
-            "Beschrijving": "<beschrijving van de actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie>",
-            "Doel": "<identificatie van het doel>",
-            "GeldigOp": "<datum van geldige regelgeving>",
-            "Instrumentversies": [
-                { "Instrumentversie": "<expression-identificatie>" },
-                { "JuridischUitgewerkt": "work-identificatie" },
-                ...
-            ]
+            "SoortActiviteit": "Bijwerken uitgangssituatie",
+            "Beschrijving": "<Optionele beschrijving van de activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>,
+            "<code>": <Momentopname>,
+            "<code>": <Momentopname>,
+            ...
         }
 ```
-waarbij:
-* `Doel`: de identificatie van het doel/branch waarvan de instrumentversies bijgewerkt worden.
-* `GeldigOp` is de datum waarop de regelgeving geldig is waarvan de instrumentversies gedownload moet worden. De datum moet groter of gelijk zijn aan de datum uit `UitgevoerdOp`. `GeldigOp` moet weggelaten worden voor doelen die als uitgangssiutatie een ander doel hebben.
-* `Instrumentversies`: voor elk instrument dat in de branch van het project nodig is/bijgewerkt wordt: de status van dat instrument nadat de gewijzigde regelgeving is overgenomen. Elk instrument moet steeds genoemd worden, ook al is de status gelijk aan de status na de vorige actie. Er zijn twee mogelijke statussen:
-    * `Instrumentversie`: de versie van het instrument.
-    * `JuridischUitgewerkt`: het instrument is juridisch uitgewerkt/ingetrokken.
+Voor elke branch en voor elk work waar de wijzigingen in de uitgangssituatie conflicteren met de wijzigingen in de branch moet via een _Momentopname_ de resulterende versie worden aangegeven. Tijdstempels nog niet zijn toegestaan.
 
-### Actie: Publicatie
+### Activiteit: Ontwerpbesluit
 ```
         { 
-            "SoortActie": "Publicatie",
-            "Beschrijving": "<beschrijving van de actie>",
-            "UitgevoerdOp": "<begintijdstip van de actie>",
-            "Doelen": ["<identificatie van het doel>", "<identificatie van het doel>", ...],
-            "SoortPublicatie": "<soort publicatie>"
+            "Beschrijving": "<Optionele beschrijving van de activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>,
+            "<code>": <Momentopname>,
+            ...
         }
 ```
-waarbij:
-* `Doelen`: de identificatie(s) van het doel/branch uit het project waarvan de instrumentversies in de publicatie zijn opgenomen.
-* `SoortPublicatie` geeft aan om welk soort publicatie het gaat. Keuze uit een van de waarden:
-    * `Consultatie` - publicatie van een concept-besluit en/of instrumentversies die niet via STOP versiebeheer verloopt
-    * `Voorontwerp` - publicatie van een concept-ontwerpbesluit en/of instrumentversies die niet via STOP versiebeheer verloopt
-    * `Ontwerpbesluit` - publicatie van een ontwerpbesluit (via de LVBB)
-    * `Besluit` - publicatie van een definitief/vastgesteld besluit (via de LVBB)
-    * `Rectificatie` - publicatie van een rectificatie van het eerder gepubliceerde (ontwerp)besluit (via de LVBB)
-    * `Mededeling uitspraak rechter` - publicatie van een mededeling van een uitspraak van de rechter (via de LVBB)
-    * `Revisie` - publicatie van een revisie: een niet-juridische wijziging van de geconsolideerde regelgeving met als doel consolidatieproblemen op te lossen.
+waarbij de (optionele) _Momentopname_ als een laatste correctie voorafgaand aan de publicatie opgevat wordt. Tijdstempels nog niet zijn toegestaan.
 
-Bij publicatie via STOP versiebeheer bepaalt de simulator welke consolidatie-informatie uitgewisseld moet worden. Het is mogelijk om andere consolidatie-informatie in de simulatie te gebruiken door een XML-bestand met de STOP-module ConsolidatieInformatie in de map van het scenario te zetten. Het `gemaaktOp` tijdstip van die module moet overeenkomen met het `UitgevoerdOp` tijdstip van de actie. De informatie uit de STOP module wordt door de simulator gebruikt voor de geautomatiseerde consolidatie, en wordt ook verwerkt in de simulatie van het versiebeheer van het bevoegd gezag.
-
-Deze mogelijkheid dient ertoe om (als dat nodig is) een fout resultaat van de simulator te corrigeren. Het kan ook gebruikt worden om te zien wat het effect is de software van het beveogd gezag in speciale gevallen de consolidatie-informatie op een andere manier samenstelt dan de simulator dat doet.
+### Activiteit: Vaststellingsbesluit
+```
+        { 
+            "Beschrijving": "<Optionele beschrijving van de activiteit>",
+            "Tijdstip": <tijdstip van de activiteit>,
+            "<code>": <Momentopname>,
+            ...
+        }
+```
+waarbij de _Momentopname_ tenminste de tijdstempels moet bevatten voor elke branch. Eventuele aanvullende wijzigingen worden als een laatste correctie voorafgaand aan de publicatie opgevat.
 

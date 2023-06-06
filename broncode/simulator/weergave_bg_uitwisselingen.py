@@ -8,7 +8,6 @@
 
 from applicatie_scenario import Scenario
 from weergave_stopmodule import Weergave_STOPModule
-from weergave_uitwisselingselector import Weergave_Uitwisselingselector
 from weergave_webpagina import WebpaginaGenerator
 
 class Weergave_BG_Uitwisselingen:
@@ -28,12 +27,12 @@ class Weergave_BG_Uitwisselingen:
         generator.VoegHtmlToe (einde_t)
 
         # Overzicht van de projectacties
-        selector = Weergave_Uitwisselingselector (scenario)
         moduleMaker = Weergave_STOPModule (generator)
-        for resultaat in scenario.Procesvoortgang.Activiteiten:
-            if len (resultaat.Uitgewisseld) > 0:
-                generator.VoegHtmlToe ('<div ' + selector.AttributenToonVoor (resultaat.UitgevoerdOp) + '>')
-                for module in resultaat.Uitgewisseld:
+        for activiteit in scenario.Procesvoortgang.Activiteiten:
+            if len (activiteit.Uitgewisseld) > 0:
+                # Lift mee op de activiteitselectie bij de proces-weergave
+                generator.VoegHtmlToe ('<div class="activiteit_uitvoering_status" data-bga="' + activiteit.UitgevoerdOp + '">')
+                for module in activiteit.Uitgewisseld:
                     generator.VoegHtmlToe ('<p>Van: ' + module.Van + '<br/>Naar: ' + module.Naar + ('' if module.Instrument is None else '<br/>Voor: ' + module.Instrument ) + '</p>')
                     moduleMaker.VoegHtmlToe (module.Module.ModuleXml ())
                 generator.VoegHtmlToe ('</div>')

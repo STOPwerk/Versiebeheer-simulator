@@ -49,8 +49,6 @@ from proces_bg_activiteit_publiceer import Activiteit_Publiceer
 #
 #======================================================================
 class Activiteit_PubliceerBesluit (Activiteit_Publiceer):
-    """Publiceer een besluit
-    """
     def __init__ (self, soortBesluit : str):
         super ().__init__ (soortBesluit)
         if soortBesluit == self._Soort_Vaststellingsbesluit:

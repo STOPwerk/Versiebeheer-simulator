@@ -103,25 +103,40 @@
     <Content Include="Versiebeheer.Simulator.pyproj.vsspell" />
     <Content Include="tests\scenarios\voer_alle_testen_uit.bat" />
     <Content Include="tests\scenarios\voer_alle_testen_uit.sh" />
+    <Content Include="wiki\Code-annotaties.md" />
+    <Content Include="wiki\Code-applicatie.md" />
+    <Content Include="wiki\Code-overzicht.md" />
+    <Content Include="wiki\Code-projecten.md" />
+    <Content Include="wiki\Code-toestanden.md" />
+    <Content Include="wiki\Code-versiebeheer.md" />
+    <Content Include="wiki\Dataflow.png" />
+    <Content Include="wiki\Datamodel.png" />
+    <Content Include="wiki\Home.md" />
+    <Content Include="wiki\Simulatie-van-bevoegd-gezag-software.md" />
+    <Content Include="wiki\Simulatie-van-de-LVBB.md" />
+    <Content Include="wiki\Simulatie-van-een-afnemer-van-de-LVBB.md" />
+    <Content Include="wiki\Simulator-uitvoeren.md" />
+    <Content Include="wiki\_Sidebar.md" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="simulator\applicatie.py" />
     <Compile Include="simulator\applicatie_meldingen.py" />
     <Compile Include="simulator\applicatie_versie.py" />
-    <Compile Include="simulator\data_bg_project.py" />
     <Compile Include="simulator\data_bg_procesverloop.py" />
     <Compile Include="simulator\data_validatie.py" />
+    <Compile Include="simulator\proces_bg_activiteit_bijwerken_uitgangssituatie.py" />
+    <Compile Include="simulator\proces_bg_activiteit_uitwisseling.py" />
+    <Compile Include="simulator\proces_bg_activiteit_download.py" />
+    <Compile Include="simulator\proces_bg_activiteit_uitgangssituatie.py" />
     <Compile Include="simulator\proces_bg_activiteit_publiceer.py" />
     <Compile Include="simulator\proces_bg_activiteit_besluit.py" />
     <Compile Include="simulator\proces_bg_activiteit_maakbranch.py" />
     <Compile Include="simulator\proces_bg_activiteit_wijzig.py" />
     <Compile Include="simulator\proces_bg_proces.py" />
-    <Compile Include="simulator\proces_bg_consolidatie.py" />
     <Compile Include="simulator\proces_bg_activiteit.py" />
     <Compile Include="simulator\data_bg_versiebeheer.py" />
     <Compile Include="simulator\data_lv_actueleannotaties.py" />
     <Compile Include="simulator\data_lv_proefversies.py" />
-    <Compile Include="simulator\proces_lv_actueleannotaties.py" />
     <Compile Include="simulator\proces_lv_branchescumulatief.py" />
     <Compile Include="simulator\stop_momentopname.py" />
     <Compile Include="simulator\weergave_annotaties.py" />
@@ -173,7 +188,6 @@
     <Compile Include="simulator\stop_naamgeving.py" />
     <Compile Include="simulator\data_lv_versiebeheerinformatie.py" />
     <Compile Include="tests\code\test_applicatie_meldingen.py" />
-    <Compile Include="tests\code\test_data_bg_project.py" />
     <Compile Include="tests\code\test_data_lv_consolidatie.py">
       <SubType>Code</SubType>
     </Compile>
@@ -211,6 +225,7 @@
     <Folder Include="uitleveren\" />
     <Folder Include="uitleveren\download\" />
     <Folder Include="uitleveren\wiki_extra\" />
+    <Folder Include="wiki\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.9" />

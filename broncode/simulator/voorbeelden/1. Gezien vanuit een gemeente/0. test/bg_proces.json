@@ -3,22 +3,23 @@
   "BGCode": "gm9999",
   "Beschrijving": "Voorbeeld nog niet beschikbaar",
   "Startdatum": "2024-01-01",
+  "Uitgangssituatie": {
+    "reg_01": {
+      "Metadata_Citeertitel": "Omgevingsplan Pyrodam",
+      "NonSTOP": {
+        "#01": true,
+        "#02": true
+      }
+    }
+  },
   "Projecten": {
     "Project #01": [
       {
-        "Soort": "MaakBranch",
-        "Tijdstip": 0,
+        "Soort": "Maak branch",
+        "Tijdstip": 1,
         "p01_1": {
           "Soort": "Regulier",
-          "reg_01": {
-            "Metadata_Citeertitel": "Omgevingsplan Pyrodam",
-            "NonSTOP": {
-              "#01": true,
-              "#02": true
-            }
-          },
-          "gio_01": {},
-          "pdf_01": {}
+          "reg_01": {}
         }
       },
       {
@@ -45,7 +46,7 @@
     ],
     "Project #02": [
       {
-        "Soort": "MaakBranch",
+        "Soort": "Maak branch",
         "Tijdstip": 100,
         "p02_1": {
           "Soort": "Regulier",
@@ -69,26 +70,31 @@
     ],
     "Project #03": [
       {
-        "Soort": "MaakBranch",
-        "Tijdstip": 110,
-        "p03_1": {
-          "Soort": "VolgendOp",
-          "Branch": "p01_1"
-        }
+        "Soort": "Download",
+        "Tijdstip": 60,
+        "Branch": "p03_1"
       },
       {
         "Soort": "Wijziging",
-        "Tijdstip": 155,
+        "Tijdstip": 75,
         "p03_1": {
           "reg_01": {}
         }
       },
       {
-        "Soort": "Vaststellingsbesluit",
-        "Tijdstip": 200,
+        "Soort": "Uitwisseling",
+        "Tijdstip": 101
+      },
+      {
+        "Soort": "Wijziging",
+        "Tijdstip": 125,
         "p03_1": {
-          "JuridischWerkendVanaf": 228
+          "reg_01": {}
         }
+      },
+      {
+        "Soort": "Bijwerken uitgangssituatie",
+        "Tijdstip": 175
       }
     ]
   }

@@ -19,7 +19,6 @@ from applicatie_meldingen import Meldingen
 from applicatie_scenario import Scenario, BenoemdeUitwisseling
 import applicatie_versie
 from data_bg_versiebeheer import ConsolidatieInformatieVerwerker
-from data_bg_project import ProjectActie
 from data_bg_procesverloop import Activiteitverloop, UitgewisseldeSTOPModule
 from weergave_resultaat_data import WeergaveData
 from proces_bg_proces import BGProces
@@ -27,7 +26,6 @@ from proces_lv_versiebeheerinformatie import WerkVersiebeheerinformatieBij
 from proces_lv_proefversies import MaakProefversies, Proefversie
 from proces_lv_completetoestanden import MaakCompleteToestanden
 from proces_lv_actueletoestanden import MaakActueleToestanden
-from proces_lv_actueleannotaties import MaakActueleToestandenMetAnnotaties
 
 #======================================================================
 #
@@ -173,22 +171,6 @@ class Proces_Simulatie:
                             
                             if not activiteit is None:
                                 activiteit.Uitgewisseld.append (UitgewisseldeSTOPModule (workId, geconsolideerd.ActueleToestanden, Activiteitverloop._Uitvoerder_LVBB, Activiteitverloop._Uitvoerder_BevoegdGezag))
-
-                            if len (self.Scenario.Annotaties) > 0:
-                                # De volgendeGemaaktOp is in productie-waardige applicaties bij de verwerking op dit moment natuurlijk
-                                # niet bekend. Het wordt hier gebruikt in de zin van: uitgewisseld tegelijk met of na de huidige uitwisseling,
-                                # maar voor de volgende uitwisseling. In plaats van eerst de verwerking voor deze uitwisseling af te ronden en
-                                # dan naar latere uitwisselingen van uitsluitend annotaties te kijken, wordt hier vooruit gekeken naar de
-                                # annotatie-uitwisselingen. Dat is het voorrecht van een simulatie :-)
-                                volgendeGemaaktOp = None
-                                jdx = idx+1
-                                while jdx < len (self.Scenario.ConsolidatieInformatie):
-                                    bron = self.Scenario.ConsolidatieInformatie[jdx]
-                                    if bron.Actie is None or bron.Actie.SoortActie in ProjectActie._SoortActie_MetUitwisseling:
-                                        volgendeGemaaktOp = bron.GemaaktOp()
-                                        break
-                                    jdx += 1
-                                MaakActueleToestandenMetAnnotaties.VoerUit (geconsolideerd, self.Scenario.Annotaties, uitwisseling.Uitwisseling.GemaaktOp, volgendeGemaaktOp)
 
                 # Werk de data bij die nodig is voor de weergave
                 self.Scenario.WeergaveData.WerkBij (uitwisseling.Uitwisseling, uitwisseling.Instrumenten, uitwisseling.Doelen, alleProefversies)

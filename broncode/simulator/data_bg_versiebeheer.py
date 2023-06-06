@@ -78,6 +78,13 @@ class Versiebeheerinformatie:
         # Lijst is gesorteerd op volgorde van inwerkingtreding/juridischGeldigVanaf
         self.Consolidatie : List[Consolidatie] = {}
 
+    def Branch (self, naamOfIdentificatie : str) -> 'Branch':
+        """Geeft de branch aan de hand van de naam of van de JOIN identificatie.
+        """
+        for doel, branch in self.Branches.items ():
+            if doel.Naam == naamOfIdentificatie or doel.Identificatie == naamOfIdentificatie:
+                return branch
+
     def WerkConsolidatieBij(self, applicatielog : Meldingen, verslag: Meldingen, gemaaktOp : str) -> bool:
         """Werk de consolidatie bij op basis van de huidige stand van het versiebeheer
 
@@ -302,7 +309,7 @@ class Branch:
         commit.InstrumentversiesBijStart = { workId : copy (info.Instrumentversie) for workId, info in self.Instrumentversies.items () }
         self.VervlochtenMet[branch] = branch.Commits[-1].GemaaktOp
 
-    def NeemVeranderdeBranchVersieOver (self, verslag: Meldingen, commit: 'Commit'):
+    def NeemVeranderdeBranchVersieOver (self, verslag: Meldingen, commit: 'Commit') -> List[str]:
         """Neem de wijzigingen uit de branch over die het uitgangspunt is voor deze branch
 
         Argumenten
@@ -310,24 +317,15 @@ class Branch:
         verslag Meldingen  log om vsat te leggen hoe het versiebeheer is uitgevoerd
         commit Commit  Commit waar de wijziging deel van uitmaakt
 
-        Geeft een array terug met de workId van de instrumenten die niet zijn bijgewerkt omdat ze op de branch zijn gewijzigd
+        Geeft een array terug met de workId van de instrumenten die niet zijn bijgewerkt omdat ze op de branch zijn gewijzigd,
+        of None als er helemaal niets is gewijzigd
         """
         if self.Uitgangssituatie_Renvooi._Branch != self:
             commit.Uitgangssituatie_Renvooi = self.Uitgangssituatie_Renvooi = self.Uitgangssituatie_Doel.Commits[-1]
             verslag.Informatie ("De renvooi in branch '" + self._Doel.Naam + "' moet vanaf nu gegeven worden ten opzichte van de inhoud van branch '" + self.Uitgangssituatie_Renvooi._Branch.Naam + "' per " + self.Uitgangssituatie_Renvooi.GemaaktOp)
             self.VervlochtenMet[self.Uitgangssituatie_Doel] = self.Uitgangssituatie_Renvooi.GemaaktOp
 
-        nietBijgewerkt = []
-        for workId, nieuweVersie in self.Uitgangssituatie_Doel.Instrumentversies.items ():
-            huidigeVersie = self.Instrumentversies.get (workId)
-            if huidigeVersie is None or not huidigeVersie.IsGewijzigdInBranch ():
-                # Deze versie moet overgenomen worden
-                self.Instrumentversies[workId] = InstrumentInformatie (self, self._Versiebeheer.Instrumenten[workId], nieuweVersie.Instrumentversie)
-                commit.Instrumentversies[workId] = copy (self.Instrumentversies[workId])
-            else:
-                nietBijgewerkt.append (workId)
-        return nietBijgewerkt
-
+        return self._NeemWijzigingenOver (self, verslag, commit, {w:i.Instrumentversie for w,i in self.Uitgangssituatie_Doel.Instrumentversies.items ()})
 
     def BaseerOpGeldendeVersie (self, verslag: Meldingen, commit: 'Commit', consolidatie: 'Consolidatie'):
         """Neem de inhoud van de geldende (geconsolideerde) regelgeving over
@@ -349,7 +347,7 @@ class Branch:
             commit.InstrumentversiesBijStart = { workId : copy (info.Instrumentversie) for workId, info in self.Instrumentversies.items () }
             self.VervlochtenMet[self.Uitgangssituatie_Renvooi._Branch] = self.Uitgangssituatie_Renvooi.GemaaktOp
 
-    def NeemVeranderdeGeldendeVersieOver (self, verslag: Meldingen, commit: 'Commit', consolidatie: 'Consolidatie'):
+    def NeemVeranderdeGeldendeVersieOver (self, verslag: Meldingen, commit: 'Commit', consolidatie: 'Consolidatie') -> List[str]:
         """Neem de wijzigingen uit de geldende (geconsolideerde) regelgeving over
 
         Argumenten
@@ -358,26 +356,46 @@ class Branch:
         commit Commit  Commit waar de wijziging deel van uitmaakt
         consolidatie Consolidatie geldende regelgeving waarvan de wijzigingen overgenomen moet worden
 
-        Geeft een array terug met de workId van de instrumenten die niet zijn bijgewerkt omdat ze op de branch zijn gewijzigd
+        Geeft een array terug met de workId van de instrumenten die niet zijn bijgewerkt omdat ze op de branch zijn gewijzigd,
+        of None als er helemaal niets is gewijzigd
         """
+        if consolidatie is None:
+            if not self.Uitgangssituatie_GeldigOp:
+                verslag.Waarschuwing ("Branch '" + self._Doel.Naam + "' had als uitgangspunt geldende regelgeving maar nu niet meer???")
+            return
+        elif not self.Uitgangssituatie_GeldigOp is None and self.Uitgangssituatie_GeldigOp >= consolidatie.JuridischGeldigVanaf:
+            verslag.Informatie ("Branch '" + self._Doel.Naam + "' had al als uitgangspunt de regelgeving geldig vanaf " + consolidatie.JuridischGeldigVanaf)
+            return
         verslag.Informatie ("Branch '" + self._Doel.Naam + "' heeft als uitgangspunt de regelgeving geldig vanaf " + consolidatie.JuridischGeldigVanaf)
         self.Uitgangssituatie_GeldigOp = consolidatie.JuridischGeldigVanaf
         if self.Uitgangssituatie_Renvooi._Branch != self:
             del self.VervlochtenMet[self.Uitgangssituatie_Renvooi._Branch]
             commit.Uitgangssituatie_Renvooi = self.Uitgangssituatie_Renvooi = consolidatie.Branches[0].Commits[-1]
-            verslag.Informatie ("De renvooi in branch '" + self._Doel.Naam + "' moet vanaf nu gegeven worden ten opzichte van de inhoud van branch '" + self.Uitgangssituatie_Renvooi._Branch.Naam + "' per " + self.Uitgangssituatie_Renvooi.GemaaktOp)
+            verslag.Informatie ("De renvooi in branch '" + self._Doel.Naam + "' moet vanaf nu gegeven worden ten opzichte van de inhoud van branch '" + self.Uitgangssituatie_Renvooi._Branch._Doel.Naam + "' per " + self.Uitgangssituatie_Renvooi.GemaaktOp)
             self.VervlochtenMet[self.Uitgangssituatie_Renvooi._Branch] = self.Uitgangssituatie_Renvooi.GemaaktOp
 
+        return self._NeemWijzigingenOver (verslag, commit, consolidatie.Instrumentversies)
+
+    def _NeemWijzigingenOver (self, verslag: Meldingen, commit: 'Commit', versies: Dict[str,'Instrumentversie']) -> List[str]:
+        """Neem de wijzigingen uit instrumentversies die het nieuwe uitgangspunt zijn voor deze branch
+        """
         nietBijgewerkt = []
-        for workId, nieuweVersie in consolidatie.Instrumentversies.items ():
+        heeftWijzigingen = False
+        for workId, nieuweVersie in versies.items ():
             huidigeVersie = self.Instrumentversies.get (workId)
             if huidigeVersie is None or not huidigeVersie.IsGewijzigdInBranch ():
-                # Deze versie moet overgenomen worden
+                # Over te nemen versie is nog niet bekend, of het work is nog niet gewijzigd in deze branch
                 self.Instrumentversies[workId] = InstrumentInformatie (self, self._Versiebeheer.Instrumenten[workId], nieuweVersie)
-                commit.Instrumentversies[workId] = copy (self.Instrumentversies[workId]) 
-            else:
+                commit.Instrumentversies[workId] = copy (self.Instrumentversies[workId])
+                heeftWijzigingen = True
+            elif not nieuweVersie.IsGelijkAan (huidigeVersie.Uitgangssituatie):
+                # De versie is wel gewijzigd in deze branch, en het uitgangspunt voor de branch is bovendien gewijzigd
+                # Dus samenloop
+                huidigeVersie.Uitgangssituatie = nieuweVersie
+                heeftWijzigingen = True
                 nietBijgewerkt.append (workId)
-        return nietBijgewerkt
+        if heeftWijzigingen:
+            return nietBijgewerkt
 
     def WijzigTijdstempels (self, commit: 'Commit', juridischWerkendVanaf : str, geldigVanaf : str):
         """Voer een nieuwe tijdstempels op voor deze branch
@@ -1117,7 +1135,7 @@ class ConsolidatieInformatieVerwerker:
                     self._Log.Fout ("Tijdstempel voor doel '" + str(doel) + "' voordat er een terugtrekking of beoogde instrumentversie is uitgewisseld. Bestand: '" + self._ConsolidatieInformatie.Pad + "'")
                 else:
                     self._Versiebeheer.Branches[doel] = branch = Branch (self._Versiebeheer, doel, self._ConsolidatieInformatie.GemaaktOp)
-                    branch.VastgesteldeVersieIsGepubliceerd = True
+                    branch._VastgesteldeVersieGepubliceerd = True
                     branch.Project = None
                     branch.InteractieNaam = doel.Naam + ' (niet via project)'
                     branch.Tijdstempels = branch.UitgewisseldeTijdstempels # Hou de tijdstempels in sync

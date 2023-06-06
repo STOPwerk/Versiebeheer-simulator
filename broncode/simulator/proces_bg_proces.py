@@ -40,8 +40,12 @@ from datetime import datetime
 from applicatie_meldingen import Meldingen
 from data_validatie import Valideer
 from proces_bg_activiteit import Activiteit
+from proces_bg_activiteit_uitgangssituatie import Activiteit_Uitgangssituatie
+from proces_bg_activiteit_download import Activiteit_Download
+from proces_bg_activiteit_uitwisseling import Activiteit_Uitwisseling
 from proces_bg_activiteit_wijzig import Activiteit_Wijzig
 from proces_bg_activiteit_maakbranch import Activiteit_MaakBranch
+from proces_bg_activiteit_bijwerken_uitgangssituatie import Activiteit_BijwerkenUitgangssituatie
 from proces_bg_activiteit_publiceer import Activiteit_Publiceer
 from proces_bg_activiteit_besluit import Activiteit_PubliceerBesluit
 
@@ -88,26 +92,32 @@ class BGProces:
             log.Fout ("Startdatum ontbreekt in '" + pad + "'")
             bgprocess._IsValide = False
 
-        def _LeesActiviteit (project, data):
-            if not "Soort" in data:
-                log.Fout ("Soort ontbreekt in een activiteit van " + ("'Overig'" if project is None else "project '" + project + "'") + " in '" + pad + "'")
-                bgprocess._IsValide = False
-                return
-            constructor = BGProces._Constructors.get (data["Soort"])
-            if constructor is None:
-                log.Fout ("Onbekende Soort='" + data["Soort"] + "' voor een activiteit van " + ("'Overig'" if project is None else "project '" + project + "'") + " in '" + pad + "'")
-                bgprocess._IsValide = False
-                return
-            activiteit : Activiteit = constructor ()
+        def _LeesActiviteit (project, data, activiteit : Activiteit = None):
+            if activiteit is None:
+                if not "Soort" in data:
+                    log.Fout ("Soort ontbreekt in een activiteit van " + ("'Overig'" if project is None else "project '" + project + "'") + " in '" + pad + "'")
+                    bgprocess._IsValide = False
+                    return
+                constructor = BGProces._Constructors.get (data["Soort"])
+                if constructor is None:
+                    log.Fout ("Onbekende Soort='" + data["Soort"] + "' voor een activiteit van " + ("'Overig'" if project is None else "project '" + project + "'") + " in '" + pad + "'")
+                    bgprocess._IsValide = False
+                    return
+                activiteit = constructor ()
+                activiteit._Soort = data["Soort"]
+                del data["Soort"]
             activiteit._BGProcess = bgprocess
-            activiteit._Soort = data["Soort"]
-            del data["Soort"]
             activiteit._Data = data
             activiteit.Project = project
             if not activiteit.LeesJson (log, pad):
                 bgprocess._IsValide = False
             if bgprocess._IsValide:
                 bgprocess.Activiteiten.append (activiteit)
+
+        if "Uitgangssituatie" in data:
+            activiteit = Activiteit_Uitgangssituatie ()
+            data["Uitgangssituatie"]["Tijdstip"] = 0
+            _LeesActiviteit (None, data["Uitgangssituatie"], activiteit)
 
         if "Projecten" in data:
             for project, activiteiten in data["Projecten"].items ():
@@ -126,8 +136,11 @@ class BGProces:
         return bgprocess
 
     _Constructors = {
-        "MaakBranch": lambda : Activiteit_MaakBranch (),
+        "Maak branch": lambda : Activiteit_MaakBranch (),
+        "Download": lambda : Activiteit_Download (),
         "Wijziging": lambda : Activiteit_Wijzig (),
+        "Uitwisseling": lambda : Activiteit_Uitwisseling (),
+        "Bijwerken uitgangssituatie": lambda : Activiteit_BijwerkenUitgangssituatie (),
         "Ontwerpbesluit": lambda : Activiteit_PubliceerBesluit (Activiteit_Publiceer._Soort_Ontwerpbesluit),
         "Vaststellingsbesluit": lambda : Activiteit_PubliceerBesluit (Activiteit_Publiceer._Soort_Vaststellingsbesluit)
     }

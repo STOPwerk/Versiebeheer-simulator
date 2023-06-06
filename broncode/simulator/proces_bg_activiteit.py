@@ -20,7 +20,7 @@ from math import floor
 
 from applicatie_meldingen import Meldingen
 from data_bg_procesverloop import Activiteitverloop, Procesvoortgang, Projectstatus, Branch, UitgewisseldeSTOPModule
-from data_bg_versiebeheer import Versiebeheerinformatie, Commit, ConsolidatieInformatieMaker
+from data_bg_versiebeheer import Versiebeheerinformatie, Commit, ConsolidatieInformatieMaker, Consolidatie
 from stop_consolidatieinformatie import ConsolidatieInformatie
 
 #======================================================================
@@ -44,6 +44,7 @@ class Activiteit:
         """
         ok = True
         if "Tijdstip" in self._Data:
+            self._Tijdstip = str (self._Data["Tijdstip"])
             self.UitgevoerdOp = self._LeesTijdstip (self._Data["Tijdstip"], False)
             del self._Data["Tijdstip"]
         else:
@@ -95,8 +96,12 @@ class Activiteit:
         self._Data = None
         # Geeft aan dat de activiteit binnen een project uitgevoerd dient te worden
         self._ProjectVerplicht : bool = True
+        # Geeft aan dat de activiteit alleen door bevoegd gezag uitgevoerd mag worden
+        self._AlleenBG : bool = True
         # Tijdstip waarop de activiteit uitgevoerd is
         self.UitgevoerdOp : str = None
+        # Specificatie van het tijdstip waarop de activiteit uitgevoerd is
+        self._Tijdstip : str = None
         # Project waarvoor de activiteit uitgevoerd wordt
         self.Project : str = None
         # Als de activiteit leidt tot een uitwisseling: de naam van de uitwisseling
@@ -129,6 +134,9 @@ class Activiteit:
                 scenario.Procesvoortgang.Projecten[self.Project] = context.ProjectStatus
             context.Activiteitverloop.UitgevoerdDoor = context.ProjectStatus.UitgevoerdDoor
             context.Activiteitverloop.Projecten.add (self.Project)
+            if self._AlleenBG and context.ProjectStatus.UitgevoerdDoor != Activiteitverloop._Uitvoerder_BevoegdGezag:
+                self._LogFout (context, "de activiteit kan alleen door het bevoegd gezag uitgevoerd worden")
+                return
         elif self._ProjectVerplicht:
             self._LogFout (context, "de activiteit moet als onderdeel van een project uitgevoerd worden")
             return
@@ -157,8 +165,11 @@ class Activiteit:
             self.ConsolidatieInformatieMaker = ConsolidatieInformatieMaker (log, resultaat.VersiebeheerVerslag, resultaat.UitgevoerdOp)
             # Geeft aan of de uitvoering succesvol was.
             self.Succes = True
+            # Opzoeken huidige regelgeving
+            self._HuidigeRegelgeving : Consolidatie = None
+            self._HuidigeRegelgevingBepaald : bool = False
 
-        def MaakCommit (self, branch : Branch):
+        def MaakCommit (self, branch : Branch, hergebruikCommit : bool = False):
             """Maak een commit voor weergave in de resultaatpagina.
 
             Argumenten:
@@ -166,8 +177,32 @@ class Activiteit:
             branch Branch  Branch waarvoor de commit aangemaakt is
             gemaaktOp string  Tijdstip van wijziging van de branch
             """
-            commit = Commit (self.Activiteitverloop.Commits, branch, self.Activiteitverloop.UitgevoerdOp)
+            commit = None
+            if len(branch.Commits) > 0:
+                commit = branch.Commits[-1]
+                if not commit in self.Activiteitverloop.Commits:
+                    commit = None
+            if commit is None:
+                commit = Commit (self.Activiteitverloop.Commits, branch, self.Activiteitverloop.UitgevoerdOp)
             return commit
+
+        def HuidigeRegelgeving (self) -> Consolidatie:
+            """Geef de nu geldende regelgeving; None als die er niet is
+            """
+            if not self._HuidigeRegelgevingBepaald:
+                self._HuidigeRegelgevingBepaald = True
+                # Zoek de geldige consolidatie op
+                isLaatste = True
+                for consolidatie in self.Versiebeheer.Consolidatie:
+                    if consolidatie.JuridischGeldigVanaf > self.Activiteitverloop.UitgevoerdOp:
+                        break
+                    isLaatste = False
+                    if consolidatie.IsCompleet:
+                        self._HuidigeRegelgeving = consolidatie
+                        isLaatste = True
+                if not isLaatste:
+                    self.Activiteitverloop.VersiebeheerVerslag.Waarschuwing ("Er is geen valide consolidatie voor de nu geldende regelgeving beschikbaar - de simulatie gaat uit van de laatst beschikbare consolidatie")
+            return self._HuidigeRegelgeving
 
 
     def _VoerUit (self, context: _VoerUitContext):
@@ -184,4 +219,4 @@ class Activiteit:
         context.Succes = False
 
     def _MaakMelding (self, tekst : str):
-        return "BG activiteit " + self._Soort + " (" + self.UitgevoerdOp + "): " + tekst
+        return "BG activiteit " + self._Soort + " (Tijdstip: " + self._Tijdstip + "): " + tekst

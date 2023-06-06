@@ -6,9 +6,9 @@ De simulator kan de werking van de LVBB simuleren. De invoer bestaat dan uit STO
 * Annotaties, dus extra (service-)informatie over de regelingen en informatieobjecten. Bijvoorbeeld metadata van een regeling of symbolisatie van een geo-informatieobject. In de simulator hoeft een annotatie alleen aangeleverd te worden als de inhoud ervan wijzigt.
 
 De simulator gebruikt de invoer voor de bepaling van:
-* **Publiceren**: een overzicht van de publicaties die het gevolg zijn avn de uitwisselingen, en van de uitgewisselde consolidatie-informatie.
+* **Bekendmaken en beschikbaarstellen**: een overzicht van de publicaties die het gevolg zijn avn de uitwisselingen, en van de uitgewisselde consolidatie-informatie.
 
-* **Versiebeheer**: Reconstructie van het versiebeheer zoals dat bij het bevoegd gezag heeft plaatsgevonden en de validatie van deze informatie.
+* **Verwerking van de publicatiebronnen**: Reconstructie van het versiebeheer zoals dat bij het bevoegd gezag heeft plaatsgevonden en de validatie van deze informatie.
 
 Als het scenario informatie over de inwerkingtreding van besluiten bevat:
 * [Actuele toestanden](@@@STOP_Documentatie_Url@@@cons_xsd_Element_cons_ActueleToestanden.html): het overzicht van de nu en in de toekomst geldende versies van de geconsolideerde regeling/informatieobject. In dit overzicht is ook aangegeven voor welke toestanden de consolidatie (door het bevoegd gezag) nog niet is afgerond.

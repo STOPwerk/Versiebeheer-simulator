@@ -55,6 +55,10 @@ class Projectstatus:
         self.GestartOp = gestartOp
         # Degene die als laatste een activiteit voor dit project heeft uitgevoerd: adviesbureau of bevoegd gezag
         self.UitgevoerdDoor : str = Activiteitverloop._Uitvoerder_BevoegdGezag
+        # Geeft aan door wie het project voor het laatst is uitgewisseld
+        self.LaatstUitgewisseldDoor : str = None
+        # Geeft aan op welk tijdstip het project voor het laatst is uitgewisseld
+        self.LaatstUitgewisseldOp : str = None
         # De branches die in dit project beheerd worden
         self.Branches : List[Branch] = []
 
@@ -179,7 +183,5 @@ class Branch (VersiebeheerBranch):
         # een project kan de inhoud alleen via activiteiten in dat project of via
         # andere BG-activiteiten gewijzigd worden.
         self.Project : str = None
-        # Degene die op dit moment aan de branch werkt: adviesbureau of bevoegd gezag
-        self.Uitvoerder = Activiteitverloop._Uitvoerder_BevoegdGezag
         # De aanduiding van de branch in het verslag van de interactie met de eindgebruiker
         self.InteractieNaam : str = None
