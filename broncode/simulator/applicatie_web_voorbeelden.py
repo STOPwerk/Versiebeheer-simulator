@@ -44,7 +44,7 @@ class Voorbeeld:
         specificatie = lijst.AlleSpecificaties[idx]
         if specificatie.IsBGProces:
             try:
-                return WebApplicatie.SimuleerVoorbeeld (os.path.dirname (specificatie.Pad))
+                #return WebApplicatie.SimuleerVoorbeeld (os.path.dirname (specificatie.Pad))
                 return WebApplicatie.ProjectInvoerPaginaVoorbeeld (specificatie.Pad) 
             except Exception as e:
                 generator = WebpaginaGenerator ("Voorbeeld kan niet geopend worden")

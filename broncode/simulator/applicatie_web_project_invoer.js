@@ -14,6 +14,7 @@ window.addEventListener('load', function () {
 
     startknop.style.display = 'none';
     fileInputFout.style.display = 'none';
+    specInput.style.display = 'none';
 
     ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(event => box.addEventListener(event, function (e) {
         e.preventDefault();
@@ -72,10 +73,10 @@ window.addEventListener('load', function () {
         if (bgpg) {
             start_BG.style.display = 'none';
             specInput.style.display = '';
-            bgpg.Optie_MeerdereRegelingenWordt(document.getElementById('_optie_regelingen').checked);
-            bgpg.Optie_InformatieObjectenWordt(document.getElementById('_optie_io').checked);
-            bgpg.Optie_AnnotatiesWordt(document.getElementById('_optie_annotaties').checked);
-            bgpg.Optie_NonStopAnnotatiesWordt(document.getElementById('_optie_nonstop').checked);
+            BGProcesGenerator.Opties.MeerdereRegelingen = document.getElementById('_optie_regelingen').checked;
+            BGProcesGenerator.Opties.InformatieObjecten = document.getElementById('_optie_io').checked;
+            BGProcesGenerator.Opties.Annotaties = document.getElementById('_optie_annotaties').checked;
+            BGProcesGenerator.Opties.NonStopAnnotaties = document.getElementById('_optie_nonstop').checked;
             bgpg.Start(bgSpecData, startknop, download);
         }
     }

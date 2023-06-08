@@ -66,7 +66,7 @@ class WebApplicatie:
             generator.VoegHtmlToe ('</textarea>')
             generator.LeesJSTemplate ('project_invoer_voorbeeld')
         generator.LeesCssTemplate ('project_invoer')
-        generator.LeesJSTemplate ('project_invoer_data', True, True)
+        generator.LeesJSTemplate ('project_invoer_bgproces', True, True)
         return generator.Html ()
 
     @staticmethod

@@ -100,7 +100,6 @@
     <Content Include="uitleveren\README.md" />
     <Content Include="uitleveren\wiki_extra\Maak STOPwerk git user.bat" />
     <Content Include="uitleveren\wiki_extra\__LEESMIJ.txt" />
-    <Content Include="Versiebeheer.Simulator.pyproj.vsspell" />
     <Content Include="tests\scenarios\voer_alle_testen_uit.bat" />
     <Content Include="tests\scenarios\voer_alle_testen_uit.sh" />
     <Content Include="wiki\Code-annotaties.md" />

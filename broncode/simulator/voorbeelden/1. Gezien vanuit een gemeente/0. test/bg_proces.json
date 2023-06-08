@@ -89,7 +89,9 @@
         "Soort": "Wijziging",
         "Tijdstip": 125,
         "p03_1": {
-          "reg_01": {}
+          "reg_01": {},
+          "reg_02": {},
+          "gio_01": {}
         }
       },
       {
