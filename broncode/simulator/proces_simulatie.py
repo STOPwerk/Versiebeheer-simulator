@@ -116,17 +116,6 @@ class Proces_Simulatie:
                 if not activiteit is None:
                     activiteit.Publicatie = publicatie
 
-                if self.Scenario.Opties.Versiebeheer:
-                    # Maak opnieuw de consolidatie aan op basis van intern versiebeheer
-                    # Dit hoeft eigenlijk niet altijd, maar het is teveel moeite voor de ontwikkelaar van de simulator
-                    # om precies bij te houden wanneer het wel en niet hoeft.
-                    Consolideren.VoerUit (self.Scenario.Projectvoortgang.Versiebeheer, consolidatieInformatieBron.GemaaktOp())
-                    # Bewaar een kopie van het interne versiebeheer voor weergave
-                    actieResultaat._Versiebeheer = VersiebeheerWeergave (self.Scenario.Projectvoortgang.Versiebeheer)
-
-                if consolidatieInformatie is None:
-                    # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
-                    continue
                 # Verwerk de uitgewisselde consolidatie-informatie. Een productie-waardige (ontvangende) applicatie begint
                 # hier met de verwerking na ontvangst van een uitwisseling
                 self.Scenario.Log.Informatie ("Verwerk de consolidatie-informatie ontvangen op " + gebeurtenis.ConsolidatieInformatie.OntvangenOp + " (@" + gebeurtenis.ConsolidatieInformatie.GemaaktOp + ")")
