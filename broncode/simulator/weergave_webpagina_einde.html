@@ -30,14 +30,24 @@
             });
         }
 
-        // Event handlers voor de accordion panelen (op te klikken stukjes van de pagina)
-        document.querySelectorAll("[data-accordion]").forEach((elt) => {
-            elt.addEventListener("click", TogglePaneel);
-        });
-        // Event handler voor het sluiten van alle accordion panelen
-        document.querySelectorAll("#accordion-sluiten").forEach((elt) => {
-            elt.addEventListener("click", VerbergPanelen);
-        });
+        function MaakEventHandlers() {
+            // Event handlers voor de accordion panelen (op te klikken stukjes van de pagina)
+            document.querySelectorAll("[data-accordion]").forEach((elt) => {
+                if (elt.dataset.aeh === undefined) {
+                    elt.addEventListener("click", TogglePaneel);
+                    elt.dataset.aeh = true;
+                }
+            });
+            // Event handler voor het sluiten van alle accordion panelen
+            document.querySelectorAll("#accordion-sluiten").forEach((elt) => {
+                if (elt.dataset.aeh === undefined) {
+                    elt.addEventListener("click", VerbergPanelen);
+                    elt.dataset.aeh = true;
+                }
+            });
+        }
+        window.addEventListener('init_accordion', MaakEventHandlers);
+        MaakEventHandlers();
     });
     /*EXTRASCRIPT*/
 </script>

@@ -5,10 +5,10 @@
   "Startdatum": "2024-01-01",
   "Uitgangssituatie": {
     "reg_01": {
-      "Metadata_Citeertitel": "Omgevingsplan Pyrodam",
+      "Metadata": "Omgevingsplan Pyrodam",
       "NonSTOP": {
         "#01": true,
-        "#02": true
+        "#02": false
       }
     }
   },
@@ -32,8 +32,8 @@
       {
         "Soort": "Ontwerpbesluit",
         "Tijdstip": 14,
-        "InzageVanaf": 15,
-        "EindeInzageOp": 43
+        "Begin inzagetermijn": 15,
+        "Einde inzagetermijn": 43
       },
       {
         "Soort": "Vaststellingsbesluit",
@@ -41,7 +41,7 @@
         "p01_1": {
           "JuridischWerkendVanaf": 78
         },
-        "EindeBeroepOp": 92
+        "Einde beroepstermijn": 92
       }
     ],
     "Project #02": [
@@ -50,6 +50,16 @@
         "Tijdstip": 100,
         "p02_1": {
           "Soort": "Regulier",
+          "reg_01": {}
+        },
+        "p02_2": {
+          "Soort": "VolgendOp",
+          "Branch": "p02_1",
+          "reg_01": {}
+        },
+        "p02_3": {
+          "Soort": "TegelijkMet",
+          "Branches": [ "p02_1", "p01_1" ],
           "reg_01": {}
         }
       },
@@ -62,8 +72,15 @@
       },
       {
         "Soort": "Vaststellingsbesluit",
-        "Tijdstip": 150,
+        "Tijdstip": 150
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 175,
         "p02_1": {
+          "JuridischWerkendVanaf": 178
+        },
+        "p02_2": {
           "JuridischWerkendVanaf": 178
         }
       }
@@ -71,32 +88,37 @@
     "Project #03": [
       {
         "Soort": "Download",
-        "Tijdstip": 60,
+        "Tijdstip": 110,
         "Branch": "p03_1"
       },
       {
         "Soort": "Wijziging",
-        "Tijdstip": 75,
+        "Tijdstip": 125,
         "p03_1": {
           "reg_01": {}
         }
       },
       {
         "Soort": "Uitwisseling",
-        "Tijdstip": 101
+        "Tijdstip": 176
       },
       {
         "Soort": "Wijziging",
-        "Tijdstip": 125,
+        "Tijdstip": 180,
         "p03_1": {
-          "reg_01": {},
-          "reg_02": {},
+          "reg_01": {
+            "Metadata": "Omgevingsplan Groot-Pyrodam",
+            "Toelichtingrelaties": true
+          },
+          "reg_02": {
+            "Metadata": "Omgevingsvisie Groot-Pyrodam"
+          },
           "gio_01": {}
         }
       },
       {
         "Soort": "Bijwerken uitgangssituatie",
-        "Tijdstip": 175
+        "Tijdstip": 200
       }
     ]
   }

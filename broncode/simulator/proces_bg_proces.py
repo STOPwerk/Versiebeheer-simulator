@@ -115,8 +115,8 @@ class BGProces:
                 bgprocess.Activiteiten.append (activiteit)
 
         if "Uitgangssituatie" in data:
-            activiteit = Activiteit_Uitgangssituatie ()
             data["Uitgangssituatie"]["Tijdstip"] = 0
+            activiteit = Activiteit_Uitgangssituatie ()
             _LeesActiviteit (None, data["Uitgangssituatie"], activiteit)
 
         if "Projecten" in data:

@@ -5,6 +5,8 @@ window.addEventListener('load', function () {
     const fileInput = document.getElementById('_start_specificatie_json');
     const fileInputFout = document.getElementById('_specificatie_fout');
     const fileInputFoutmelding = document.getElementById('_specificatie_foutmelding');
+    const meldingen = document.getElementById('_heeft_meldingen');
+    const meldingentabel = document.getElementById('_meldingen');
     const start_BG = document.getElementById('_start_soortBG');
     const specInput = document.getElementById('_specificatie');
     const bgSpec = document.getElementById('_bg_proces');
@@ -28,14 +30,12 @@ window.addEventListener('load', function () {
     ['dragleave', 'dragend', 'drop'].forEach(event => box.addEventListener(event, function (e) {
         box.classList.remove('is-dragover');
     }), false);
-
-
-
     box.addEventListener('drop', function (e) {
         fileInput.files = e.dataTransfer.files;
         leesSpecificatie();
     }, false);
     fileInput.addEventListener('change', leesSpecificatie);
+
     function leesSpecificatie() {
         fileInputFout.style.display = '';
         bgSpecData.innerHTML = '';
@@ -44,7 +44,7 @@ window.addEventListener('load', function () {
             var reader = new FileReader();
             reader.onload = function (evt) {
                 try {
-                    startInvoer(BGProcesGenerator.LeesSpecificatie(bgSpec, evt.target.result));
+                    startInvoer(BGProcesSimulator.LeesSpecificatie(bgSpec, evt.target.result));
                 }
                 catch (error) {
                     fileInputFout.style.display = 'none';
@@ -65,19 +65,37 @@ window.addEventListener('load', function () {
         e.preventDefault();
         e.stopPropagation();
         if (e.target.checked) {
-            startInvoer(BGProcesGenerator.Selecteer(bgSpec, e.target.value));
+            startInvoer(BGProcesSimulator.Selecteer(bgSpec, e.target.value));
         }
     }), false);
 
+    function ToonSpecificatieMeldingen(tijdstip, meldingen) {
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        td.rowSpan = meldingen.length;
+        td.innerHTML = tijdstip.WeergaveInnerHtml();
+        tr.appendChild(td);
+        for (let melding of meldingen) {
+            meldingentabel.appendChild(tr);
+            td = document.createElement('td');
+            td.innerHTML = melding;
+            tr.appendChild(td);
+            tr = document.createElement('tr');
+        }
+    }
     function startInvoer(bgpg) {
         if (bgpg) {
             start_BG.style.display = 'none';
             specInput.style.display = '';
-            BGProcesGenerator.Opties.MeerdereRegelingen = document.getElementById('_optie_regelingen').checked;
-            BGProcesGenerator.Opties.InformatieObjecten = document.getElementById('_optie_io').checked;
-            BGProcesGenerator.Opties.Annotaties = document.getElementById('_optie_annotaties').checked;
-            BGProcesGenerator.Opties.NonStopAnnotaties = document.getElementById('_optie_nonstop').checked;
+            BGProcesSimulator.Opties.MeerdereRegelingen = document.getElementById('_optie_regelingen').checked;
+            BGProcesSimulator.Opties.InformatieObjecten = document.getElementById('_optie_io').checked;
+            BGProcesSimulator.Opties.Annotaties = document.getElementById('_optie_annotaties').checked;
+            BGProcesSimulator.Opties.NonStopAnnotaties = document.getElementById('_optie_nonstop').checked;
             bgpg.Start(bgSpecData, startknop, download);
+            if (bgpg.HeeftSpecificatieMeldingen()) {
+                bgpg.ToonSpecificatieMeldingen(ToonSpecificatieMeldingen);
+                meldingen.style.display = '';
+            }
         }
     }
 });

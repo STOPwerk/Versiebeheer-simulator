@@ -718,7 +718,7 @@ class Tijdstempels:
 class Consolidatie:
 
     def __init__(self, juridischGeldigVanaf : str, branches : List[Branch]):
-        """Maak een nieuwe instanntie aan.
+        """Maak een nieuwe instantie aan.
         
         Argumenten:
 

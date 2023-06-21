@@ -52,7 +52,7 @@ class WebApplicatie:
     def ProjectInvoerPaginaVoorbeeld(voorbeeldFilePad):
         """Invoerpagina voor BG-projecten, te vullen met een voorbeeld"""
         generator = WebpaginaGenerator ("Simulator @bevoegd gezag", WebApplicatie.FAVICON)
-        einde = generator.StartToelichting ("Help", voorbeeldFilePad is None)
+        einde = generator.StartSectie ("Toelichting", voorbeeldFilePad is None)
         generator.LeesHtmlTemplate ('project_invoer_help')
         generator.VoegHtmlToe (einde)
         if voorbeeldFilePad is None:
@@ -67,6 +67,7 @@ class WebApplicatie:
             generator.LeesJSTemplate ('project_invoer_voorbeeld')
         generator.LeesCssTemplate ('project_invoer')
         generator.LeesJSTemplate ('project_invoer_bgproces', True, True)
+        generator.GebruikSvgScript ()
         return generator.Html ()
 
     @staticmethod
