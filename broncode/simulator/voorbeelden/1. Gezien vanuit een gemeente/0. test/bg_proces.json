@@ -1,0 +1,125 @@
+{
+  "BevoegdGezag": "Gemeente",
+  "BGCode": "gm9999",
+  "Beschrijving": "Voorbeeld nog niet beschikbaar",
+  "Startdatum": "2024-01-01",
+  "Uitgangssituatie": {
+    "reg_01": {
+      "Metadata": "Omgevingsplan Pyrodam",
+      "NonSTOP": {
+        "#01": true,
+        "#02": false
+      }
+    }
+  },
+  "Projecten": {
+    "Project #01": [
+      {
+        "Soort": "Maak branch",
+        "Tijdstip": 1,
+        "p01_1": {
+          "Soort": "Regulier",
+          "reg_01": {}
+        }
+      },
+      {
+        "Soort": "Wijziging",
+        "Tijdstip": 4,
+        "p01_1": {
+          "reg_01": {}
+        }
+      },
+      {
+        "Soort": "Ontwerpbesluit",
+        "Tijdstip": 14,
+        "Begin inzagetermijn": 15,
+        "Einde inzagetermijn": 43
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 50,
+        "p01_1": {
+          "JuridischWerkendVanaf": 78
+        },
+        "Einde beroepstermijn": 92
+      }
+    ],
+    "Project #02": [
+      {
+        "Soort": "Maak branch",
+        "Tijdstip": 100,
+        "p02_1": {
+          "Soort": "Regulier",
+          "reg_01": {}
+        },
+        "p02_2": {
+          "Soort": "VolgendOp",
+          "Branch": "p02_1",
+          "reg_01": {}
+        },
+        "p02_3": {
+          "Soort": "TegelijkMet",
+          "Branches": [ "p02_1", "p01_1" ],
+          "reg_01": {}
+        }
+      },
+      {
+        "Soort": "Wijziging",
+        "Tijdstip": 130,
+        "p02_1": {
+          "reg_01": {}
+        }
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 150
+      },
+      {
+        "Soort": "Vaststellingsbesluit",
+        "Tijdstip": 175,
+        "p02_1": {
+          "JuridischWerkendVanaf": 178
+        },
+        "p02_2": {
+          "JuridischWerkendVanaf": 178
+        }
+      }
+    ],
+    "Project #03": [
+      {
+        "Soort": "Download",
+        "Tijdstip": 110,
+        "Branch": "p03_1"
+      },
+      {
+        "Soort": "Wijziging",
+        "Tijdstip": 125,
+        "p03_1": {
+          "reg_01": {}
+        }
+      },
+      {
+        "Soort": "Uitwisseling",
+        "Tijdstip": 176
+      },
+      {
+        "Soort": "Wijziging",
+        "Tijdstip": 180,
+        "p03_1": {
+          "reg_01": {
+            "Metadata": "Omgevingsplan Groot-Pyrodam",
+            "Toelichtingrelaties": true
+          },
+          "reg_02": {
+            "Metadata": "Omgevingsvisie Groot-Pyrodam"
+          },
+          "gio_01": {}
+        }
+      },
+      {
+        "Soort": "Bijwerken uitgangssituatie",
+        "Tijdstip": 200
+      }
+    ]
+  }
+}

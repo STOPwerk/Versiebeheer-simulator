@@ -1,4 +1,6 @@
 # Deze moet niet in de repo staan, zodat die blijft staan bij het switchen van branches.
 publiceer_git.bat
+# Download.zip wordt geplaatst in:
+zip
 # De wiki directory wordt gebruikt voor een andere git repo
 wiki

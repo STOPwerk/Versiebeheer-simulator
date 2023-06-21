@@ -46,6 +46,8 @@ class Doel:
         """
         self.Identificatie = identificatie
         self.Index = index
+        # Verkorte identificatie van het doel
+        self.Naam = identificatie[identificatie.rindex ('/')+1:]
 
 #----------------------------------------------------------------------
 # Ondersteuning voor werken in Python

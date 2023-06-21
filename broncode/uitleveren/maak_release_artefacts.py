@@ -76,6 +76,7 @@ except Exception as e:
 
 # Vervang de wiki documentatie
 wiki_doel_pad = os.path.join (uitleverbestanden_map, 'wiki')
+os.makedirs (wiki_doel_pad, exist_ok = True)
 for root, dirs, files in os.walk (wiki_doel_pad):
     for file in files:
         try:
@@ -105,15 +106,16 @@ except Exception as e:
 
 
 # Maak een zip bestand om te downloaden
-downloadPad = os.path.join (repo_root_map, 'download.zip')
+downloadPad = os.path.join (uitleverbestanden_map, 'zip', 'download.zip')
+os.makedirs (os.path.dirname (downloadPad), exist_ok = True)
 with zipfile.ZipFile (downloadPad, 'w') as zip:
     for root, dirs, files in os.walk (os.path.join (repo_root_map, 'broncode', 'simulator')):
         for file in files:
             if file.startswith ('Versiebeheer.Simulator'):
                 # Visual Studio bestanden
                 pass
-            elif file == 'index.py' or file.startswith ('applicatie_web') or file == 'requirements.txt' or file == 'vercel.json':
-                # Web bestanden
+            elif file == 'vercel.json':
+                # Web deployment bestanden
                 pass
             else:
                 try:

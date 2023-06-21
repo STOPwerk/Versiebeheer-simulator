@@ -66,7 +66,7 @@ class InstrumentversieInformatie:
         In deze applicatie alleen nodig voor weergave"""
         xml = ['<UitgewisseldInstrument>',
                '\t<!-- In de uitwisseling is aanwezig: ' + str(self._ExpressionId) + ' -->',
-               '\t<FRBRWork>' + str(self.Basisversie_Doel) + '</FRBRWork>']
+               '\t<FRBRWork>' + str(self.WorkId) + '</FRBRWork>']
         if not self.Basisversie_Doel is None:
             xml.extend (['\t<gemaaktOpBasisVan>',
                          '\t\t<Basisversie>',

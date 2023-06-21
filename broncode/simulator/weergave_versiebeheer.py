@@ -147,9 +147,9 @@ class _VersiebeheerDiagram (DiagramGeneratorOpties):
         html += '<p>Instrumentversie: ' + (toestand.Instrumentversie if toestand.Instrumentversie else 'onbekend') + '</p>\n'
         html += self.NogTeConsoliderenInformatie (toestand, toestand, str(element.Id))
         if toestand.Basisversiedoelen:
-            html += '<div>(De overige doelen die bijdragen aan de toestand worden niet uitgewisseld als onderdeel van de actuele toestanden)</div>\n'
+            html += '<div>(De <i>overige doelen die bijdragen</i> aan de toestand worden niet vermeld in de STOP module ActueleToestanden)</div>\n'
 
         # Selector om selectie van uitwisselingen te tonen
-        html += '<p>'+ self.NogTeConsoliderenToggle (toestand, toestand, str(element.Id)) + ' Toon uitwisselingen gerelateerd aan de toestand.</p>'
+        html += '<p>'+ self.NogTeConsoliderenToggle (toestand, toestand, str(element.Id)) + ' Geef in het diagram de uitwisselingen aan die wel/niet bijdragen aan de toestand.</p>'
 
         return html

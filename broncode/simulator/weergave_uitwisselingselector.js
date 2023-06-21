@@ -10,7 +10,7 @@ window.addEventListener('load', function () {
         elt.value = gemaaktOp;
 
         // Volgende / vorige buttons
-        var button = document.getElementById('uitwisselingselector_volgende')
+        var button = document.getElementById('uitwisselingselector_vorige')
         if (elt.selectedIndex == -1) {
             button.dataset.uw = '';
             button.disabled = true
@@ -21,7 +21,7 @@ window.addEventListener('load', function () {
             button.dataset.uw = elt.options[elt.selectedIndex - 1].value;
             button.disabled = false
         }
-        button = document.getElementById('uitwisselingselector_vorige')
+        button = document.getElementById('uitwisselingselector_volgende')
         if (elt.selectedIndex == -1) {
             button.dataset.uw = '';
             button.disabled = true

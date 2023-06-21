@@ -1,12 +1,120 @@
-.bgvb_overzicht { /* Tabel */
+.bgvb_verslag {
+    padding: 1em;
+    display: none;
 }
 
-    .bgvb_overzicht th {
-        white-space: nowrap;
-        vertical-align: top;
-        padding-right: 1em;
+    .bgvb_verslag.huidige-act {
+        display: block;
     }
 
-    .bgvb_overzicht td {
-        vertical-align: top;
+table.bgvb_info {
+    border-collapse: collapse;
+    border: 1px solid #666666;
+}
+
+    table.bgvb_info > tbody > tr > td {
+        border: 1px solid #666666;
     }
+
+.bgvb_info .gewijzigd {
+    font-weight: bold
+}
+
+.bgvb_diagram {
+    border: 1px solid #666666;
+}
+
+.bgvbd_txt { /* label in diagram */
+    user-select: none;
+}
+
+    .bgvbd_txt.huidige-act {
+        fill: #3333FF;
+        font-weight: bold;
+    }
+
+.bgvbd_txt_l {
+    fill: none;
+    stroke: #666666;
+    stroke-width: 1;
+}
+
+    .bgvbd_txt_l.huidige-act {
+        stroke: #3333FF;
+        stroke-width: 2;
+    }
+
+.bgvbd_mo_bg {
+    fill: #dae8fc;
+    stroke: #6c8ebf;
+    cursor: pointer;
+}
+
+    .bgvbd_mo_bg.huidige-act { /* geselecteerde momentopname */
+        stroke-width: 3;
+    }
+
+.bgvbd_mo_a {
+    fill: #fff2cc;
+    stroke: #d6b656;
+    cursor: pointer;
+}
+
+    .bgvbd_mo_a.huidige-act { /* geselecteerde momentopname */
+        stroke-width: 3;
+    }
+
+.bgvbd_line_branch { /* Lijn branch */
+    fill: none;
+    stroke: #000000;
+    stroke-width: 1;
+}
+
+.bgvbd_line_exbranch { /* Lijn branch voor mo met nieuwe basisversie */
+    fill: none;
+    stroke: #000000;
+    stroke-width: 1;
+    stroke-dasharray: 6 6;
+}
+
+.bgvbd_line_basis { /* Lijn basisversie */
+    fill: none;
+    stroke: #3333FF;
+    stroke-width: 3;
+}
+
+.bgvbd_line_basis_p { /* Punt van lijn basisversie */
+    fill: #3333FF;
+    stroke: #3333FF;
+    stroke-width: 1;
+}
+
+.bgvbd_line_vv { /* Lijn vervlochten versie */
+    fill: none;
+    stroke: #82B366;
+    stroke-width: 3;
+}
+
+.bgvbd_line_vv_p { /* Punt van lijn vervlochten versie */
+    fill: #82B366;
+    stroke: #82B366;
+    stroke-width: 1;
+}
+
+.bgvbd_line_ov { /* Lijn ontvlochten versie */
+    fill: none;
+    stroke: #B20000;
+    stroke-width: 3;
+}
+
+.bgvbd_line_ov_p { /* Punt van lijn ontvlochten versie */
+    fill: #B20000;
+    stroke: #B20000;
+    stroke-width: 1;
+}
+
+.bgvbd_line_ov_x { /* X in lijn ontvlochten versie */
+    color: #B20000;
+    fill: none;
+    stroke: none;
+}

@@ -1,0 +1,44 @@
+<div id="_specificatie_fout">
+    Kan de specificatie niet lezen:
+    <div id="_specificatie_foutmelding"></div>
+</div>
+<div id="_start">
+    <button data-accordion="_start_soortBG_a" class="accordion_h active">Scenario</button>
+    <div data-accordion-paneel="_start_soortBG_a" class="accordion_h_paneel" style="display: block">
+        <p>
+            Deze specificatie van een scenario is opgesteld vanuit het perspectief van een <span id="_soortBG"></span>.
+        </p>
+        <p><a href="#" id="_start_edit">Bekijk/bewerk</a> het scenario</p>
+        <p id="_opties">
+            Geef ook aan of het scenario gebruik maakt van
+            <label for="_optie_regelingen"><input type="checkbox" id="_optie_regelingen"> meerdere regelingen</label>,
+            <label for="_optie_io"><input type="checkbox" id="_optie_io"> informatieobjecten</label>,
+            <label for="_optie_annotaties"><input type="checkbox" id="_optie_annotaties"> STOP annotaties</label>
+            en/of
+            <label for="_optie_nonstop"><input type="checkbox" id="_optie_nonstop"> non-STOP annotaties</label>
+            bij regeling-/informatieobjectversies.
+        </p>
+        <p id="_heeft_meldingen">
+            De specificatie kon ingelezen worden maar is misschien niet zoals verwacht.
+            <table id="_meldingen">
+                <tr><td>Tijdstip van de activiteit</td><td>Meldingen</td></tr>
+            </table>
+        </p>
+    </div>
+</div>
+<div id="_specificatie">
+    <form id="Invoer" action="resultaat" method="post" target="_blank" class="invoer" enctype="multipart/form-data">
+        <button id="startknop">Start simulator</button>
+        <textarea name="onlineInvoer1" class="onlineInvoer" id="_bg_proces_data"></textarea>
+        <div class="download"><a href="#" id="_download_specificatie" download="bg_proces.json">Download specificatie</a></div>
+    </form>
+    <p id="_heeft_meldingen2">
+        De specificatie kon ingelezen worden maar is misschien niet zoals verwacht.
+        <table id="_meldingen2">
+            <tr><td>Tijdstip van de activiteit</td><td>Meldingen</td></tr>
+        </table>
+    </p>
+    <div id="_bg_proces">
+
+    </div>
+</div>

@@ -1,0 +1,70 @@
+.activiteiten_overzicht { /* Tabel */
+    border-collapse: collapse;
+    border: 1px solid #666666;
+}
+
+    .activiteiten_overzicht tr[data-bga] { /* activiteit die selecteerbaar is */
+        cursor: pointer;
+    }
+
+        .activiteiten_overzicht tr[data-bga]:hover {
+            background-color: #dae8fc;
+        }
+
+    .activiteiten_overzicht tr.huidige-act { /* geselecteerde activiteit die geen uitwisseling is */
+        border: 3px solid #000000;
+        cursor: pointer;
+    }
+
+        .activiteiten_overzicht tr.huidige-act.uw { /* geselecteerde activiteit die ook uitwisseling is */
+            background-color: #ffe6cc;
+        }
+
+            .activiteiten_overzicht tr.huidige-act.uw:hover {
+                background-color: #dae8fc;
+            }
+
+table.activiteiten_overzicht > tbody > tr > td {
+    border: 1px solid #666666;
+}
+
+table.activiteiten_overzicht > tbody > tr > th.nw {
+    border: 1px solid #666666;
+}
+
+table.activiteiten_overzicht > tbody > tr > th.ph1 {
+    border-top: 1px solid #666666;
+    border-left: 1px solid #666666;
+    border-right: 1px solid #666666;
+}
+
+table.activiteiten_overzicht > tbody > tr > th.ph2 {
+    border-bottom: 1px solid #666666;
+    border-left: 1px solid #666666;
+    border-right: 1px solid #666666;
+}
+
+.activiteit_uitvoering {
+    padding: 1em;
+    display: none;
+}
+
+    .activiteit_uitvoering.huidige-act {
+        display: block;
+    }
+
+.activiteit_uitvoering_log {
+    display: none;
+}
+
+    .activiteit_uitvoering_log.huidige-act {
+        display: block;
+    }
+
+.activiteit_uitvoering_status {
+    display: none;
+}
+
+    .activiteit_uitvoering_status.huidige-act {
+        display: block;
+    }

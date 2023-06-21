@@ -1,0 +1,435 @@
+#startknop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 3px solid #82b366;
+    background-color: #d5e8d4;
+    font-size: large;
+    font-weight: bolder;
+    padding: 1em;
+    cursor: pointer;
+}
+
+    #startknop:hover {
+        border-color: #d79b00;
+        background-color: #ffe6cc;
+    }
+
+.box {
+    background-color: white;
+    outline: 2px dashed black;
+    width: 75em;
+    height: 15em;
+}
+
+    .box.is-dragover {
+        background-color: #dae8fc;
+    }
+
+.box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .box input {
+        display: none;
+    }
+
+
+strong {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+    strong:hover {
+        color: blue;
+    }
+
+#voorbeeld {
+    display: none;
+}
+
+.onlineInvoer {
+    display: none;
+}
+
+.download {
+    text-align: right;
+}
+
+/*https://www.w3schools.com/howto/howto_css_modals.asp*/
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.modal-close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .modal-close:hover,
+    .modal-close:focus {
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+#_bgpg_modal_volgende {
+    color: #6c8ebf;
+}
+
+    #_bgpg_modal_volgende:hover,
+    #_bgpg_modal_volgende:focus {
+        color: #0000BB;
+    }
+
+#_bgpg_modal_ok {
+    color: #82b366;
+}
+
+    #_bgpg_modal_ok:hover,
+    #_bgpg_modal_ok:focus {
+        color: #00FF00;
+    }
+
+#_bgpg_modal_cancel {
+    color: #b36666;
+}
+
+    #_bgpg_modal_cancel:hover,
+    #_bgpg_modal_cancel:focus {
+        color: #FF0000;
+    }
+
+textarea.beschrijving {
+    width: 90%;
+    height: 15em;
+}
+
+input.number2 {
+    width: 3em;
+    text-align: right;
+}
+
+input.number4 {
+    width: 5em;
+    text-align: right;
+}
+
+.voegtoe {
+    font-size: larger;
+    color: #82b366;
+    cursor: pointer;
+}
+
+    .voegtoe:hover,
+    .voegtoe:focus {
+        color: #00FF00;
+    }
+
+.werkbij {
+    font-size: larger;
+    color: #6684b3;
+    cursor: pointer;
+}
+
+    .werkbij:hover,
+    .werkbij:focus {
+        color: #0000FF;
+    }
+
+.verwijder {
+    font-size: larger;
+    content: "\1F5D1";
+    color: #b36666;
+    cursor: pointer;
+}
+
+    .verwijder:hover,
+    .verwijder:focus {
+        color: #FF0000;
+    }
+
+table.activiteiten_overzicht { /* Selectielijst activiteiten */
+    border-collapse: collapse;
+}
+
+    table.activiteiten_overzicht > tbody > tr > td {
+        border: 1px solid #cccccc;
+    }
+
+        table.activiteiten_overzicht > tbody > tr > td.td0 { /* tijdstip */
+            border-right: 0;
+            color: #cccccc;
+        }
+
+        table.activiteiten_overzicht > tbody > tr > td.td1 {
+            border-left: 0;
+            border-right: 0;
+            text-align: right;
+            color: #cccccc;
+        }
+
+        table.activiteiten_overzicht > tbody > tr > td.tu {
+            border-left: 0;
+            border-right: 0;
+            color: #cccccc;
+            white-space: nowrap;
+        }
+
+        table.activiteiten_overzicht > tbody > tr > td.tz {
+            border-left: 0;
+            white-space: nowrap;
+        }
+
+    table.activiteiten_overzicht > tbody > tr[data-bga] { /* activiteit */
+        cursor: pointer;
+    }
+
+        table.activiteiten_overzicht > tbody > tr[data-bga]:hover {
+            background-color: #dae8fc;
+        }
+
+            table.activiteiten_overzicht > tbody > tr[data-bga]:hover > td.ac {
+                background-color: #ffffff;
+            }
+
+        table.activiteiten_overzicht > tbody > tr[data-bga].huidige-prj {
+            background-color: #fff2cc;
+        }
+
+            table.activiteiten_overzicht > tbody > tr[data-bga].huidige-prj > td.ac {
+                background-color: #ffffff;
+            }
+
+
+        table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act { /* geselecteerde activiteit */
+            background-color: #d5e8d4;
+        }
+
+            table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act > td.ac {
+                background-color: #d5e8d4;
+            }
+
+            table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act.huidige-prj {
+                background-color: #d5e8d4;
+            }
+
+    table.activiteiten_overzicht > tbody > tr > td.ac {
+        border: 0;
+    }
+
+    table.activiteiten_overzicht > tbody > tr > th {
+        border: 0;
+    }
+
+#_bg_projecten > span.p_tab { /* Project */
+    border: 1px solid #cccccc;
+    cursor: pointer;
+    white-space: nowrap;
+    margin-top: .5em;
+    margin-left: .5em;
+    margin-right: .5em;
+}
+
+    #_bg_projecten > span.p_tab:hover {
+        background-color: #dae8fc;
+    }
+
+    #_bg_projecten > span.p_tab.huidige-act {
+        background-color: #fff2cc;
+    }
+
+    #_bg_projecten > span.p_tab.huidige-prj {
+        background-color: #d5e8d4;
+        border: 1px solid #82B366;
+    }
+
+    #_bg_projecten > span.p_tab.huidige-act.huidige-prj {
+        background-color: #d5e8d4;
+        border: 1px solid #82B366;
+    }
+
+#_bg_tijdstip_detail { /* Status */
+}
+
+    #_bg_tijdstip_detail.active {
+        border: 3px solid #82B366;
+    }
+
+    #_bg_tijdstip_detail > table {
+        display: none;
+    }
+
+    #_bg_tijdstip_detail.active > table {
+        display: block;
+    }
+
+#_bg_activiteit_detail {
+    background-color: #ffffff;
+    padding: 1em;
+    border: 0;
+}
+
+    #_bg_activiteit_detail.active {
+        border: 3px solid #82B366;
+    }
+
+#_bg_versiebeheer {
+    padding: 1em;
+    border: 1px solid #000000;
+    width: 50%;
+    aspect-ratio: 2 / 3;
+}
+
+#_bg_verwerking {
+    background-color: #ffffff;
+    padding: 1em;
+}
+
+    #_bg_verwerking.active > div {
+        border: 3px solid #82B366;
+    }
+
+.bgvbd_naam {
+    user-select: none;
+}
+
+[data-bga].bgvbd_naam {
+    cursor: pointer;
+}
+
+    [data-bga].bgvbd_naam.huidige-act {
+        fill: #82B366;
+        font-weight: bold;
+    }
+
+[data-prj].bgvbd_naam {
+    cursor: pointer;
+}
+
+    [data-prj].bgvbd_naam.huidige-prj {
+        fill: #82B366;
+        font-weight: bold;
+    }
+
+.bgvbd_naam_l {
+    fill: none;
+    stroke: #666666;
+    stroke-width: 1;
+}
+
+.bgvbd_symbolen {
+    user-select: none;
+}
+
+[data-bga].bgvbd_symbolen {
+    cursor: pointer;
+}
+
+.bgvbd_mo_u {
+    fill: #ffffff;
+    stroke: #666666;
+}
+
+.bgvbd_mo_tegelijk {
+    fill: #ffffff;
+    stroke: #000000;
+    stroke-width: 3;
+}
+
+.bgvbd_mo_bg {
+    fill: #dae8fc;
+    stroke: #6c8ebf;
+    cursor: pointer;
+}
+
+    .bgvbd_mo_bg.huidige-act { /* geselecteerde momentopname */
+        stroke-width: 3;
+    }
+
+.bgvbd_mo_a {
+    fill: #fff2cc;
+    stroke: #d6b656;
+    cursor: pointer;
+}
+
+    .bgvbd_mo_a.huidige-act { /* geselecteerde momentopname */
+        stroke-width: 3;
+    }
+
+.bgvbd_line_branch { /* Lijn branch */
+    fill: none;
+    stroke: #000000;
+    stroke-width: 1;
+}
+
+.bgvbd_line_exbranch { /* Lijn branch voor mo met nieuwe basisversie */
+    fill: none;
+    stroke: #000000;
+    stroke-width: 1;
+    stroke-dasharray: 6 6;
+}
+
+.bgvbd_line_basis { /* Lijn basisversie */
+    fill: none;
+    stroke: #3333FF;
+    stroke-width: 3;
+}
+
+.bgvbd_line_basis_p { /* Punt van lijn basisversie */
+    fill: #3333FF;
+    stroke: #3333FF;
+    stroke-width: 1;
+}
+
+.bgvbd_line_vv { /* Lijn vervlochten versie */
+    fill: none;
+    stroke: #82B366;
+    stroke-width: 3;
+}
+
+.bgvbd_line_vv_p { /* Punt van lijn vervlochten versie */
+    fill: #82B366;
+    stroke: #82B366;
+    stroke-width: 1;
+}
+
+.bgvbd_line_ov { /* Lijn ontvlochten versie */
+    fill: none;
+    stroke: #B20000;
+    stroke-width: 3;
+}
+
+.bgvbd_line_ov_p { /* Punt van lijn ontvlochten versie */
+    fill: #B20000;
+    stroke: #B20000;
+    stroke-width: 1;
+}
+
+.bgvbd_line_ov_x { /* X in lijn ontvlochten versie */
+    color: #B20000;
+    fill: none;
+    stroke: none;
+}

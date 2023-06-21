@@ -22,9 +22,9 @@ class ProcesOpties:
 
     def __init__ (self, defaultSelectie = None):
         """Maak default opties aan voor het uitvoeren van het proces"""
-        # Geeft aan dat het versiebeheer bij het bevoegd gezag gesimuleerd wordt
+        # Geeft aan dat het proces bij het bevoegd gezag gesimuleerd wordt
         # Deze optie wordt aangezet als er projectinvoer is.
-        # self.Versiebeheer = False
+        # self.BGProces = False
         # Geeft aan dat de actuele toestanden berekend moeten worden
         self.ActueleToestanden = True if defaultSelectie is None else defaultSelectie
         # Geeft aan dat de complete toestanden berekend moeten worden

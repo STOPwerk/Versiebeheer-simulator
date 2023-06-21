@@ -59,35 +59,54 @@ Applicatie = (function () {
         Applicatie.SelecteerGeenToestand(wid, true);
     }
 
-    // Selectie van uitwisselingen
     var toestanden = {
         TOESTANDEN_DATA
     };
-    Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
+    var uitwisselingVoorActiviteit = [
+        UITWISSELING_VOOR_ACTIVITEIT
+    ];
+    function SelecteerUitwisselingOfActiviteit(gemaaktOp, activiteitGeselecteerd) {
+        var uitgevoerdOp = gemaaktOp;
+        if (activiteitGeselecteerd) {
+            // Selecteer de laatste uitwisseling op of voorafgaand aan uitgevoerdOp
+            for (var t of uitwisselingVoorActiviteit) {
+                if (t <= uitgevoerdOp) {
+                    gemaaktOp = t;
+                }
+            }
+        }
+
         window.dispatchEvent(new CustomEvent('uitwisseling', {
             detail: gemaaktOp
         }));
         if (geselecteerdeToestand) {
             var uniekId = -1;
-            toestanden[geselecteerdeToestand.Identificatie].forEach((periode) => {
-                if (periode[0] <= gemaaktOp) {
-                    uniekId = periode[1];
-                }
-            });
+            if (geselecteerdeToestand.Identificatie != -1) {
+                toestanden[geselecteerdeToestand.Identificatie].forEach((periode) => {
+                    if (periode[0] <= gemaaktOp) {
+                        uniekId = periode[1];
+                    }
+                });
+            }
             if (uniekId != geselecteerdeToestand.UniekId) {
                 // Pas de toestandselectie aan 
                 Applicatie.SelecteerToestand(geselecteerdeToestand.Identificatie, uniekId);
             }
         }
-        // Uitwisselingen en projectacties delen dezelfde tijdlijn
-        window.dispatchEvent(new CustomEvent('projectactie', {
-            detail: gemaaktOp
+        // Uitwisselingen en activiteiten delen dezelfde tijdlijn
+        window.dispatchEvent(new CustomEvent('activiteit', {
+            detail: uitgevoerdOp
         }));
     }
 
-    // Selectie van projectacties
-    Applicatie.SelecteerProjectactie = function (uitgevoerdOp) {
-        Applicatie.SelecteerUitwisseling(uitgevoerdOp);
+    // Selectie van uitwisselingen
+    Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
+        SelecteerUitwisselingOfActiviteit(gemaaktOp, false);
+    }
+
+    // Selectie van BG-activiteit
+    Applicatie.SelecteerActiviteit = function (uitgevoerdOp) {
+        SelecteerUitwisselingOfActiviteit(uitgevoerdOp, true);
     }
 
     // Initialisatie van een diagram

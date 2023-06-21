@@ -20,11 +20,13 @@ import xml.etree.ElementTree as ET
 
 from applicatie_meldingen import Meldingen
 from applicatie_procesopties import ProcesOpties, BenoemdeUitwisseling
-from data_bg_project import Project, ProjectActie, ProjectActie_Publicatie, ProjectActie_Uitwisseling, ProjectActie_Download
-from data_bg_projectvoortgang import Projectvoortgang
+from data_bg_procesverloop import Procesvoortgang
+from data_bg_versiebeheer import Versiebeheerinformatie as BGVersiebeheerinformatie
 from data_lv_annotatie import Annotatie
 from data_lv_consolidatie import GeconsolideerdInstrument
 from data_lv_versiebeheerinformatie import Versiebeheerinformatie
+from proces_bg_activiteit import Activiteit
+from proces_bg_proces import BGProces
 from stop_consolidatieinformatie import ConsolidatieInformatie
 from weergave_data_toestanden import Toestandidentificatie
 
@@ -190,7 +192,7 @@ class ScenarioMappenIterator (ScenarioIterator):
 class Scenario:
     
     @staticmethod
-    def VoorElkScenario (log, iterator: ScenarioIterator, voer_uit):
+    def VoorElkScenario (log : Meldingen, iterator: ScenarioIterator, voer_uit):
         """Voer het proces uit voor elk gevonden scenario
         
         Argumenten:
@@ -213,6 +215,8 @@ class Scenario:
                     succes = voer_uit (scenario)
                     log.Informatie ("Uitvoering afgerond voor het scenario in '" + scenario.Pad + "'")
                 else:
+                    if iterator.MeldingenApart:
+                        log.Meldingen.extend (scenario.Log.Meldingen)
                     log.Fout ("Niet-valide invoer voor scenario in '" + scenario.Pad + "'")
                     succes = voer_uit (scenario)
                 if succes:
@@ -268,11 +272,11 @@ class Scenario:
         self.Log = Meldingen (False) if meldingenApart else log
         # Ingelezen annotaties
         self.Annotaties : List[Annotatie] = []
-        # Ingelezen consolidatie-informatie modules
+        # Mix van BG activiteiten en ingelezen consolidatie-informatie modules
         # Lijst gesorteerd op gemaaktOp
-        self.ConsolidatieInformatie : List[Scenario.ConsolidatieInformatieBron] = []
-        # Ingelezen projecten
-        self.Projecten : List[Project] = []
+        self.Gebeurtenissen : List[Scenario.Gebeurtenis] = []
+        # Het proces zoals dat bij BG verloopt
+        self.BGProces : BGProces = None
         # Geeft aan of de bestanden in het pad samen de invoer voor een scenario vormen
         self.IsScenario = None
         # Geeft aan of de invoer voor het scenario valide is
@@ -280,18 +284,24 @@ class Scenario:
         #--------------------------------------------------------------
         # Simulatie bevoegd gezag systemen
         #--------------------------------------------------------------
-        # Het interne datamodel met versiebeheerinformatie en de resultaten
-        # van de uitvoering van projectacties
-        self.Projectvoortgang : Projectvoortgang = None
+        # Het BG-interne datamodel met informatie over de uitvoering van
+        # activiteiten van het bevoegd gezag. Als alleen de ontvangende
+        # systemen gesimuleerd worden, dan bevat de procesvoortgang alleen
+        # de informatie over de uitwisselingen.
+        self.Procesvoortgang = Procesvoortgang ()
+        # Het BG-interne datamodel met versiebeheerinformatie
+        self.BGVersiebeheerinformatie : BGVersiebeheerinformatie = None
         #--------------------------------------------------------------
-        # Simulatie ontvangende systemen
+        # Simulatie ontvangende systemen (zoals landelijke voorzieningen)
         #--------------------------------------------------------------
         # Het interne datamodel met versiebeheerinformatie
         self.Versiebeheerinformatie = Versiebeheerinformatie ()
         # Informatie over de consolidatie van de instrumenten
         # key = workId van niet-geconsolideerd instrument
         self.GeconsolideerdeInstrumenten : Dict[str,GeconsolideerdInstrument] = {}
+        #--------------------------------------------------------------
         # Data benodigd voor de weergave die gedurende het proces verzameld wordt
+        #--------------------------------------------------------------
         # Instantie van WeergaveData
         self.WeergaveData = None
         # Volgnummer voor de geconsolideerde instrumenten
@@ -303,28 +313,32 @@ class Scenario:
     #------------------------------------------------------------------
     # Bron van de consolidatie-informatie
     #------------------------------------------------------------------
-    class ConsolidatieInformatieBron:
+    class Gebeurtenis:
 
-        def __init__(self, module : ConsolidatieInformatie, actie : ProjectActie):
-            """Maak de bron voor consolidatie-informatie aan.
+        def __init__(self, consolidatieInformatie : ConsolidatieInformatie, activiteit : Activiteit):
+            """Maak de gebeurtenis aan.
             
             Argumenten:
 
-            module ConsolidatieInformatie  De consolidatie-informatie is afkomstig uit een XML bestand
-            actie ProjectActie  De consolidatie-informatie is afgeleid uit een projectactie
+            consolidatieInformatie ConsolidatieInformatie  De gebeurtenis betreft de uitwisseling van informatie, waaronder een XML-module met consolidatie-informatie
+            activiteit Activiteit  De gebeurtenis betreft een activiteit van BG
             """
-            self.Module = module
-            self.Actie = actie
+            self.ConsolidatieInformatie = consolidatieInformatie
+            self.Activiteit = activiteit
 
         def GemaaktOp (self):
-            """Geef het tijdstip van de uitwisseling van de consolidatie-informatie
+            """Geef het tijdstip waarop de gebeurtenis plaatsvindt
             """
-            return self.Actie.GemaaktOp if self.Module is None else self.Module.GemaaktOp
+            if not self.ConsolidatieInformatie is None:
+                return self.ConsolidatieInformatie.GemaaktOp
+            return self.Activiteit.GemaaktOp
 
         def ConsolidatieInformatie (self):
-            """Geef de speficicatie van de consolidatie-informatie
+            """Geef de specificatie van de consolidatie-informatie
             """
-            return self.Actie.ConsolidatieInformatie if self.Module is None else self.Module
+            if not self.ConsolidatieInformatie is None:
+                return self.ConsolidatieInformatie
+            return self.Activiteit.ConsolidatieInformatie
 
 
 #======================================================================
@@ -339,9 +353,8 @@ class Scenario:
                 self.IsScenario = inderdaad
 
         annotatiesPerWorkId = {} # key = workId, value = {} met key = naam, value = instantie van Annotatie 
-        projectenPerCode = {} # key = project code, value = instantie van Project
         instrumenten = set() # Instrumenten (work-identificaties) in consolidatie-informatie
-        bronPerGemaaktOp = {} # key = gemaaktOp, value = ConsolidatieInformatieBron
+        gebeurtenisPerGemaaktOp = {} # key = gemaaktOp, value = ConsolidatieInformatieBron
 
         def __LeesJsonBestand (pad : str, data : str):
             try:
@@ -369,17 +382,17 @@ class Scenario:
                         self.IsValide = False
                     return
 
-                # Kijk dan of het een project is
-                project = Project.LeesJson (self.ApplicatieLog, pad, data)
-                if project:
+                # Kijk dan of het een specificatie van BG activiteiten is
+                bgproces = BGProces.LeesJson (self.ApplicatieLog, pad, data)
+                if bgproces:
                     _IsScenario (True)
-                    if project._IsValide:
-                        if project.Code in projectenPerCode:
-                            self.Log.Fout ("Meerdere specificaties voor een project gevonden met dezelfde code '" + project.Code + "'")
-                            self.IsValide = False
+                    if bgproces._IsValide:
+                        if self.BGProces is None:
+                            self.BGProces = bgproces
+                            self.Log.Detail ("Bestand '" + pad + "' bevat valide BG activiteitspecificaties")
                         else:
-                            projectenPerCode[project.Code] = project
-                            self.Log.Detail ("Bestand '" + pad + "' bevat een valide projectspecificatie")
+                            self.Log.Fout ("Meerdere specificaties voor een BG proces gevonden")
+                            self.IsValide = False
                     else:
                         self.IsValide = False
                     return
@@ -413,11 +426,11 @@ class Scenario:
             _IsScenario (True)
             consolidatieInformatie = ConsolidatieInformatie.LeesXml (self.Log, pad, xml)
             if consolidatieInformatie and consolidatieInformatie.IsValide:
-                if consolidatieInformatie.GemaaktOp in bronPerGemaaktOp:
+                if consolidatieInformatie.GemaaktOp in gebeurtenisPerGemaaktOp:
                     self.Log.Fout ("Deze applicatie kan alleen ConsolidatieInformatie modules met verschillende gemaaktOp verwerken; " + consolidatieInformatie.GemaaktOp + " komt meerdere keren voor")
                     self.IsValide = False
                 else:
-                    bronPerGemaaktOp[consolidatieInformatie.GemaaktOp] = Scenario.ConsolidatieInformatieBron(consolidatieInformatie, None)
+                    gebeurtenisPerGemaaktOp[consolidatieInformatie.GemaaktOp] = Scenario.Gebeurtenis(consolidatieInformatie, None)
                     for beoogdeVersie in consolidatieInformatie.BeoogdeVersies:
                         instrumenten.add (beoogdeVersie.WorkId)
             else:
@@ -432,74 +445,31 @@ class Scenario:
         if self.Opties is None:
             self.Opties = ProcesOpties (None if self.IsValide else False)
 
-        self.Opties.Versiebeheer = False
-        if len (projectenPerCode):
-            self.Projecten = [projectenPerCode[p] for p in sorted (projectenPerCode.keys ())]
+        self.Opties.BGProces = False
+        if not self.BGProces is None:
             if self.IsValide and not self.Opties.ActueleToestanden:
-                self.Log.Waarschuwing ("Bepaling van actuele toestanden wordt altijd uitgevoerd als er projecten zijn gespecificeerd")
+                self.Log.Waarschuwing ("Bepaling van actuele toestanden wordt altijd uitgevoerd als BG activiteiten zijn gespecificeerd")
                 self.Opties.ActueleToestanden = True
-            self.Opties.Versiebeheer = True
-            self.Projectvoortgang = Projectvoortgang ()
+            self.Opties.BGProces = True
+            if self.Opties.Beschrijving is None:
+                self.Opties.Beschrijving = self.BGProces.Beschrijving
+            self.BGVersiebeheerinformatie = BGVersiebeheerinformatie ()
 
-            for project in self.Projecten:
-                for actie in project.Acties:
-                    if actie.UitgevoerdOp in bronPerGemaaktOp:
-                        self.Log.Fout ("Deze applicatie kan alleen ConsolidatieInformatie modules en projectacties met verschillende gemaaktOp verwerken; " + actie.UitgevoerdOp + " komt meerdere keren voor")
-                        self.IsValide = False
-                    else:
-                        bronPerGemaaktOp[actie.UitgevoerdOp] = Scenario.ConsolidatieInformatieBron (None, actie)
-                    isRevisie = True
-                    actieNaam = None
-                    if isinstance (actie, ProjectActie_Publicatie):
-                        isRevisie = actie.SoortPublicatie == ProjectActie_Publicatie._SoortPublicatie_Revisie
-                        actieNaam = 'Uitwisseling (revisie)' if isRevisie else 'Publicatie (' + actie.SoortPublicatie + ')'
-                    elif isinstance (actie, ProjectActie_Download):
-                        # Ook downloads worden opgenomen in de lijst met uitwisselingen
-                        actieNaam = 'Download uit LVBB'
-                    elif isinstance (actie, ProjectActie_Uitwisseling):
-                        # Ook uitwisselingen worden opgenomen in de lijst met uitwisselingen
-                        actieNaam = 'Uitwisseling adviesbureau - BG'
-                    else:
-                        # Andere niet
-                        continue
-
-                    # Gebruik de actie als beschrijving indien aanwezig
-                    uwHeeftBeschrijving = False
-                    for uw in self.Opties.Uitwisselingen:
-                        if uw.GemaaktOp == actie.UitgevoerdOp:
-                            uwHeeftBeschrijving = True
-                            uw.IsRevisie = isRevisie
-                    if not uwHeeftBeschrijving:
-                        benoemd = BenoemdeUitwisseling ()
-                        benoemd.GemaaktOp = actie.UitgevoerdOp 
-                        benoemd.Naam = actie._Project.Code + ': ' + actieNaam
-                        benoemd.Beschrijving = actie.Beschrijving
-                        benoemd.IsRevisie = isRevisie
-                        self.Opties.Uitwisselingen.append (benoemd)
-
-            # Voor weergave: alle niet-actie-gerelateerde modules komen in project "overig"
-            projectOverig = None
-            for bron in bronPerGemaaktOp.values ():
-                if bron.Actie is None:
-                    if projectOverig is None:
-                        projectOverig = Project ()
-                        projectOverig.Code = 'Overig'
-                        projectOverig.Beschrijving = 'Alle uitwisselingen die gedaan worden in andere projecten.'
-                        self.Projecten.append (projectOverig)
-                    bron.Actie = ProjectActie (projectOverig)
-                    bron.Actie.SoortActie = 'Publicatie'
-                    bron.Actie.Beschrijving = 'Zie de uitwisselingen in de keten voor details.'
-                    bron.Actie.UitgevoerdOp = bron.Module.GemaaktOp
-                    bron.Actie._IsUitwisseling = True
+            for activiteit in self.BGProces.Activiteiten:
+                if activiteit.UitgevoerdOp in gebeurtenisPerGemaaktOp:
+                    self.Log.Fout ("Deze applicatie kan alleen ConsolidatieInformatie modules en BG activiteiten met verschillende gemaaktOp verwerken; " + activiteit.UitgevoerdOp + " komt meerdere keren voor")
+                    self.IsValide = False
+                else:
+                    gebeurtenisPerGemaaktOp[activiteit.UitgevoerdOp] = Scenario.Gebeurtenis (None, activiteit)
 
         # Sorteer de consolidatie-informatie op volgorde van uitwisseling
-        self.ConsolidatieInformatie = [bronPerGemaaktOp[gm] for gm in sorted (bronPerGemaaktOp.keys ())]
+        self.Gebeurtenissen = [gebeurtenisPerGemaaktOp[gm] for gm in sorted (gebeurtenisPerGemaaktOp.keys ())]
 
         # Verifieer de WorkId van de annotaties en ken nummer (per work) toe
         self.Opties.Proefversies = False
         for workId, annotaties in annotatiesPerWorkId.items ():
             if not workId in instrumenten:
-                self.Log.Fout ("De annotatie(s) '" + "', '".join (a.Naam for a in annotatie) + "' hoort/horen bij een onbekend instrument " + workId)
+                self.Log.Fout ("De annotatie(s) '" + "', '".join (a.Naam for a in annotaties) + "' hoort/horen bij een onbekend instrument " + workId)
                 self.IsValide = False
             else:
                 for idx, a in enumerate (sorted (annotaties.values(), key = lambda a: a.Naam)):

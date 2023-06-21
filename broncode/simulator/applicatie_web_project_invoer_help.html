@@ -1,0 +1,84 @@
+<p>
+    Met deze pagina kan de invoer samengesteld worden voor de <a href="https://github.com/STOPwerk/versiebeheer-simulator/">Versiebeheer-simulator</a>.
+    De simulator kan een groot aantal scenario's naspelen. De nadruk ligt daarbij op de interactie tussen de verschillende
+    gebeurtenissen en niet zozeer op de correctheid van wettelijke termijnen en dergelijke. Via deze pagina kunnen de meest
+    gebruikelijke scenario's ingevoerd worden.
+</p>
+<p>
+    Een scenario bestaat uit:
+    <ul>
+        <li>Uitgangssituatie: nul of meer regelingen en eventueel bijbehorende informatieobjecten die al bestaan voordat het scenario begint.</li>
+        <li>Een of meer projecten die leiden tot één instellings- of wijzigingsbesluit, die één of meer regelingen betreft en één of meer inwerkingtredingsmomenten.</li>
+        <li>Een project kent een of meer activiteiten die vastleggen wat een bevoegd gezag, adviesbureau heeft gedaan.</li>
+    </ul>
+    Deze pagina is gericht op het invoeren <i>wat</i> er in het scenario gebeurt, niet <i>hoe</i> dat precies moet.
+    Gebruik de <span class="voegtoe">&#x271A;</span>, <span class="werkbij">&#x270E;</span> en <span class="verwijder">&#x1F5D1;</span>
+    knoppen (naast de invoervelden) om het scenario te specificeren.
+</p>
+<p>
+    <span class="leestip"></span> Op elk moment tijdens de invoer kan de simulator gestart worden;
+    het resultaat wordt in een aparte pagina getoond. In het eerste deel van de resultaatpagina is te lezen <i>hoe</i>
+    het scenario door de software van het bevoegd gezag uitgevoerd zou kunnen worden en welke informatie met de landelijke
+    voorzieningen uitgewisseld moeten worden.
+</p>
+<p>
+    Deze pagina simuleert welke informatie een eindgebruiker te zien zou kunnen krijgen en voor welke informatie de eindgebruiker
+    moet zorgen. Het hoofdscherm (na de start) is opgebouwd als:
+</p>
+<table class="w100" style="border-collapse: collapse; border: 1px solid #000000">
+    <tr>
+        <th colspan="3" style="border: 1px solid #000000">Simulatie</th>
+    </tr>
+    <tr>
+        <td class="c" style="border: 1px solid #000000">Overzicht/selectie van<br />tijdstippen en activiteiten</td>
+        <td class="w100 c" style="border: 1px solid #000000">Wat de eindgebruiker ziet voor een project op het geselecteerde tijdstip</td>
+        <td rowspan="2" class="nw c" style="border: 1px solid #000000">Wat de eindgebruiker ziet als status<br />en mogelijkheid tot <span class="voegtoe">&#x271A;</span> afhandeling</td>
+    </tr>
+    <tr>
+        <td class="c" style="border: 1px solid #000000"><span class="voegtoe">&#x271A;</span> projectactiviteit</td>
+        <td class="c" style="border: 1px solid #000000"><span class="werkbij">&#x270E;</span>/<span class="verwijder">&#x1F5D1;</span> activiteit voor geselecteerd project + tijdstip</td>
+    </tr>
+</table>
+<dl>
+    <dt>Overzicht/selectie van tijdstippen en activiteiten</dt>
+    <dd>
+        Een lijst met alle activiteiten die eerder zijn gespecificeerd, op volgorde van tijd. Enkele van de activiteiten worden door deze simulatie
+        toegevoegd en zijn geen onderdeel van de specificatie.
+    </dd>
+    <dd>
+        <span class="leestip"></span> Klik op een tijdstip om te zien wat de eindgebruiker op dat moment aan informatie kon zien.
+    </dd>
+    <dt>Wat de eindgebruiker ziet voor een project op het geselecteerde tijdstip</dt>
+    <dd>
+        Laat zien wat er aan informatie voor de projecten beschikbaar is. Van de projecten waarvoor de eindgebruiker iets heeft gewijzigd
+        op het geselecteerde tijdstip wordt de naam met een gele achtergrond weergegeven.
+    </dd>
+    <dd>
+        <span class="leestip"></span> Klik op een projectnaam om informatie te zien over dat project. In het tijdoverzicht wordt met geel aangegeven
+        op welke andere momenten de informatie van het geselecteerde project wijzigt.
+    </dd>
+    <dt>Wat de eindgebruiker ziet als status op het geselecteerde tijdstip</dt>
+    <dd>
+        Onafhankelijk van de selectie van een project wordt weergegeven wat de status van consolidatie en van de (nog niet onherroepelijke/in werking getreden)
+        besluiten is. Als de eindgebruiker een vervolgactie kan uitvoeren, dan wordt daarvoor een <span class="voegtoe">&#x271A;</span> getoond.
+    </dd>
+    <dt><span class="voegtoe">&#x271A;</span> projectactiviteit</dt>
+    <dd>
+        Knop om vast te leggen wat een eindgebruiker op een (nieuw vast te leggen) moment in de projecten wijzigt. Er is maar één activiteit per tijdstip (datum + tijd) mogelijk.
+    </dd>
+    <dt><span class="werkbij">&#x270E;</span>/<span class="verwijder">&#x1F5D1;</span> activiteit voor geselecteerd project + tijdstip</dt>
+    <dd>
+        Informatie over de totstandkoming van de gepresenteerde informatie en knoppen om daar eventueel iets aan te wijzigen.
+    </dd>
+</dl>
+<p>
+    Omdat de informatie/specificatie van een activiteit op een later moment kan afhangen van de informatie bij een eerder moment,
+    is het niet altijd mogelijk activiteiten te wijzigen. Alleen de activiteiten die niet door een andere activiteit gebruikt worden
+    kunnen aangepast of verwijderd worden.
+</p>
+<p>
+    De simulator ondersteunt een breder bereik aan invoerwaarden dan deze pagina kan maken. In de
+    <a href="https://github.com/STOPwerk/versiebeheer-simulator/wiki/Simulatie-van-bevoegd-gezag-software">documentatie</a> is te lezen wat de mogelijkheden zijn.
+    Als een scenario niet via deze pagina gemaakt kan worden, maak dan een invoerbestand of download een scenario gemaakt via
+    deze pagina en pas het aan. Gebruik dat als <a href="project_invoer">invoer</a> voor de simulator.
+</p>

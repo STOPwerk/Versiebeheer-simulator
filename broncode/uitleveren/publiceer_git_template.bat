@@ -34,18 +34,22 @@ git pull
 @if errorlevel 1 goto Pause
 git merge --strategy-option theirs --squash -m "Release @@@VERSIE@@@" development
 @if errorlevel 1 goto LosMergeConflitsOp
-@goto GaVerder
+@goto GaVerder1
 : LosMergeConflitsOp
 @echo Los de merge conflicten op en ga verder
 pause
-:GaVerder
+:GaVerder1
 python.exe pas_configuratie_toe.py . ..\..
 @if errorlevel 1 goto Pause
 python.exe pas_configuratie_toe.py . ..\simulator
 @if errorlevel 1 goto Pause
+move /y zip\download.zip ..
+@if errorlevel 1 goto Pause
 rd /s /q ..\wiki
 git add -A
 @if errorlevel 1 goto Pause
+@echo Laatste kans om de commit naar main aan te passen
+pause
 git commit -a -m "Release @@@VERSIE@@@"
 @if errorlevel 1 goto Pause
 git config --unset user.mail

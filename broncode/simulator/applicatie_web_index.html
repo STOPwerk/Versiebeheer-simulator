@@ -1,5 +1,5 @@
 <p>
-    Huidige versie: <code>2022-11-28 22:59:41</code>
+    Huidige versie: <code>2023-06-21 11:06:33</code>
 </p>
 
 <h2>Wat is het?</h2>
@@ -8,18 +8,42 @@
     keten van adviesbureaus, bevoegd gezagen, landelijke voorzieningen en hun afnemers.
 </p>
 <p>
-    De simulator is een online versie van het <a href="https://github.com/STOPwerk/versiebeheer-simulator">Python script</a> dat
+    De simulator is een online versie van het <a href="https://github.com/STOPwerk/versiebeheer-simulator/">Python script</a> dat
     toegepast wordt op een invoer van XML elementen en JSON objecten. Het resultaat is een interactieve webpagina waarin
     getoond wordt hoe de keten met de informatie uit de bestanden om kan gaan. De simulator laat de mogelijkheden uit
-    het STOP versiebeheer zien. Bij het implementeren van STOP kunnen de verschillende systemen voor een andere
-    aanpak kiezen of aanvullende eisen stellen.
+    het STOP versiebeheer zien, en hoe dat resulteert in de weergave van besluiten en regelgeving. Bij het implementeren
+    van STOP kunnen de verschillende systemen voor een andere aanpak kiezen of aanvullende eisen stellen.
+</p>
+<p>
+    De online tools worden gehost via het <a href="https://vercel.com/pricing">hobby</a> plan dat ongetwijfeld niet geschikt is voor massaal gebruik.
+    Bij het uitvoeren van de simulator wordt de meeste tijd besteed aan het samenstellen van de resultaatpagina, die bij
+    scenario's met veel publicaties al snel erg omvangrijk wordt.
+    Om met veel/omvangrijke/complexe scenario's aan de slag te gaan: download de Python scripts en draai de simulator op eigen hardware.
 </p>
 <h2>Hoe gebruik ik het?</h2>
 <p>
+    Er zijn drie manieren om het te gebruiken. De eerste is:
     <ul>
-        <li>Lees de <a href="https://github.com/STOPwerk/Versiebeheer-simulator/wiki">documentatie</a> waarin staat hoe de invoerbestanden gemaakt moeten worden.</li>
         <li>
-            Bekijk de <a href="https://github.com/STOPwerk/Versiebeheer-simulator/tree/main/voorbeelden">voorbeelden</a> om inspiratie op te doen.
+            Ga naar de <a href="voorbeeld">voorbeelden</a> om een lijst met voorgedefinieerde scenario's te bekijken.
+        </li>
+        <li>Kies een voorbeeld uit om daarvoor de simulator uit te voeren.</li>
+        <li>Voorbeelden gezien vanuit een bevoegd gezag kunnen aangepast worden voordat de simulator uitgevoerd wordt.</li>
+    </ul>
+    Het is ook mogelijk zelf een scenario samen te stellen en te simuleren. Het meest eenvoudige is:
+    <ul>
+        <li>
+            Ga naar de <a href="project_invoer">projecten-invoerpagina</a> om een beschrijving te maken hoe het bevoegd gezag
+            komt tot nieuwe versies van een regeling en ze omgaat met rectificaties en gerechtelijke procedures.
+        </li>
+        <li>Als de invoer compleet is kan de simulator gedraaid worden.</li>
+    </ul>
+    De simulator kan veel meer (fout)scenario's aan dan via de projecten-invoerpagina samengesteld kunnen worden. Ook is het mogelijk
+    de simulator te draaien op alleen de modules die aan het brnhouderkoppelvlak worden aangeleverd. Daarvoor:
+    <ul>
+        <li>Lees de <a href="https://github.com/STOPwerk/versiebeheer-simulator/wiki">documentatie</a> waarin staat hoe de invoerbestanden gemaakt moeten worden.</li>
+        <li>
+            Bekijk de <a href="https://github.com/STOPwerk/versiebeheer-simulator/tree/main/broncode/simulator/voorbeelden">voorbeelden</a> om inspiratie op te doen.
             De simulator is ook gebruikt voor een deel van de <a href="https://gitlab.com/koop/STOP/voorinzage/standaard-preview-b/-/tree/master/voorbeelden">STOP voorbeelden</a>
         </li>
         <li>Maak zelf voorbeeldbestanden en ga naar de <a href="invoer">invoerpagina</a> om de simulator uit te voeren.</li>
