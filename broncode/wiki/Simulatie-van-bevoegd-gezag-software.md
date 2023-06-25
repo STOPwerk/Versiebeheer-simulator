@@ -1,42 +1,22 @@
 _**Deze functionaliteit is nog in ontwikkeling**_
 
-De simulator kan uitgaan van de activiteiten die een bevoegd gezag uitvoert. De simulator berekent dan de inhoud van de [ConsolidatieInformatie](@@@STOP_Documentatie_Url@@@data_xsd_Element_data_ConsolidatieInformatie.html) module voor de aanlevering aan LVBB.
+De simulator kan het creatieproces bij een bevoegd gezag simuleren, inclusief de rol van adviesbureaus daarbij. Bij het naspelen van een scenario toont de simulator wat er in de software van het bevoegd gezag zou kunnen gebeuren. daarnaast stelt de simulator de inhoud van de [ConsolidatieInformatie](@@@STOP_Documentatie_Url@@@data_xsd_Element_data_ConsolidatieInformatie.html) modules samen voor de aanlevering aan LVBB, die met een beschrijving van het scenario als invoer dient voor de [simulatie van de LVBB](Simulatie-van-de-lvbb).
 
-STOP schrijft niet voor hoe de software van het bevoegd gezag moet werken, maar vereist wel dat de consolidatie-informatie [afleidbaar](@@@STOP_Documentatie_Url@@@consolideren_bg_versiebeheer.html) een reflectie is van het BG-interne versiebeheer. Voor deze simulator is een van de vele mogelijke uitvoeringen gekozen voor het intern versiebeheer, en daaruit is inderdaad de consolidatie-informatie af te leiden. De [procesbegeleiding](@@@STOP_Documentatie_Url@@@consolideren_bg_procesbegeleiding.html) komt tot uitdrukking in de activiteiten die gespecificeerd kunnen worden, en waarvan gecontroleerd wordt dat ze ook daadwerkelijk uit te voeren zijn.
+STOP schrijft niet voor hoe de software van het bevoegd gezag moet werken, maar vereist wel dat de consolidatie-informatie [afleidbaar](@@@STOP_Documentatie_Url@@@consolideren_bg_versiebeheer.html) een reflectie is van het BG-interne versiebeheer. Voor deze simulator is een van de vele mogelijke uitvoeringen gekozen voor het intern versiebeheer, en daaruit is inderdaad de consolidatie-informatie af te leiden. De [procesbegeleiding](@@@STOP_Documentatie_Url@@@consolideren_bg_procesbegeleiding.html) komt tot uitdrukking in de activiteiten die gespecificeerd kunnen worden, en waarvan gecontroleerd wordt dat ze uit te voeren zijn.
 
-In aanvulling op de resultaten die beschreven zijn voor de [simulatie van de LVBB](Simulatie-van-de-lvbb).bevat de resultaatpagina ook:
+Net als de STOP documentatie beoogt de simulator geen verwachtingen te wekken hoe de software van het bevoegd gezag daadwerkelijk gaat werken. Het is bedoeld om te laten zien dat de technische details grotendeels automatiseerbaar zijn. Of/in hoeverre dat moet en hoe dat het beste kan is een zaak voor de leveranciers van de software van het bevoegd gezag.
 
-* **Opstellen en consolideren**: een overzicht van de activiteiten in de projecten die als invoer dienen voor de simulatie.
+## Opbouw van een scenario
+Via de simulator kan handmatig een volledig scenario samengesteld worden met daarin de activiteiten die het bevoegd gezag (en eventuele adviesbureaus) ontplooit. De simulator bewaart het scenario in de vorm van een specificatie die gedownload kan worden. De specificatie kan op een later moment gebruikt worden om het scenario nogmaals te bekijken, of om het te wijzigen of uit te breiden.
 
-## Werkwijze van het bevoegd gezag
-De aanname is dat een bevoegd gezag een proces heeft waarbij een besluit in een project wordt voorbereid, waarbij er op elk moment meerdere projecten (kunnen) lopen. Aan het begin van het project wordt een beschikbare versie van de regelgeving als uitgangspunt genomen. Daarop worden wijzigingen aangebracht, totdat het moment is aangebroken om het besluit (of een ontwerp daarvan) op te stellen. Op zo'n moment worden de wijzigingen in de regelgeving overgenomen in het project die sinds de start van het project zijn doorgevoerd. Ook op latere momenten kan het nodig zijn de versie uit het project bij te werken met wijzigingen die in een van de projecten zijn ontstaan.
+De aanname is dat een bevoegd gezag een proces heeft waarbij een besluit in een project wordt voorbereid, waarbij er op elk moment meerdere projecten (kunnen) lopen. Aan het begin van het project wordt een beschikbare versie van de regelgeving als uitgangspunt genomen. Daarop worden wijzigingen aangebracht, totdat het moment is aangebroken om het besluit (of een ontwerp daarvan) op te stellen. Op zo'n moment worden de wijzigingen in de regelgeving overgenomen in het project die sinds de start van het project zijn doorgevoerd. Ook op latere momenten kan het nodig zijn de versie uit het project bij te werken met wijzigingen die in een van de projecten zijn ontstaan. Daarnaast zijn er gebeurtenissen waarop het bevoegd gezag moet reageren met het aanpassen van eerder bekendgemaakte besluiten. Bijvoorbeeld als niet de juiste versie van een besluit bekendgemaakt is (rectificatie) of als een rechter een besluit (gedeeltelijk) heeft vernietigd. Ook deze activiteiten worden geplaatst in het kader van het project waarvoor het besluit is gemaakt.
 
-Daarnaast zijn er gebeurtenissen waarop het bevoegd gezag moet reageren met het aanpassen van eerder bekendgemaakte besluiten. Bijvoorbeeld als niet de juiste versie van een besluit bekendgemaakt is (rectificatie) of als een rechter een besluit (gedeeltelijk) heeft vernietigd.
-
-Tot slot kan de simulator laten zien hoe het STOP versiebeheer eruit ziet als de start van een project door een adviesbureau gedaan wordt op basis van een download uit de LVBB.
+Tot slot kan de simulator laten zien hoe het STOP versiebeheer eruit ziet als de start van een project door een adviesbureau gedaan wordt op basis van een download uit de LVBB. De simulator houdt bij welke activiteiten door het adviesbureau en door het bevoegd gezag uitgevoerd worden, maar biedt geen afzonderlijke presentatie van de resultaten vanuit het gezichtspunt van een adviesbureau of van het bevoegd gezag.
 
 Binnen een project kan aan meerdere versies van hetzelfde instrument gewerkt worden die op andere momenten of onder andere condities in werking treden. In STOP termen: er kan aan versies voor meerdere doelen/branches gewerkt worden, met voor elk instrument één versie per doel/branch.
 
-## Inhoud van het scenario
-Het scenario bestaat uit een map met invoerbestanden:
-
-* Eén of meer bestanden met een specificatie van een [project](#Specificatie-van-een-project).
-* Optioneel een [beschrijving](#beschrijving-van-het-scenario) van het scenario.
-* Optioneel een of meer bestanden met een [STOP ConsolidatieInformatie](@@@STOP_Documentatie_Url@@@data_xsd_Element_data_ConsolidatieInformatie.html)
-
-De modules met consolidatie-informatie worden gezien als informatie die uit projecten komt die voor het scenario niet relevant zijn en daarom niet expliciet als project opgezet zijn. Bijvoorbeeld om eenvoudig een eerste reeks toestanden van een geconsolideerde regeling op te zetten die de projecten als uitgangspunt kunnen nemen. 
-
-## Beschrijving van het scenario
-De beschrijving van het scenario wordt alleen gebruikt voor de weergave van de resultaten. Het maakt de resultaatpagina beter te begrijpen. De inhoud van het bestand heeft dezelfde indeling als de [beschrijving](Simulatie-van-de-lvbb#beschrijving-van-het-scenario) van een scenario voor de LVBB simulatie, maar slechts een beperkt aantal attributen zijn van belang voor de simulatie van het bevoegd gezag software:
-```
-{
-    "Beschrijving": "... beschrijving (html) ..."
-}
-```
-* `Beschrijving` is HTML die opgenomen wordt in  de webpagina met het resultaat.
-
-## Specificatie van het bevoegd gezag proces
-Een project wordt gespecificeerd door een .json bestand (meestal `bg_proces.json`) dat een object bevat:
+## Specificatie van het scenario
+Een scenario wordt gespecificeerd als een JSON object:
 ```
 {
     "BevoegdGezag": "Gemeente" | "Rijk",
@@ -65,16 +45,16 @@ Een project wordt gespecificeerd door een .json bestand (meestal `bg_proces.json
 }
 ```
 waarbij:
-* `Bevoegd gezag` is optioneel en kan `Gemeente`, `Rijk` zijn. Dit is nodig om de specificatie via een webpagina in te voeren.
-* `BGCode` is verplicht en is de code die voor het bevoegd gezag gebruikt moet worden. Die is bijvoorbeeld _gm9999_ voor een gemeente, _mnre9999_ voor de rijksoverheid, _pv99_ voor een provincie of _ws9999_ voor een waterschap.
-* `Beschrijving` is HTML die opgenomen wordt in  de webpagina met het resultaat, indien er geen [beschrijving](#beschrijving-van-het-scenario) van het scenario aanwezig is. Is dat wel het geval, dan wordt de beschrijving genegeerd.
-* `Startdatum` is verplicht en geeft de startdatum van het scenario.
+* `Bevoegd gezag` is verplicht en kan `Gemeente` of `Rijk` zijn.
+* `BGCode` is optioneel en is de code die voor het bevoegd gezag gebruikt moet worden. Indien geen waarde gegeven is, san wordt _gm9999_ gebruikt voor een gemeente en _mnre9999_ voor de rijksoverheid. Andere voorbeelden zijn _pv99_ voor een provincie of _ws9999_ voor een waterschap.
+* `Beschrijving` is een optionele beschrijving van het scenario, te gebruiken bij de presentatie van de resultaten van de twee simulators.
+* `Startdatum` is optioneel en geeft de startdatum van het scenario.
 * `Uitgangssituatie` is optioneel en beschrijft welke regeling- en informatieobjectversies in werking zijn bij de start van het scenario. In de Momentopname mogen geen tijdstempels voorkomen. De versies worden in een branch met code _start_ ondergebracht, met inwerkingtreding op tijdstip 0 (dat daarna niet meer als tijdstip gebruikt kan worden).
 * `Projecten` bevat de activiteiten die voor een project uitgevoerd worden, met per project:
     * `naam` is een code of zeer korte naam van het project, bijvoorbeeld _P1_.
     * Een lijst met activiteiten voor een project, met voor elke activiteit tenminste:
         * `SoortActiviteit` geeft het type activiteit.
-        * `Beschrijving` is een optionele beschrijving van de activiteit. Als er geen beschrijving wordt opgegeven zal de simulator een standaardbeschrijving hanteren.
+        * `Beschrijving` is een optionele beschrijving van de activiteit, te gebruiken bij de presentatie van de resultaten van deze simulator.
         * `UitgevoerdOp` is het tijdstip waarop de activiteit wordt uitgevoerd. Elk _UitgevoerdOp_ tijdstip moet uniek zijn in het scenario
 
 De tijdstippen en datums worden niet als absolute datum maar als een getal gespecificeerd. Het gehele deel van het getal is het aantal dagen sinds de startdatum, het aantal centi-eenheden het tijdstip op de dag. In het bovenstaande voorbeeld:
@@ -133,13 +113,13 @@ De simulator is niet gemaakt om te demonstreren hoe het interne versiebeheer bij
 
 Een bevoegd gezag of adviesbureau kan in de simulator alleen een beperkt aantal soorten activiteiten uitvoeren. Dit zijn de activiteiten die in de praktijk het meest zullen voorkomen. Bepaalde activiteiten zijn bewust niet opgenomen omdat ze een correctie zijn voor iets dat beter procedureel opgelost kan worden. Bijvoorbeeld als de ontwerpbesluit voor het ene project is geschreven met de aanname dat het project na een ander project in werking treedt, maar uiteindelijk de volgorde van inwerkingtreding omgedraaid blijkt te zijn. Er is een activiteit nodig die niet alleen de wijzigingen van het andere project uit de versie van het ene project haalt (ontvlechting in STOP), maar ook de uitgangssituatie van het project wijzigt. Dit kan voorkomen worden door de geen aannames te doen over de onderlinge volgorde van inwerkingtreding totdat de besluiten voor beide projecten definitief vastgesteld zijn, en daarna de (wel door de simulator ondersteunde) activiteiten voor het overnemen van wijzigingen te gebruiken.
 
-Soms zijn de activiteiten beperkter dan wat in de praktijk mogelijk zal zijn. Als een branch bijvoorbeeld gebaseerd wordt op geldende regelgeving, zal de simulator de op dat moment geldende regelgeving nemen. In de praktijk zal ook gekozen worden voor de laatstbesloten versie die nog niet in werking is. Een besluit dat voor een project wordt opgesteld bevat alle wijzigingen uit het project; ook dat hoeft niet, in de praktijk kan bijvoorbeeld per branch of per regeling een apart besluit geformuleerd worden. Het mogelijk maken van meer opties zou de simulator complexer maken terwijl het geen scenario's mogelijk maakt.
-
-Het is mogelijk om een niet beschikbare activiteit toch uit te voeren door zelf de consolidatie-informatie als een invoerbestand voor het scenario toe te voegen. Dit wordt door de simulator verwerkt in het versiebeheer van het bevoegd gezag als een activiteit die niet in een van de projecten plaatsvindt.
+Soms zijn de activiteiten beperkter dan wat in de praktijk mogelijk zal zijn. Het mogelijk maken van meer opties zou de simulator complexer maken terwijl het geen extra inzicht biedt in de (on)mogelijkheden van het STOP versiebeheer.
 
 De simulator gaat uit van instantaan-publiceren. Als een activiteit een publicatie inhoudt of een uitwisseling met de landelijke voorzieningen, dan is de aanname dat de publicatie en verwerking direct uitgevoerd wordt. Het bijhouden van een publicatie-wachtrij is erg complex en voegt weinig toe aan het inzicht dat de simulator probeert te geven in het afleiden van STOP-versiebeheerinformatie uit het interne versiebeheer.
 
 Bij het gebruik van de downloadservice gaat de simulator ervan uit dat de geconsolideerde geldende regelgeving in de landelijke voorziening bij het bevoegd gezag op dat moment gelijk is, dat het bevoegd gezag geen consolidatieachterstand heeft voor de geldende regelgeving.
+
+Bij het samenstellen van een scenario in de simulator of het wijzigen van een eerder ingevoerd scenario zijn niet alle onderdelen van het scenario te wijzigen. Het scenario bestaat in essentie uit een reeks activiteiten die in een bepaalde (tijds-)volgorde worden uitgevoerd. Als de resultaten van de ene activiteit gebruikt worden bij het uitvoeren van de andere activiteit, dan is de eerste activiteit niet meer te wijzigen.
 
 ## Activiteiten
 
@@ -147,8 +127,9 @@ De activiteiten die in een project kunnen voorkomen:
 
 | Activiteit | Beschrijving |
 | ----- | ------------ |
-| [Maak branch](#activiteit-maak-branch) | Richt het project zo in dat binnen een project gewerkt wordt aan instrumentversies voor een nieuw doel |
+| [Maak project](#activiteit-maak-project) | Richt een nieuw project in (door bevoegd gezag) |
 | [Download](#activiteit-download) | Download de (nu of in de toekomst) geldende instrumentversies uit de LVBB (door een adviesbureau) |
+| [Maak branch](#activiteit-maak-branch) | Voeg een extra branch toe binnen een project waarin gewerkt wordt aan instrumentversies voor een nieuw doel |
 | [Wijziging](#activiteit-wijziging) | Aanpassing van instrumentversies binnen een project, en/of het maken van een nieuw doel/branch binnen het project. |
 | [Uitwisseling](#activiteit-uitwisseling) | Uitwisseling (van adviesbureau naar bevoegd gezag of omgekeerd) van bijgewerkte instrumentversies, die het bevoegd gezag (na eventuele aanpassing) zal opnemen in een besluit |
 | [Bijwerken uitgangssituatie](#activiteit-bijwerken-uitgangssituatie) | Verwerken van wijzigingen die (afhankelijk van het soort branch) in de geldende regelgeving of de voorgaande branch zijn aangebracht. |
@@ -158,13 +139,11 @@ De activiteiten die in een project kunnen voorkomen:
 
 De lijst met activiteiten moet rekening houden met de beperkingen van de simulator:
 
-* De eerste activiteit voor een project is `Maak branch` of `Download`
-* De activiteit `Download` mag alleen als eerste activiteit voorkomen. De simulator gaat ervan uit dat deze activiteiten uitgevoerd worden door een adviesbureau.
-* `MaakBranch` wordt door het bevoegd gezag uitgevoerd. Het mag meermalen in een project voorkomen.
-* Bij elke activiteit `Uitwisseling` wisselt ook de uitvoerder. Als een adviesbureau de activiteit `Uitwisseling` uitvoert, dan worden de activiteiten daarna door het bevoegd gezag uitgevoerd. Als een bevoegd gezag `Uitwisseling` uitvoert, dan worden de activiteiten daarna door het adviesbureau uitgevoerd.
+* De eerste activiteit voor een project is `Maak project` (uitgevoerd door het bevoegd gezag) of `Download` (uitgevoerd door een adviesbureau).
 * Naast `Download` en `Uitwisseling` mag een adviesbureau alleen de activiteit `Wijziging` uitvoeren.
+* Bij elke activiteit `Uitwisseling` wisselt ook de uitvoerder. Als een adviesbureau de activiteit `Uitwisseling` uitvoert, dan worden de activiteiten daarna door het bevoegd gezag uitgevoerd. Als een bevoegd gezag `Uitwisseling` uitvoert, dan worden de activiteiten daarna door het adviesbureau uitgevoerd.
 * De activiteit `Uitwisseling` mag alleen voorkomen in projecten met één branch.
-* De activiteit `Bijwerken uitgangssituatie` mag alleen gedaan worden voorafgaand aan een `Vaststellingsbesluit`.
+* De activiteit `Bijwerken uitgangssituatie` mag niet meer uitgevoerd worden voor een branch nadat de branch onderdeel is van een `Vaststellingsbesluit`.
 * De simulator valideert niet of het juridisch correct is wat een bevoegd gezag doet. Bij de specificatie van het project moet erop gelet worden dat de activiteiten juridisch mogelijk zijn.
 
 Elke activiteit heeft tenminste de eigenschappen:

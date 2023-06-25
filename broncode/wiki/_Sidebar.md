@@ -1,12 +1,12 @@
 ### [Versiebeheer-simulator](Home)
 
-**Simulatie**
+**Specificatie**
 - [Bevoegd gezag](Simulatie-van-bevoegd-gezag-software)
 - [LVBB](Simulatie-van-de-lvbb)
 - [LVBB afnemer](Simulatie-van-een-afnemer-van-de-lvbb)
 
 **Uitvoeren**
-- [Simulator](Simulator-uitvoeren)
+- [LVBB Simulator](Simulator-uitvoeren)
 
 **Interne werking**
 - [Overzicht](Code-overzicht)

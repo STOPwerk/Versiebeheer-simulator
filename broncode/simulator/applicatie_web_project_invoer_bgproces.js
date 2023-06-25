@@ -508,21 +508,11 @@ class BGProcesSimulator {
 <div data-accordion-paneel="_bg_s1" class="accordion_h_paneel" style = "display: block">
 <p>
 <b>Beschrijving van het scenario</b><br>
-Geef een korte beschrijving van het scenario waarvoor deze specificatie is opgesteld (optioneel)<br>
-${new Beschrijving(this.#data).Html()}
+Geef een korte beschrijving van het scenario waarvoor deze specificatie is opgesteld (optioneel)
+${new Beschrijving(this.#data).Html('div')}
 </p>
 <p>
 <b>Uitgangssituatie</b> per ${new Startdatum(this.#data).Html()}<br>
-`
-
-        if (BGProcesSimulator.Opties.MeerdereRegelingen || BGProcesSimulator.Opties.InformatieObjecten) {
-            html += 'Geef aan welke regelgeving al in werking is bij de start van het scenario.'
-        }
-        else {
-            html += 'Geef aan of er al een versie van de regeling in werking is bij de start van het scenario.'
-        }
-
-        html += `
 ${this.#uitgangssituatie.Html()}
 </p>
 </div>
@@ -1394,32 +1384,11 @@ class SpecificatieElement {
 
     //#region Te implementeren/aan te passen in afgeleide klassen
     /**
-     * Aangeroepen om de HTML voor de weergave te maken. Afhankelijk van de IsInvoer()
-     * gaat het om de weergave op (bij false) een overzichtspagina, of (bij true) het
-     * modal scherm. Deze methode bepaalt alleen wat de container wordt om de eigenlijke
-     * html heen: standaard een span. Kan in afgeleide klassen worden aangepast.
-     */
-    Html() {
-        return this.MaakHtmlInContainer('span');
-    }
-
-    /**
-     * Aangeroepen om de HTML voor de weergave te maken, zoals die voorkomt op 
-     * een overzichtspagina, binnen de container die door WeergaveHtml wordt klaargezet 
+     * Aangeroepen om de HTML voor een read-only weergave te maken van de invoer.
+     * Deze wordt gepresenteerd binnen de container die door WeergaveHtml wordt klaargezet 
      * Wordt geïmplementeerd in afgeleide klassen.
      */
     WeergaveInnerHtml() {
-        return '';
-    }
-
-    /**
-     * Aangeroepen om de HTML voor de weergave te maken, zoals die voorkomt in 
-     * het modal scherm, binnen de container die door WeergaveHtml wordt klaargezet 
-     * Als al bekend is dat er een volgende stap in de invoer nodig is, dan moet in deze methode 
-     * of in InvoerInnerHtml de VolgendeStapNodig methode aangeroepen worden.
-     * Wordt geïmplementeerd in afgeleide klassen.
-     */
-    InvoerIntroductie() {
         return '';
     }
 
@@ -1548,6 +1517,36 @@ class SpecificatieElement {
     }
     //#endregion
 
+    //#region Status voor de invoer/weergave
+    /**
+     * Geeft aan of het specificatie-element actief is in het modal scherm (en niet in de weergave van de overzichtspagina)
+     * @returns
+     */
+    IsInvoer() {
+        return this.#isInvoer;
+    }
+    #isInvoer = false;
+
+    /**
+     * Geeft aan of het specificatie-element read-only is en niet gewijzigd mag worden.
+     * @returns
+     */
+    IsReadOnly() {
+        return this.#isReadOnly;
+    }
+    #isReadOnly = false;
+
+    /**
+     * Geeft de stap in een invoerscherm waarvan de invoer in verschillende stappen uitgevoerd moet worden
+     * @returns
+     */
+    InvoerStap() {
+        return this.IsInvoer() ? this.#invoerStap : 0;
+    }
+    #invoerStap;
+
+    //#endregion
+
     //#region Hulpfuncties om de html te maken
     /**
      * Geef het ID voor een HTML element gemaakt door het specificatie-element
@@ -1574,41 +1573,6 @@ class SpecificatieElement {
     DataSet() {
         return `data-se="${this.#index}"`;
     }
-
-    /**
-     * Aangeroepen om de HTML voor de invoer of weergave te maken om in een pagina te zetten.
-     * @param {string} containerElement - Tag van het containerelement
-     */
-    MaakHtmlInContainer(containerElement, cssClass) {
-        if (cssClass) {
-            cssClass = ` class="${cssClass}"`;
-        } else {
-            cssClass = '';
-        }
-        if (this.#isInvoer) {
-            return `<${containerElement} id="${this.ElementId('___M')}" ${this.DataSet()} ${cssClass}>${this.InvoerInnerHtml()}</${containerElement}>`
-        } else {
-            return `<${containerElement} id="${this.ElementId('___W')}" ${this.DataSet()} ${cssClass}>${this.WeergaveInnerHtml()}</${containerElement}>`
-        }
-    }
-
-    /**
-     * Geeft aan of het specificatie-element actief is in het modal scherm (en niet in de weergave van de overzichtspagina)
-     * @returns
-     */
-    IsInvoer() {
-        return this.#isInvoer;
-    }
-    #isInvoer = false;
-
-    /**
-     * Geeft de stap in een invoerscherm waarvan de invoer in verschillende stappen uitgevoerd moet worden
-     * @returns
-     */
-    InvoerStap() {
-        return this.IsInvoer() ? this.#invoerStap : 0;
-    }
-    #invoerStap;
 
     /**
      * Maakt de HTML voor een voegtoe knop aan
@@ -1654,12 +1618,27 @@ class SpecificatieElement {
         this.#invoerStap = 1;
         this.#volgendeStapNodig = false;
         this.#ModalMode(true);
-        document.getElementById('_bgpg_modal_content').innerHTML = `<div>${this.InvoerIntroductie()}</div>${this.Html()}`;
+        document.getElementById('_bgpg_modal_content').innerHTML = this.Html();
         document.getElementById("_bgpg_modal_volgende").style.display = this.#volgendeStapNodig ? '' : 'none';
         document.getElementById("_bgpg_modal_ok").style.display = this.#volgendeStapNodig ? 'none' : '';
         document.getElementById('_bgpg_modal').style.display = 'block';
     }
     static #modalOpener;
+
+    /**
+     * Aangeroepen om de HTML voor de weergave te maken. Afhankelijk van de IsInvoer()
+     * gaat het om de weergave op (bij false) een overzichtspagina, of (bij true) het
+     * modal scherm. Deze methode bepaalt alleen wat de container wordt om de eigenlijke
+     * html heen: standaard een span. Kan in afgeleide klassen worden aangepast.
+     * @param {string} containerElement - Optioneel: tag/naam van het containerelement om de HTML in te plaatsen
+     */
+    Html(containerElement = 'span') {
+        if (this.#isInvoer) {
+            return `<${containerElement} id="${this.ElementId('___M')}" ${this.DataSet()}>${this.InvoerInnerHtml()}</${containerElement}>`
+        } else {
+            return `<${containerElement} id="${this.ElementId('___W')}" ${this.DataSet()}>${this.WeergaveInnerHtml()}</${containerElement}>`
+        }
+    }
 
     /**
      * Vervang de html die eerder door InnerHtml () is gemaakt door een nieuwe versie.
@@ -2953,7 +2932,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
     #nieuweversie;
     //#endregion
 
-    //#region Implementatie specificatie-element
+    //#region Statusoverzicht
     /**
       * Het overzicht van de momentopname in het projectoverzicht
       */
@@ -2977,47 +2956,57 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
         }
         return html;
     }
+    //#endregion
+
+    //#region Implementatie specificatie-element
+    WeergaveInnerHtml() {
+        return this.#InnerHtml(this.#actueleversie, false);
+    }
 
     BeginInvoer() {
         this.#nieuweversie = new Instrumentversie(this.Momentopname(), this.Instrument(), this.#actueleversie.Basisversie(), this.#actueleversie);
     }
 
     InvoerInnerHtml() {
+        return this.#InnerHtml(this.#nieuweversie, true);
+    }
+    #InnerHtml(instrumentversie, enabled) {
+        let disabled = enabled ? '' : ' disabled';
         let html;
-        if (this.#nieuweversie.IsInitieleVersie()) {
+        if (instrumentversie.IsInitieleVersie()) {
             // Opties zijn: een (na terugtrekking nieuwe) eerste versie of niet aanwezig in de branch
-            html = `<input type="checkbox" id="${this.ElementId('N')}"${(this.#nieuweversie.HeeftJuridischeInhoud() ? ' checked' : '')}><label for="${this.ElementId('N')}">Nieuwe initiële versie</label>`
-            if (this.#nieuweversie.HeeftJuridischeInhoud()) {
-                html += this.#InvoerAnnotatiesInnerHtml();
+            html = `<input type="checkbox" id="${this.ElementId('N')}"${(instrumentversie.HeeftJuridischeInhoud() ? ' checked' : '')}${disabled}><label for="${this.ElementId('N')}">Nieuwe initiële versie</label>`
+            if (instrumentversie.HeeftJuridischeInhoud()) {
+                html += this.#AnnotatiesInnerHtml(instrumentversie, enabled);
             }
         } else {
             // Er is een eerdere versie, geef een keuze voor de status waarin een instrument zich bevindt.
             let html = '<table>';
             let checked = 'B';
-            if (this.#nieuweversie.IsIngetrokken()) {
+            if (instrumentversie.IsIngetrokken()) {
                 checked = 'D';
-            } else if (this.#nieuweversie.IsOngewijzigdInBranch()) {
+            } else if (instrumentversie.IsOngewijzigdInBranch()) {
                 checked = 'T';
             }
-            else if (this.#nieuweversie.IsNieuweVersie()) {
+            else if (instrumentversie.IsNieuweVersie()) {
                 checked = 'W';
             }
-            else if (this.#nieuweversie.IsEerdereVersie() !== undefined) {
+            else if (instrumentversie.IsEerdereVersie() !== undefined) {
                 checked = 'V';
             }
-            html += `<tr><td><input type="radio" id="${this.ElementId('B')}" name="${this.ElementId('R')}"${(checked == 'B' ? ' checked' : '')}></td><td><label for="${this.ElementId('B')}">Ongewijzigd laten</label></td></tr>`;
-            html += `<tr><td><input type="radio" id="${this.ElementId('W')}" name="${this.ElementId('R')}"${(checked == 'W' ? ' checked' : '')}></td><td><label for="${this.ElementId('W')}">Nieuwe versie</label>${(checked == 'W' ? this.#InvoerAnnotatiesInnerHtml() : '')}</td></tr>`;
-            html += `<tr><td><input type="radio" id="${this.ElementId('D')}" name="${this.ElementId('R')}"${(checked == 'D' ? ' checked' : '')}></td><td><label for="${this.ElementId('D')}">Intrekken</label></td></tr>`;
-            html += `<tr><td><input type="radio" id="${this.ElementId('T')}" name="${this.ElementId('R')}"${(checked == 'T' ? ' checked' : '')}></td><td><label for="${this.ElementId('T')}">Ongewijzigd laten voor ${this.Momentopname().Branch().Interactienaam()}</label></td></tr>`;
+            html += `<tr><td><input type="radio" id="${this.ElementId('B')}" name="${this.ElementId('R')}"${(checked == 'B' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('B')}">Ongewijzigd laten</label></td></tr>`;
+            html += `<tr><td><input type="radio" id="${this.ElementId('W')}" name="${this.ElementId('R')}"${(checked == 'W' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('W')}">Nieuwe versie</label>${(checked == 'W' ? this.#AnnotatiesInnerHtml(instrumentversie, enabled) : '')}</td></tr>`;
+            html += `<tr><td><input type="radio" id="${this.ElementId('D')}" name="${this.ElementId('R')}"${(checked == 'D' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('D')}">Intrekken</label></td></tr>`;
+            html += `<tr><td><input type="radio" id="${this.ElementId('T')}" name="${this.ElementId('R')}"${(checked == 'T' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('T')}">Ongewijzigd laten voor ${this.Momentopname().Branch().Interactienaam()}</label></td></tr>`;
 
-            if (this.#nieuweversie.SoortInstrument() != Instrument.SoortInstrument_Regeling) {
+            if (instrumentversie.SoortInstrument() != Instrument.SoortInstrument_Regeling) {
                 // Zoek eerst alle nieuwe instrumentversies die op dit moment bekend zijn
                 let versies = {};
                 Momentopname.VoorAlleMomentopnamen(this.Momentopname().Tijdstip(), undefined, (mo) => {
                     let versie = mo.Instrumentversie(this.Instrument());
                     if (versie !== undefined && versie !== this && versie.Instrumentversie().IsNieuweVersie()) {
                         //Een andere instrumentversie dan deze die een nieuwe versie specificeert
-                        if (this.#nieuweversie.Basisversie() !== undefined && this.#nieuweversie.Basisversie().UUID() == versie.Instrumentversie().UUID()) {
+                        if (instrumentversie.Basisversie() !== undefined && instrumentversie.Basisversie().UUID() == versie.Instrumentversie().UUID()) {
                             // Naar een versie met dezelfde expression-ID als de ongewijzigde versie moet niet verwezen worden, dan moet van de wijziging afgezien worden.
                             return;
                         }
@@ -3025,10 +3014,10 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                     }
                 });
                 if (versies.length > 0) {
-                    html += `<tr><td><input type="radio" id="${this.ElementId('V')}" name="${this.ElementId('R')}"${(checked == 'V' ? ' checked' : '')}></td><td><label for="${this.ElementId('V')}">Gelijk aan een eerder opgestelde versie:<label><br>`;
-                    html += `<select id="${this.ElementId('VL')}">`;
+                    html += `<tr><td><input type="radio" id="${this.ElementId('V')}" name="${this.ElementId('R')}"${(checked == 'V' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('V')}">Gelijk aan een eerder opgestelde versie:<label><br>`;
+                    html += `<select id="${this.ElementId('VL')}"${disabled}>`;
                     for (let versie of Object.keys(versies).sort()) {
-                        html += `<option value="${versies[versie]}"${(checked == 'V' && versies[versie] === this.#nieuweversie.UUID() ? ' selected' : '')}>${versie}</option>`;
+                        html += `<option value="${versies[versie]}"${(checked == 'V' && versies[versie] === instrumentversie.UUID() ? ' selected' : '')}>${versie}</option>`;
                     }
                     html += '</select></td></tr>';
                 }
@@ -3037,17 +3026,18 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
         return html;
     }
 
-    #InvoerAnnotatiesInnerHtml() {
+    #AnnotatiesInnerHtml(instrumentversie, enabled) {
         if (!BGProcesSimulator.Opties.Annotaties && !BGProcesSimulator.Opties.NonStopAnnotaties) {
             return '';
         }
         // Maak de invoer voor de annotaties
+        let disabled = enabled ? '' : ' disabled';
         let html = '<table>';
         let titel = 'Naast de juridische informatie ook een nieuwe versie van de annotatie(s):';
         let idx = 0;
         for (let isStop of [true, false]) {
             // Zoek uit welke annotaties ingevoerd kunnen worden
-            let namen = [...this.#nieuweversie.AnnotatieNamen(isStop)];
+            let namen = [...instrumentversie.AnnotatieNamen(isStop)];
             if (isStop) {
                 if (!BGProcesSimulator.Opties.Annotaties) {
                     continue;
@@ -3056,7 +3046,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                 if (!BGProcesSimulator.Opties.NonStopAnnotaties) {
                     continue;
                 }
-                if (!Instrument.NonStopAnnotatiesVoorInstrument[this.#nieuweversie.SoortInstrument()] === undefined) {
+                if (!Instrument.NonStopAnnotatiesVoorInstrument[instrumentversie.SoortInstrument()] === undefined) {
                     continue;
                 }
                 namen.push(Annotatie.VrijeNonStopAnnotatieNaam());
@@ -3067,10 +3057,10 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                     html += '<tr><td colspan="3">' + titel + '</tr>';
                     titel = '';
                 }
-                let versie = this.#nieuweversie.Annotatie(isStop, naam);
+                let versie = instrumentversie.Annotatie(isStop, naam);
                 let ongewijzigd = undefined;
-                if (this.#nieuweversie.Basisversie() != undefined) {
-                    ongewijzigd = this.#nieuweversie.Basisversie().Annotatie(isStop, naam);
+                if (instrumentversie.Basisversie() != undefined) {
+                    ongewijzigd = instrumentversie.Basisversie().Annotatie(isStop, naam);
                 }
                 let checked = false;
                 idx++;
@@ -3081,15 +3071,15 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                 }
                 if (isStop && naam === Annotatie.SoortAnnotatie_Citeertitel) {
                     //Citeertitel
-                    html += `<tr><td rowspan="2"><input type="checkbox" id="${this.ElementId('AW' + idx)}" data-a="${naam}" data-s="${(isStop ? 1 : 0)}"${(checked ? ' checked' : '')}></td>
+                    html += `<tr><td rowspan="2"><input type="checkbox" id="${this.ElementId('AW' + idx)}" data-a="${naam}" data-s="${(isStop ? 1 : 0)}"${(checked ? ' checked' : '')}${disabled}></td>
                         <td><label for="${this.ElementId('AW' + idx)}">${naam}<label></td>
                     </tr>
-                    <tr><td>Citeertitel: <input type="text" id="${this.ElementId('CT')}" value="${(versie === undefined ? '' : versie.Citeertitel())}"></td></tr>`;
+                    <tr><td>Citeertitel: <input type="text" id="${this.ElementId('CT')}" value="${(versie === undefined ? '' : versie.Citeertitel())}"${disabled}></td></tr>`;
                 }
-                else if (!isStop && ongewijzigd === undefined && versie === undefined) {
-                    html += `<tr><td>${this.HtmlVoegToe("Voeg een nieuwe non-STOP annotatie toe", 'NS')}</td><td><input type="text" id="${this.ElementId('NSN')}" value="${naam}"></td></tr>`;
+                else if (enabled && !isStop && ongewijzigd === undefined && versie === undefined) {
+                    html += `<tr><td>${this.HtmlVoegToe("Voeg een nieuwe non-STOP annotatie toe", 'NS')}</td><td><input type="text" id="${this.ElementId('NSN')}" value="${naam}"${disabled}></td></tr>`;
                 } else {
-                    html += `<tr><td><input type="checkbox" id="${this.ElementId('AW' + idx)}" data-a="${naam}" data-s="${(isStop ? 1 : 0)}"${(checked ? ' checked' : '')}></td><td><label for="${this.ElementId('AW' + idx)}">${naam}<label></td></tr>`;
+                    html += `<tr><td><input type="checkbox" id="${this.ElementId('AW' + idx)}" data-a="${naam}" data-s="${(isStop ? 1 : 0)}"${(checked ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('AW' + idx)}">${naam}<label></td></tr>`;
                 }
             }
         }
@@ -3817,7 +3807,7 @@ class Momentopname extends SpecificatieElement {
     }
     //#endregion
 
-    //#region Implementatie specificatie-element
+    //#region Statusoverzicht
     /**
      * Het overzicht van de momentopname in het projectoverzicht
      */
@@ -3908,12 +3898,33 @@ class Momentopname extends SpecificatieElement {
         html += '</table>';
         return html;
     }
+    //#endregion
 
-    /**
-     * De WeergaveHtml laat een overzicht van de 
-     */
-    WeergaveHtml() {
+    //#region Implementatie specificatie-element
+    WeergaveInnerHtml() {
+        // De opmaak verschilt tussen 1-instrument en meer-instrument scenario's.
+        let meerdereInstrumentenMogelijk = BGProcesSimulator.Opties.MeerdereRegelingen || BGProcesSimulator.Opties.InformatieObjecten;
 
+        let html = '<table>';
+
+        for (let soortInstrument of Instrument.SoortInstrument_Regelgeving) {
+            let soortnaam = Instrument.SoortInstrumentNamen[soortInstrument];
+            soortnaam = soortnaam.charAt(0).toUpperCase() + soortnaam.slice(1)
+
+            for (let instr of Object.keys(this.#actueleInstrumenten).sort()) {
+                let instrument = this.#actueleInstrumenten[instr];
+                if (instrument.Instrumentversie().SoortInstrument() === soortInstrument) {
+                    html += '<tr>';
+                    if (meerdereInstrumentenMogelijk) {
+                        html += `<td>${soortnaam}</td><td>${(instrument.InstrumentInteractienaam())}</td>`;
+                    }
+                    html += `<td>${instrument.Html()}</td></tr>`;
+                }
+            }
+        }
+
+        html += '</table>';
+        return html;
     }
 
     BeginInvoer() {
@@ -4723,10 +4734,6 @@ class Beschrijving extends SpecificatieElement {
     //#endregion
 
     //#region Implementatie specificatie-element
-    Html() {
-        return this.MaakHtmlInContainer('div');
-    }
-
     WeergaveInnerHtml() {
         if (this.Specificatie() === undefined) {
             return this.HtmlVoegToe("Voeg een beschrijving toe", 'M');
@@ -4787,20 +4794,19 @@ class Startdatum extends SpecificatieElement {
 
     //#region Implementatie specificatie-element
     WeergaveInnerHtml() {
-        return `${this.Specificatie()}${this.HtmlWerkBij("Pas de startdatum van het scenario aan", 'M')}`;
-    }
-
-    InvoerIntroductie() {
-        return `<p>
-Geef de startdatum van het scenario. Alle tijdstippen en datums worden ten opzichte van deze datum gerekend.
-Het werken met dagen-sinds-start maakt het rekenwerk met termijnen eenvoudiger.
-</p>`;
+        return `${this.HtmlWerkBij("Pas de startdatum van het scenario aan", 'M')}${this.Specificatie()}`;
     }
 
     InvoerInnerHtml() {
-        return `<input type="number" class="number2" min="1" max="31" id="${this.ElementId('D')}" value="${this.Specificatie().substr(8, 2)}"/> -
-        <input type="number" class="number2" min="1" max="12" id="${this.ElementId('M')}" value="${this.Specificatie().substr(5, 2)}"/> -
-        <input type="number" class="number4" min="2020" id="${this.ElementId('J')}" value="${this.Specificatie().substr(0, 4)}"/>`;
+        return `<p>
+Geef de startdatum van het scenario. Alle tijdstippen en datums worden ten opzichte van deze datum gerekend.
+Het werken met dagen-sinds-start maakt het rekenwerk met termijnen eenvoudiger.
+</p>
+<div>
+    <input type="number" class="number2" min="1" max="31" id="${this.ElementId('D')}" value="${this.Specificatie().substr(8, 2)}"/> -
+    <input type="number" class="number2" min="1" max="12" id="${this.ElementId('M')}" value="${this.Specificatie().substr(5, 2)}"/> -
+    <input type="number" class="number4" min="2020" id="${this.ElementId('J')}" value="${this.Specificatie().substr(0, 4)}"/>
+</div>`;
     }
 
     OnWeergaveClick(elt, idSuffix) {
@@ -4882,10 +4888,26 @@ class Uitgangssituatie extends Momentopname {
 
     //#region Implementatie specificatie-element
     WeergaveInnerHtml() {
-        if (this.Specificatie() === undefined) {
-            return this.HtmlWerkBij("Wijzig de uitgangssituatie", 'M');
+        if (this.IsReadOnly()) {
+            if (this.Specificatie() === undefined) {
+                return '';
+            } else {
+                return super.WeergaveInnerHtml();
+            }
         } else {
-            return this.HtmlVoegToe("Voeg een uitgangssituatie toe", 'M');
+            let html = '';
+            if (this.Specificatie() === undefined) {
+                if (BGProcesSimulator.Opties.MeerdereRegelingen || BGProcesSimulator.Opties.InformatieObjecten) {
+                    html += 'Geef aan welke regelgeving al in werking is bij de start van het scenario.'
+                }
+                else {
+                    html += 'Geef aan of er al een versie van de regeling in werking is bij de start van het scenario.'
+                }
+                html += this.HtmlVoegToe("Voeg een uitgangssituatie toe", 'M');
+            } else {
+                html += `<table><tr><td>${this.HtmlWerkBij("Wijzig de uitgangssituatie", 'M')}</td><td>${super.WeergaveInnerHtml()}</td></tr></table>`;
+            }
+            return html;
         }
     }
 
@@ -4895,10 +4917,17 @@ class Uitgangssituatie extends Momentopname {
         }
     }
 
-    InvoerIntroductie() {
-        return `<p>
-Kies wat de uitgangssituatie is bij aanvang van het scenario: welke regelgeving is in werking${(BGProcesSimulator.Opties.Annotaties | BGProcesSimulator.Opties.NonStopAnnotaties ? ' en welke annotaties zijn bekend' : '')}.
-</p>`;
+    InvoerInnerHtml() {
+        let html = '<p>';
+        if (BGProcesSimulator.Opties.MeerdereRegelingen || BGProcesSimulator.Opties.InformatieObjecten) {
+            html += 'Geef aan welke regelgeving al in werking is bij de start van het scenario.'
+        }
+        else {
+            html += 'Geef aan of er al een versie van de regeling in werking is bij de start van het scenario.'
+        }
+        html += `</p>
+${super.InvoerInnerHtml()}`;
+        return html;
     }
     //#endregion
 }
