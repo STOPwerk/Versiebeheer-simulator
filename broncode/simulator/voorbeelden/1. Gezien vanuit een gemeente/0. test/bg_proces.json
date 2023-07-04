@@ -12,114 +12,136 @@
       }
     }
   },
-  "Projecten": {
-    "Project #01": [
-      {
-        "Soort": "Maak branch",
-        "Tijdstip": 1,
+  "Activiteiten": [
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 1,
+      "Template": 0,
+      "p01": {
+        "Naam": "Project #01",
+        "Beschrijving": "Eerste project",
         "p01_1": {
-          "Soort": "Regulier",
-          "reg_01": {}
+          "Soort": "Regulier"
         }
-      },
-      {
-        "Soort": "Wijziging",
-        "Tijdstip": 4,
-        "p01_1": {
-          "reg_01": {}
-        }
-      },
-      {
-        "Soort": "Ontwerpbesluit",
-        "Tijdstip": 14,
-        "Begin inzagetermijn": 15,
-        "Einde inzagetermijn": 43
-      },
-      {
-        "Soort": "Vaststellingsbesluit",
-        "Tijdstip": 50,
-        "p01_1": {
-          "JuridischWerkendVanaf": 78
-        },
-        "Einde beroepstermijn": 92
       }
-    ],
-    "Project #02": [
-      {
-        "Soort": "Maak branch",
-        "Tijdstip": 100,
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 4,
+      "Project": "p01",
+      "p01_1": {
+        "reg_01": {}
+      }
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 14,
+      "Project": "p01",
+      "Begin inzagetermijn": 15,
+      "Einde inzagetermijn": 43
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 50,
+      "Project": "p01",
+      "p01_1": {
+        "JuridischWerkendVanaf": 78
+      },
+      "Einde beroepstermijn": 92
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 100,
+      "Template": 1,
+      "p02": {
+        "Naam": "Project #02",
+        "Beschrijving": "Tweede project",
         "p02_1": {
-          "Soort": "Regulier",
-          "reg_01": {}
+          "Soort": "Regulier"
         },
         "p02_2": {
-          "Soort": "VolgendOp",
+          "Soort": "Volgend Op",
           "Branch": "p02_1",
-          "reg_01": {}
-        },
-        "p02_3": {
-          "Soort": "TegelijkMet",
-          "Branches": [ "p02_1", "p01_1" ],
-          "reg_01": {}
-        }
-      },
-      {
-        "Soort": "Wijziging",
-        "Tijdstip": 130,
-        "p02_1": {
-          "reg_01": {}
-        }
-      },
-      {
-        "Soort": "Vaststellingsbesluit",
-        "Tijdstip": 150
-      },
-      {
-        "Soort": "Vaststellingsbesluit",
-        "Tijdstip": 175,
-        "p02_1": {
-          "JuridischWerkendVanaf": 178
-        },
-        "p02_2": {
-          "JuridischWerkendVanaf": 178
+          "Titel": "Einde overgangstermijn"
         }
       }
-    ],
-    "Project #03": [
-      {
-        "Soort": "Download",
-        "Tijdstip": 110,
-        "Branch": "p03_1"
-      },
-      {
-        "Soort": "Wijziging",
-        "Tijdstip": 125,
-        "p03_1": {
-          "reg_01": {}
-        }
-      },
-      {
-        "Soort": "Uitwisseling",
-        "Tijdstip": 176
-      },
-      {
-        "Soort": "Wijziging",
-        "Tijdstip": 180,
-        "p03_1": {
-          "reg_01": {
-            "Metadata": "Omgevingsplan Groot-Pyrodam",
-            "Toelichtingrelaties": true
-          },
-          "reg_02": {
-            "Metadata": "Omgevingsvisie Groot-Pyrodam"
-          },
-          "gio_01": {}
-        }
-      },
-      {
-        "Soort": "Bijwerken uitgangssituatie",
-        "Tijdstip": 200
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 130,
+      "Project": "p02",
+      "p02_1": {
+        "reg_01": {}
       }
-    ]
-  }
+    },
+    {
+      "Soort": "Maak branch",
+      "Tijdstip": 135,
+      "Project": "p01",
+      "p02_3": {
+        "Soort": "TegelijkMet",
+        "Branches": [ "p02_1", "p01_1" ],
+        "reg_01": {}
+      }
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 150,
+      "Project": "p01"
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 175,
+      "Project": "p01",
+      "p02_1": {
+        "JuridischWerkendVanaf": 178
+      },
+      "p02_2": {
+        "JuridischWerkendVanaf": 178
+      }
+    },
+    {
+      "Soort": "Download",
+      "Tijdstip": 110,
+      "p03": {
+        "Naam": "Project #02",
+        "p03_1": {
+          "Soort": "Regulier"
+        }
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 125,
+      "Project": "p03",
+      "p03_1": {
+        "reg_01": {}
+      }
+    },
+    {
+      "Soort": "Uitwisseling",
+      "Tijdstip": 176,
+      "Project": "p03"
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 180,
+      "Project": "p03",
+      "p03_1": {
+        "reg_01": {
+          "Metadata": "Omgevingsplan Groot-Pyrodam",
+          "Toelichtingrelaties": true
+        },
+        "reg_02": {
+          "Metadata": "Omgevingsvisie Groot-Pyrodam"
+        },
+        "gio_01": {}
+      }
+    },
+    {
+      "Soort": "Bijwerken uitgangssituatie",
+      "Tijdstip": 200,
+      "Project": "p03"
+    }
+  ]
 }

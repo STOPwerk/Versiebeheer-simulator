@@ -30,11 +30,28 @@
             });
         }
 
+        function BevriesHoogtePaneel(entries) {
+            for (var resized of entries) {
+                var h = Math.ceil(resized.contentBoxSize[0].blockSize);
+                if (parseInt(resized.target.dataset.bh) < h) {
+                    resized.target.dataset.bh = h;
+                    resized.target.style.minHeight = `${h}px`;
+                }
+            }
+        }
+
         function MaakEventHandlers() {
             // Event handlers voor de accordion panelen (op te klikken stukjes van de pagina)
             document.querySelectorAll("[data-accordion]").forEach((elt) => {
                 if (elt.dataset.aeh === undefined) {
                     elt.addEventListener("click", TogglePaneel);
+                    elt.dataset.aeh = true;
+                }
+            });
+            // Event handlers voor de accordion panelen met bevroren hoogte
+            document.querySelectorAll("[data-accordion-paneel]").forEach((elt) => {
+                if (elt.dataset.bh !== undefined && elt.dataset.aeh === undefined) {
+                    new ResizeObserver(BevriesHoogtePaneel).observe(elt);
                     elt.dataset.aeh = true;
                 }
             });

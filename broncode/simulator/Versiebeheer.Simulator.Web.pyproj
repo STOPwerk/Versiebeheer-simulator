@@ -39,10 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="applicatie_web_index.html" />
+    <Content Include="applicatie_web_project_invoer_simulator_help.html" />
     <Content Include="applicatie_web_project_invoer_help.html" />
-    <Content Include="applicatie_web_project_invoer_voorbeeld.js" />
-    <Content Include="applicatie_web_project_invoer_voorbeeld.html" />
-    <Content Include="applicatie_web_project_invoer_bgproces.js" />
+    <Content Include="applicatie_web_project_invoer_simulator.js" />
     <Content Include="applicatie_web_project_invoer.css" />
     <Content Include="applicatie_web_project_invoer.js" />
     <Content Include="applicatie_web_project_invoer.html" />

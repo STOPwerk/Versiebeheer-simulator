@@ -1,62 +1,77 @@
-<div id="_start_soortBG">
-    <button data-accordion="_start_soortBG_a" class="accordion_h active">Scenario</button>
-    <div data-accordion-paneel="_start_soortBG_a" class="accordion_h_paneel" style="display: block">
-        <p>
-            Geef aan of het scenario gaat over
-            <label for="_optie_regelingen"><input type="checkbox" id="_optie_regelingen"> meerdere regelingen</label>,
-            <label for="_optie_io"><input type="checkbox" id="_optie_io"> informatieobjecten</label>,
-            <label for="_optie_annotaties"><input type="checkbox" id="_optie_annotaties"> STOP annotaties</label>
-            en/of
-            <label for="_optie_nonstop"><input type="checkbox" id="_optie_nonstop"> non-STOP annotaties</label>
-            bij regeling-/informatieobjectversies.
-        </p>
-        <p>
-            De verschillende bevoegd gezagen hebben een andere manier van werken. De twee uitersten zijn:
-        </p>
-        <p>
-            <dl>
-                <dt><input type="radio" name="_soortBG" id="_soortBG_Gemeente" value="Gemeente" /> <label for="_soortBG_Gemeente">Gemeente</label></dt>
-                <dd>
-                    Een gemeente werkt tegelijk aan één of meer wijzigingen van een regeling, besluiten altijd van een inwerkingtredingsdatum
-                    voorziet, en rechters of hogere bevoegd gezagen kunnen oordelen over hun besluiten.
-                </dd>
-                <dt><input type="radio" name="_soortBG" id="_soortBG_Rijk" value="Rijk" /> <label for="_soortBG_Rijk">Rijk</label></dt>
-                <dd>
-                    De Rijksoverheid werkt tegelijk aan één of meer wijzigingen van een regeling, besluiten worden zonder inwerkingtredingsdatum
-                    gepubliceerd, over de (gedeeltelijke) inwerkingtreding wordt pas op een later moment besloten.
-                </dd>
-            </dl>
-        </p>
-        <p>
-            Selecteer een bevoegd gezag om verder te gaan, of werk verder aan een eerder samengestelde specificatie:
-        </p>
-        <div id="_start_specificatie" class="box">
-            <label>
-                <strong>selecteer het invoerbestand</strong>
-                <span>(meestal bg_proces.json)</span>
-                <span>of sleep het hier naar toe.</span>
-                <input class="box__file" type="file" id="_start_specificatie_json" accept="application/json" />
-            </label>
-            <p id="_specificatie_fout">
-                Kan de specificatie niet lezen:
-                <div id="_specificatie_foutmelding"></div>
+<div id="_start">
+    <button data-accordion="_start_a" class="accordion_h active">Toelichting</button>
+    <div data-accordion-paneel="_start_a" class="accordion_h_paneel" style="display: block">
+        @@@HELP_START@@@
+    </div>
+    <button data-accordion="_start_b" class="accordion_h active">Scenario</button>
+    <div data-accordion-paneel="_start_b" class="accordion_h_paneel" style="display: block">
+        <div id="_start_soortBG_container">
+            <p>
+                De verschillende bevoegd gezagen hebben een andere manier van werken. De twee uitersten zijn:
+            </p>
+            <p>
+                <dl>
+                    <dt><input type="radio" name="_start_soortBG" id="_start_soortBG_Gemeente" value="Gemeente" /> <label for="_start_soortBG_Gemeente">Gemeente</label></dt>
+                    <dd>
+                        Een gemeente werkt tegelijk aan één of meer wijzigingen van een regeling, besluiten altijd van een inwerkingtredingsdatum
+                        voorziet, en rechters of hogere bevoegd gezagen kunnen oordelen over hun besluiten.
+                    </dd>
+                    <dt><input type="radio" name="_start_soortBG" id="_start_soortBG_Rijk" value="Rijksoverheid" /> <label for="_start_soortBG_Rijk">Rijksoverheid</label></dt>
+                    <dd>
+                        De rijksoverheid werkt tegelijk aan één of meer wijzigingen van een regeling, nieuwe regelingen en wijzigingen worden in besluiten gescheiden,
+                        besluiten worden zonder inwerkingtredingsdatum gepubliceerd, over de (gedeeltelijke) inwerkingtreding wordt pas op een later moment besloten.
+                    </dd>
+                </dl>
             </p>
         </div>
+        <div id="_start_specificatie_container">
+            <p>
+                Selecteer een bevoegd gezag om verder te gaan, of werk verder aan een eerder samengestelde specificatie:
+            </p>
+            <div id="_start_specificatie" class="box">
+                <label>
+                    <strong>selecteer het invoerbestand</strong>
+                    <span>(meestal bg_proces.json)</span>
+                    <span>of sleep het hier naar toe.</span>
+                    <input class="box__file" type="file" id="_start_specificatie_json" accept="application/json" />
+                </label>
+            </div>
+        </div>
+        <p id="_start_specificatie_fout">
+            Kan de specificatie niet lezen:
+            <table><tr><td class="level_fout">FOUT</td><td class="message_fout" id="_start_specificatie_foutmelding"></td></tr></table>
+        </p>
+        <p id="_start_specificatie_info_container">
+            <table>
+                <tr><th>Bevoegd gezag</th><td id="_start_specificatie_info_soortBG"></td></tr>
+                <tr><th>Naam</th><td id="_start_specificatie_info_naam"></td></tr>
+                <tr><th>Beschrijving</th><td id="_start_specificatie_info_beschrijving"></td></tr>
+            </table>
+        </p>
+        <p>
+            Geef aan of het scenario gaat over
+            <label for="_start_optie_regelingen"><input type="checkbox" id="_start_optie_regelingen"> meerdere regelingen</label>,
+            <label for="_start_optie_io"><input type="checkbox" id="_start_optie_io"> informatieobjecten</label>,
+            <label for="_start_optie_annotaties"><input type="checkbox" id="_start_optie_annotaties"> STOP annotaties</label>
+            en/of
+            <label for="_start_optie_nonstop"><input type="checkbox" id="_start_optie_nonstop"> non-STOP annotaties</label>
+            bij regeling-/informatieobjectversies.
+        </p>
+        <p><button id="_start_startknop">Start de simulator</button></p>
     </div>
 </div>
-<div id="_specificatie">
-    <form id="Invoer" action="resultaat" method="post" target="_blank" class="invoer" enctype="multipart/form-data">
-        <button id="startknop">Start LVBB simulator</button>
-        <textarea name="onlineInvoer1" class="onlineInvoer" id="_bg_proces_data"></textarea>
-        <div class="download"><a href="#" id="_download_specificatie" download="bg_proces.json">Download specificatie</a></div>
+<div id="_bgps_container">
+    <button data-accordion="_bgps_soortBG_t" class="accordion_h">Werking van de simulator</button>
+    <div data-accordion-paneel="_bgps_soortBG_t" class="accordion_h_paneel" style="display: none">
+        @@@HELP_SIMULATOR@@@
+    </div>
+    <form id="_bgps_lvbb_data" action="resultaat" method="post" target="_blank" class="invoer" enctype="multipart/form-data">
+        <button id="_bgps_lvbb_startknop">Start LVBB simulator</button>
+        <!--<textarea name="onlineInvoer1" class="verborgenInvoer"></textarea>-->
+        <div class="download"><a href="#" id="_bgps_download_specificatie" download="bg_proces.json">Download scenario specificatie</a></div>
     </form>
-    <p id="_heeft_meldingen">
-        De specificatie kon ingelezen worden maar is misschien niet zoals verwacht.
-        <table id="_meldingen">
-            <tr><td>Tijdstip van de activiteit</td><td>Meldingen</td></tr>
-        </table>
-    </p>
-    <div id="_bg_proces">
+    <div id="_bgps_simulator">
 
     </div>
 </div>
+
