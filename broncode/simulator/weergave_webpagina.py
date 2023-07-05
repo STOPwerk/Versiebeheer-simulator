@@ -216,6 +216,13 @@ class WebpaginaGenerator:
             self.LeesJSTemplate ("highlight", True, True)
             self.LeesCssTemplate ("highlight")
 
+    def GebruikZipScript (self):
+        """Voeg de scripting toe nodig om zip bestanden te maken in de webpagina
+        """
+        if not hasattr (self, '_ZipScript'):
+            setattr (self, '_ZipScript', True)
+            self.LeesJSTemplate ("zip", True, True)
+
     def VoegCssToe (self, css):
         """Voeg CSSstyle toe
         

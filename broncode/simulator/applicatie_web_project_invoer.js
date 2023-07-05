@@ -17,6 +17,7 @@ window.addEventListener('load', function () {
     const simulator_startknop = document.getElementById('_start_startknop');
     const lvbb_form = document.getElementById('_bgps_lvbb_data');
     const lvbb_startknop = document.getElementById('_bgps_lvbb_startknop');
+    const lvbb_download = document.getElementById('_bgps_download_lvbb_specificatie');
     const sim_download = document.getElementById('_bgps_download_specificatie');
 
     lvbb_startknop.style.display = 'none';
@@ -71,7 +72,7 @@ window.addEventListener('load', function () {
         BGProcesSimulator.Opties.Annotaties = document.getElementById('_start_optie_annotaties').checked;
         BGProcesSimulator.Opties.NonStopAnnotaties = document.getElementById('_start_optie_nonstop').checked;
         simulator_container.style.display = '';
-        simulator.Start(lvbb_form, lvbb_startknop, sim_download);
+        simulator.Start(lvbb_form, lvbb_startknop, lvbb_download, sim_download);
     });
 
     if (start_voorbeeld !== null) {

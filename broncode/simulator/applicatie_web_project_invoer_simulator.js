@@ -79,13 +79,15 @@ class BGProcesSimulator {
      * Start met de invoer van de specificatie
      * @param {HTMLElement} elt_lvbb_form - form om de specificatie voor de LVBB simulator in op te nemen
      * @param {HTMLElement} elt_lvbb_startknop - element waarin de start knop staat van de LVBB simulator
-     * @param {HTMLAnchorElement} downloadLink - element met de downloadlink voor de specificatie
+     * @param {HTMLAnchorElement} elt_lvbb_download - element met de downloadlink voor de invoerbestanden van de LVBB simulator
+     * @param {HTMLAnchorElement} elt_spec_download - element met de downloadlink voor de specificatie
      */
-    Start(elt_lvbb_form, elt_lvbb_startknop, downloadLink) {
+    Start(elt_lvbb_form, elt_lvbb_startknop, elt_lvbb_download, elt_spec_download) {
         SpecificatieElement.AddEventListener(this.#elt_simulator)
         this.#elt_lvbb_form = elt_lvbb_form;
         this.#elt_lvbb_startknop = elt_lvbb_startknop;
-        this.#elt_spec_download = downloadLink;
+        this.#elt_lvbb_download = elt_lvbb_download;
+        this.#elt_spec_download = elt_spec_download;
 
         // Maak de eerste versie van de pagina.
         this.#MaakPagina();
@@ -552,10 +554,11 @@ class BGProcesSimulator {
      */
     #MaakSimulatorSpecificatie() {
         let numBestanden = 0;
+        let zipData = {}
 
         // Neem de STOP XML bestanden op in de form
         for (let activiteit of [this.#uitgangssituatie, ...Activiteit.Activiteiten()]) {
-            for (let stopXml of activiteit.ModulesVoorLVBBSimulator()) {
+            for (let module of activiteit.ModulesVoorLVBBSimulator()) {
                 let elt = this.#elt_lvbb_form.elements[`onlineInvoer${++numBestanden}`];
                 if (elt === undefined || elt === null) {
                     elt = document.createElement('textarea');
@@ -563,7 +566,8 @@ class BGProcesSimulator {
                     elt.classList.add('verborgenInvoer');
                     this.#elt_lvbb_form.appendChild(elt);
                 }
-                elt.value = stopXml;
+                elt.value = module.STOPXml;
+                zipData[`${numBestanden.toString().padStart(2, '0')}_${module.ModuleNaam}.xml`] = module.STOPXml;
             }
         }
 
@@ -580,6 +584,14 @@ class BGProcesSimulator {
                     revisie: activiteit.Publicatiebron().endsWith('revisie')
                 });
             }
+            if (this.Uitgangssituatie().Instrumentversies().length > 0) {
+                beschrijving.Uitwisselingen.push({
+                    naam: 'Uitgangssituatie',
+                    gemaaktOp: this.Uitgangssituatie().Tijdstip().STOPDatumTijd(),
+                    beschrijving: 'De regelgeving die in werking is bij de start van het scenario.',
+                    revisie: true
+                });
+            }
         }
         let json = JSON.stringify(beschrijving, BGProcesSimulator.#ObjectFilter, 4).trim();
         if (json !== '{}') {
@@ -591,6 +603,7 @@ class BGProcesSimulator {
                 this.#elt_lvbb_form.appendChild(elt);
             }
             elt.value = json;
+            zipData['00_beschrijving.json'] = json;
         }
 
         // Haal overige form-velden voor bestanden weg
@@ -601,8 +614,21 @@ class BGProcesSimulator {
             }
             elt.parentNode.removeChild(elt);
         }
+
+        // Neem de zip file op in de download link
+        this.#CreateZip(zipData);
     }
     #elt_lvbb_form;
+
+    async #CreateZip(zipData) {
+        this.#elt_lvbb_download.href = "#";
+        const zipWriter = new zip.ZipWriter(new zip.Data64URIWriter("application/zip"));
+        for (let file in zipData) {
+            await zipWriter.add(file, new zip.TextReader(zipData[file]));
+        }
+        this.#elt_lvbb_download.href = await zipWriter.close();
+    }
+    #elt_lvbb_download;
     //#endregion
 
     //#region Webpagina voor applicatie
@@ -712,8 +738,10 @@ TODO
         if (this.Specificatie().Activiteiten.length > 0) {
             this.#MaakSimulatorSpecificatie();
             this.#elt_lvbb_startknop.style.display = '';
+            this.#elt_lvbb_download.style.display = '';
         } else {
             this.#elt_lvbb_startknop.style.display = 'none';
+            this.#elt_lvbb_download.style.display = 'none';
         }
 
         // Software-interne informatie alleen laten zien als er activiteiten zijn
@@ -1645,10 +1673,17 @@ class SpecificatieElement {
 
     /**
      * Geeft aan of het specificatie-element read-only is en niet gewijzigd mag worden.
-     * @returns
+     * @returns {boolean}
      */
     IsReadOnly() {
         return this.#isReadOnly;
+    }
+    /**
+     * Geef aan dat dit element niet gewijzigd mag worden
+     * @param {boolean} readOnly
+     */
+    ReadOnlyWordt(readOnly) {
+        this.#isReadOnly = readOnly;
     }
     #isReadOnly = false;
 
@@ -1813,7 +1848,7 @@ class SpecificatieElement {
                 let idx = this.#data == undefined ? -1 : this.#eigenaarObject.indexOf(this.#data);
                 if (data === undefined) {
                     if (idx >= 0) {
-                        delete this.#eigenaarObject[idx];
+                        this.#eigenaarObject.splice(idx, 1);
                     }
                 } else {
                     if (idx < 0) {
@@ -1944,7 +1979,10 @@ class SpecificatieElement {
                 }
             }
         }
-        return todo(this);
+        if (!this.IsReadOnly()) {
+            return todo(this);
+
+        }
     }
 
     /**
@@ -2060,7 +2098,7 @@ class Tijdstip extends SpecificatieElement {
         let uur = Math.round(100 * (this.Specificatie() - dag));
         datum.setDate(datum.getDate() + dag);
         let yyyMMdd = datum.toJSON().slice(0, 10);
-        if (this.#isTijdstip && uur > 0) {
+        if (this.#isTijdstip) {
             let HH = ('00' + uur).slice(-2);
             return `${yyyMMdd}T${HH}:00:00Z`;
         } else {
@@ -2673,7 +2711,7 @@ class Instrumentversie {
         } else if (this.IsNieuweVersie()) {
             let work = this.WorkIdentificatie();
             if (this.#soortInstrument === 'reg') {
-                return `${work}/nl@${this.Momentopname().Tijdstip().Jaar()};${this.UUID()};${this.Momentopname().Branch().Code()}`;
+                return `${work}/nld@${this.Momentopname().Tijdstip().Jaar()};${this.UUID()};${this.Momentopname().Branch().Code()}`;
             } else {
                 return `${work}/@${this.Momentopname().Tijdstip().Jaar()};${this.UUID()};${this.Momentopname().Branch().Code()}`;
             }
@@ -3244,8 +3282,8 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                 }
                 if (this.Instrumentversie().SoortInstrument() === 'reg') {
                     toegevoegd = {
-                        Doel: this.Branch().Doel(),
-                        Instrument: this.Instrumentversie().WorkIdentificatie(),
+                        doel: this.Branch().Doel(),
+                        instrument: this.Instrumentversie().WorkIdentificatie(),
                         eId: isRevisie ? undefined : "eId_terugtrekking"
                     };
                     module.Terugtrekkingen.push({
@@ -3253,8 +3291,8 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                     });
                 } else {
                     toegevoegd = {
-                        Doel: this.Branch().Doel(),
-                        Instrument: this.Instrumentversie().WorkIdentificatie(),
+                        doel: this.Branch().Doel(),
+                        instrument: this.Instrumentversie().WorkIdentificatie(),
                         eId: isRevisie ? undefined : "eId_bijlage_IO"
                     };
                     module.Terugtrekkingen.push({
@@ -3269,14 +3307,14 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                 this.Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Branch ${this.Branch().Code()}: instrument ${this.Instrument()} is ingetrokken.`)
                 if (this.Instrumentversie().SoortInstrument() === 'reg') {
                     toegevoegd = {
-                        Doel: this.Branch().Doel(),
-                        Instrument: Instrument.WorkIdentificatie(this.Instrument()),
+                        doel: this.Branch().Doel(),
+                        instrument: Instrument.WorkIdentificatie(this.Instrument()),
                         eId: isRevisie ? undefined : "eId_intrekking"
                     };
                 } else {
                     toegevoegd = {
-                        Doel: this.Branch().Doel(),
-                        Instrument: Instrument.WorkIdentificatie(this.Instrument()),
+                        doel: this.Branch().Doel(),
+                        instrument: Instrument.WorkIdentificatie(this.Instrument()),
                         eId: isRevisie ? undefined : "eId_bijlage_IO"
                     };
                 }
@@ -3296,8 +3334,10 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                 }
                 if (this.Instrumentversie().SoortInstrument() === 'reg') {
                     toegevoegd = {
-                        Doel: this.Branch().Doel(),
-                        Instrumentversie: this.Instrumentversie().ExpressionIdentificatie(),
+                        doelen: [
+                            { doel: this.Branch().Doel() }
+                        ],
+                        instrumentVersie: this.Instrumentversie().ExpressionIdentificatie(),
                         eId: isRevisie ? undefined : "eId_intrekking"
                     };
                     module.BeoogdeRegelgeving.push({
@@ -3305,8 +3345,10 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                     });
                 } else {
                     toegevoegd = {
-                        Doel: this.Branch().Doel(),
-                        Instrumentversie: this.Instrumentversie().ExpressionIdentificatie(),
+                        doelen: [
+                            { doel: this.Branch().Doel() }
+                        ],
+                        instrumentVersie: this.Instrumentversie().ExpressionIdentificatie(),
                         eId: isRevisie ? undefined : "eId_bijlage_IO"
                     };
                     module.BeoogdeRegelgeving.push({
@@ -3889,6 +3931,10 @@ class Momentopname extends SpecificatieElement {
         // Maak specificatie-elementen voor de tijstempels
         this.#juridischWerkendVanaf = new TijdstempelSpecificatie(this, 'JuridischWerkendVanaf', voorgaandeMomentopnameDezeBranch === undefined ? undefined : voorgaandeMomentopnameDezeBranch.JuridischWerkendVanaf());
         this.#geldigVanaf = new TijdstempelSpecificatie(this, 'GeldigVanaf', voorgaandeMomentopnameDezeBranch === undefined ? undefined : voorgaandeMomentopnameDezeBranch.GeldigVanaf(), this.#juridischWerkendVanaf);
+        if (!tijdstempelsToegestaan) {
+            this.#juridischWerkendVanaf.ReadOnlyWordt(true);
+            this.#geldigVanaf.ReadOnlyWordt(true);
+        }
 
         // Zoek uit welke instrumenten aanwezig zijn in deze momentopname
         if (voorgaandeMomentopname !== undefined) {
@@ -5698,7 +5744,7 @@ ${super.InvoerInnerHtml()}`;
             gemaaktOp: Tijdstip.StartTijd().STOPDatumTijd()
         }
         this.VoegToeAanConsolidatieInformatie(module, false);
-        return [Activiteit.ModuleToXml('ConsolidatieInformatie', module)];
+        return [{ ModuleNaam: 'ConsolidatieInformatie', STOPXml: Activiteit.ModuleToXml('ConsolidatieInformatie', module) }];
     }
     //#endregion
 }
@@ -6230,10 +6276,10 @@ class Activiteit extends SpecificatieElement {
 
     /**
      * Geeft de STOP modules benodigd als invoer voor de LVBB simulator
-     * @returns {string[]} STOP-XML modules die tijdens de uitvoering van deze activiteit naar de LVBB gestuurd worden.
+     * @returns {any[]} STOP-XML modules die tijdens de uitvoering van deze activiteit naar de LVBB gestuurd worden.
      */
     ModulesVoorLVBBSimulator() {
-        return this.#uitwisselingen.filter(u => u.Ontvanger == Activiteit.Systeem_LVBB).map(u => u.STOPXml);
+        return this.#uitwisselingen.filter(u => u.Ontvanger == Activiteit.Systeem_LVBB).map(u => new { ModuleNaam: u.ModuleNaam, STOPXml: u.STOPXml });
     }
 
     /**

@@ -85,6 +85,7 @@
     <Content Include="simulator\weergave_versiebeheer_help_versiebeheer.html" />
     <Content Include="simulator\weergave_webpagina_highlight.css" />
     <Content Include="simulator\weergave_webpagina_highlight.js" />
+    <Content Include="simulator\weergave_webpagina_zip.js" />
     <Content Include="simulator\weergave_webpagina_svg-pan-zoom.js" />
     <Content Include="simulator\weergave_versiebeheer.html" />
     <Content Include="simulator\weergave_webpagina_einde.html" />

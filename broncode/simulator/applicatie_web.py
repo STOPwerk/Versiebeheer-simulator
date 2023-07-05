@@ -66,6 +66,7 @@ class WebApplicatie:
         generator.LeesJSTemplate ('project_invoer_simulator', True, True)
         generator.GebruikSvgScript ()
         generator.GebruikSyntaxHighlighting ()
+        generator.GebruikZipScript ()
         return generator.Html ()
 
     @staticmethod

@@ -669,7 +669,7 @@ class Tijdstempel(VoorTijdstempel):
         if datum is None:
             return
         datum = datum[0:10]
-        if not ConsolidatieInformatie._DatumPatroon.match (datum):
+        if not Valideer.Datum (datum):
             module._Log.Fout ("Bestand '" + module._Pad + "': datum '" + datum + "' is onherkenbaar")
             module.IsValide = False
         else:
@@ -758,7 +758,7 @@ class MaterieelUitgewerkt:
             datum = module._LeesElement (xml, "datum", True)
             if not datum is None:
                 datum = datum[0:10]
-                if not ConsolidatieInformatie._DatumPatroon.match (datum):
+                if not Valideer.Datum (datum):
                     module._Log.Fout ("Bestand '" + module._Pad + "': datum '" + datum + "' is onherkenbaar")
                     module.IsValide = False
                 else:
