@@ -2,7 +2,7 @@
 #
 # Data voor het aanmaken van een webpagina die alle beschikbare
 # resultaten laat zien van het consolidatie proces uit 
-# proces_lv_consolidatie.py.
+# proces_consolidatie.py.
 #
 #----------------------------------------------------------------------
 #
@@ -15,15 +15,15 @@
 #
 #======================================================================
 from typing import List, Dict, Set, Tuple
-from data_bg_versiebeheer import Instrument
 
 from data_doel import Doel
-from data_bg_versiebeheer import Consolidatie
-from data_lv_versiebeheerinformatie import Uitwisseling
-from proces_lv_tijdreisfilter import Filter_CompleteToestanden, Filtervoorschrift
+from data_proefversie import Proefversie
+from data_versiebeheerinformatie import Uitwisseling
+from proces_tijdreisfilter import Filter_CompleteToestanden, Filtervoorschrift
 from stop_completetoestanden import CompleteToestanden, Toestand
-from weergave_data_proefversies import Proefversies, Proefversie
+from stop_proefversies import Proefversies
 from weergave_data_toestanden import Toestand
+from weergave_data_stop_uitwisseling import STOPModuleSnapshot, STOPModuleUitwisseling
 
 #----------------------------------------------------------------------
 #
@@ -60,13 +60,6 @@ class WeergaveData:
         # Uniek ID voor alle elementen die een uniek ID moeten krijgen zodat ze in de verschillende 
         # overzichten als hetzelfde herkend kunnen worden
         self._LaatsteUniekId = 0
-        # Geef de annotaties en annotatieversies een uniek ID voor weergave
-        for annotatie in scenario.Annotaties:
-            self._LaatsteUniekId += 1
-            annotatie._UniekId = str(self._LaatsteUniekId)
-            for versie in annotatie.Versies:
-                self._LaatsteUniekId += 1
-                versie._UniekId = str(self._LaatsteUniekId)
 
     def UitwisselingNaam (self, gemaaktOp : str):
         """Geef de volledige naam van de uitwisseling
@@ -81,7 +74,7 @@ class WeergaveData:
         return gemaaktOp
 
 
-    def WerkBij (self, uitwisseling : Uitwisseling, instrumentWorkId : Set[str], alleDoelen : Set[Doel], proefversies : Dict[str, List[Proefversie]]):
+    def WerkBij (self, uitwisseling : Uitwisseling, instrumentWorkId : Set[str], alleDoelen : Set[Doel], proefversies : Dict[str, List[Proefversie]], uitgewisseldeModules : List[STOPModuleUitwisseling]):
         """Werk de gegevens voor presentatie bij.
 
         Argumenten:
@@ -89,6 +82,7 @@ class WeergaveData:
         instrumentWorkId string[]  Work-id van de instrumenten die in deze uitwisseling geraakt zijn.
         alleDoelen string[]  Een set van alle doelen waarvoor informatie is aangeleverd
         proefversies {} key = work-ID van de instrumenten, value = lijst met proefversies
+        uitgewisseldeModules STOPModuleUitwisseling[]  De lijst met STOP modules die op dit moment uitgewisseld worden
         """
         if self.Scenario.Opties.Applicatie_Resultaat:
             for branch in self.Scenario.Versiebeheerinformatie.Tijdstempels.values ():
@@ -101,14 +95,26 @@ class WeergaveData:
                     self._DoelEersteGemaaktOp[doel] = uitwisseling.GemaaktOp + "{:03d}".format (idx)
 
             # Informatie over instrumenten
-            for workId in instrumentWorkId:
+            for workId in sorted (instrumentWorkId): # Volgorde ivm weergave op resultaatpagina
                 data = self.InstrumentData.get (workId)
                 if data is None:
                     self.InstrumentData[workId] = data = InstrumentData (self, workId)
                 else:
                     data.Uitwisselingen[-1].VolgendeGemaaktOp = uitwisseling.GemaaktOp
                 self._LaatsteUniekId += 1
-                data.Uitwisselingen.append (InstrumentUitwisseling (str(self._LaatsteUniekId), data, uitwisseling, workId, proefversies.get (workId)))
+                data.Uitwisselingen.append (InstrumentUitwisseling (str(self._LaatsteUniekId), data, uitwisseling, workId, proefversies.get (workId), uitgewisseldeModules))
+
+            # Proefversie module
+            if len (proefversies) > 0:
+                module = Proefversies ()
+                module.BekendOp = uitwisseling.BekendOp
+                module.OntvangenOp = uitwisseling.OntvangenOp
+                for workId in sorted (proefversies.keys ()):
+                    module.Proefversies.extend (sorted (proefversies[workId], key = lambda p: p.Instrumentversie))
+                uitgewisseldeModules.append (STOPModuleUitwisseling (
+                    STOPModuleUitwisseling.Systeem_LVBB,
+                    STOPModuleUitwisseling.Systeem_LVBBAfnemer,
+                    module))
 
     def Branches (self, doelen : List[Doel]):
         """Geeft de volgorde waarin de doelen getoond moeten worden, en het symbool voor het tonen van het doel.
@@ -201,13 +207,10 @@ class InstrumentData:
         self.WorkId = workId
         # Geeft aan of er proefversies zijn gemaakt
         self.HeeftProefversies = False
-        self.HeeftProefversiesMetAnnotaties = False
         # Geeft aan of er actuele toestanden zijn gemaakt
         self.HeeftActueleToestanden = False
         # Geeft aan of er complete toestanden zijn gemaakt
         self.HeeftCompleteToestanden = False
-        # Geeft aan of er geconsolideerde annotaties zijn gemaakt
-        self.HeeftAnnotaties = False
         # De uitwisselingen voor dit instrument
         # Lijst met instanties van InstrumentUitwisseling
         self.Uitwisselingen = []
@@ -219,7 +222,7 @@ class InstrumentData:
 #----------------------------------------------------------------------
 class InstrumentUitwisseling:
 
-    def __init__ (self, uniekId : str, instrumentData : InstrumentData, uitwisseling : Uitwisseling, workId, proefversies):
+    def __init__ (self, uniekId : str, instrumentData : InstrumentData, uitwisseling : Uitwisseling, workId, proefversies : List[Proefversie], uitgewisseldeModules : List[STOPModuleUitwisseling]):
         """Maak een nieuwe instantie aan
 
         Argumenten:
@@ -228,6 +231,7 @@ class InstrumentUitwisseling:
         uitwisseling Uitwisseling  De uitwisseling waarvoor de gegevens bijgewerkt moeten worden
         workId string  Work-id van het instrument waarvoor de gegevens bewaard moeten worden
         proefversies Proefversie[] lijst met proefversies, of None als ze er niet zijn
+        uitgewisseldeModules STOPModuleUitwisseling[]  De lijst met STOP modules die op dit moment uitgewisseld worden
         """
         self._UniekId = uniekId
         self._Uitwisseling = uitwisseling
@@ -249,8 +253,6 @@ class InstrumentUitwisseling:
         self.VolgendeGemaaktOp = None
 
         consolidatie = self.InstrumentData.WeergaveData.Scenario.GeconsolideerdeInstrument (workId)
-        if consolidatie.Annotaties:
-            instrumentData.HeeftAnnotaties = True
 
         # Proefversies voor het instrument
         # Lijst met instanties van Proefversie
@@ -262,10 +264,10 @@ class InstrumentUitwisseling:
                     # Unieke ID voor proefversies en annotaties
                     self.InstrumentData.WeergaveData._LaatsteUniekId += 1
                     proefversie._UniekId = str(self.InstrumentData.WeergaveData._LaatsteUniekId)
-                    for annotatie in proefversie.Annotaties:
-                        instrumentData.HeeftProefversiesMetAnnotaties = True
-                        self.InstrumentData.WeergaveData._LaatsteUniekId += 1
-                        annotatie._UniekId = str(self.InstrumentData.WeergaveData._LaatsteUniekId)
+                    for annotatie in proefversie.Annotaties.values ():
+                        if not hasattr (annotatie, '._UniekId'):
+                            self.InstrumentData.WeergaveData._LaatsteUniekId += 1
+                            annotatie._UniekId = str(self.InstrumentData.WeergaveData._LaatsteUniekId)
 
         bewaarJuridischeVerantwoording = False
 
@@ -305,6 +307,7 @@ class InstrumentUitwisseling:
         if not consolidatie.ActueleToestanden is None and len (consolidatie.ActueleToestanden.Toestanden) > 0:
             instrumentData.HeeftActueleToestanden = True
             self.ActueleToestanden = consolidatie.ActueleToestanden
+            uitgewisseldeModules.append (STOPModuleUitwisseling (STOPModuleUitwisseling.Systeem_LVBB, STOPModuleUitwisseling.Systeem_BevoegdGezag, self.ActueleToestanden))
             bewaarJuridischeVerantwoording = True
             # Deel unieke nummers uit
             for toestand in self.ActueleToestanden.Toestanden:
@@ -314,7 +317,7 @@ class InstrumentUitwisseling:
                     toestand._UniekId = self.InstrumentData.WeergaveData._LaatsteUniekId
 
         if bewaarJuridischeVerantwoording:
-            self.JuridischeVerantwoording = consolidatie.JuridischeVerantwoording.ModuleXml ()
+            self.JuridischeVerantwoording = STOPModuleSnapshot (consolidatie.JuridischeVerantwoording)
 
 
     def ToestandTijdreisIndex (self, toestand : Toestand):

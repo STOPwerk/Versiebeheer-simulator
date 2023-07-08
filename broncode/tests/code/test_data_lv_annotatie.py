@@ -1,5 +1,5 @@
 #======================================================================
-# Unit tests voor Python code in data_lv_annotatie.py
+# Unit tests voor Python code in data_annotatie.py
 #======================================================================
 import unittest
 
@@ -8,7 +8,7 @@ import json
 import test_init
 from applicatie_meldingen import Meldingen
 from data_doel import Doel
-from data_lv_annotatie import Annotatie
+from data_annotatie import Annotatie
 
 class Test_data_lv_annotatie(unittest.TestCase):
 #======================================================================

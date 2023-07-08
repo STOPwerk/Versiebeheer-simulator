@@ -15,7 +15,7 @@
 #======================================================================
 
 from applicatie_meldingen import Melding
-from data_lv_toestanden import CompleteToestanden
+from data_toestanden import CompleteToestanden
 from stop_completetoestanden import Toestand
 from stop_consolidatieidentificatie import ConsolidatieIdentificatie
 from stop_juridischeverantwoording import JuridischeVerantwoording
@@ -58,12 +58,6 @@ class GeconsolideerdInstrument:
             self.CompleteToestanden = CompleteToestanden (self.ToestandIdentificatie)
         else:
             self.CompleteToestanden = None
-        # De geconsolideerde annotaties die bij de complete toestanden horen
-        # Instantie van ActueleToestandenMetAnnotarties (als annotaties beschikbaar zijn
-        self.Annotaties = None
-        # Alle proefversies die gemaakt worden. Hier relevant vanwege de relatie instrumentversie - annotaties.
-        # Lijst met instanties van Proefversie
-        self.Proefversies = []
         # Beschrijvingen van de tijdreizen - alleen nodig voor weergave
         self._Tijdreizen = {}
         if scenario.Opties:

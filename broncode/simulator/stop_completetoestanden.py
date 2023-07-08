@@ -67,6 +67,8 @@ class CompleteToestanden:
                      '</CompleteToestanden>'])
         return xml
 
+    WeergaveBeschrijving = "Het overzicht van de geconsolideerde instrument geeft de tijdreisbare geldigheidsinformatie van de (on)bekende versies van het instrument zoals die aan de LVBB zijn aangeleverd."
+
 #----------------------------------------------------------------------
 # ToestandCompleet: inhoud van een toestand
 #----------------------------------------------------------------------

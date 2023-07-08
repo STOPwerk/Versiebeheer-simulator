@@ -36,8 +36,7 @@ import time
 
 from applicatie_scenario import Scenario
 from data_doel import Doel
-from data_lv_actueleannotaties import ActueleToestandenMetAnnotaties
-from data_lv_versiebeheerinformatie import Branch, Instrument, Momentopname, Uitwisseling
+from data_versiebeheerinformatie import Branch, Instrument, Momentopname, Uitwisseling
 from proces_simulatie import Proces_Simulatie
 from weergave_resultaat import ResultaatGenerator
 from weergave_webpagina import WebpaginaGenerator
@@ -88,7 +87,7 @@ class UnitTests:
         self._ActueleToestandenBasisPad = os.path.join (self._Scenario.Pad, "Test_ActueleToestanden")
         # Basisnaam voor het bestand met complete toestanden
         self._CompleteToestandenBasisPad = os.path.join (self._Scenario.Pad, "Test_CompleteToestanden")
-        # Basisnaam voor het bestand met annotaties bij complete toestanden
+        # Basisnaam voor het bestand met annotaties (wordt niet meer gebruikt)
         self._AnnotatiesBasisPad = os.path.join (self._Scenario.Pad, "Test_Annotaties")
         # Geeft aan of de unit tests geslaagd zijn
         self.Succes = True
@@ -136,7 +135,6 @@ class UnitTests:
         proefversies = None
         actueleToestanden = None
         completeToestanden = None
-        annotaties = None
         if self._Scenario.Versiebeheerinformatie:
             versiebeheerinformatie = json.dumps({ "Testresultaat - Versiebeheerinformatie" : self._Scenario.Versiebeheerinformatie }, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
             data = { "Testresultaat - Cumulatieve versieinformatie" : {
@@ -154,16 +152,12 @@ class UnitTests:
 
             if not self._Scenario.WeergaveData is None:
                 if self._Scenario.Opties.Proefversies:
-                    data = { "Testresultaat - Proefversies" : { workId : [i.Proefversies for i in data.Uitwisselingen if hasattr (i, 'Proefversies') ] for workId,data in self._Scenario.WeergaveData.InstrumentData.items () if data.HeeftProefversies } }
+                    data = { "Testresultaat - Proefversies" : {workId: [instr.Proefversies[i] for i in sorted (instr.Proefversies.keys ())] for workId, instr in self._Scenario.Versiebeheerinformatie.Instrumenten.items()} }
                     proefversies = json.dumps(data, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
 
                 if self._Scenario.Opties.ActueleToestanden:
                     data = { "Testresultaat - ActueleToestanden" : { workId : [i.ActueleToestanden for i in data.Uitwisselingen] for workId,data in self._Scenario.WeergaveData.InstrumentData.items () if data.HeeftActueleToestanden } }
                     actueleToestanden = json.dumps(data, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
-
-                    if len (self._Scenario.Annotaties) > 0:
-                        data = { "Testresultaat - Annotaties" : { workId :  JsonClassEncoder.NaarJsonableObject(data.Annotaties) for workId,data in self._Scenario.GeconsolideerdeInstrumenten.items () if not data.Annotaties is None } }
-                        annotaties = json.dumps(data, indent=4, cls=JsonClassEncoder, sort_keys=True, ensure_ascii=False)
 
                 if self._Scenario.Opties.CompleteToestanden:
                     data = { "Testresultaat - CompleteToestanden" : { workId : data.Uitwisselingen[-1].GefilterdeCompleteToestanden() for workId,data in self._Scenario.WeergaveData.InstrumentData.items () if data.HeeftCompleteToestanden } }
@@ -174,7 +168,7 @@ class UnitTests:
         self._BewaarEnTestResultaat ("Proefversies", self._ProefversiesBasisPad, proefversies)
         self._BewaarEnTestResultaat ("Actuele toestanden", self._ActueleToestandenBasisPad, actueleToestanden)
         self._BewaarEnTestResultaat ("Complete toestanden", self._CompleteToestandenBasisPad, completeToestanden)
-        self._BewaarEnTestResultaat ("Annotaties", self._AnnotatiesBasisPad, annotaties)
+        self._BewaarEnTestResultaat ("Annotaties", self._AnnotatiesBasisPad, None) # Annotaties zijn nu onderdeel van de Proefversies
         
         if self._Scenario.Opties.Applicatie_Resultaat:
             ResultaatGenerator.MaakPagina (self._Scenario)
@@ -341,12 +335,3 @@ class JsonClassEncoder(JSONEncoder):
             return JsonClassEncoder().encode (data)
         else:
             return json.dumps(data, indent=4, cls=JsonClassEncoder)
-
-    @staticmethod
-    def NaarJsonableObject (o : ActueleToestandenMetAnnotaties):
-        data = ActueleToestandenMetAnnotaties ([])
-        data.ActueleToestanden = o.ActueleToestanden
-        data.UitProefversies = { a.Naam: t for a, t in o.UitProefversies.items () }
-        data.VoorToestandViaDoelen = { a.Naam: t for a, t in o.VoorToestandViaDoelen.items () }
-        data.VoorDoel = { a.Naam: t for a, t in o.VoorDoel.items () }
-        return data

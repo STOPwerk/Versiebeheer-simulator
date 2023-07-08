@@ -22,9 +22,6 @@ class ProcesOpties:
 
     def __init__ (self, defaultSelectie = None):
         """Maak default opties aan voor het uitvoeren van het proces"""
-        # Geeft aan dat het proces bij het bevoegd gezag gesimuleerd wordt
-        # Deze optie wordt aangezet als er projectinvoer is.
-        # self.BGProces = False
         # Geeft aan dat de actuele toestanden berekend moeten worden
         self.ActueleToestanden = True if defaultSelectie is None else defaultSelectie
         # Geeft aan dat de complete toestanden berekend moeten worden
@@ -41,7 +38,7 @@ class ProcesOpties:
         # Geeft aan dat de map een scenario voor de simulator bevat
         self.SimulatorScenario = True
         # Geeft aan dat de proefversies berekend moeten worden
-        # Proefversies worden alleen berekend als annotaties obv versiebeheer onderdeel zijn van het scenario
+        # Proefversies worden alleen berekend als annotaties onderdeel zijn van het scenario
         # self.Proefversies = False
         # Geeft aan of er fouten zijn gesignaleerd bij het inlezen van de specificatie
         self.IsValide = True
@@ -63,7 +60,7 @@ class ProcesOpties:
         Argumenten:
         log Meldingen  Verzameling van meldingen
         pad string  Pad van het JSON bestand
-        data string  JSON specificatie van de annotatie
+        data string  JSON specificatie van de Procesopties
         
         Resultaat van de methode is een ProcesOpties instantie, of None als de JSON 
         geen specificatie van de ProcesOpties is
@@ -142,7 +139,7 @@ class BenoemdeUitwisseling:
         Argumenten:
         log Meldingen  Verzameling van meldingen
         pad string  Pad van het JSON bestand
-        data {}  JSON specificatie van de annotatie
+        data {}  JSON specificatie van de uitwisseling
         
         Resultaat van de methode is een BenoemdeUitwisseling of None
         """
@@ -207,7 +204,7 @@ class BenoemdeTijdreis:
         Argumenten:
         log Meldingen  Verzameling van meldingen
         pad string  Pad van het JSON bestand
-        data {}  JSON specificatie van de annotatie
+        data {}  JSON specificatie van de tijdreis
         
         Resultaat van de methode is een BenoemdeTijdreis of None
         """

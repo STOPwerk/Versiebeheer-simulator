@@ -214,6 +214,7 @@ class WebpaginaGenerator:
         if not hasattr (self, '_highlight'):
             setattr (self, '_highlight', True)
             self.LeesJSTemplate ("highlight", True, True)
+            self.LeesJSTemplate ("highlight_init")
             self.LeesCssTemplate ("highlight")
 
     def GebruikZipScript (self):
