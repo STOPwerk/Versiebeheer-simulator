@@ -260,21 +260,25 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
             background-color: #fff2cc;
         }
 
+            table.activiteiten_overzicht > tbody > tr[data-bga].huidige-prj:hover {
+                background-color: #dae8fc;
+            }
+
             table.activiteiten_overzicht > tbody > tr[data-bga].huidige-prj > td.ac {
                 background-color: #ffffff;
             }
 
 
         table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act { /* geselecteerde activiteit */
-            background-color: #d5e8d4;
+            background-color: #dae8fc;
         }
 
             table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act > td.ac {
-                background-color: #d5e8d4;
+                background-color: #dae8fc;
             }
 
             table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act.huidige-prj {
-                background-color: #d5e8d4;
+                background-color: #dae8fc;
             }
 
     table.activiteiten_overzicht > tbody > tr > td.ac {
@@ -302,21 +306,25 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
         background-color: #fff2cc;
     }
 
+        #_bgps_projecten > span.p_tab.huidige-act:hover {
+            background-color: #dae8fc;
+        }
+
     #_bgps_projecten > span.p_tab.huidige-prj {
-        background-color: #d5e8d4;
-        border: 1px solid #82B366;
+        background-color: #dae8fc;
+        border: 1px solid #6c8ebf;
     }
 
     #_bgps_projecten > span.p_tab.huidige-act.huidige-prj {
-        background-color: #d5e8d4;
-        border: 1px solid #82B366;
+        background-color: #dae8fc;
+        border: 1px solid #6c8ebf;
     }
 
 #_bgps_tijdstip_detail { /* Status */
 }
 
     #_bgps_tijdstip_detail.active {
-        border: 3px solid #82B366;
+        border: 1px solid #cccccc;
     }
 
     #_bgps_tijdstip_detail > table {
@@ -334,7 +342,7 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
 }
 
     #_bgps_activiteit_detail.active {
-        border: 3px solid #82B366;
+        border: 2px solid #6c8ebf;
     }
 
 #_bgps_versiebeheer {

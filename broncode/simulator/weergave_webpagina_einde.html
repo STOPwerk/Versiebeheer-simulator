@@ -49,7 +49,7 @@
                 }
             });
             // Event handlers voor de accordion panelen met bevroren hoogte
-            document.querySelectorAll("[data-accordion-paneel]").forEach((elt) => {
+            document.querySelectorAll("[data-bh]").forEach((elt) => {
                 if (elt.dataset.bh !== undefined && elt.dataset.aeh === undefined) {
                     new ResizeObserver(BevriesHoogtePaneel).observe(elt);
                     elt.dataset.aeh = true;
