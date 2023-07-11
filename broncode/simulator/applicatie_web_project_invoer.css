@@ -134,6 +134,7 @@ strong {
 .scenario {
     background-color: #f5f5f5;
     border: 1px solid #666666;
+    margin-top: 1em;
     padding: 0.5em;
 }
 

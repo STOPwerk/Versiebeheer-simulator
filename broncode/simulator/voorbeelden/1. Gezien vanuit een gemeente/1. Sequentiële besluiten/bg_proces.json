@@ -51,6 +51,47 @@
                     }
                 }
             }
+        },
+        {
+            "Soort": "Download",
+            "Tijdstip": 3,
+            "p02": {
+                "Naam": "Project #02"
+            },
+            "Invoer": {
+                "Project": "p02",
+                "Branch": "p02_01"
+            },
+            "p02_01": {
+                "Soort": "Regulier",
+                "Naam": "Regelgeving waarvoor het project is ingericht",
+                "Beschrijving": "De regelgeving waaraan binnen het project gewerkt wordt/is. Als er meerdere branches in het project zijn, dan is dit de regelgeving voor het eerste inwerkingtredingmoment.",
+                "IWTDatum": 0
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 4,
+            "Project": "p02",
+            "p02_01": {
+                "reg_01": {
+                    "uuid": 4,
+                    "Toelichtingrelaties": true,
+                    "NonSTOP": {
+                        "#02": false,
+                        "#04": true
+                    }
+                },
+                "gio_02": {
+                    "uuid": 5,
+                    "Symbolisatie": true
+                }
+            }
+        },
+        {
+            "Soort": "Uitwisseling",
+            "Tijdstip": 5,
+            "Project": "p02"
         }
     ],
     "BevoegdGezag": "Gemeente",
