@@ -334,7 +334,7 @@ class WerkVersiebeheerinformatieBij:
 
         for element in consolidatieInformatie.BeoogdeVersies:
             self._VerwerkInstrumentConsolidatieElement (VerwerkBeoogdInstrument (element), True)
-            ui = UitgewisseldeInstrumentversie (self.Resultaat.Uitwisseling, self.Versiebeheerinformatie.Instrumenten[element.WorkId], element.Doelen, element.ExpressionId, element.Basisversies.values()[0] if len (element.Basisversies) > 0 else None)
+            ui = UitgewisseldeInstrumentversie (self.Resultaat.Uitwisseling, self.Versiebeheerinformatie.Instrumenten[element.WorkId], element.Doelen, element.ExpressionId, list(element.Basisversies.values())[0] if len (element.Basisversies) > 0 else None)
             self.Resultaat.Uitwisseling.Instrumentversies.append (ui)
             self.Versiebeheerinformatie._UitwisselingInstrumentversie[element.ExpressionId] = ui
 

@@ -64,6 +64,6 @@ class Proefversie:
         xml = ['<' + tag + '>',
                '\t<instrumentVersie>' + self.Instrumentversie + '</instrumentVersie>']
         if not self.Basisversie is None:
-            xml.append ('\t<basisversie>' + self.Basisversie.Instrumentversie + '</basisversie>')
+            xml.append ('\t<basisversie>' + self.Basisversie + '</basisversie>')
         xml.append ('</' + tag + '>')
         return xml

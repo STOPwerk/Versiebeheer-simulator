@@ -78,7 +78,8 @@ class MaakProefversies:
                     nogIetsTeDoen = True
                     # Neem de annotaties van de basisversie over
                     if not proefversie.Basisversie is None:
-                        basisversie = versiebeheer.Proefversies.get (proefversie.Basisversie)
+                        workId = Naamgeving.WorkVan (proefversie.Instrumentversie)
+                        basisversie = versiebeheer.Instrumenten[workId].Proefversies.get (proefversie.Basisversie)
                         if basisversie is None:
                             # Proefversie voor de basisversie is nog niet beschikbaar
                             continue

@@ -92,6 +92,11 @@
             "Soort": "Uitwisseling",
             "Tijdstip": 5,
             "Project": "p02"
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 6,
+            "Project": "p01"
         }
     ],
     "BevoegdGezag": "Gemeente",
