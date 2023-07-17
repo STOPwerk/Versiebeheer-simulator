@@ -54,7 +54,7 @@ if os.path.isdir (bestanden_map):
     for root, dirs, files in os.walk (bestanden_map):
         for file in files:
             ext = os.path.splitext(file)[1]
-            if not ext is None and ext in ['.py', '.css', '.js', '.htm', '.html', '.txt', '.md', '.bat']:
+            if not ext is None and ext in ['.py', '.css', '.js', '.htm', '.html', '.txt', '.md', '.bat'] and file != 'weergave_webpagina_zip.js':
                 bronPad = os.path.join (root, file)
                 try:
                     with open (bronPad, 'r') as tekstfile:
