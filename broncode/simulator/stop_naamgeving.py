@@ -38,6 +38,8 @@ class Naamgeving:
         work = identificatie[0:idx]
         if work[-4:] == "/nld":
             work = work[0:-4]
+        if work[-1:] == "/":
+            work = work[0:-1]
         return work
 
     @staticmethod

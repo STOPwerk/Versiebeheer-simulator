@@ -28,6 +28,12 @@
             document.querySelectorAll("[data-accordion-titel]").forEach((elt) => {
                 elt.style.display = "block";
             });
+            document.querySelectorAll("[data-bh]").forEach((elt) => {
+                if (elt.dataset.bh !== undefined && elt.dataset.aeh !== undefined) {
+                    elt.dataset.bh = 0;
+                    elt.style.minHeight = '0px';
+                }
+            });
         }
 
         function BevriesHoogtePaneel(entries) {

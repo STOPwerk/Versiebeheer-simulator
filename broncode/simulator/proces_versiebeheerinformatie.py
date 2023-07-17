@@ -125,8 +125,7 @@ class VerwerkIntrekking(VerwerkVoorInstrument):
         Geeft terug of de informatie is bijgewerkt
         """
         if momentopname.IsIngetrokken:
-            verwerking._Log.Waarschuwing ("Intrekking (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ") voor " + self.VoorInstrument.WorkId + ": wijziging/intrekking instrument is al ingetrokken")
-            return False
+            verwerking._Log.Detail ("Instrument " + self.VoorInstrument.WorkId + " ingetrokken per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ") - is al eerder gemeld")
         else:
             verwerking._Log.Detail ("Instrument " + self.VoorInstrument.WorkId + " ingetrokken per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ")")
         momentopname.IsIngetrokken = True

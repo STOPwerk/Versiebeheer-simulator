@@ -1,0 +1,51 @@
+{
+    "SpecificatieVersie": "2023-06",
+    "start": {
+        "reg_01": {
+            "uuid": 1
+        }
+    },
+    "Activiteiten": [
+        {
+            "Soort": "Download",
+            "Tijdstip": 1,
+            "p01": {
+                "Naam": "Opdracht initiatiefnemer"
+            },
+            "Invoer": {
+                "Project": "p01",
+                "Branch": "p01_01"
+            },
+            "Beschrijving": "De initiatiefnemer wil nog niet met het bevoegd gezag overleggen, dus het adviesbureau downloadt de regelgeving van de LVBB.",
+            "p01_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 2,
+            "Project": "p01",
+            "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd.",
+            "p01_01": {
+                "reg_01": {
+                    "uuid": 2
+                }
+            }
+        },
+        {
+            "Soort": "Uitwisseling",
+            "Tijdstip": 15,
+            "Project": "p01",
+            "Beschrijving": "Het adviesbureau verstrekt een volledige kopie van de (gewijzigde) regelgeving aan het bevoegd gezag "
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 29,
+            "Project": "p01",
+            "Beschrijving": "Het is aan het bevoegd gezag om de aanlevering van het adviesbureau te verwerken tot een besluit"
+        }
+    ],
+    "BevoegdGezag": "Gemeente",
+    "Naam": "Adviesbureau helpt initiatiefnemer",
+    "Beschrijving": "Dit scenario laat zien hoe een initiatiefnemer een adviesbureau inschakelt om een nieuwe versie van regelving temaken, die daarna door het adviesbureau aan het bevoegd gezag geleverd wordt. "
+}

@@ -1,0 +1,57 @@
+{
+    "SpecificatieVersie": "2023-06",
+    "start": {
+        "reg_01": {
+            "uuid": 1
+        }
+    },
+    "Activiteiten": [
+        {
+            "Soort": "Maak project",
+            "Tijdstip": 1,
+            "p01": {
+                "Naam": "Uitbesteding"
+            },
+            "Invoer": {
+                "Project": "p01",
+                "Branch": "p01_01"
+            },
+            "Beschrijving": "Het bevoegd gezag bepaalt eerst aan welke versie van de regeling het adviesbureau moet werken.",
+            "p01_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Uitwisseling",
+            "Tijdstip": 2,
+            "Project": "p01",
+            "Beschrijving": "Het bevoegd gezag verstrekt een volledige kopie van de regelgeving aan het adviesbureau."
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 3,
+            "Project": "p01",
+            "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd.",
+            "p01_01": {
+                "reg_01": {
+                    "uuid": 2
+                }
+            }
+        },
+        {
+            "Soort": "Uitwisseling",
+            "Tijdstip": 15,
+            "Project": "p01",
+            "Beschrijving": "Het adviesbureau verstrekt een volledige kopie van de (gewijzigde) regelgeving aan het bevoegd gezag "
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 29,
+            "Project": "p01",
+            "Beschrijving": "Het is aan het bevoegd gezag om de aanlevering van het adviesbureau te verwerken tot een besluit"
+        }
+    ],
+    "BevoegdGezag": "Gemeente",
+    "Naam": "Adviesbureau helpt gemeente",
+    "Beschrijving": "Dit scenario laat zien hoe het bevoegd gezag regelgeving met een adviesbureau uitwisselt als het adviesbureau van het bevoegd gezag de oprcht krijgt een nieuwe versie van regelgeving op te stellen. "
+}
