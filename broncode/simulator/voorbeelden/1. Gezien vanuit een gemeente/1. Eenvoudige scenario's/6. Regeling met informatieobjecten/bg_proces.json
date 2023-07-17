@@ -1,0 +1,105 @@
+{
+    "SpecificatieVersie": "2023-06",
+    "start": {
+        "reg_01": {
+            "uuid": 1
+        },
+        "gio_01": {
+            "uuid": 4
+        },
+        "pdf_01": {
+            "uuid": 5
+        }
+    },
+    "Activiteiten": [
+        {
+            "Soort": "Maak project",
+            "Tijdstip": 1,
+            "p01": {
+                "Naam": "Project #1"
+            },
+            "Invoer": {
+                "Project": "p01",
+                "Branch": "p01_01"
+            },
+            "p01_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 2,
+            "Project": "p01",
+            "p01_01": {
+                "reg_01": {
+                    "uuid": 9
+                },
+                "gio_02": {
+                    "uuid": 10
+                }
+            }
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 21,
+            "Project": "p01"
+        },
+        {
+            "Soort": "Vaststellingsbesluit",
+            "Tijdstip": 72,
+            "Project": "p01",
+            "p01_01": {
+                "JuridischWerkendVanaf": 100
+            },
+            "Besluitnaam": "Vaststellingsbesluit"
+        },
+        {
+            "Soort": "Maak project",
+            "Tijdstip": 101,
+            "p02": {
+                "Naam": "Project #2"
+            },
+            "Invoer": {
+                "Project": "p02",
+                "Branch": "p02_01"
+            },
+            "p02_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 102,
+            "Project": "p02",
+            "p02_01": {
+                "reg_01": {
+                    "uuid": 15
+                },
+                "gio_01": false,
+                "pdf_01": {
+                    "uuid": 17
+                },
+                "gio_02": {
+                    "uuid": 18
+                }
+            }
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 121,
+            "Project": "p02"
+        },
+        {
+            "Soort": "Vaststellingsbesluit",
+            "Tijdstip": 172,
+            "Project": "p02",
+            "p02_01": {
+                "JuridischWerkendVanaf": 200
+            },
+            "Besluitnaam": "Vaststellingsbesluit"
+        }
+    ],
+    "BevoegdGezag": "Gemeente",
+    "Naam": "Regeling met informatieobjecten - gemeente",
+    "Beschrijving": "Dit scenario laat zien hoe twee opeenvolgende wijzigingen van een bestaande regeling met informatieobjecten eruit zien, waarvan bij de start van het scenario is al versies in werking zijn."
+}

@@ -6,7 +6,12 @@
 # elk STOP-gebruikend systeem dat over de uitwisseling van de
 # annotaties beschikt en over de STOP Proefversies module.
 #
+# De collectie proefversies tot nu toe is onderdeel van het
+# versiebeheer.
+#
 #======================================================================
+
+from typing import Dict, List, Set, Tuple
 
 from stop_proefversies import Proefversie as STOPProefversie
 
@@ -19,15 +24,5 @@ class Proefversie (STOPProefversie):
         """Maak een lege proefversie aan"""
         super().__init__ ()
         # Annotaties die voor de proefversie gebruikt moeten worden
-        # Lijst met instanties van ProefversieAnnotatie
-        self.Annotaties = []
-
-class ProefversieAnnotatie:
-
-    def __init__ (self):
-        # Naam van de annotatie
-        self.Naam = None
-        # De versie van de annotatie die gebruikt moet worden voor de proefversie
-        self.Versie = None
-        # Annotatie waar dit een versie van is
-        self._Annotatie = None
+        # # key = modulenaam, value = instantie van annotatiemodule
+        self.Annotaties : Dict[str,object] = {}

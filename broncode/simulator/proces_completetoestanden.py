@@ -6,7 +6,7 @@
 #======================================================================
 #
 # De bepaling van complete toestanden maakt gebruik van een aantal
-# operaties die in proces_lv_toestanden.py zijn ondergebracht:
+# operaties die in proces_toestanden.py zijn ondergebracht:
 # - Selectie van de relevante delen uit het versiebeheer
 # - Bepaling van de instrumentversie van een toestand
 #
@@ -29,8 +29,8 @@
 #======================================================================
 
 from applicatie_meldingen import Melding
-from data_lv_consolidatie import GeconsolideerdInstrument
-from proces_lv_toestanden import MaakToestanden
+from data_consolidatie import GeconsolideerdInstrument
+from proces_toestanden import MaakToestanden
 from weergave_data_toestanden import  ToestandCompleet, OnvolledigeVersie, Toestand, Toestandidentificatie
 from weergave_toestandbepaling import Weergave_Toestandbepaling
 

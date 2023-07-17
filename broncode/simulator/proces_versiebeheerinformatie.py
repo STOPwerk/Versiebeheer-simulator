@@ -9,7 +9,7 @@
 # inhoud van de XML bestanden gemaakt, zoals in de module
 # stop_consolidatieinformatie is geïmplementeerd. Daarna worden 
 # alle ingelezen ConsolidatieInformatie instanties omgezet naar 
-# het interne datamodel dat in data_lv_versiebeheerinformatie is
+# het interne datamodel dat in data_versiebeheerinformatie is
 # gedeclareerd. De code voor de omzetting is geïmplementeerd 
 # in de klasse WerkVersiebeheerinformatieBij, die de verschillende 
 # Verwerk* klassen gebruikt voor de interpretatie van de consolidatie-
@@ -21,8 +21,8 @@ from typing import List, Dict, Set, Tuple
 
 from applicatie_meldingen import Melding, Meldingen
 from data_doel import Doel
-from data_lv_versiebeheerinformatie import Versiebeheerinformatie, Uitwisseling, UitgewisseldeInstrumentversie, Instrument, Branch, MomentopnameInstrument, MomentopnameTijdstempels
-from proces_lv_branchescumulatief import AccumuleerBranchInformatie
+from data_versiebeheerinformatie import Versiebeheerinformatie, Uitwisseling, UitgewisseldeInstrumentversie, Instrument, Branch, MomentopnameInstrument, MomentopnameTijdstempels
+from proces_branchescumulatief import AccumuleerBranchInformatie
 from stop_consolidatieinformatie import ConsolidatieInformatie, VoorInstrument, BeoogdeVersie, Terugtrekking, Intrekking, TerugtrekkingIntrekking, VoorTijdstempel, Tijdstempel, TerugtrekkingTijdstempel, MaterieelUitgewerkt
 from stop_juridischeverantwoording import JuridischeVerantwoording, Verantwoording, Publicatie
 from weergave_symbolen import Weergave_Symbolen
@@ -125,8 +125,7 @@ class VerwerkIntrekking(VerwerkVoorInstrument):
         Geeft terug of de informatie is bijgewerkt
         """
         if momentopname.IsIngetrokken:
-            verwerking._Log.Waarschuwing ("Intrekking (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ") voor " + self.VoorInstrument.WorkId + ": wijziging/intrekking instrument is al ingetrokken")
-            return False
+            verwerking._Log.Detail ("Instrument " + self.VoorInstrument.WorkId + " ingetrokken per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ") - is al eerder gemeld")
         else:
             verwerking._Log.Detail ("Instrument " + self.VoorInstrument.WorkId + " ingetrokken per (" + str(doel) + " @" + self.VoorInstrument.ConsolidatieInformatie.GemaaktOp + ")")
         momentopname.IsIngetrokken = True
@@ -277,7 +276,7 @@ class UitwisselingInformatie:
 class WerkVersiebeheerinformatieBij:
 
     @staticmethod
-    def VoerUit (log, versiebeheerinformatie : Versiebeheerinformatie, publicatieblad : str, consolidatieInformatie : ConsolidatieInformatie):
+    def VoerUit (log, versiebeheerinformatie : Versiebeheerinformatie, publicatieblad : str, consolidatieInformatie : ConsolidatieInformatie) -> UitwisselingInformatie:
         """Vertaal de uitgewisselde ConsolidatieInformatie naar versiebeheer voor een enkele uitwisseling
         
         Argumenten:
@@ -334,7 +333,7 @@ class WerkVersiebeheerinformatieBij:
 
         for element in consolidatieInformatie.BeoogdeVersies:
             self._VerwerkInstrumentConsolidatieElement (VerwerkBeoogdInstrument (element), True)
-            ui = UitgewisseldeInstrumentversie (self.Resultaat.Uitwisseling, self.Versiebeheerinformatie.Instrumenten[element.WorkId], element.Doelen, element.ExpressionId)
+            ui = UitgewisseldeInstrumentversie (self.Resultaat.Uitwisseling, self.Versiebeheerinformatie.Instrumenten[element.WorkId], element.Doelen, element.ExpressionId, list(element.Basisversies.values())[0] if len (element.Basisversies) > 0 else None)
             self.Resultaat.Uitwisseling.Instrumentversies.append (ui)
             self.Versiebeheerinformatie._UitwisselingInstrumentversie[element.ExpressionId] = ui
 

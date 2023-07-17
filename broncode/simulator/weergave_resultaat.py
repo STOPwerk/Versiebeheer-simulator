@@ -1,7 +1,7 @@
 #======================================================================
 #
 # Aanmaken van een webpagina die alle beschikbare resultaten laat zien
-# van het consolidatie proces uit proces_lv_consolidatie.py.
+# van het consolidatie proces uit proces_consolidatie.py.
 #
 #----------------------------------------------------------------------
 #
@@ -18,14 +18,9 @@ from applicatie_scenario import Scenario
 import applicatie_versie
 from stop_naamgeving import Naamgeving
 from weergave_actueletoestanden import Weergave_ActueleToestanden
-from weergave_annotaties import Weergave_Annotaties
-from weergave_bg_proces import Weergave_BG_Proces
-from weergave_bg_versiebeheer import Weergave_BG_Versiebeheer
-from weergave_bg_uitwisselingen import Weergave_BG_Uitwisselingen
 from weergave_completetoestanden import Weergave_CompleteToestanden
-from weergave_consolidatieinformatie import Weergave_ConsolidatieInformatie
-from weergave_proefversies import Weergave_Proefversies
 from weergave_resultaat_data import InstrumentData
+from weergave_stop_uitwisselingen import Weergave_STOP_Uitwisselingen
 from weergave_tijdreisfilter import Weergave_Tijdreisfilter
 from weergave_tijdreizen import Weergave_Tijdreizen
 from weergave_toestandbepaling import Weergave_Toestandbepaling
@@ -132,26 +127,9 @@ class ResultaatGenerator (WebpaginaGenerator):
         # Beschrijving van de geselecteerde uitwisseling
         Weergave_Uitwisselingselector(self.Scenario).VoegBeschrijvingToe (self)
 
-        if self.Scenario.Opties.BGProces:
-            #--------------------------------------------------------------
-            #
-            # Simulatie van bevoegd gezag systemen
-            #
-            #--------------------------------------------------------------
-            self.VoegHtmlToe ('<div class="sectie_bg"><h1>Opstellen en consolideren</h1>')
-            einde = self.StartToelichting ('Over opstellen en consolideren')
-            self.LeesHtmlTemplate ('help_sectie_bg')
-            self.VoegHtmlToe (einde)
-
-            Weergave_BG_Proces.VoegToe (self, self.Scenario)
-            Weergave_BG_Versiebeheer.VoegToe (self, self.Scenario)
-            Weergave_BG_Uitwisselingen.VoegToe (self, self.Scenario)
-
-            self.VoegHtmlToe ('</div>')
-
         #--------------------------------------------------------------
         #
-        # Simulatie van de uitwisselingen/publicaties
+        # Simulatie van wat een eindgebruiker kan zien
         #
         #--------------------------------------------------------------
         self.VoegHtmlToe ('<div class="sectie_op"><h1>Bekendmaken en beschikbaarstellen</h1>')
@@ -159,17 +137,27 @@ class ResultaatGenerator (WebpaginaGenerator):
         self.LeesHtmlTemplate ('help_sectie_op')
         self.VoegHtmlToe (einde)
         Weergave_Uitwisselingen.VoegToe (self, self.Scenario)
-        if not self.Scenario.Opties.BGProces:
-            Weergave_ConsolidatieInformatie.VoegToe (self, self.Scenario)
         self.VoegHtmlToe ('</div>')
 
         #--------------------------------------------------------------
         #
-        # Simulatie van landelijke voorzieningen
+        # Simulatie van de STOP uitwisselingen
         #
         #--------------------------------------------------------------
-        self.VoegHtmlToe ('<div class="sectie_lv"><h1>Verwerking van publicatiebronnen</h1>')
-        einde = self.StartToelichting ('Over de verwerking van publicatiebronnen')
+        self.VoegHtmlToe ('<div class="sectie_uw"><h1>Uitwisselingen via STOP</h1>')
+        einde = self.StartToelichting ('Over uitwisselingen via STOP')
+        self.LeesHtmlTemplate ('help_sectie_uw')
+        self.VoegHtmlToe (einde)
+        Weergave_STOP_Uitwisselingen.VoegToe (self, self.Scenario)
+        self.VoegHtmlToe ('</div>')
+
+        #--------------------------------------------------------------
+        #
+        # Simulatie van de verwerking door de landelijke voorzieningen
+        #
+        #--------------------------------------------------------------
+        self.VoegHtmlToe ('<div class="sectie_lv"><h1>Verwerking van de uitwisselingen</h1>')
+        einde = self.StartToelichting ('Over de verwerking van uitwisselingen')
         self.LeesHtmlTemplate ('help_sectie_lv')
         self.VoegHtmlToe (einde)
 
@@ -192,12 +180,6 @@ class ResultaatGenerator (WebpaginaGenerator):
             if instrumentData.HeeftActueleToestanden:
                 Weergave_Toestandbepaling.VoegActueleToestandenToe (self, instrumentData)
                 Weergave_ActueleToestanden.VoegToe (self, instrumentData)
-
-            if instrumentData.HeeftProefversies:
-                Weergave_Proefversies.VoegToe (self, instrument, instrumentData)
-
-            if instrumentData.HeeftAnnotaties and instrumentData.HeeftActueleToestanden:
-                Weergave_Annotaties.VoegToe (self, instrumentData)
 
             if instrumentData.HeeftCompleteToestanden:
                 Weergave_CompleteToestanden.VoegToe (self, instrumentData)

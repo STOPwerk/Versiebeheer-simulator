@@ -62,20 +62,7 @@ Applicatie = (function () {
     var toestanden = {
         TOESTANDEN_DATA
     };
-    var uitwisselingVoorActiviteit = [
-        UITWISSELING_VOOR_ACTIVITEIT
-    ];
-    function SelecteerUitwisselingOfActiviteit(gemaaktOp, activiteitGeselecteerd) {
-        var uitgevoerdOp = gemaaktOp;
-        if (activiteitGeselecteerd) {
-            // Selecteer de laatste uitwisseling op of voorafgaand aan uitgevoerdOp
-            for (var t of uitwisselingVoorActiviteit) {
-                if (t <= uitgevoerdOp) {
-                    gemaaktOp = t;
-                }
-            }
-        }
-
+    function SelecteerUitwisseling(gemaaktOp) {
         window.dispatchEvent(new CustomEvent('uitwisseling', {
             detail: gemaaktOp
         }));
@@ -107,6 +94,11 @@ Applicatie = (function () {
     // Selectie van BG-activiteit
     Applicatie.SelecteerActiviteit = function (uitgevoerdOp) {
         SelecteerUitwisselingOfActiviteit(uitgevoerdOp, true);
+    }
+
+    // Selectie van uitwisselingen
+    Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
+        SelecteerUitwisseling(gemaaktOp);
     }
 
     // Initialisatie van een diagram

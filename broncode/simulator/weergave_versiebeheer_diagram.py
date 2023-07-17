@@ -7,7 +7,7 @@
 #
 #======================================================================
 
-from data_lv_versiebeheerinformatie import Instrument
+from data_versiebeheerinformatie import Instrument
 from weergave_data_toestanden import ToestandActueel
 from weergave_resultaat_data import InstrumentData, InstrumentUitwisseling
 from weergave_symbolen import Weergave_Symbolen

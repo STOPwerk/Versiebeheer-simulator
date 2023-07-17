@@ -1,14 +1,14 @@
 #======================================================================
-# Unit tests voor Python code in data_lv_consolidatie.py
+# Unit tests voor Python code in data_consolidatie.py
 #======================================================================
 import unittest
 
 import test_init
 from applicatie_procesopties import ProcesOpties
-from data_lv_consolidatie import GeconsolideerdInstrument
+from data_consolidatie import GeconsolideerdInstrument
 from data_doel import Doel
 from applicatie_scenario import Scenario
-from data_lv_versiebeheerinformatie import Instrument
+from data_versiebeheerinformatie import Instrument
 from stop_consolidatieidentificatie import ConsolidatieIdentificatie
 
 class Test_data_lv_consolidatie(unittest.TestCase):

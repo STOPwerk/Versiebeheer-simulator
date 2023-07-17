@@ -1,4 +1,4 @@
-#startknop {
+#_bgps_lvbb_startknop {
     position: fixed;
     top: 0;
     right: 0;
@@ -10,10 +10,19 @@
     cursor: pointer;
 }
 
-    #startknop:hover {
+    #_bgps_lvbb_startknop:hover {
         border-color: #d79b00;
         background-color: #ffe6cc;
     }
+
+#_start_startknop {
+    border: 3px solid #82b366;
+    background-color: #d5e8d4;
+    font-size: large;
+    font-weight: bolder;
+    padding: 1em;
+    cursor: pointer;
+}
 
 .box {
     background-color: white;
@@ -51,7 +60,7 @@ strong {
     display: none;
 }
 
-.onlineInvoer {
+.verborgenInvoer {
     display: none;
 }
 
@@ -95,36 +104,51 @@ strong {
         cursor: pointer;
     }
 
-#_bgpg_modal_volgende {
+#_bgps_modal_volgende {
     color: #6c8ebf;
 }
 
-    #_bgpg_modal_volgende:hover,
-    #_bgpg_modal_volgende:focus {
+    #_bgps_modal_volgende:hover,
+    #_bgps_modal_volgende:focus {
         color: #0000BB;
     }
 
-#_bgpg_modal_ok {
+#_bgps_modal_ok {
     color: #82b366;
 }
 
-    #_bgpg_modal_ok:hover,
-    #_bgpg_modal_ok:focus {
+    #_bgps_modal_ok:hover,
+    #_bgps_modal_ok:focus {
         color: #00FF00;
     }
 
-#_bgpg_modal_cancel {
+#_bgps_modal_cancel {
     color: #b36666;
 }
 
-    #_bgpg_modal_cancel:hover,
-    #_bgpg_modal_cancel:focus {
+    #_bgps_modal_cancel:hover,
+    #_bgps_modal_cancel:focus {
         color: #FF0000;
     }
 
+.scenario {
+    background-color: #f5f5f5;
+    border: 1px solid #666666;
+    margin-top: 1em;
+    padding: 0.5em;
+}
+
+    .scenario .beschrijving {
+        background-color: #f5f5f5;
+    }
+
 textarea.beschrijving {
-    width: 90%;
-    height: 15em;
+    width: 100%;
+    height: 5em;
+}
+
+input.naam {
+    width: 100%;
 }
 
 input.number2 {
@@ -145,31 +169,49 @@ input.number4 {
 
     .voegtoe:hover,
     .voegtoe:focus {
-        color: #00FF00;
+        color: #b9ff91;
     }
 
 .werkbij {
     font-size: larger;
-    color: #6684b3;
+    color: #6c8ebf;
     cursor: pointer;
 }
 
     .werkbij:hover,
     .werkbij:focus {
-        color: #0000FF;
+        color: #90beff;
     }
 
 .verwijder {
     font-size: larger;
-    content: "\1F5D1";
-    color: #b36666;
+    color: #b85450;
     cursor: pointer;
 }
 
     .verwijder:hover,
     .verwijder:focus {
-        color: #FF0000;
+        color: #ff746f;
     }
+
+span.specmelding {
+    font-size: larger;
+    color: #d79b00;
+    cursor: default;
+}
+
+tr.specmelding {
+    background-color: #ffe6cc;
+    color: #d79b00;
+}
+
+.tab_highlight {
+    background-color: #fff2cc;
+}
+
+.tab_active {
+    background-color: #d5e8d4;
+}
 
 table.activiteiten_overzicht { /* Selectielijst activiteiten */
     border-collapse: collapse;
@@ -219,21 +261,25 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
             background-color: #fff2cc;
         }
 
+            table.activiteiten_overzicht > tbody > tr[data-bga].huidige-prj:hover {
+                background-color: #dae8fc;
+            }
+
             table.activiteiten_overzicht > tbody > tr[data-bga].huidige-prj > td.ac {
                 background-color: #ffffff;
             }
 
 
         table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act { /* geselecteerde activiteit */
-            background-color: #d5e8d4;
+            background-color: #dae8fc;
         }
 
             table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act > td.ac {
-                background-color: #d5e8d4;
+                background-color: #dae8fc;
             }
 
             table.activiteiten_overzicht > tbody > tr[data-bga].huidige-act.huidige-prj {
-                background-color: #d5e8d4;
+                background-color: #dae8fc;
             }
 
     table.activiteiten_overzicht > tbody > tr > td.ac {
@@ -244,7 +290,7 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
         border: 0;
     }
 
-#_bg_projecten > span.p_tab { /* Project */
+#_bgps_projecten > span.p_tab { /* Project */
     border: 1px solid #cccccc;
     cursor: pointer;
     white-space: nowrap;
@@ -253,62 +299,66 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
     margin-right: .5em;
 }
 
-    #_bg_projecten > span.p_tab:hover {
+    #_bgps_projecten > span.p_tab:hover {
         background-color: #dae8fc;
     }
 
-    #_bg_projecten > span.p_tab.huidige-act {
+    #_bgps_projecten > span.p_tab.huidige-act {
         background-color: #fff2cc;
     }
 
-    #_bg_projecten > span.p_tab.huidige-prj {
-        background-color: #d5e8d4;
-        border: 1px solid #82B366;
+        #_bgps_projecten > span.p_tab.huidige-act:hover {
+            background-color: #dae8fc;
+        }
+
+    #_bgps_projecten > span.p_tab.huidige-prj {
+        background-color: #dae8fc;
+        border: 1px solid #6c8ebf;
     }
 
-    #_bg_projecten > span.p_tab.huidige-act.huidige-prj {
-        background-color: #d5e8d4;
-        border: 1px solid #82B366;
+    #_bgps_projecten > span.p_tab.huidige-act.huidige-prj {
+        background-color: #dae8fc;
+        border: 1px solid #6c8ebf;
     }
 
-#_bg_tijdstip_detail { /* Status */
+#_bgps_tijdstip_detail { /* Status */
 }
 
-    #_bg_tijdstip_detail.active {
-        border: 3px solid #82B366;
+    #_bgps_tijdstip_detail.active {
+        border: 1px solid #cccccc;
     }
 
-    #_bg_tijdstip_detail > table {
+    #_bgps_tijdstip_detail > table {
         display: none;
     }
 
-    #_bg_tijdstip_detail.active > table {
+    #_bgps_tijdstip_detail.active > table {
         display: block;
     }
 
-#_bg_activiteit_detail {
+#_bgps_activiteit_detail {
     background-color: #ffffff;
     padding: 1em;
     border: 0;
 }
 
-    #_bg_activiteit_detail.active {
-        border: 3px solid #82B366;
+    #_bgps_activiteit_detail.active {
+        border: 2px solid #6c8ebf;
     }
 
-#_bg_versiebeheer {
+#_bgps_versiebeheer {
     padding: 1em;
     border: 1px solid #000000;
-    width: 50%;
     aspect-ratio: 2 / 3;
 }
 
-#_bg_verwerking {
+#_bgps_verwerking {
     background-color: #ffffff;
     padding: 1em;
+    width: 50%;
 }
 
-    #_bg_verwerking.active > div {
+    #_bgps_verwerking.active > div {
         border: 3px solid #82B366;
     }
 

@@ -32,6 +32,8 @@
 from typing import Dict, List
 
 from data_doel import Doel
+from data_proefversie import Proefversie
+from stop_consolidatieinformatie import Momentopname
 
 #======================================================================
 #
@@ -102,7 +104,7 @@ class Uitwisseling:
 
 class UitgewisseldeInstrumentversie:
 
-    def __init__ (self, uitwisseling : Uitwisseling, instrument, doelen : List[Doel], instrumentversie):
+    def __init__ (self, uitwisseling : Uitwisseling, instrument, doelen : List[Doel], instrumentversie : str, basisversie : Momentopname):
         """Maak een nieuwe instantie aan
 
         Argumenten
@@ -110,11 +112,13 @@ class UitgewisseldeInstrumentversie:
         instrument Instrument  Instrument waarvoor een nieuwe versie uitgewisseld is
         doelen Doel[]  De doelen/branches waarvoor de versie van toepassing is
         instrumentversie string  Expression identificatie van de versie, of None als de versie onbekend is
+        basisversie Momentopname  De basisversie voor deze instrumentversie (voor annotaties bij proefversie)
         """
         self._Uitwisseling = uitwisseling
         self._Instrument = instrument
         self.Doelen = doelen
         self.Instrumentversie = instrumentversie
+        self.Basisversie = basisversie
 
 #======================================================================
 #
@@ -155,6 +159,9 @@ class Instrument:
         # Doelen waarvoor de initiële versie van het instrument is gegeven.
         # Het instrument kan alleen in werking zijn als een van deze doelen in werking is
         self.InitieleDoelen = None
+        # Verzameling van alle proefversies die tot nu toe zijn gemaakt
+        # key = expressionId
+        self.Proefversies : Dict[str,Proefversie] = {}
 
 #----------------------------------------------------------------------
 # Branch: alles wat op een enkele branch gebeurt en relevant is voor

@@ -117,6 +117,14 @@ with zipfile.ZipFile (downloadPad, 'w') as zip:
             elif file == 'vercel.json':
                 # Web deployment bestanden
                 pass
+            elif file == 'weergave_webpagina_zip.js':
+                try:
+                    with open (os.path.join (root, file), 'rb') as tekstfile:
+                        tekst = tekstfile.read ()
+                except Exception as e:
+                    print ('Kan bestand "' + file + '" niet lezen: ' + str(e))
+                    sys.exit(2)
+                zip.writestr ('simulator/' + file, tekst)
             else:
                 try:
                     with open (os.path.join (root, file), 'r') as tekstfile:

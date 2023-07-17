@@ -175,7 +175,7 @@ class WebpaginaGenerator:
         self._Html += '<td data-accordion-paneel="' + id + '" class="accordion_t_paneel"''' + block + '>\n'
         return '</td></tr></table>\n'
 
-    def StartSectie (self, titel, startOpen = False):
+    def StartSectie (self, titel, startOpen = False, bevriesHoogte = False):
         """Start een inklapbare sectie in de HTML
         
         Argumenten:
@@ -189,8 +189,9 @@ class WebpaginaGenerator:
         id = str(WebpaginaGenerator._AccordionPaneel)
         active = ' active' if startOpen else ''
         block = ' style="display: block"' if startOpen else ''
+        data = ' data-bh="0"' if bevriesHoogte else ''
         self._Html += '<button data-accordion="' + id + '" class="accordion_h' + active + '''">''' + titel + '</button>\n'
-        self._Html += '<div data-accordion-paneel="' + id + '" class="accordion_h_paneel"''' + block + '>\n'
+        self._Html += '<div data-accordion-paneel="' + id + '" class="accordion_h_paneel"''' + block + data + '>\n'
         return '</div>\n'
 
     _AccordionPaneel = 0
@@ -205,8 +206,23 @@ class WebpaginaGenerator:
         """
         if not hasattr (self, '_svgScript'):
             setattr (self, '_svgScript', True)
-            svgScript = self.LeesJSTemplate ("svg-pan-zoom", True, True)
-            self._HeadScript.add (svgScript)
+            self.LeesJSTemplate ("svg-pan-zoom", True, True)
+
+    def GebruikSyntaxHighlighting (self):
+        """Voeg de scripting/css toe nodig om XML en JSON data met syntax highlighting op te nemen in de webpagina
+        """
+        if not hasattr (self, '_highlight'):
+            setattr (self, '_highlight', True)
+            self.LeesJSTemplate ("highlight", True, True)
+            self.LeesJSTemplate ("highlight_init")
+            self.LeesCssTemplate ("highlight")
+
+    def GebruikZipScript (self):
+        """Voeg de scripting toe nodig om zip bestanden te maken in de webpagina
+        """
+        if not hasattr (self, '_ZipScript'):
+            setattr (self, '_ZipScript', True)
+            self.LeesJSTemplate ("zip", True, True)
 
     def VoegCssToe (self, css):
         """Voeg CSSstyle toe

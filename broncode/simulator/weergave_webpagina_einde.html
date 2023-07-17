@@ -28,6 +28,22 @@
             document.querySelectorAll("[data-accordion-titel]").forEach((elt) => {
                 elt.style.display = "block";
             });
+            document.querySelectorAll("[data-bh]").forEach((elt) => {
+                if (elt.dataset.bh !== undefined && elt.dataset.aeh !== undefined) {
+                    elt.dataset.bh = 0;
+                    elt.style.minHeight = '0px';
+                }
+            });
+        }
+
+        function BevriesHoogtePaneel(entries) {
+            for (var resized of entries) {
+                var h = Math.ceil(resized.contentBoxSize[0].blockSize);
+                if (parseInt(resized.target.dataset.bh) < h) {
+                    resized.target.dataset.bh = h;
+                    resized.target.style.minHeight = `${h}px`;
+                }
+            }
         }
 
         function MaakEventHandlers() {
@@ -35,6 +51,13 @@
             document.querySelectorAll("[data-accordion]").forEach((elt) => {
                 if (elt.dataset.aeh === undefined) {
                     elt.addEventListener("click", TogglePaneel);
+                    elt.dataset.aeh = true;
+                }
+            });
+            // Event handlers voor de accordion panelen met bevroren hoogte
+            document.querySelectorAll("[data-bh]").forEach((elt) => {
+                if (elt.dataset.bh !== undefined && elt.dataset.aeh === undefined) {
+                    new ResizeObserver(BevriesHoogtePaneel).observe(elt);
                     elt.dataset.aeh = true;
                 }
             });

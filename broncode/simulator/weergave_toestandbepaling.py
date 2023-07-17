@@ -6,7 +6,7 @@
 #
 #======================================================================
 
-from data_lv_versiebeheerinformatie import Instrument
+from data_versiebeheerinformatie import Instrument
 from stop_toestand import Toestandidentificatie
 from weergave_data_toestanden import ConsolidatieprocesInformatie
 from weergave_resultaat_data import InstrumentData, InstrumentUitwisseling
@@ -447,7 +447,7 @@ class Weergave_Toestandbepaling ():
         self._Generator.VoegHtmlToe (self._UitlegVoorStap ('stap7_instrumentversie'))
         self._ToonMeldingen (proces._Uitleg, Weergave_Toestandbepaling.BepaalAanvullendePublicaties)
 
-        self._Generator.VoegHtmlToe (Weergave_STOPModule.MaakHtml (self._InstrumentData.JuridischeVerantwoording))
+        self._Generator.VoegHtmlToe (Weergave_STOPModule.MaakHtml (self._InstrumentData.JuridischeVerantwoording.ModuleXml ()))
 
     def _ToonMeldingen (self, meldingen, stap):
         """Geef de meldingen weer voor een bepaalde stap"""

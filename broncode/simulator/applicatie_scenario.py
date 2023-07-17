@@ -13,22 +13,176 @@
 #======================================================================
 
 from cmath import log
-from typing import Dict, List
+from typing import Dict, List, Set, Tuple
 import json
 import os.path
 import xml.etree.ElementTree as ET
 
 from applicatie_meldingen import Meldingen
 from applicatie_procesopties import ProcesOpties, BenoemdeUitwisseling
-from data_bg_procesverloop import Procesvoortgang
-from data_bg_versiebeheer import Versiebeheerinformatie as BGVersiebeheerinformatie
-from data_lv_annotatie import Annotatie
-from data_lv_consolidatie import GeconsolideerdInstrument
-from data_lv_versiebeheerinformatie import Versiebeheerinformatie
-from proces_bg_activiteit import Activiteit
-from proces_bg_proces import BGProces
+from data_consolidatie import GeconsolideerdInstrument
+from data_versiebeheerinformatie import Versiebeheerinformatie
+from nonstop_annotatie import NonSTOPAnnotatie
 from stop_consolidatieinformatie import ConsolidatieInformatie
+from stop_metadata import RegelingMetadata, InformatieobjectMetadata
+from stop_symbolisatie import Symbolisatie
+from stop_toelichtingsrelaties import Toelichtingsrelaties
 from weergave_data_toestanden import Toestandidentificatie
+from weergave_data_stop_uitwisseling import UitgewisseldeSTOPModules
+
+#======================================================================
+#
+# Itereren van locaties van scenario's
+#
+#----------------------------------------------------------------------
+# Basisklasse
+#======================================================================
+class ScenarioIterator:
+
+    def __init__ (self):
+        """Initialiseer de iterator"""
+        super ().__init__ ()
+        # Aantal scenario's dat gevonden is
+        self.AantalScenarios = 0
+        # Aantal scenario's dat met succes is uitgevoerd
+        self.AantalSucces = 0
+        # Geeft aan dat de meldingen voor een scenario apart gehouden moeten wordn 
+        # van de meldingen voor de hele applicatie
+        self.MeldingenApart = True
+
+    def VindElkScenario (self, lees_scenario):
+        """Vind elk scenario en roep lees_scenario aan met de iterator als argument als een potentieel scenario gevonden is
+
+        Argumenten:
+
+        lees_scenario lambda(pad) Methode die voor elk potentieel scenario wordt aangeroepen.
+                                  Geeft terug of er een scenario in de map staat.
+        """
+        raise 'VindScenarios is niet geïmplementeerd'
+
+    def LeesBestanden (self, lees_json, lees_xml):
+        """Lees alle JSON bestanden voor het potentiële scenario.
+
+        Argumenten:
+
+        lees_json lambda(pad,json) Methode die voor elk json bestand wordt aangeroepen.
+                                   Argumenten zijn pad en inhoud van het bestand als tekst.
+        lees_xml lambda(pad,xml) Methode die voor elk json bestand wordt aangeroepen.
+                                 Argumenten zijn pad en inhoud van het bestand als tekst.
+        """
+        raise 'LeesBestanden is niet geïmplementeerd'
+
+#----------------------------------------------------------------------
+#
+# Implementatie voor het doorlopen van directories
+#
+#----------------------------------------------------------------------
+class ScenarioMappenIterator (ScenarioIterator):
+
+    def __init__(self, log, directory_paden, recursief):
+        """Maak een iterator aan voor het doorlopen van een boom met mappen
+        
+        Argumenten:
+        log Meldingen  Verzameling van meldingen over het lokaliseren en uitvoeren van scenario's
+        directory_pad string[]  lijst met directories waarin de applicatie begint met zoeken naar scenario's
+        recursief boolean  Geeft aan dat er ook in subdirectories gezocht moet worden.
+        """
+        super ().__init__()
+        self._Log = log
+        self._DirectoryPaden = directory_paden
+        self._Recursief = recursief
+        # Map waarin een potentieel scenario staat
+        self._DirectoryPad = None
+        # Geeft aan of submappen van deze map nog onderzocht moeten worden
+        self._DirectoryPadRecursief = None
+        # Scenario dat ingelezen wordt
+        self.Scenario : Scenario = None
+
+    def VindElkScenario (self, lees_scenario):
+        """Vind elk scenario en roep lees_scenario aan met de iterator als argument als een potentieel scenario gevonden is
+
+        Argumenten:
+
+        lees_scenario lambda(pad) Methode die voor elk potentieel scenario wordt aangeroepen.
+                                  Geeft terug of er een scenario in de map staat.
+        """
+        for directory_pad in self._DirectoryPaden:
+            self._VindElkScenario (directory_pad, lees_scenario)
+    def _VindElkScenario (self, directory_pad, lees_scenario):
+        if os.path.isdir (directory_pad):
+            self._DirectoryPad = directory_pad
+            self._DirectoryPadRecursief = False
+            if not lees_scenario (self._DirectoryPad):
+                if self._DirectoryPadRecursief:
+                    for root, dirs, _ in os.walk (directory_pad):
+                        for dir in dirs:
+                            self._VindElkScenario (os.path.join (root, dir), lees_scenario)
+                        break
+
+    def LeesBestanden (self, lees_json, lees_xml):
+        """Lees alle JSON bestanden voor het potentiële scenario.
+
+        Argumenten:
+
+        lees_json lambda(pad,json) Methode die voor elk json bestand wordt aangeroepen.
+                                   Argumenten zijn pad en inhoud van het bestand als tekst.
+        lees_xml lambda(pad,xml) Methode die voor elk json bestand wordt aangeroepen.
+                                 Argumenten zijn pad en inhoud van het bestand als tekst.
+        """
+        self._Log.Detail ("Onderzoek de aanwezigheid van een scenario in '" + self._DirectoryPad + "'")
+        meldScenario = True
+        heeftBestanden = False
+        for root, _, files in os.walk (self._DirectoryPad):
+
+            for file in files:
+                # Probeer elk json bestand in te lezen
+                fileType = os.path.splitext (file)[1]
+                if fileType == '.json':
+                    heeftBestanden = True
+                    pad = os.path.join (root, file)
+                    data = None
+                    try:
+                        with open (pad, "r", encoding = "utf-8") as bestand:
+                            data = bestand.read ()
+                    except Exception as e:
+                        self._Log.Fout ("Bestand '" + pad + "' bevat geen valide utf-8: " + str(e))
+                    if not data is None:
+                        lees_json (pad, data)
+
+                        if not self.Scenario.Opties is None and self.Scenario.Opties.SimulatorScenario == False:
+                            break
+                        if meldScenario and self.Scenario.IsScenario:
+                            meldScenario = False
+                            self._Log.Detail ("Scenario gevonden in '" + self.Scenario.Pad + "'")
+
+            for file in files:
+                # Probeer elk xml bestand in te lezen
+                pad = os.path.join (root, file)
+                fileType = os.path.splitext (pad)[1]
+                if fileType == '.xml':
+                    heeftBestanden = True
+                    pad = os.path.join (root, file)
+                    data = None
+                    try:
+                        with open (pad, "r", encoding = "utf-8") as bestand:
+                            data = bestand.read ()
+                    except Exception as e:
+                        self._Log.Fout ("Bestand '" + pad + "' bevat geen valide utf-8: " + str(e))
+                    if not data is None:
+                        lees_xml (pad, data)
+                        if meldScenario and self.Scenario.IsScenario:
+                            meldScenario = False
+                            self._Log.Detail ("Scenario gevonden in '" + self.Scenario.Pad + "'")
+
+            if not self.Scenario.IsScenario:
+                self._DirectoryPadRecursief = self._Recursief
+                break
+
+        if not self.Scenario.IsScenario:
+            if heeftBestanden:
+                self._Log.Informatie ("Bestanden in '" + self.Scenario.Pad + "' zijn geen invoer voor een scenario")
+            else:
+                self._Log.Detail ("Geen scenario gevonden in '" + self.Scenario.Pad + "'")
 
 #======================================================================
 #
@@ -271,29 +425,19 @@ class Scenario:
         # Verzameling van meldingen specifiek voor dit proces
         self.Log = Meldingen (False) if meldingenApart else log
         # Ingelezen annotaties
-        self.Annotaties : List[Annotatie] = []
-        # Mix van BG activiteiten en ingelezen consolidatie-informatie modules
+        self.Annotaties : Dict[str,Dict[str,object]] = {} # key = expressionId, key = modulenaam, value = in-memory module
+        # Ingelezen consolidatie-informatie modules
         # Lijst gesorteerd op gemaaktOp
-        self.Gebeurtenissen : List[Scenario.Gebeurtenis] = []
-        # Het proces zoals dat bij BG verloopt
-        self.BGProces : BGProces = None
+        self.Uitwisselingen : List[ConsolidatieInformatie] = []
         # Geeft aan of de bestanden in het pad samen de invoer voor een scenario vormen
         self.IsScenario = None
         # Geeft aan of de invoer voor het scenario valide is
         self.IsValide = True
         #--------------------------------------------------------------
-        # Simulatie bevoegd gezag systemen
+        # Simulatie landelijke voorzieningen (zoals LVBB)
         #--------------------------------------------------------------
-        # Het BG-interne datamodel met informatie over de uitvoering van
-        # activiteiten van het bevoegd gezag. Als alleen de ontvangende
-        # systemen gesimuleerd worden, dan bevat de procesvoortgang alleen
-        # de informatie over de uitwisselingen.
-        self.Procesvoortgang = Procesvoortgang ()
-        # Het BG-interne datamodel met versiebeheerinformatie
-        self.BGVersiebeheerinformatie : BGVersiebeheerinformatie = None
-        #--------------------------------------------------------------
-        # Simulatie ontvangende systemen (zoals landelijke voorzieningen)
-        #--------------------------------------------------------------
+        # De STOP modules die uitgewisseld worden
+        self.STOPUitwisselingen = UitgewisseldeSTOPModules ()
         # Het interne datamodel met versiebeheerinformatie
         self.Versiebeheerinformatie = Versiebeheerinformatie ()
         # Informatie over de consolidatie van de instrumenten
@@ -310,37 +454,6 @@ class Scenario:
         # Dit wordt niet per instrument bijgehouden om een unieke ID over alle elementen te verkrijgen voor de weergave
         self._ToestandIdentificatie : List[Toestandidentificatie] = []
 
-    #------------------------------------------------------------------
-    # Bron van de consolidatie-informatie
-    #------------------------------------------------------------------
-    class Gebeurtenis:
-
-        def __init__(self, consolidatieInformatie : ConsolidatieInformatie, activiteit : Activiteit):
-            """Maak de gebeurtenis aan.
-            
-            Argumenten:
-
-            consolidatieInformatie ConsolidatieInformatie  De gebeurtenis betreft de uitwisseling van informatie, waaronder een XML-module met consolidatie-informatie
-            activiteit Activiteit  De gebeurtenis betreft een activiteit van BG
-            """
-            self.ConsolidatieInformatie = consolidatieInformatie
-            self.Activiteit = activiteit
-
-        def GemaaktOp (self):
-            """Geef het tijdstip waarop de gebeurtenis plaatsvindt
-            """
-            if not self.ConsolidatieInformatie is None:
-                return self.ConsolidatieInformatie.GemaaktOp
-            return self.Activiteit.GemaaktOp
-
-        def ConsolidatieInformatie (self):
-            """Geef de specificatie van de consolidatie-informatie
-            """
-            if not self.ConsolidatieInformatie is None:
-                return self.ConsolidatieInformatie
-            return self.Activiteit.ConsolidatieInformatie
-
-
 #======================================================================
 #
 # Inlezen van de scenario bestanden
@@ -352,9 +465,22 @@ class Scenario:
             if self.IsScenario is None or self.IsScenario != inderdaad:
                 self.IsScenario = inderdaad
 
-        annotatiesPerWorkId = {} # key = workId, value = {} met key = naam, value = instantie van Annotatie 
+        def _VoegAnnotatieToe (module):
+            _IsScenario (True)
+            if module.IsValide:
+                collectie = self.Annotaties.get (module.Instrumentversie)
+                if collectie is None:
+                    self.Annotaties[module.Instrumentversie] = collectie = {}
+                if module.RootElement in collectie:
+                    self.ApplicatieLog.Fout ("Meerdere '" + module.RootElement + "' modules voor instrumentversie " + module.Instrumentversie)
+                    self.IsValide = False
+                else:
+                    collectie[module.RootElement] = module
+            else:
+                self.IsValide = False
+
         instrumenten = set() # Instrumenten (work-identificaties) in consolidatie-informatie
-        gebeurtenisPerGemaaktOp = {} # key = gemaaktOp, value = ConsolidatieInformatieBron
+        uitwisselingPerGemaaktOp = {} # key = gemaaktOp, value = ConsolidatieInformatieBron
 
         def __LeesJsonBestand (pad : str, data : str):
             try:
@@ -364,40 +490,7 @@ class Scenario:
                 return
 
             if isinstance(data, dict):
-                # Kijk eerst of het een annotatie is
-                annotatie = Annotatie.LeesJson (self.ApplicatieLog, pad, data)
-                if annotatie:
-                    _IsScenario (True)
-                    if annotatie._IsValide:
-                        apw = annotatiesPerWorkId.get (annotatie.WorkId)
-                        if apw is None:
-                            annotatiesPerWorkId[annotatie.WorkId] = apw = {}
-                        if annotatie.Naam in apw:
-                            self.Log.Fout ("Meerdere specificaties voor een annotatie van " + annotatie.WorkId + " gevonden met dezelfde naam '" + annotatie.Naam + "'")
-                            self.IsValide = False
-                        else:
-                            apw[annotatie.Naam] = annotatie
-                            self.Log.Detail ("Bestand '" + pad + "' bevat een valide annotatiespecificatie")
-                    else:
-                        self.IsValide = False
-                    return
-
-                # Kijk dan of het een specificatie van BG activiteiten is
-                bgproces = BGProces.LeesJson (self.ApplicatieLog, pad, data)
-                if bgproces:
-                    _IsScenario (True)
-                    if bgproces._IsValide:
-                        if self.BGProces is None:
-                            self.BGProces = bgproces
-                            self.Log.Detail ("Bestand '" + pad + "' bevat valide BG activiteitspecificaties")
-                        else:
-                            self.Log.Fout ("Meerdere specificaties voor een BG proces gevonden")
-                            self.IsValide = False
-                    else:
-                        self.IsValide = False
-                    return
-
-                # Kijk als laatste of het opties zijn
+                # Kijk of het opties zijn
                 opties = ProcesOpties.LeesJson (self.ApplicatieLog, pad, data)
                 if opties:
                     _IsScenario (opties.SimulatorScenario)
@@ -413,24 +506,46 @@ class Scenario:
                     return
 
         def __LeesXmlBestand (pad : str, data : str):
-            # Dit moet een ConsolidatieInformatie module zijn
+            # Lees eerst de XML
             try:
                 xml = ET.fromstring (data)
             except Exception as e:
                 self.ApplicatieLog.Fout ("Bestand '" + pad + "' bevat geen valide XML: " + str(e))
                 return
+
+            if InformatieobjectMetadata.IsInformatieobjectMetadataBestand (xml):
+                _VoegAnnotatieToe (InformatieobjectMetadata.LeesXml (self.Log, pad, xml, data))
+                return
+
+            if NonSTOPAnnotatie.IsNonSTOPAnnotatieBestand (xml):
+                _VoegAnnotatieToe (NonSTOPAnnotatie.LeesXml (self.Log, pad, xml, data))
+                return
+
+            if RegelingMetadata.IsRegelingMetadataBestand (xml):
+                _VoegAnnotatieToe (RegelingMetadata.LeesXml (self.Log, pad, xml, data))
+                return
+
+            if Symbolisatie.IsSymbolisatieBestand (xml):
+                _VoegAnnotatieToe (Symbolisatie.LeesXml (self.Log, pad, data))
+                return
+
+            if Toelichtingsrelaties.IsToelichtingsrelatiesBestand (xml):
+                _VoegAnnotatieToe (Toelichtingsrelaties.LeesXml (self.Log, pad, data))
+                return
+
+            # Dit moet consolidatie-informatie zijn
             if not ConsolidatieInformatie.IsConsolidatieInformatieBestand (xml):
-                self.ApplicatieLog.Detail ("Bestand '" + pad + "' bevat geen ConsolidatieInformatie maar " + xml.tag)
+                self.ApplicatieLog.Detail ("Bestand '" + pad + "' bevat een onbekende XML module: " + xml.tag)
                 return
 
             _IsScenario (True)
             consolidatieInformatie = ConsolidatieInformatie.LeesXml (self.Log, pad, xml)
             if consolidatieInformatie and consolidatieInformatie.IsValide:
-                if consolidatieInformatie.GemaaktOp in gebeurtenisPerGemaaktOp:
+                if consolidatieInformatie.GemaaktOp in uitwisselingPerGemaaktOp:
                     self.Log.Fout ("Deze applicatie kan alleen ConsolidatieInformatie modules met verschillende gemaaktOp verwerken; " + consolidatieInformatie.GemaaktOp + " komt meerdere keren voor")
                     self.IsValide = False
                 else:
-                    gebeurtenisPerGemaaktOp[consolidatieInformatie.GemaaktOp] = Scenario.Gebeurtenis(consolidatieInformatie, None)
+                    uitwisselingPerGemaaktOp[consolidatieInformatie.GemaaktOp] = consolidatieInformatie
                     for beoogdeVersie in consolidatieInformatie.BeoogdeVersies:
                         instrumenten.add (beoogdeVersie.WorkId)
             else:
@@ -445,35 +560,8 @@ class Scenario:
         if self.Opties is None:
             self.Opties = ProcesOpties (None if self.IsValide else False)
 
-        self.Opties.BGProces = False
-        if not self.BGProces is None:
-            if self.IsValide and not self.Opties.ActueleToestanden:
-                self.Log.Waarschuwing ("Bepaling van actuele toestanden wordt altijd uitgevoerd als BG activiteiten zijn gespecificeerd")
-                self.Opties.ActueleToestanden = True
-            self.Opties.BGProces = True
-            if self.Opties.Beschrijving is None:
-                self.Opties.Beschrijving = self.BGProces.Beschrijving
-            self.BGVersiebeheerinformatie = BGVersiebeheerinformatie ()
-
-            for activiteit in self.BGProces.Activiteiten:
-                if activiteit.UitgevoerdOp in gebeurtenisPerGemaaktOp:
-                    self.Log.Fout ("Deze applicatie kan alleen ConsolidatieInformatie modules en BG activiteiten met verschillende gemaaktOp verwerken; " + activiteit.UitgevoerdOp + " komt meerdere keren voor")
-                    self.IsValide = False
-                else:
-                    gebeurtenisPerGemaaktOp[activiteit.UitgevoerdOp] = Scenario.Gebeurtenis (None, activiteit)
-
         # Sorteer de consolidatie-informatie op volgorde van uitwisseling
-        self.Gebeurtenissen = [gebeurtenisPerGemaaktOp[gm] for gm in sorted (gebeurtenisPerGemaaktOp.keys ())]
+        self.Uitwisselingen = [uitwisselingPerGemaaktOp[gm] for gm in sorted (uitwisselingPerGemaaktOp.keys ())]
 
-        # Verifieer de WorkId van de annotaties en ken nummer (per work) toe
-        self.Opties.Proefversies = False
-        for workId, annotaties in annotatiesPerWorkId.items ():
-            if not workId in instrumenten:
-                self.Log.Fout ("De annotatie(s) '" + "', '".join (a.Naam for a in annotaties) + "' hoort/horen bij een onbekend instrument " + workId)
-                self.IsValide = False
-            else:
-                for idx, a in enumerate (sorted (annotaties.values(), key = lambda a: a.Naam)):
-                    a._Nummer = idx + 1
-                    self.Annotaties.append (a)
-                    if a.Synchronisatie == Annotatie._Synchronisatie_Versiebeheer:
-                        self.Opties.Proefversies = True
+        # Maak proefversies als er annotaties zijn
+        self.Opties.Proefversies = len (self.Annotaties) > 0

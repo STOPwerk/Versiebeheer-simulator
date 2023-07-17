@@ -24,8 +24,11 @@ from stop_toestand import Toestandidentificatie, NogTeConsolideren
 #======================================================================
 class ActueleToestanden:
 
-    def __init__ (self):
-        """Maak een lege module aan"""
+    def __init__ (self, workId):
+        """Maak een lege module aan
+        
+        workId string  Het work-ID zoals het bevoegd gezag dat gebruikt
+        """
         # Datum waarop de informatie in de module voor het eerst bekend is geworden
         self.BekendOp = None
         # Datum waarop de informatie door de STOP-gebruikende applicatie
@@ -35,6 +38,12 @@ class ActueleToestanden:
         self.MaterieelUitgewerktOp = None
         # Toestanden van het geconsolideerde instrument, op volgorde van inwerkingtreding
         self.Toestanden : List[ToestandActueel] = []
+        # Alleen voor weergave van de module met XML:
+        self.WeergaveBeschrijving = """De actuele toestanden geven voor een regeling of informatieobject aan 
+        wat de LVBB over de consolidatie ervan weet. De software van het bevoegd gezag kan nagaan of dat 
+        overeenkomt met de voortgang van het consolidatieproces bij het bevoegd gezag. Deze module is
+        gemaakt voor:<br><b>""" + workId + "</b>"
+
 
     def ModuleXml (self):
         """Geeft de XML van de STOP module, als lijst van regels.
@@ -51,7 +60,6 @@ class ActueleToestanden:
         xml.extend (['',
                      '</ActueleToestanden>'])
         return xml
-
 
 #----------------------------------------------------------------------
 # Toestand

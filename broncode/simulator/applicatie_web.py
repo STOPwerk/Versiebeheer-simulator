@@ -52,22 +52,21 @@ class WebApplicatie:
     def ProjectInvoerPaginaVoorbeeld(voorbeeldFilePad):
         """Invoerpagina voor BG-projecten, te vullen met een voorbeeld"""
         generator = WebpaginaGenerator ("Simulator @bevoegd gezag", WebApplicatie.FAVICON)
-        einde = generator.StartSectie ("Toelichting", voorbeeldFilePad is None)
-        generator.LeesHtmlTemplate ('project_invoer_help')
-        generator.VoegHtmlToe (einde)
-        if voorbeeldFilePad is None:
-            generator.LeesHtmlTemplate ('project_invoer')
-            generator.LeesJSTemplate ('project_invoer')
-        else:
-            generator.LeesHtmlTemplate ('project_invoer_voorbeeld')
-            generator.VoegHtmlToe ('<textarea id="voorbeeld">')
+        html = generator.LeesHtmlTemplate ('project_invoer', False)
+        html = html.replace ("@@@HELP_START@@@", generator.LeesHtmlTemplate ('project_invoer_help', False))
+        html = html.replace ("@@@HELP_SIMULATOR@@@", generator.LeesHtmlTemplate ('project_invoer_simulator_help', False))
+        generator.VoegHtmlToe(html)
+        if not voorbeeldFilePad is None:
+            generator.VoegHtmlToe ('<textarea id="_start_voorbeeld" class="verborgenInvoer">')
             with open (voorbeeldFilePad, 'r', encoding='utf-8') as jsonFile:
                 generator.VoegHtmlToe (jsonFile.read ())
             generator.VoegHtmlToe ('</textarea>')
-            generator.LeesJSTemplate ('project_invoer_voorbeeld')
+        generator.LeesJSTemplate ('project_invoer')
         generator.LeesCssTemplate ('project_invoer')
-        generator.LeesJSTemplate ('project_invoer_bgproces', True, True)
+        generator.LeesJSTemplate ('project_invoer_simulator', True, True)
         generator.GebruikSvgScript ()
+        generator.GebruikSyntaxHighlighting ()
+        generator.GebruikZipScript ()
         return generator.Html ()
 
     @staticmethod

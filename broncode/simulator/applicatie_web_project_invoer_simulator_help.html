@@ -1,0 +1,139 @@
+<p>
+    Deze pagina simuleert software die bevoegd gezag en adviesbureaus gebruiken om regelgeving te maken en
+    besluiten op te stellen. De simulatie laat zien hoe dat <b>zou kunnen werken</b>, niet hoe de software
+    daadwerkelijk functioneert - het staat de software leveranciers en hun klanten vrij om het helemaal
+    anders in te richten. Deze simulator laat zien dat het mogelijk is om de technische vereisten van het
+    versiebeheer zoals dat via STOP uitwisseld moet worden, voor de eindgebruikers te verbergen. Het geeft
+    een indruk welke informatie de software moet bijhouden om aan de STOP-vereisten te kunnen voldoen.
+</p>
+<p>
+    Deze simulator laat de interactie zien tussen eindgebruikers en de software. De ene helft van de pagina laat zien
+    wat de eindgebruikers aan informatie krijgen en kunnen invoeren, de andere helft hoe de software daarmee om kan gaan.
+    Het scenario kan opgestuurd worden naar de <a href="https://github.com/STOPwerk/versiebeheer-simulator/">LVBB simulator</a>.
+    De simulator kan een groot aantal scenario's naspelen. De nadruk ligt daarbij op de interactie tussen de verschillende
+    gebeurtenissen en niet zozeer op de correctheid van wettelijke termijnen en dergelijke.
+</p>
+<p>
+    <span class="leestip"></span> Gebruik de <span class="voegtoe">&#x271A;</span>, <span class="werkbij">&#x270E;</span> en <span class="verwijder">&#x1F5D1;</span>
+    knoppen en de invoervelden om het scenario te specificeren.
+</p>
+<p>
+    <span class="leestip"></span> Op elk moment tijdens de specificatie van het scenario kan de LVBB-simulator gestart worden.
+    Het resultaat wordt in een aparte pagina getoond.
+</p>
+<p>
+    <span class="leestip"></span> Download het scenario om het later nog eens te bekijken of uit te breiden in deze simulator.
+</p>
+<p>
+    Deze pagina simuleert welke informatie een eindgebruiker te zien zou kunnen krijgen en voor welke informatie de eindgebruiker
+    moet zorgen. Het hoofdscherm (na de start) bevat meerdere secties:
+    <dl>
+        <dt>Over het scenario</dt>
+        <dd>
+            Aanvullende informatie over het scenario, gericht aan anderen die dit scenario bekijken. Daarnaast de mogelijkheid
+            om een uitgangssituatie op te geven: welke regelgeving is al in werking aan het begin van het scenario.
+        </dd>
+        <dt>Simulatie - User interface</dt>
+        <dd>
+            Simulatie van de interactie tussen eindgebruiker en (een mogelijke implementatie van) de software van het bevoegd gezag
+            of adviesbureau. Het scenario wordt hier stap voor stap opgebouwd door steeds nieuwe activiteiten toe te voegen.
+        </dd>
+        <dt>Simulatie - Software intern</dt>
+        <dd>
+            Simulatie van de interne werking van (een mogelijke implementatie van) de software van het bevoegd gezag
+            of adviesbureau. Beschrijft hoe de software de invoer van de eindgebruiker vertaalt naar STOP-gerelateerde informatie
+            en hoe de software een eindgebruiker begeleidt door aan te geven welke informatie ingevoerd moet worden.
+        </dd>
+        <dt>Simulatie - Uitwisseling via STOP</dt>
+        <dd>
+            Overzicht van de STOP modules die uitgewisseld worden, tussen de software van het bevoegd gezag, adviesbureau en LVBB.
+            De modules voor uitwisseling met de LVBB worden, samen met een beschrijving, gebruikt om de LVBB-simulator aan te sturen.
+        </dd>
+    </dl>
+</p>
+<p>
+    In meer detail:
+</p>
+<table class="w100" style="border-collapse: collapse; border: 1px solid #000000">
+    <tr>
+        <th colspan="3" style="border: 1px solid #000000">Simulatie - User interface</th>
+    </tr>
+    <tr>
+        <td class="nw c" style="border: 1px solid #000000">Overzicht/selectie<br />van activiteiten;<br /><span class="werkbij">&#x270E;</span>/<span class="verwijder">&#x1F5D1;</span> voor bewerken</td>
+        <td rowspan="2" class="w100 c" style="border: 1px solid #000000">
+            Wat de eindgebruiker zag bij het invoeren van de activiteit;
+            <br />Wat de eindgebruiker ziet voor een project na (het tijdstip van) de activiteit
+        </td>
+        <td rowspan="2" class="nw c" style="border: 1px solid #000000">Wat de eindgebruiker ziet als status<br />en mogelijkheid tot <span class="voegtoe">&#x271A;</span> afhandeling</td>
+    </tr>
+    <tr>
+        <td class="nw c" style="border: 1px solid #000000"><span class="voegtoe">&#x271A;</span> nieuwe activiteit</td>
+    </tr>
+</table>
+<dl>
+    <dt>Overzicht/selectie van tijdstippen en activiteiten</dt>
+    <dd>
+        Een lijst met alle activiteiten die eerder zijn gespecificeerd, op volgorde van tijd van uitvoering.
+    </dd>
+    <dd>
+        <span class="leestip"></span> Klik op een tijdstip/activiteit om te zien wat de software aan de eindgebruiker heeft gevraagd en wat de eindgebruiker heeft ingevoerd.
+        In het overzicht van de projecten wordt met <span class="tab_highlight">geel</span>
+        aangegeven welke projecten als onderdeel van de activiteit gewijzigd zijn.
+    </dd>
+    <dt>Wat de eindgebruiker ziet voor een project op het geselecteerde tijdstip</dt>
+    <dd>
+        Laat zien wat er aan informatie voor de projecten beschikbaar is. Van de projecten waarvoor de eindgebruiker iets heeft gewijzigd
+        op het geselecteerde tijdstip wordt de naam met een gele achtergrond weergegeven.
+    </dd>
+    <dd>
+        <span class="leestip"></span> Klik op een projectnaam om informatie te zien over dat project. In het tijdoverzicht wordt met <span class="tab_highlight">geel</span> aangegeven
+        op welke andere momenten de informatie van het geselecteerde project wijzigt.
+    </dd>
+    <dt>Wat de eindgebruiker ziet als status op het geselecteerde tijdstip</dt>
+    <dd>
+        Onafhankelijk van de selectie van een project wordt weergegeven wat de status van consolidatie en van de (nog niet onherroepelijke/in werking getreden)
+        besluiten is. Als de eindgebruiker een vervolgactie kan uitvoeren, dan wordt daarvoor een <span class="voegtoe">&#x271A;</span> getoond.
+    </dd>
+    <dt><span class="voegtoe">&#x271A;</span> nieuwe activiteit</dt>
+    <dd>
+        Knop om vast te leggen wat een eindgebruiker op een (nieuw vast te leggen) moment in de projecten wijzigt. Er is maar één activiteit per tijdstip (datum + tijd) mogelijk.
+    </dd>
+    <dt><span class="werkbij">&#x270E;</span>/<span class="verwijder">&#x1F5D1;</span> bij activiteit of andere informatie</dt>
+    <dd>
+        Bewerken / verwijderen van de eerder ingevoerde activiteit. Deze knoppen zijn ook te zien bij andere informatie die te wijzigen is, zoals bij de naam van een project
+        of een beschrijving van de rol van een activiteit in het scenario.
+    </dd>
+    <dt><span class="specmelding">&#x26A0;</span> activiteit waarvan de invoer niet (meer) correct is</dt>
+    <dd>
+        Geeft aan dat de invoer die een eindgebruiker voor een activiteit heeft opgegeven niet (meer) correct is. Dat kan bijvoorbeeld het geval zijn als er later een nieuwe
+        activiteit aan het scenario is toegevoegd die eerder uitgevoerd wordt. Selecteer de activiteit om de foutmelding te zien, en <span class="werkbij">&#x270E;</span>
+        pas de invoer van de activiteit aan om de fout te verhelpen.
+    </dd>
+</dl>
+<table class="w100" style="border-collapse: collapse; border: 1px solid #000000">
+    <tr>
+        <th colspan="2" style="border: 1px solid #000000">Simulatie - Software intern</th>
+    </tr>
+    <tr>
+        <td class="c" style="width: 50%; border: 1px solid #000000">Overzicht van intern versiebeheer<br />(voor het hele scenario)</td>
+        <td class="c" style="width: 50%; border: 1px solid #000000">
+            Interne werking van de software<br />(voor de geselecteerde activiteit)
+        </td>
+    </tr>
+</table>
+<dl>
+    <dt>Overzicht van intern versiebeheer</dt>
+    <dd>
+        Een overzicht van het versiebeheer dat de software intern bijhoudt, voor het hele scenario. Het is een overzicht van momentopnamen per branch.
+        In deze simulator bevat een momentopname een versie voor elke regeling/informatieobject die in het scenario is gedefinieerd.
+        Met <span class="tab_active">groen</span> worden de momentopnamen aangegeven die relevant zijn voor de geselecteerde activiteit/project.
+    </dd>
+    <dd>
+        <span class="leestip"></span> Klik op een momentopname om de activiteit te selecteren waarin de momentopname is ontstaan.
+    </dd>
+    <dt>Interne werking van de software</dt>
+    <dd>
+        Een verslag van de interne werking van de simulator bij uitvoering van de geselecteerde activiteit.
+    </dd>
+</dl>
+

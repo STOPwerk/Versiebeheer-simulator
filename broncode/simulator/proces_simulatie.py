@@ -18,14 +18,12 @@ from applicatie_meldingen import Meldingen
 
 from applicatie_scenario import Scenario, BenoemdeUitwisseling
 import applicatie_versie
-from data_bg_versiebeheer import ConsolidatieInformatieVerwerker
-from data_bg_procesverloop import Activiteitverloop, UitgewisseldeSTOPModule
 from weergave_resultaat_data import WeergaveData
-from proces_bg_proces import BGProces
-from proces_lv_versiebeheerinformatie import WerkVersiebeheerinformatieBij
-from proces_lv_proefversies import MaakProefversies, Proefversie
-from proces_lv_completetoestanden import MaakCompleteToestanden
-from proces_lv_actueletoestanden import MaakActueleToestanden
+from proces_versiebeheerinformatie import WerkVersiebeheerinformatieBij
+from proces_proefversies import MaakProefversies, Proefversie
+from proces_completetoestanden import MaakCompleteToestanden
+from proces_actueletoestanden import MaakActueleToestanden
+from weergave_data_stop_uitwisseling import STOPModuleUitwisseling
 
 #======================================================================
 #
@@ -53,80 +51,40 @@ class Proces_Simulatie:
             self.Scenario.WeergaveData = WeergaveData (self.Scenario)
 
             publicatiebladNummer = 0
-            for idx, gebeurtenis in enumerate (self.Scenario.Gebeurtenissen):
+            for idx, consolidatieInformatie in enumerate (self.Scenario.Uitwisselingen):
 
+                self.Scenario.STOPUitwisselingen.VoegToe (consolidatieInformatie.GemaaktOp, STOPModuleUitwisseling.Systeem_BevoegdGezag, STOPModuleUitwisseling.Systeem_LVBB, consolidatieInformatie)
                 publicatie = None
                 publicatiebron = None
                 activiteit = None
-                voerConsolidatieUit = False
-
-                if not gebeurtenis.Activiteit is None:
-                    # BG activiteit: voer de actie uit
-                    isValide, activiteit = gebeurtenis.Activiteit.VoerUit (self.Scenario.Log, self.Scenario, gebeurtenis)
-                    if not isValide:
-                        # Er is iets fout gegaan
-                        return
-                    publicatiebron = activiteit.Publicatiebron
-
-                    if not gebeurtenis.Activiteit.UitwisselingNaam is None:
-                        # Gebruik de actie als beschrijving indien aanwezig
-                        uwHeeftBeschrijving = False
-                        for uw in self.Scenario.Opties.Uitwisselingen:
-                            if uw.GemaaktOp == gebeurtenis.Activiteit.UitgevoerdOp:
-                                uwHeeftBeschrijving = True
-                                uw.IsRevisie = not activiteit.IsPublicatie ()
-                        if not uwHeeftBeschrijving:
-                            benoemd = BenoemdeUitwisseling ()
-                            benoemd.GemaaktOp = gebeurtenis.Activiteit.UitgevoerdOp 
-                            benoemd.Naam = gebeurtenis.Activiteit.UitwisselingNaam
-                            benoemd.Beschrijving = gebeurtenis.Activiteit.Beschrijving
-                            benoemd.IsRevisie = gebeurtenis.Activiteit.SoortPublicatie is None
-                            self.Scenario.Opties.Uitwisselingen.append (benoemd)
-
-                if gebeurtenis.ConsolidatieInformatie is None:
-                    # Geen uitwisseling met ontvangende systemen/landelijke voorzieningen
-                    continue
-
-                # Specificatie van consolidatie-informatie
-                if self.Scenario.Opties.BGProces and gebeurtenis.Activiteit is None:
-                    # Verwerk dat in het versiebeheer van het bevoegd gezag
-                    isValide = ConsolidatieInformatieVerwerker.WerkBij (self.Scenario.Log, self.Scenario, gebeurtenis.ConsolidatieInformatie)
-                    if not isValide:
-                        # Er is iets fout gegaan
-                        return
-
-                voerConsolidatieUit = gebeurtenis.ConsolidatieInformatie.VoerConsolidatieUit
-                if self.Scenario.Opties.BGProces and voerConsolidatieUit:
-                    isValide = self.Scenario.BGVersiebeheerinformatie.WerkConsolidatieBij (self.Scenario.Log, Meldingen (False) if activiteit is None else activiteit.VersiebeheerVerslag, gebeurtenis.ConsolidatieInformatie.GemaaktOp)
-                    if not isValide:
-                        # Er is iets fout gegaan
-                        return
-                    if not activiteit is None:
-                        activiteit.Consolidatie = self.Scenario.BGVersiebeheerinformatie.Consolidatie
+                voerConsolidatieUit = consolidatieInformatie.VoerConsolidatieUit
 
                 # Zit er een publicatie aan vast?
-                if self.Scenario.Opties.IsRevisie (gebeurtenis.ConsolidatieInformatie.GemaaktOp):
+                if self.Scenario.Opties.IsRevisie (consolidatieInformatie.GemaaktOp):
                     publicatie = None
-                    gebeurtenis.ConsolidatieInformatie.IsRevisie = True
+                    consolidatieInformatie.IsRevisie = True
                 else:
                     publicatiebladNummer += 1
                     publicatie = 'pb{:03d}'.format (publicatiebladNummer)
                     if publicatiebron is None:
                         publicatiebron = 'Bekendmaking'
-                if not activiteit is None:
-                    activiteit.Publicatie = publicatie
 
                 # Verwerk de uitgewisselde consolidatie-informatie. Een productie-waardige (ontvangende) applicatie begint
                 # hier met de verwerking na ontvangst van een uitwisseling
-                self.Scenario.Log.Informatie ("Verwerk de consolidatie-informatie ontvangen op " + gebeurtenis.ConsolidatieInformatie.OntvangenOp + " (@" + gebeurtenis.ConsolidatieInformatie.GemaaktOp + ")")
+                self.Scenario.Log.Informatie ("Verwerk de consolidatie-informatie ontvangen op " + consolidatieInformatie.OntvangenOp + " (@" + consolidatieInformatie.GemaaktOp + ")")
 
                 # Voeg de uitwisseling toe aan het interne versiebeheer-datamodel van het ontvangende systeem
-                uitwisseling = WerkVersiebeheerinformatieBij.VoerUit (self.Scenario.Log, self.Scenario.Versiebeheerinformatie, publicatie, gebeurtenis.ConsolidatieInformatie)
+                uitwisseling = WerkVersiebeheerinformatieBij.VoerUit (self.Scenario.Log, self.Scenario.Versiebeheerinformatie, publicatie, consolidatieInformatie)
                 if not uitwisseling.IsValide:
                     return
 
-                alleProefversies : Dict[str, List[Proefversie]] = {} # key = workId, value = lijst met proefversies
-                if self.Scenario.Opties.Proefversies or voerConsolidatieUit and (self.Scenario.Opties.ActueleToestanden or self.Scenario.Opties.CompleteToestanden):
+                proefversies : Dict[str, List[Proefversie]] = {} # key = workId, value = lijst met proefversies
+                if self.Scenario.Opties.Proefversies:
+                    # In deze applicatie worden proefversies alleen gemaakt als er annotaties zijn gespecificeerd.
+                    self.Scenario.Log.Informatie ("Bepaal de proefversies voor alle instrumentversies in de uitwisseling")
+                    proefversies = MaakProefversies.VoerUit (self.Scenario.Log, self.Scenario.Versiebeheerinformatie, uitwisseling.Uitwisseling.Instrumentversies, self.Scenario.Annotaties, self.Scenario.STOPUitwisselingen.Uitwisselingen[consolidatieInformatie.GemaaktOp])
+
+                if voerConsolidatieUit and (self.Scenario.Opties.ActueleToestanden or self.Scenario.Opties.CompleteToestanden):
                     # Doe de consolidatie alleen voor de geraakte instrumenten
                     for workId in sorted (uitwisseling.Instrumenten): # Sortering om zeker te zijn van iedere keer dezelfde volgorde van uitvoering
                         geconsolideerd = self.Scenario.GeconsolideerdeInstrument (workId)
@@ -141,17 +99,6 @@ class Proces_Simulatie:
                             # toestanden bepaald moeten worden.
                             self.Scenario.Log.Informatie ("Werk de juridische verantwoording bij voor " + workId)
                             geconsolideerd.JuridischeVerantwoording.VoegToe (uitwisseling.Verantwoording.get (workId))
-                        
-                        if self.Scenario.Opties.Proefversies:
-                            # Voor een productie-waardige applicatie is het maken van een proefversie is alleen 
-                            # nodig als andere systemen mee moeten liften met de resultaten uit deze applicatie
-                            # om non-STOP annotaties te bepalen c.q. te valideren voor de uitgewisselde instrumentversies.
-                            # In deze applicatie wordt het ook gebruikt voor STOP annotaties.
-                            self.Scenario.Log.Informatie ("Bepaal de proefversies voor alle instrumentversies in de uitwisseling")
-                            proefversies = MaakProefversies.VoerUit (uitwisseling.Uitwisseling, self.Scenario.Annotaties)
-                            if len (proefversies) > 0:
-                                geconsolideerd.Proefversies.extend (proefversies)
-                                alleProefversies[workId] = proefversies
 
                         if voerConsolidatieUit and self.Scenario.Opties.CompleteToestanden:
                             eersteBekendOp = uitwisseling.EersteBekendOp.get (workId)
@@ -168,12 +115,9 @@ class Proces_Simulatie:
                             # applicatie die tijdreizen ondersteunt zal deze bepaling daarom niet uitvoeren.
                             self.Scenario.Log.Informatie ("Bepaal de actuele toestanden voor " + workId)
                             MaakActueleToestanden.VoerUit (self.Scenario.Log, geconsolideerd, uitwisseling.Uitwisseling.GemaaktOp, uitwisseling.Uitwisseling.OntvangenOp, uitwisseling.Uitwisseling.BekendOp)
-                            
-                            if not activiteit is None:
-                                activiteit.Uitgewisseld.append (UitgewisseldeSTOPModule (workId, geconsolideerd.ActueleToestanden, Activiteitverloop._Uitvoerder_LVBB, Activiteitverloop._Uitvoerder_BevoegdGezag))
 
                 # Werk de data bij die nodig is voor de weergave
-                self.Scenario.WeergaveData.WerkBij (uitwisseling.Uitwisseling, uitwisseling.Instrumenten, uitwisseling.Doelen, alleProefversies)
+                self.Scenario.WeergaveData.WerkBij (uitwisseling.Uitwisseling, uitwisseling.Instrumenten, uitwisseling.Doelen, proefversies, self.Scenario.STOPUitwisselingen.Uitwisselingen[consolidatieInformatie.GemaaktOp])
 
         except Exception as e:
             self.Scenario.Log.Fout ("Potverdorie, een fout in de simulatie die niet voorzien werd: " + str(e))

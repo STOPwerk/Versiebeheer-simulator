@@ -49,6 +49,8 @@ class JuridischeVerantwoording:
                      '</JuridischeVerantwoording>'])
         return xml
 
+    WeergaveBeschrijving = "De juridische verantwoording is de traditionele manier waarop wijzigingen in een instrument gepresenteerd worden."
+
 #----------------------------------------------------------------------
 # Voeg een publicatie toe. Deze functionaliteit zal er in een 
 # productie-waardige applicatie totaal anders uitzien.

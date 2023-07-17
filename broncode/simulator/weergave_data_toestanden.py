@@ -10,14 +10,14 @@
 # informatie niet nodig.
 #
 # De minimale uitbreiding op de STOP modules voor het bepalen van de
-# toestanden (het interne datamodel) staat in data_lv_toestanden.py.
+# toestanden (het interne datamodel) staat in data_toestanden.py.
 #
 #======================================================================
 
 from typing import List
 
 from data_doel import Doel
-from data_lv_toestanden import ToestandActueel as DataToestandActueel, ToestandCompleet as SataToestandCompleet
+from data_toestanden import ToestandActueel as DataToestandActueel, ToestandCompleet as SataToestandCompleet
 from stop_actueletoestanden import ActueleToestanden as STOPActueleToestanden
 from stop_completetoestanden import Toestand as STOPToestand, OnvolledigeVersie as STOPOnvolledigeVersie
 from stop_toestand import NogTeConsolideren, Toestandidentificatie as STOPToestandidentificatie
@@ -57,8 +57,8 @@ class ConsolidatieprocesInformatie (NogTeConsolideren):
 #----------------------------------------------------------------------
 class ActueleToestanden (STOPActueleToestanden):
 
-    def __init__ (self):
-        super().__init__ ()
+    def __init__ (self, workId):
+        super().__init__ (workId)
         # Datum waarop de regeling of informatieobject als juridisch uitgewerkt wordt beschouwd.
         # Alleen nodig voor weergave.
         self.JuridischUitgewerktOp = None
@@ -168,17 +168,4 @@ class Toestand (STOPToestand):
         # zodat verschillende weergaven (stukjes HTML) de toestand kunnen herkennen
         # en dezelfde toestand kunnen laten
         self._UniekId = None
-        # Annotatieversies die voor deze
-        self._Annotaties = []
 
-class AnnotatieBijToestand:
-
-    def __init__(self, annotatie):
-        """Maak een annotatieversie aan voor een toestand
-        
-        Argumenten:
-        
-        annotatie Annotatie annotatie waarvoor tenminste één versie de toestand beschrijft"""
-        self.Annotatie = annotatie
-        # De gevonden uitwisselingen
-        self.Uitwisseling = []

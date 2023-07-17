@@ -1,24 +1,27 @@
 <p>
-    Huidige versie: <code>2023-06-21 11:09:58</code>
+    Huidige versie: <code>2023-07-17 22:32:41</code>
 </p>
 
 <h2>Wat is het?</h2>
 <p>
-    Simulator die laat zien hoe het <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/">STOP</a>-versiebeheer gebruikt kan worden in de
-    keten van adviesbureaus, bevoegd gezagen, landelijke voorzieningen en hun afnemers.
-</p>
-<p>
-    De simulator is een online versie van het <a href="https://github.com/STOPwerk/versiebeheer-simulator/">Python script</a> dat
-    toegepast wordt op een invoer van XML elementen en JSON objecten. Het resultaat is een interactieve webpagina waarin
-    getoond wordt hoe de keten met de informatie uit de bestanden om kan gaan. De simulator laat de mogelijkheden uit
-    het STOP versiebeheer zien, en hoe dat resulteert in de weergave van besluiten en regelgeving. Bij het implementeren
-    van STOP kunnen de verschillende systemen voor een andere aanpak kiezen of aanvullende eisen stellen.
-</p>
-<p>
-    De online tools worden gehost via het <a href="https://vercel.com/pricing">hobby</a> plan dat ongetwijfeld niet geschikt is voor massaal gebruik.
-    Bij het uitvoeren van de simulator wordt de meeste tijd besteed aan het samenstellen van de resultaatpagina, die bij
-    scenario's met veel publicaties al snel erg omvangrijk wordt.
-    Om met veel/omvangrijke/complexe scenario's aan de slag te gaan: download de Python scripts en draai de simulator op eigen hardware.
+    De simulator bestaat uit twee delen:
+    <dl>
+        <dt><a href="project_invoer">Simulator @bevoegd gezag</a></dt>
+        <dd>
+            Een simulator voor de <i>mogelijke</i> interactie tussen medewerkers van het bevoegd gezag (en eventueel adviesbureaus) en
+            hun software. De simulator laat zien hoe software het nogal technische <a href="https://koop.gitlab.io/STOP/voorinzage/standaard-preview-b/">STOP</a>-versiebeheer
+            weg kan houden van de eindgebruiker. Het laat ook zien hoe het generieke STOP-versiebeheer een breed scala aan
+            werkwijzen en consolidatie-scenario's ondersteunt.
+        </dd>
+        <dt><a href="invoer">LVBB simulator</a></dt>
+        <dd>
+            Een simulator die als invoer uitgewisselde STOP-modules heeft en laat zien wat de LVBB en andere landelijke
+            voorzieningen met die informatie kunnen doen.
+        </dd>
+    </dl>
+    De eerste simulator kan invoer voor de tweede simulator genereren. Voor beide simulatoren geldt dat de
+    geboden functionaliteit en informatie geen belofte inhoudt dat de software daadwerkelijk zo gaat werken,
+    ze laten alleen de mogelijkheden zien.
 </p>
 <h2>Hoe gebruik ik het?</h2>
 <p>
@@ -33,12 +36,12 @@
     Het is ook mogelijk zelf een scenario samen te stellen en te simuleren. Het meest eenvoudige is:
     <ul>
         <li>
-            Ga naar de <a href="project_invoer">projecten-invoerpagina</a> om een beschrijving te maken hoe het bevoegd gezag
+            Ga naar de <a href="project_invoer">Simulator @bevoegd gezag</a> om een beschrijving te maken hoe het bevoegd gezag
             komt tot nieuwe versies van een regeling en ze omgaat met rectificaties en gerechtelijke procedures.
         </li>
-        <li>Als de invoer compleet is kan de simulator gedraaid worden.</li>
+        <li>Als de invoer compleet is kan de LVBB-simulator gedraaid worden.</li>
     </ul>
-    De simulator kan veel meer (fout)scenario's aan dan via de projecten-invoerpagina samengesteld kunnen worden. Ook is het mogelijk
+    De simulator kan veel meer (fout)scenario's aan dan via de Simulator @bevoegd gezag samengesteld kunnen worden. Ook is het mogelijk
     de simulator te draaien op alleen de modules die aan het brnhouderkoppelvlak worden aangeleverd. Daarvoor:
     <ul>
         <li>Lees de <a href="https://github.com/STOPwerk/versiebeheer-simulator/wiki">documentatie</a> waarin staat hoe de invoerbestanden gemaakt moeten worden.</li>
@@ -48,4 +51,10 @@
         </li>
         <li>Maak zelf voorbeeldbestanden en ga naar de <a href="invoer">invoerpagina</a> om de simulator uit te voeren.</li>
     </ul>
+</p>
+<p>
+    De online versie van de LVBB simulator  wordt gehost via het <a href="https://vercel.com/pricing">hobby</a> plan dat ongetwijfeld niet geschikt is voor massaal gebruik.
+    Bij het uitvoeren van de LVBB simulator wordt de meeste tijd besteed aan het samenstellen van de resultaatpagina, die bij
+    scenario's met veel publicaties al snel erg omvangrijk wordt.
+    Om met veel/omvangrijke/complexe scenario's aan de slag te gaan: download de <a href="https://github.com/STOPwerk/versiebeheer-simulator/">Python scripts</a> en draai de simulator op eigen hardware.
 </p>

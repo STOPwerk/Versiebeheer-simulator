@@ -6,9 +6,11 @@
 #
 #======================================================================
 
+from weergave_webpagina import WebpaginaGenerator
+
 class Weergave_STOPModule:
 
-    def __init__ (self, generator):
+    def __init__ (self, generator : WebpaginaGenerator):
         """Maak de generator voor de weergave van een STOP module
 
         Argumenten:
@@ -26,6 +28,7 @@ class Weergave_STOPModule:
         """
         xml = module.ModuleXml ()
         if xml:
+            self._Webpagina.GebruikSyntaxHighlighting ()
             einde = self._Webpagina.StartSectie (titel)
             self._Webpagina.VoegHtmlToe (Weergave_STOPModule.MaakHtml (xml))
             self._Webpagina.VoegHtmlToe (einde)
@@ -37,6 +40,7 @@ class Weergave_STOPModule:
         xml string  Fragment van een STOP module
         """
         if xml:
+            self._Webpagina.GebruikSyntaxHighlighting ()
             self._Webpagina.VoegHtmlToe (Weergave_STOPModule.MaakHtml (xml))
 
     @staticmethod
@@ -47,7 +51,7 @@ class Weergave_STOPModule:
         xml string  Fragment van een STOP module
         """
         if xml:
-            return '<pre>\n' + '\n'.join (xml).replace ('\t', '  ').replace ('<', '&lt;').replace ('>', '&gt;') + '\n</pre>\n'
+            return '<pre><code class="language-xml">\n' + '\n'.join (xml).replace ('\t', '  ').replace ('&', '&amp;').replace ('<', '&lt;').replace ('>', '&gt;') + '\n</code></pre>\n'
         return ''
 
 

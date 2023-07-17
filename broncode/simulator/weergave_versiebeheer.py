@@ -6,8 +6,10 @@
 #
 #======================================================================
 
-from data_lv_versiebeheerinformatie import Instrument
+from data_versiebeheerinformatie import Instrument
+from nonstop_annotatie import NonSTOPAnnotatie
 from stop_consolidatieinformatie import ConsolidatieInformatie
+from stop_metadata import Metadata
 from weergave_data_toestanden import ToestandActueel
 from weergave_resultaat_data import InstrumentData
 from weergave_stopmodule import Weergave_STOPModule
@@ -36,7 +38,7 @@ class Weergave_Versiebeheer ():
         instrumentData InstrumentData Extra informatie over het instrument uit de consolidatie
         """
         uniek_id = 'vbh_' + str (generator.GeefUniekeIndex ())
-        einde = generator.StartSectie ('<h3>Versiebeheer en actuele toestanden</h3>' if instrumentData.HeeftActueleToestanden else '<h3>Versiebeheer</h3>', True)
+        einde = generator.StartSectie ('<h3>Versiebeheer en actuele toestanden</h3>' if instrumentData.HeeftActueleToestanden else '<h3>Versiebeheer</h3>', True, True)
 
         einde_t = generator.StartToelichting ('Toelichting op het gebruik van versiebeheer' + (' en actuele toestanden'if instrumentData.HeeftActueleToestanden else ''))
         generator.LeesHtmlTemplate ('help_versiebeheer')
@@ -98,7 +100,24 @@ class _VersiebeheerDiagram (DiagramGeneratorOpties):
                 if element.Bron.IsIngetrokken:
                     html += 'Het instrument wordt ingetrokken<br/>\n'
                 elif element.Bron.ExpressionId:
-                    html += 'Instrumentversie: ' + element.Bron.ExpressionId + '<br/>\n'
+                    proefversie = self._Instrument.Proefversies.get (element.Bron.ExpressionId)
+                    if not proefversie is None and len (proefversie.Annotaties) > 0:
+                        html += '<table><tr><td colspan="2">Instrumentversie</td><td colspan="2">' + element.Bron.ExpressionId + '</td></tr>\n'
+                        html += '<tr><td>&nbsp;</td><td><i>Annotatie</i></td><td colspan="2"><i>Van toepassing vanaf versie</i></td></tr>\n'
+                        for rootElement in sorted (proefversie.Annotaties.keys ()):
+                            annotatie = proefversie.Annotaties[rootElement]
+                            if isinstance (annotatie, NonSTOPAnnotatie):
+                                html += '<tr><td>&nbsp;</td><td colspan="2" class="nw">' + annotatie.AnnotatieNaam + '</td></tr>\n'
+                                for nonStop in sorted (annotatie.Annotaties.keys ()):
+                                    html += '<tr><td colspan="2">&nbsp;</td><td class="nw">' + nonStop + '</td><td>' + annotatie.Annotaties[nonStop] + '</td></tr>\n'
+                            else:
+                                html += '<tr><td>&nbsp;</td><td class="nw">' + annotatie.AnnotatieNaam + '</td><td colspan="2">' + annotatie.Instrumentversie + '</td></tr>\n'
+                                if isinstance (annotatie, Metadata):
+                                    html += '<tr><td colspan="2">&nbsp;</td><td>Citeertitel:</td><td>' + annotatie.Citeertitel + '</td></tr>\n'
+
+                        html += '</table>'
+                    else:
+                        html += 'Instrumentversie: ' + element.Bron.ExpressionId + '<br/>\n'
                 else:
                     html += 'Instrumentversie is niet opgesteld<br/>\n'
         if element.TijdstempelsBron:
@@ -106,7 +125,7 @@ class _VersiebeheerDiagram (DiagramGeneratorOpties):
                 html += 'Juridisch werkend vanaf: ' + element.TijdstempelsBron.JuridischWerkendVanaf + '<br/>\n'
             if element.TijdstempelsBron.GeldigVanaf:
                 html += 'Geldig vanaf: ' + element.TijdstempelsBron.GeldigVanaf + '<br/>\n'
-        html += '</p><p>Bij uitwisseling:\n'
+        html += '</p><p>Relevant onderdeel van de consolidatie-informatie:\n'
         xml = ['<ConsolidatieInformatie xmlns="' + ConsolidatieInformatie.DataNamespace + '">']
         xml.append ('\t<gemaaktOp>' + element.Rij.GemaaktOp + '</gemaaktOp>')
         perCollectie = {}
@@ -144,7 +163,25 @@ class _VersiebeheerDiagram (DiagramGeneratorOpties):
             html = '<b>Toestand is niet meer actueel</b><br/>\n'
         html += 'Juridisch werkend vanaf ' + toestand.JuridischWerkendVanaf + (' tot ' + toestand.JuridischWerkendTot if toestand.JuridischWerkendTot else '') + '</p>\n'
 
-        html += '<p>Instrumentversie: ' + (toestand.Instrumentversie if toestand.Instrumentversie else 'onbekend') + '</p>\n'
+        proefversie = self._Instrument.Proefversies.get (toestand.Instrumentversie) if toestand.Instrumentversie else None
+        if not proefversie is None and len (proefversie.Annotaties) > 0:
+            html += '<p><table><tr><td>Instrumentversie</td><td>' + toestand.Instrumentversie + '</td></tr><tr><td>Annotaties</td><td><table>\n'
+            for rootElement in sorted (proefversie.Annotaties.keys ()):
+                annotatie = proefversie.Annotaties[rootElement]
+                if isinstance (annotatie, NonSTOPAnnotatie):
+                    nonStopAnnotaties = sorted (annotatie.Annotaties.keys ())
+                    html += '<tr><td rowspan="' + str(len(annotatie.Annotaties)) + '" class="nw">' + annotatie.AnnotatieNaam + '</td>'
+                    startTR = ''
+                    for nonStop in sorted (annotatie.Annotaties.keys ()):
+                        html += startTR + '<td class="nw">' + nonStop + '</td></tr>\n'
+                        startTR = '<tr>'
+                elif isinstance (annotatie, Metadata):
+                    html += '<tr><td colspan="2">' + annotatie.AnnotatieNaam + '</td></tr><tr><td class="ra">&nbsp;Citeertitel:</td><td>' + annotatie.Citeertitel + '</td></tr>\n'
+                else:
+                    html += '<td colspan="2" class="nw">' + annotatie.AnnotatieNaam + '</td></tr>\n'
+            html += '</table></td></table></p>'
+        else:
+            html += '<p>Instrumentversie: ' + (toestand.Instrumentversie if toestand.Instrumentversie else 'onbekend') + '</p>\n'
         html += self.NogTeConsoliderenInformatie (toestand, toestand, str(element.Id))
         if toestand.Basisversiedoelen:
             html += '<div>(De <i>overige doelen die bijdragen</i> aan de toestand worden niet vermeld in de STOP module ActueleToestanden)</div>\n'

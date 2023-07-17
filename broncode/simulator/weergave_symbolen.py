@@ -32,8 +32,6 @@ class Weergave_Symbolen:
 
     Annotatie_Uitwisseling = "&#128391;" # https://unicode-table.com/en/1F587/ paperclips
     Annotatie_BekendeVersie = '<span class="a_symbool_goed">&#x2713;</span>' # ✓
-    Annotatie_MeerdereVersies = '<span class="a_symbool_fout">!</span>'
-    Annotatie_OnbekendeVersie = '<span class="a_symbool_fout">?</span>'
 
     @staticmethod
     def ToestandSymbool (toestand : ToestandActueel):

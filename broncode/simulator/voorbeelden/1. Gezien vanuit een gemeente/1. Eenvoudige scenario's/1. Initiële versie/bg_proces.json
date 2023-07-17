@@ -1,0 +1,54 @@
+{
+    "SpecificatieVersie": "2023-06",
+    "Activiteiten": [
+        {
+            "Soort": "Maak project",
+            "Tijdstip": 1,
+            "p01": {
+                "Naam": "Project nieuwe regeling"
+            },
+            "Invoer": {
+                "Project": "p01",
+                "Branch": "p01_01"
+            },
+            "Beschrijving": "In deze simulator wordt al het werk aan regelgeving voor een besluit ondergebracht in een project.",
+            "p01_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 2,
+            "Project": "p01",
+            "p01_01": {
+                "reg_01": {
+                    "uuid": 1
+                }
+            },
+            "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd."
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 21,
+            "Project": "p01"
+        },
+        {
+            "Soort": "Concept-vaststellingsbesluit",
+            "Tijdstip": 59,
+            "Project": "p01",
+            "Beschrijving": "Het concept-vaststellingsbesluit wordt gebruikt binnen het bevoegd gezag voorafgaand aan de vaststelling van het regelgeving. In een scenario voor deze simulator kan deze stap opgenomen worden maar dat hoeft niet. Als er een datum voor de inwerkingtreding is opgegeven, dan wordt die nog niet gebruikt voor de consolidatie."
+        },
+        {
+            "Soort": "Vaststellingsbesluit",
+            "Tijdstip": 72,
+            "Project": "p01",
+            "p01_01": {
+                "JuridischWerkendVanaf": 100
+            },
+            "Besluitnaam": "Vaststellingsbesluit"
+        }
+    ],
+    "BevoegdGezag": "Gemeente",
+    "Naam": "Nieuwe regeling - gemeente",
+    "Beschrijving": "Dit scenario laat zien hoe de totstandkoming van een eerste versie van een nieuwe regeling verloopt."
+}

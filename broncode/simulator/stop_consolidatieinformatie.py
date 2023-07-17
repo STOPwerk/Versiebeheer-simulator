@@ -66,8 +66,7 @@ class ConsolidatieInformatie:
         self.IsValide = True
 
         # Geeft aan dat de consolidatie-informatie bij een instrument is gevoegd dat bijdraagt aan de geconsolideerde regelgeving.
-        # Dit volgt uit de context van de uitwisseling, niet uit de STOP module.
-        # In de simulator wordt het gezet vanuit de procesopties of vanuit de simulatie van de acties van het bevoegd gezag.
+        # Dit volgt uit de context van de uitwisseling, niet uit de STOP module. Dit is False voor bijvoorbeeld ontwerpbesluiten.
         self.VoerConsolidatieUit = True
         # Geeft aan dat de consolidatie-informatie bij een revisie is gevoegd en niet bij een instrument dat gepubliceerd wordt.
         # Dit volgt uit de context van de uitwisseling, niet uit de STOP module.
@@ -94,6 +93,8 @@ class ConsolidatieInformatie:
                 xml.append ('\t</' + collectie + '>')
         xml.append ('</ConsolidatieInformatie>')
         return xml
+
+    WeergaveBeschrijving = "De module met consolidatie-informatie is een weerslag van het versiebeheer zoals dat bij het bevoegd gezag heeft plaatsgevonden."
 
 #----------------------------------------------------------------------
 # Inlezen van XML
@@ -669,7 +670,7 @@ class Tijdstempel(VoorTijdstempel):
         if datum is None:
             return
         datum = datum[0:10]
-        if not ConsolidatieInformatie._DatumPatroon.match (datum):
+        if not Valideer.Datum (datum):
             module._Log.Fout ("Bestand '" + module._Pad + "': datum '" + datum + "' is onherkenbaar")
             module.IsValide = False
         else:
@@ -758,7 +759,7 @@ class MaterieelUitgewerkt:
             datum = module._LeesElement (xml, "datum", True)
             if not datum is None:
                 datum = datum[0:10]
-                if not ConsolidatieInformatie._DatumPatroon.match (datum):
+                if not Valideer.Datum (datum):
                     module._Log.Fout ("Bestand '" + module._Pad + "': datum '" + datum + "' is onherkenbaar")
                     module.IsValide = False
                 else:

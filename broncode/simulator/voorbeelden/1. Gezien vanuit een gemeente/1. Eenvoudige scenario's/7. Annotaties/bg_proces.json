@@ -1,0 +1,126 @@
+{
+    "SpecificatieVersie": "2023-06",
+    "start": {
+        "reg_01": {
+            "uuid": 1,
+            "Metadata": "Omgevingsplan Pyrodam",
+            "NonSTOP": {
+                "#01": true
+            }
+        },
+        "gio_01": {
+            "uuid": 2,
+            "Metadata": "Bebouwde kom",
+            "Symbolisatie": true
+        },
+        "pdf_01": {
+            "uuid": 3,
+            "Metadata": "Meetvoorschriften"
+        }
+    },
+    "Activiteiten": [
+        {
+            "Soort": "Maak project",
+            "Tijdstip": 1,
+            "p01": {
+                "Naam": "Project #1"
+            },
+            "Invoer": {
+                "Project": "p01",
+                "Branch": "p01_01"
+            },
+            "p01_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 2,
+            "Project": "p01",
+			"Beschrijving": "Naast een wijziging van de tekst en het toevoegen van een GIO worden ook de annotaties bijgewerkt.",
+            "p01_01": {
+                "reg_01": {
+                    "uuid": 16,
+                    "Toelichtingsrelaties": true,
+                    "NonSTOP": {
+                        "#01": true,
+                        "#02": true
+                    }
+                },
+                "gio_02": {
+                    "uuid": 17,
+                    "Metadata": "Vuurwerkvrije zone"
+                }
+            }
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 21,
+            "Project": "p01",
+			"Beschrijving": "De gewijzigde annotaties worden tegelijk met het besluit uitgewisseld. De ongewijzigde annotaties worden overgenomen van de voorgaande instrumentversie."
+        },
+        {
+            "Soort": "Vaststellingsbesluit",
+            "Tijdstip": 72,
+            "Project": "p01",
+			"Beschrijving": "De annotaties hoeven niet opnieuw uitgewisseld te worden omdat ze niet gewijzigd zijn sinds de laatste uitwisseling voor deze branch.",
+            "p01_01": {
+                "JuridischWerkendVanaf": 100
+            },
+            "Besluitnaam": "Vaststellingsbesluit"
+        },
+        {
+            "Soort": "Maak project",
+            "Tijdstip": 101,
+            "p02": {
+                "Naam": "Project #2"
+            },
+            "Invoer": {
+                "Project": "p02",
+                "Branch": "p02_01"
+            },
+            "p02_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 102,
+            "Project": "p02",
+			"Beschrijving": "Als de specificaties van de non-STOP standaard het toestaan, dan kunnen annotaties ook verwijderd worden.",
+            "p02_01": {
+                "reg_01": {
+                    "uuid": 22,
+                    "NonSTOP": {
+                        "#01": false,
+                        "#03": true
+                    }
+                },
+                "gio_01": false,
+                "pdf_01": {
+                    "uuid": 24
+                },
+                "gio_02": {
+                    "uuid": 25
+                }
+            }
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 121,
+            "Project": "p02"
+        },
+        {
+            "Soort": "Vaststellingsbesluit",
+            "Tijdstip": 172,
+            "Project": "p02",
+            "p02_01": {
+                "JuridischWerkendVanaf": 200
+            },
+            "Besluitnaam": "Vaststellingsbesluit"
+        }
+    ],
+    "BevoegdGezag": "Gemeente",
+    "Naam": "Annotaties - gemeente",
+    "Beschrijving": "Dit scenario laat zien hoe annotaties wijzigen tegelijk met een regeling- of informatieobjectversie. Alleen de gewijzigde annotaties hoeven uitgewisseld te worden."
+}
