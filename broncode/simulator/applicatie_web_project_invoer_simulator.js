@@ -262,7 +262,7 @@ class BGProcesSimulator {
 
         let regelingen = {};
         let uuidAanwezig = {};
-        function copyWijziging(tijdstip, onderdeel, target, src, extraProps) {
+        function copyWijziging(onderdeel, target, src, extraProps) {
             // Kopieer de specificatie van een wijzg
             if (src === undefined) {
                 return;
@@ -371,7 +371,7 @@ class BGProcesSimulator {
                 if (!activiteit.Tijdstip) {
                     throw new Error(`Elke activiteit moet een eigenschap "Tijdstip" hebben ("Soort": "${activiteit.Soort}").`)
                 }
-                let tijdstip = new Tijdstip(undefined, { Tijdstip: activiteit.Tijdstip }, 'Tijdstip', true);
+                let tijdstip = Tijdstip.Maak(activiteit.Tijdstip);
                 if (tijdstippen.includes(tijdstip.Specificatie())) {
                     throw new Error(`Elk "Tijdstip" moet een unieke waarde hebben ("Tijdstip": ${activiteit.Tijdstip}).`)
                 }
@@ -386,7 +386,7 @@ class BGProcesSimulator {
                         targetActiviteit[prop] = {};
                         let mprops = spec.MomentopnameTijdstempels ? ['JuridischWerkendVanaf', 'GeldigVanaf'] : [];
                         mprops.push(...spec.MomentopnameProps);
-                        copyWijziging(tijdstip, `activiteit "${activiteit.Soort}", branch "${prop}"`, targetActiviteit[prop], activiteit[prop], mprops);
+                        copyWijziging(`activiteit "${activiteit.Soort}", branch "${prop}"`, targetActiviteit[prop], activiteit[prop], mprops);
                     } else {
                         // Geen branch maar iets anders, zoals een project
                         targetActiviteit[prop] = activiteit[prop];
@@ -395,7 +395,7 @@ class BGProcesSimulator {
             }
         }
 
-        copyWijziging(new Tijdstip(undefined, Tijdstip.StartTijd(), 'Tijdstip', false), 'start', simulator.#data.start, data.start, []);
+        copyWijziging('start', simulator.#data.start, data.start, []);
         if (data.Activiteiten) {
             copyActiviteiten(simulator.#data.Activiteiten, data.Activiteiten);
         }
@@ -1015,7 +1015,7 @@ ${this.#uitgangssituatie.Html()}
     /**
      * Zoek een activiteit op aan de hand van de index
      * @param {any} activiteitIndex
-     * @returns
+     * @returns {Activiteit}
      */
     #ActiviteitViaIndex(activiteitIndex) {
         for (let act of Activiteit.Activiteiten()) {
@@ -1232,7 +1232,7 @@ class VersiebeheerDiagram {
 
     /**
      * Voeg de bijdrage van een activiteit toe
-     * @param {any} activiteit
+     * @param {Activiteit} activiteit
      */
     #VoegActiviteitToe(activiteit) {
         // Zoek uit welke branches geraakt worden en hoe ze van elkaar afhangen
@@ -1538,7 +1538,7 @@ class SpecificatieElement {
     //#region Te implementeren/aan te passen in afgeleide klassen
     /**
      * De tag-naam van het container-element dat voor de HTML-weergave gebruikt wordt
-     * @returns
+     * @returns {string}
      */
     ContainerElement() {
         return 'span';
@@ -1548,6 +1548,7 @@ class SpecificatieElement {
      * Aangeroepen om de HTML voor een read-only weergave te maken van de invoer.
      * Deze wordt gepresenteerd binnen de container die door WeergaveHtml wordt klaargezet 
      * Wordt geïmplementeerd in afgeleide klassen.
+     * @returns {string}
      */
     WeergaveInnerHtml() {
         return '';
@@ -1583,6 +1584,7 @@ class SpecificatieElement {
      * Als al bekend is dat er een volgende stap in de invoer nodig is, dan moet in deze methode 
      * of in InvoerIntroductie de VolgendeStapNodig methode aangeroepen worden.
      * Wordt geïmplementeerd in afgeleide klassen.
+     * @returns {string}
      */
     InvoerInnerHtml() {
         return this.WeergaveInnerHtml();
@@ -1635,6 +1637,7 @@ class SpecificatieElement {
     //#region Eigenschappen
     /**
      * Geef het specificatie-element waar dit een onderdeel van is
+     * @returns {SpecificatieElement}
      */
     SuperInvoer() {
         return this.#superInvoer;
@@ -1642,6 +1645,7 @@ class SpecificatieElement {
     #superInvoer;
     /**
      * Geef de specificatie-elementen die voor een onderdeel van deze specificatie zijn aangemaakt
+     * @returns {SpecificatieElement[]}
      */
     SubManagers() {
         return Object.values(this.#subInvoer);
@@ -1650,6 +1654,7 @@ class SpecificatieElement {
 
     /**
      * Geef de unieke code voor dit specificatie-element
+     * @returns {int}
      */
     Index() {
         return this.#index;
@@ -1659,6 +1664,7 @@ class SpecificatieElement {
 
     /**
      * Geeft het object of array in de specificatie waar dit een eigenschap van is
+     * @returns {any}
      */
     EigenaarObject() {
         return this.#eigenaarObject;
@@ -1667,6 +1673,7 @@ class SpecificatieElement {
 
     /**
      * Geeft de eigenschap waaraan dit element toegekend wordt. Als eigenaarObject een array is, dan is dit indefined.
+     * @returns {string}
      */
     Eigenschap() {
         return this.#eigenschap;
@@ -1675,12 +1682,14 @@ class SpecificatieElement {
 
     /**
      * Geef het in-memory object voor het element
+     * @returns {any}
      */
     Specificatie() {
         return this.#data;
     }
     /**
      * Geef de eigenschap een andere waarde
+     * @param {any} data
      */
     SpecificatieWordt(data) {
         this.#WerkSpecificatieBij(data);
@@ -1690,7 +1699,7 @@ class SpecificatieElement {
     //#region Status voor de invoer/weergave
     /**
      * Geeft aan of het specificatie-element actief is in het modal scherm (en niet in de weergave van de overzichtspagina)
-     * @returns
+     * @returns {boolean}
      */
     IsInvoer() {
         return this.#isInvoer;
@@ -1699,7 +1708,7 @@ class SpecificatieElement {
 
     /**
      * Geeft de stap in een invoerscherm waarvan de invoer in verschillende stappen uitgevoerd moet worden
-     * @returns
+     * @returns {int}
      */
     InvoerStap() {
         return this.IsInvoer() ? this.#invoerStap : 0;
@@ -1743,6 +1752,7 @@ class SpecificatieElement {
      * @param {string} hint - Mouseover hint voor de knop
      * @param {string} idSuffix - Suffix voor de identificatie van de knop
      * @param {string} extraAttributen - Extra attributen voor de knop
+     * @returns {string}
      */
     HtmlVoegToe(hint, idSuffix, extraAttributen) {
         return `<span title="${hint}" id="${this.ElementId(idSuffix)}" ${this.DataSet()} ${(extraAttributen ?? '')} class="voegtoe">&#x271A;</span>`;
@@ -1752,6 +1762,7 @@ class SpecificatieElement {
      * @param {string} hint - Mouseover hint voor de knop
      * @param {string} idSuffix - Suffix voor de identificatie van de knop
      * @param {string} extraAttributen - Extra attributen voor de knop
+     * @returns {string}
      */
     HtmlWerkBij(hint, idSuffix, extraAttributen) {
         return `<span title="${hint}" id="${this.ElementId(idSuffix)}" ${this.DataSet()} ${(extraAttributen ?? '')} class="werkbij">&#x270E;</span>`;
@@ -1761,6 +1772,7 @@ class SpecificatieElement {
      * @param {string} hint - Mouseover hint voor de knop
      * @param {string} idSuffix - Suffix voor de identificatie van de knop
      * @param {string} extraAttributen - Extra attributen voor de knop
+     * @returns {string}
      */
     HtmlVerwijder(hint, idSuffix, extraAttributen) {
         return `<span title="${hint}" id="${this.ElementId(idSuffix)}" ${this.DataSet()} ${(extraAttributen ?? '')} class="verwijder">&#x1F5D1;</span>`;
@@ -1770,6 +1782,7 @@ class SpecificatieElement {
      * @param {string} hint - Mouseover hint voor het icoon
      * @param {string} idSuffix - Suffix voor de identificatie van het icoon
      * @param {string} extraAttributen - Extra attributen voor het icoon
+     * @returns {string}
      */
     HtmlWaarschuwing(hint, idSuffix, extraAttributen) {
         return `<span title="${hint}" id="${this.ElementId(idSuffix)}" ${this.DataSet()} ${(extraAttributen ?? '')} class="specmelding">&#x26A0;</span>`;
@@ -1800,6 +1813,7 @@ class SpecificatieElement {
      * modal scherm. Deze methode bepaalt alleen wat de container wordt om de eigenlijke
      * html heen: standaard een span. Kan in afgeleide klassen worden aangepast.
      * @param {lambda} innerHtml - Optioneel: methode die de html binnen de container opstelt
+     * @returns {string}
      */
     Html(innerHtml) {
         let containerElement = this.ContainerElement();
@@ -1812,7 +1826,7 @@ class SpecificatieElement {
      */
     VervangInnerHtml() {
         if (this.#isInvoer) {
-            let elt = document.getElementById(this.ElementId('___M'));
+            let elt = this.Element('___M');
             if (elt) {
                 // Verifieer dat de submanagers ook klaar zijn voor de invoer
                 this.#ModalMode(true);
@@ -1820,7 +1834,7 @@ class SpecificatieElement {
             }
         }
         else {
-            let elt = document.getElementById(this.ElementId('___W'));
+            let elt = this.Element('___W');
             if (elt) {
                 elt.innerHTML = this.WeergaveInnerHtml();
             }
@@ -1882,13 +1896,13 @@ class SpecificatieElement {
 
     /**
      * Verwijder alle actieve specificatie-elementen
-     * @param {any} vanafTijdstip - drempelwaarde, indien gegeven worden alleen de specificatie-elementen van activiteiten na dit tijdstip weggegooid.
+     * @param {Tijdstip} vanafTijdstip - drempelwaarde, indien gegeven worden alleen de specificatie-elementen van activiteiten na dit tijdstip weggegooid.
      */
     static VerwijderElementen(vanafTijdstip) {
         for (let gewijzigd = true; gewijzigd && Object.keys(BGProcesSimulator.Singletons('Elementen', {})).length > 0;) {
             gewijzigd = false;
             for (let se of [...Object.values(BGProcesSimulator.Singletons('Elementen'))]) {
-                if (!vanafTijdstip || (se.Tijdstip && se.Tijdstip().Vergelijk(tijdstip) > 0)) {
+                if (!vanafTijdstip || (se.Tijdstip && se.Tijdstip().Vergelijk(vanafTijdstip) > 0)) {
                     se.destructor();
                     gewijzigd = true;
                     break;
@@ -2062,7 +2076,7 @@ class Tijdstip extends SpecificatieElement {
      * @param {SpecificatieElement} superInvoer - SpecificatieElement waar dit een specificatie-subelement van is
      * @param {any} eigenaarObject - Object of array in de specificatie waar dit een eigenschap van is
      * @param {string} eigenschap - Eigenschap waaraan dit element toegekend wordt. Als eigenaarObject een array is, laat dit dan leeg.
-     * @param {bool} isTijdstip - Geeft aan of dit een tijdstip (ipv een datum) is
+     * @param {boolean} isTijdstip - Geeft aan of dit een tijdstip (ipv een datum) is
      * @param {Tijdstip} naTijdstip - Geef de dag/tijd waar het tijdstip na moet vallen
      * @param {boolean/function} isReadOnly - Optioneel: een boolean of een methode die teruggeeft of het tijdstip gewijzigd kan worden
      */
@@ -2075,6 +2089,16 @@ class Tijdstip extends SpecificatieElement {
         }
         this.#isReadOnly = isReadOnly;
         this.#InterpreteerSpecificatie(super.Specificatie());
+    }
+
+    /**
+     * Maak een Tijdstip dat de opgegeven waarde representeert
+     * @param {number} specificatie - Het tijdstip als getal (aantal dagen + 0.01 * uur)
+     * @param {boolean} isTijdstip - Geeft aan of dit een tijdstip (ipv een datum) is
+     * @returns {Tijdstip}
+     */
+    static Maak(specificatie, isTijdstip) {
+        return new Tijdstip(undefined, { t: specificatie }, 't', isTijdstip, undefined, true);
     }
     //#endregion
 
@@ -2093,7 +2117,7 @@ class Tijdstip extends SpecificatieElement {
 
     /**
      * Geeft aan dat het tijdstip een waarde heeft
-     * @returns
+     * @returns {boolean}
      */
     HeeftWaarde() {
         return this.Specificatie() !== undefined;
@@ -2101,6 +2125,7 @@ class Tijdstip extends SpecificatieElement {
 
     /**
      * Geef de datum/tijdstip als een ISO datum voor gebruik in STOP modules
+     * @returns {string}
      */
     STOPDatumTijd() {
         let datum = new Date(BGProcesSimulator.This().Startdatum());
@@ -2117,6 +2142,7 @@ class Tijdstip extends SpecificatieElement {
     }
     /**
      * Geef het jaar van deze datum/tijdstip
+     * @returns {int}
      */
     Jaar() {
         let datum = new Date(BGProcesSimulator.This().Startdatum());
@@ -2127,6 +2153,7 @@ class Tijdstip extends SpecificatieElement {
 
     /**
      * Geef de datum als yyyy-mm-dd
+     * @returns {string}
      */
     DatumHtml() {
         let datum = new Date(BGProcesSimulator.This().Startdatum());
@@ -2137,6 +2164,7 @@ class Tijdstip extends SpecificatieElement {
     }
     /**
      * Geef de datum/tijdstip als een ISO datum
+     * @returns {string}
      */
     DatumTijdHtml() {
         let datum = new Date(BGProcesSimulator.This().Startdatum());
@@ -2153,6 +2181,7 @@ class Tijdstip extends SpecificatieElement {
     }
     /**
      * Geef de datum en evt uur als een array van strings
+     * @returns {string[]} - array met dag en, voor een tijdstip, uur.
      */
     DagUurHtml() {
         let dag = Math.floor(this.Specificatie());
@@ -2171,22 +2200,24 @@ class Tijdstip extends SpecificatieElement {
 
     /**
      * Geeft de startdatum als tijdstip-Tijdstip (want dat is niet in te voeren)
+     * @returns {Tijdstip}
      */
     static StartTijd() {
         let singletons = BGProcesSimulator.Singletons('Tijdstip', {});
         if (!singletons.StartTijd) {
-            singletons.StartTijd = new Tijdstip(undefined, { Tijd: 0 }, 'Tijd', true);
+            singletons.StartTijd = Tijdstip.Maak(0, true);
         }
         return singletons.StartTijd;
     }
 
     /**
      * Geeft de startdatum als datum-Tijdstip (want dat is niet in te voeren)
+     * @returns {Tijdstip}
      */
     static StartDatum() {
         let singletons = BGProcesSimulator.Singletons('Tijdstip', {});
         if (!singletons.StartDatum) {
-            singletons.StartDatum = new Tijdstip(undefined, { Datum: 0 }, 'Datum', false);
+            singletons.StartDatum = Tijdstip.Maak(0, false);
         }
         return singletons.StartDatum;
     }
@@ -2195,6 +2226,7 @@ class Tijdstip extends SpecificatieElement {
      * Geeft aan of dit tijdstip gelijk is aan het andere. Dat is het geval als ze beide
      * geen waarde hebben, of beide wel een waarde en Vergelijk = 0 
      * @param {Tijdstip} tijdstip
+     * @returns {boolean}
      */
     IsGelijk(tijdstip) {
         return this.Specificatie() === tijdstip?.Specificatie();
@@ -2205,6 +2237,7 @@ class Tijdstip extends SpecificatieElement {
      * Geeft < 0, = 0, > 0 als dit tijdstip eerder / gelijk / later is dan het opgegeven tijdstip,
      * en undefined als een van de tijdstippen undefined is.
      * @param {Tijdstip} tijdstip
+     * @returns {boolean}
      */
     Vergelijk(tijdstip) {
         if (tijdstip?.HeeftWaarde() && this.HeeftWaarde()) {
@@ -2295,8 +2328,8 @@ class Tijdstip extends SpecificatieElement {
 
     OnInvoerChange(elt, idSuffix) {
         if (idSuffix == 'D' || idSuffix == 'T') {
-            let dag = parseInt(document.getElementById(this.ElementId('D')).value);
-            let uur = this.#isTijdstip ? parseInt(document.getElementById(this.ElementId('T')).value) : 0;
+            let dag = parseInt(this.Element('D').value);
+            let uur = this.#isTijdstip ? parseInt(this.Element('T').value) : 0;
             this.#InterpreteerSpecificatie(dag + 0.01 * uur);
             if (dag != this.#dag || uur != this.#uur) {
                 this.VervangInnerHtml();
@@ -2370,6 +2403,7 @@ class Annotatie {
     //#region Eigenschappen
     /**
      * Naam van de annotatie
+     * @returns {string}
      */
     Naam() {
         return this.#naam;
@@ -2377,6 +2411,7 @@ class Annotatie {
     #naam;
     /**
      * Geeft een vrije naam voor een non-STOP annotatie
+     * @returns {string}
      */
     static VrijeNonStopAnnotatieNaam() {
         let alleNonStop = {};
@@ -2392,6 +2427,7 @@ class Annotatie {
 
     /**
      * Uniek ID voor de combinatie van deze annotatie (naam) + waarde ervan.
+     * @returns {int}
      */
     UUID() {
         return this.#uuid;
@@ -2401,7 +2437,7 @@ class Annotatie {
 
     /**
      * Geeft de momentopname waarvoor de annotatie is aangemaakt
-     * @returns
+     * @returns {Momentopname}
      */
     Momentopname() {
         return this.#momentopname
@@ -2453,7 +2489,7 @@ class Metadata extends Annotatie {
     //#region Eigenschappen
     /**
      * De citeertitel als onderdeel van de metadata
-     * @returns
+     * @returns {string}
      */
     Citeertitel() {
         return this.#citeertitel;
@@ -2463,6 +2499,7 @@ class Metadata extends Annotatie {
     /**
      * Geeft aan of deze annotatie hetzelfde is (naam + waarde) als een andere annotatie
      * @param {Annotatie} annotatie
+     * @returns {boolean}
      */
     IsGelijkAan(annotatie) {
         return this.Naam() === annotatie?.Naam() && this.Citeertitel() === annotatie?.Citeertitel();
@@ -2536,7 +2573,8 @@ class Instrument {
 
 
     /**
-     * Geef een (gesorteerde) lijst met bekende instrumentnamen
+     * Geef een (ongesorteerde) lijst met bekende instrumentnamen
+     * @returns {string[]}
      */
     static Instrumentnamen(soortInstrument) {
         let alleInstrumenten = {};
@@ -2553,7 +2591,8 @@ class Instrument {
 
     /**
      * Geef een vrij te gebruiken naam voor een soort instrument
-     * @param {any} soortInstrument
+     * @param {string} soortInstrument
+     * @returns {string}
      */
     static VrijeNaam(soortInstrument) {
         let alleInstrumenten = {};
@@ -2572,6 +2611,7 @@ class Instrument {
      * Geef het work-ID voor een instrument
      * @param {string} instrument - Naam van het instrument
      * @param {Activiteit} activiteit - Activiteit waarin het instrument aangemaakt wordt (niet voor regelgeving)
+     * @returns {string}
      */
     static Work(instrument, activiteit) {
         let soort = Instrument.SoortInstrument(instrument);
@@ -2677,6 +2717,7 @@ class Instrumentversie {
     //#region Eigenschappen en wijzigen daarvan
     /**
      * De branch die deze instrumentversie beheert
+     * @returns {Branch}
      */
     Branch() {
         return this.Momentopname().Branch();
@@ -2684,6 +2725,7 @@ class Instrumentversie {
 
     /**
      * De momentopname waar deze instrumentversie deel van uitmaakt.
+     * @returns {Momentopname}
      */
     Momentopname() {
         return this.#momentopname;
@@ -2692,6 +2734,7 @@ class Instrumentversie {
 
     /**
      * De naam van het instrument
+     * @returns {string}
      */
     Instrument() {
         return this.#instrument;
@@ -2709,6 +2752,7 @@ class Instrumentversie {
 
     /**
      * Uniek ID voor deze instrumentversie.
+     * @returns {int}
      */
     UUID() {
         return this.#uuid;
@@ -2915,6 +2959,7 @@ class Instrumentversie {
     /**
      * Geeft aan dit een versie is met juridische inhoud (tekst of data). Zo niet,
      * dan is het een placeholder voor iets dat nog komen gaat.
+     * @returns {boolean}
      */
     HeeftJuridischeInhoud() {
         return !this.#isIngetrokken && this.#juridischeInhoud;
@@ -2939,6 +2984,7 @@ class Instrumentversie {
 
     /**
      * Geeft aan of het instrument ingetrokken is
+     * @returns {boolean}
      */
     IsIngetrokken() {
         return this.#isIngetrokken;
@@ -2956,6 +3002,7 @@ class Instrumentversie {
     /**
      * Geef aan of de instrumentversie annotaties heeft
      * @param {boolean} isStop - Geeft aan of het om de STOP annotaties gaat - undefined voor alle annotaties
+     * @returns {boolean}
      */
     HeeftAnnotaties(isStop) {
         if (!this.HeeftJuridischeInhoud()) {
@@ -2977,6 +3024,7 @@ class Instrumentversie {
     /**
      * Geef de toegestane namen van de annotaties
      * @param {boolean} isStop - Geeft aan of het om de STOP annotaties gaat
+     * @returns {string[]}
      */
     AnnotatieNamen(isStop) {
         if (isStop) {
@@ -2999,6 +3047,7 @@ class Instrumentversie {
      * of undefined als die er nog niet is.
      * @param {boolean} isStop - Geeft aan of het om een STOP annotatie gaat
      * @param {string} naam - De naam van de annotatie
+     * @returns {Annotatie}
      */
     Annotatie(isStop, naam) {
         if (this.HeeftJuridischeInhoud()) {
@@ -3735,7 +3784,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
     //#region Eigenschappen
     /**
      * Geeft de naam/code van het instrument waar dit een versie van is
-     * @returns
+     * @returns {string}
      */
     Instrument() {
         return this.Eigenschap();
@@ -3744,6 +3793,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
     /**
      * Geef de naam van het instrument zoals aan de eindgebruiker getoond wordt.
      * Dit is de citeertitel, tenzij die niet gezet is.
+     * @returns {string}
      */
     InstrumentInteractienaam() {
         let versie = this.IsInvoer() ? this.#nieuweversie : this.#actueleversie;
@@ -3794,6 +3844,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
     //#region Statusoverzicht
     /**
       * Het overzicht van de instrumentversie als onderdeel van de momentopname in het projectoverzicht
+     * @returns {string}
       */
     OverzichtHtml() {
         let html = `laatst gewijzigd op ${this.Instrumentversie().JuridischeInhoudLaatstGewijzigd().DatumTijdHtml()}`;
@@ -4049,7 +4100,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                     // Nieuwe annotatieversie
                     let annotatie;
                     if (isStop && naam === Annotatie.SoortAnnotatie_Citeertitel) {
-                        annotatie = new Metadata(document.getElementById(this.ElementId('CT')).value, this.Momentopname());
+                        annotatie = new Metadata(this.Element('CT').value, this.Momentopname());
                     } else {
                         annotatie = new Annotatie(naam, this.Momentopname());
                     }
@@ -4067,7 +4118,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
         }
         else if (idSuffix.startsWith('NS')) {
             //#region Nieuwe non-STOP annotatie
-            let naam = document.getElementById(this.ElementId('N' + idSuffix)).value.trim();
+            let naam = this.Element('N' + idSuffix).value.trim();
             if (naam) {
                 if (this.#nieuweversie.AnnotatieWordt(false, new Annotatie(naam, this.Momentopname()))) {
                     this.VervangInnerHtml();
@@ -4119,7 +4170,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                 case 'V':
                     if (elt.checked) {
                         // Verwijs naar een eerdere versie
-                        this.#GebruikEerdereVersie(document.getElementById(this.ElementId('VL')));
+                        this.#GebruikEerdereVersie(this.Element('VL'));
                         this.VervangInnerHtml();
                     }
                     break;
@@ -4158,7 +4209,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
 }
 //#endregion
 
-//#region Momentopname en TijdstempelsSpecificatie
+//#region TijdstempelsSpecificatie
 /*------------------------------------------------------------------------------
 *
 * TijdstempelsSpecificatie is een specificatie-subelement die de invoer van
@@ -4238,6 +4289,7 @@ class TijdstempelsSpecificatie extends SpecificatieElement {
 
     /**
      * Geeft aan of de tijdstempels gewijzigd zijn in deze momentopname
+     * @returns {boolean}
      */
     HeeftGewijzigdeTijdstempels() {
         if (!this.#tijdstempelsToegestaan) {
@@ -4389,9 +4441,9 @@ class Momentopname extends SpecificatieElement {
      * @param {Branch} branch - De branch waarvoor dit een momentopname is
      * @param {bool} tijdstempelsToegestaan - Geeft aan of ook tijdstippen ingevoerd mogen worden
      * @param {bool} tijdstempelsVerplicht - Geeft aan of tenminste de JuridischWerkendVanaf ingevuld moet worden
-     * @param {bool/Tijdstip/Momentopname} werkUitgangssituatieBij - Geeft aan of de uitgangssituatie bijgewerkt moet worden,
-     *                                              en evt voor welk tijdstip de geconsolideerde regelgeving gebruikt moet worden
-     *                                              c.q. welke momentopname. 
+     * @param {bool/int/Momentopname} werkUitgangssituatieBij - Geeft aan of de uitgangssituatie bijgewerkt moet worden, voor Branch.Soort_GeldendeRegelgeving
+     *                                             evt voor welk tijdstip de geconsolideerde regelgeving gebruikt moet worden en voor anderen
+     *                                             evt de Momentopname die als uitgangspunt genomen moet worden
      * @param {Momentopname[]} ontvlochtenversies - De wijzigingen die ontvlochten moeten worden met deze wijziging
      * @param {Momentopname[]} vervlochtenversies - De wijzigingen die vervlochten moeten worden met deze wijziging
      */
@@ -4439,7 +4491,7 @@ class Momentopname extends SpecificatieElement {
                     if (!status || status.Bepaald().length === 0) {
                         this.Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `Er is nog geen geldende regelgeving bekend; deze branch leidt tot nieuwe regelingen.`);
                     } else {
-                        let tijdstip = werkUitgangssituatieBij instanceof Tijdstip ? werkUitgangssituatieBij : this.Branch().IWTDatum().HeeftWaarde() ? this.Branch().IWTDatum() : this.Tijdstip();
+                        let tijdstip = typeof werkUitgangssituatieBij === "number" ? Tijdstip.Maak(werkUitgangssituatieBij, true) : this.Branch().IWTDatum().HeeftWaarde() ? this.Branch().IWTDatum() : this.Tijdstip();
                         this.Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `De uitgangssituatie van de regelgeving van deze branch wordt bijgewerkt naar de regelgeving die geldig is op ${tijdstip.DatumTijdHtml()}`);
                         status = status.NuGeldend(tijdstip);
                         uitgangssituatie = status.IWTMoment().LaatsteBijdrage(status.IWTMoment().Inwerkingtredingbranchcodes()[0]);
@@ -4621,6 +4673,7 @@ class Momentopname extends SpecificatieElement {
     /**
      * Geeft aan of de regelgeving van de branch is gewijzigd ten opzichte van de
      * JuridischeUitgangssituatie. In deze applicatie alleen nodig voor weergave.
+     * @returns {boolean}
      */
     IsInhoudGewijzigd() {
         if (this.#inhoudVorigeMOIsGewijzigd) {
@@ -4638,6 +4691,7 @@ class Momentopname extends SpecificatieElement {
     /**
      * Geeft aan of de inwerkingtreding is toegevoegd ten opzichte van de eerste van 
      * de JuridischeUitgangssituatie. In deze applicatie alleen nodig voor weergave.
+     * @returns {boolean}
      */
     IsInwerkingtredingToegevoegd() {
         if (!this.JuridischWerkendVanaf().HeeftWaarde()) {
@@ -4651,6 +4705,7 @@ class Momentopname extends SpecificatieElement {
      * mededeling die (eerder) vastgestelde inhoud betreft (dus geen ontwerp).
      * Als dat zo is, dan is deze momentopname de JuridischeUitgangssituatie van 
      * de volgende momentopname.
+     * @returns {boolean}
      */
     IsOnderdeelVanPublicatieVastgesteldeInhoud() {
         return this.#isOnderdeelVanPublicatie;
@@ -4663,6 +4718,7 @@ class Momentopname extends SpecificatieElement {
     /**
      * Geeft aan of het vaststellingsbesluit is gepubliceerd. Alleen nodig voor de 
      * weergave in deze applicatie (want dan zijn rectificaties mogelijk)
+     * @returns {boolean}
      */
     IsVaststellingsbesluitGepubliceerd() {
         return this.#isVastgesteld;
@@ -4695,6 +4751,7 @@ class Momentopname extends SpecificatieElement {
     /**
      * Geeft aan dat de inhoud van tenminste een van de instrumentversies is gewijzigd 
      * in deze momentopname
+     * @returns {boolean}
      */
     HeeftGewijzigdeInstrumentversie() {
         for (let versie of this.Instrumentversies()) {
@@ -4723,6 +4780,7 @@ class Momentopname extends SpecificatieElement {
 
     /**
      * Geeft aan of de tijdstempels gewijzigd zijn in deze momentopname
+     * @returns {boolean}
      */
     HeeftGewijzigdeTijdstempels() {
         return this.#tijdstempels.HeeftGewijzigdeTijdstempels();
@@ -4772,6 +4830,7 @@ class Momentopname extends SpecificatieElement {
      * Geeft de namen van de braches waarvan de inhoud is verwerkt in de
      * inhoud van deze momentopname. Dat is inclusief de branch van deze
      * momentopname.
+     * @returns {boolean}
      */
     HeeftBijdragenVan() {
         return Object.keys(this.#bijdragen);
@@ -4962,6 +5021,7 @@ class Momentopname extends SpecificatieElement {
     //#region Statusoverzicht
     /**
      * Het overzicht van de momentopname in het projectoverzicht
+     * @returns {string}
      */
     OverzichtHtml() {
         let meerdereInstrumentenMogelijk = BGProcesSimulator.Opties.MeerdereRegelingen || BGProcesSimulator.Opties.InformatieObjecten;
@@ -5075,6 +5135,7 @@ class Momentopname extends SpecificatieElement {
     /**
      * Geeft aan dat er andere momentopnamen zijn die voortbouwen op de instrumentversies van deze momentopname
      * omdat ze gebruik maken van de consolidatie
+     * @returns {boolean}
      */
     IsUitgangssituatieAlsConsolidatie() {
         return this.#gebruiktAlsConsolidatieDoor.length > 0;
@@ -5244,7 +5305,7 @@ class Momentopname extends SpecificatieElement {
         switch (idSuffix.charAt(0)) {
             case 'P':
                 // Uit een ander project
-                let select = document.getElementById(this.ElementId('I' + idSuffix));
+                let select = this.Element('I' + idSuffix);
                 if (select.selectedIndex >= 0) {
                     let citeertitel = undefined;
                     let ct = select.options[select.selectedIndex].dataset.ct;
@@ -5468,6 +5529,7 @@ class Branch extends SpecificatieElement {
      * Een branch die afhangt van een andere branch komt dus later in het resultaat.
      * @param {Tijdstip} tijdstip - Optioneel: tijdstip waarop de branch uiterlijk aangemaakt moet zijn - undefined voor alle branches
      * @param {Project} project - Optioneel: project waar de branch bij hoort - undefined voor branches van alle projecten
+     * @returns {Branch[]}
      */
     static Branches(tijdstip, project) {
         let branches = [];
@@ -5486,6 +5548,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Vergelijkingsfunctie om branches te sorteren
+     * @returns {int}
      */
     static Vergelijk(a, b) {
         let diff = a.OntstaanIn().Tijdstip().Vergelijk(b.OntstaanIn().Tijdstip());
@@ -5498,6 +5561,7 @@ class Branch extends SpecificatieElement {
     /**
      * Geef de branch met de gegeven naam
      * @param {string} branchcode - Naam van de branch
+     * @returns {Branch}
      */
     static Branch(branchcode) {
         return BGProcesSimulator.Singletons('Branches', {})[branchcode];
@@ -5505,6 +5569,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Geeft de activiteit waarin de branch is ontstaan
+     * @returns {Momentopname}
      */
     OntstaanIn() {
         return this.SuperInvoer();
@@ -5512,7 +5577,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Geeft de dag van IWT van de geconsolideerde regeling die als uitgangspunt gebruikt moet worden.
-     * @returns
+     * @returns {Tijdstip}
      */
     IWTDatum() {
         return this.#iwtDatum;
@@ -5521,6 +5586,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Geeft het project waarvoor de branch is aangemaakt
+     * @returns {Project}
      */
     Project() {
         return this.#project;
@@ -5529,6 +5595,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Geeft de code van de branch zoals die in de specificatie voorkomt
+     * @returns {string}
      */
     Code() {
         return this.Eigenschap();
@@ -5536,6 +5603,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Geeft de naam van de branch zoals die in de specificatie voorkomt
+     * @returns {string}
      */
     Naam() {
         return this.#naam.Specificatie();
@@ -5544,6 +5612,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Geeft de naam van de branch zoals die in de user interface gebruikt moet worden
+     * @returns {string}
      */
     InteractieNaam() {
         if (Branch.Branches(undefined, this.Project()).length <= 1) {
@@ -5555,6 +5624,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Geeft een toelichting op de aard van de branch, voor weergave
+     * @returns {string}
      */
     Beschrijving() {
         return this.#beschrijving.Specificatie();
@@ -5563,6 +5633,7 @@ class Branch extends SpecificatieElement {
 
     /**
      * Geeft de soort waartoe de branch behoort.
+     * @returns {string}
      */
     Soort() {
         return this.Specificatie().Soort;
@@ -5581,6 +5652,7 @@ class Branch extends SpecificatieElement {
      * Geeft de branches die eerst in werking moeten treden; deze branch 
      * treedt dan ook in werking. Als deze waarde niet undefined is,
      * dan behoort VolgtOpBranch tot hetzelfde project.
+     * @returns {Branch[]}
      */
     TreedtConditioneelInWerkingMet() {
         return this.#inWerkingMet;
@@ -5590,6 +5662,7 @@ class Branch extends SpecificatieElement {
     /**
      * Geeft de laatste momentopname voor deze branch
      * @param {Tijdstip} tijdstip - Optioneel: tijdstip waarop de activiteit uiterlijk uitgevoerd moet zijn - undefined voor alle activiteiten
+     * @returns {Momentopname}
      */
     LaatsteMomentopname(tijdstip) {
         let resultaat;
@@ -5746,6 +5819,7 @@ class IWTMoment {
     /**
      * De namen van de branches die leiden tot het ontstaan
      * van dit iwt-moment
+     * @returns {string[]}
      */
     Inwerkingtredingbranchcodes() {
         return Object.keys(this.#bijdragen);
@@ -5947,6 +6021,7 @@ class IWTMomentConsolidatiestatus {
     /**
      * De momentopnamen (uit andere branches dan de iwt-branches) die vervlochten moeten worden
      * om tot een geconsolideerde versie voor het IWT moment te komen
+     * @returns {Momentopname[]}
      */
     TeVervlechten() {
         return this.#teVervlechten;
@@ -5956,6 +6031,7 @@ class IWTMomentConsolidatiestatus {
     /**
      * De momentopnamen (uit andere branches dan de iwt-branches) die vervlochten moeten worden
      * om tot een geconsolideerde versie voor het IWT moment te komen
+     * @returns {Momentopname[]}
      */
     TeOntvlechten() {
         return this.#teOntvlechten;
@@ -5987,6 +6063,7 @@ class Consolidatiestatus extends SpecificatieElement {
     //#region Eigenschappen
     /**
      * Geeft aan dat er nog geen enkele geldende regelgeving bekend is
+     * @returns {boolean}
      */
     static IsConsolidatieAanwezig() {
         if (BGProcesSimulator.This().Uitgangssituatie().JuridischWerkendVanaf()?.HeeftWaarde()) {
@@ -6019,7 +6096,8 @@ class Consolidatiestatus extends SpecificatieElement {
     #geldend = [];
 
     /**
-     * Geef de toekomstige IWT-momenten en de status ervan, voor zover bepaald
+     * Geeft de toekomstige IWT-momenten en de status ervan, voor zover bepaald.
+     * Het resultaat is een lege lijst als er geen IWT momenten zijn.
      * @returns {IWTMomentConsolidatiestatus[]}
      */
     Bepaald() {
@@ -6194,7 +6272,7 @@ class Beschrijving extends SpecificatieElement {
 
     EindeInvoer(accepteerInvoer) {
         if (accepteerInvoer) {
-            let elt = document.getElementById(this.ElementId('T'));
+            let elt = this.Element('T');
             if (elt) {
                 this.SpecificatieWordt(elt.value);
             }
@@ -6261,7 +6339,7 @@ class Naam extends SpecificatieElement {
         }
     }
     #MaakValideNaam(isNieuweVersie) {
-        let elt = document.getElementById(this.ElementId('T'));
+        let elt = this.Element('T');
         if (elt) {
             let valide = this.#maakValideNaam(elt.value, isNieuweVersie);
             if (valide !== elt.value) {
@@ -6274,7 +6352,7 @@ class Naam extends SpecificatieElement {
 
     EindeInvoer(accepteerInvoer) {
         if (accepteerInvoer) {
-            let elt = document.getElementById(this.ElementId('T'));
+            let elt = this.Element('T');
             if (elt) {
                 this.SpecificatieWordt(elt.value);
             }
@@ -6391,6 +6469,7 @@ class Uitgangssituatie extends Momentopname {
     //#region Eigenschappen
     /**
      * De uitgangssituatie is in werking 
+     * @returns {Tijdstip}
      */
     JuridischWerkendVanaf() {
         if (this.Instrumentversies().length > 0) {
@@ -6400,13 +6479,15 @@ class Uitgangssituatie extends Momentopname {
 
     /**
      * Geef de datum van start geldigheid (als undefined)
+     * @returns {Tijdstip}
      */
     GeldigVanaf() {
     }
 
     /**
      * Geef een overzicht van de status van het consolidatieproces na de uitgangssituatie
-    */
+     * @returns {Consolidatiestatus}
+     */
     Consolidatiestatus() {
         return this.#consolidatiestatus;
     }
@@ -6465,6 +6546,7 @@ ${super.InvoerInnerHtml()}`;
     EindeModal(accepteerInvoer) {
         super.EindeModal(accepteerInvoer);
         if (accepteerInvoer) {
+            this.#ModulesVoorLVBBSimulator();
             BGProcesSimulator.This().WerkScenarioUit(0);
         }
     }
@@ -6474,6 +6556,7 @@ ${super.InvoerInnerHtml()}`;
     /**
      * Geeft de STOP modules die voor de uitgangssituatie naar de LVBB simulator
      * gestuurd moeten worden.
+     * @returns {any}
      */
     ModulesVoorLVBBSimulator() {
         return this.#modules;
@@ -6482,7 +6565,7 @@ ${super.InvoerInnerHtml()}`;
     #ModulesVoorLVBBSimulator() {
         this.#modules = []
         if (this.Instrumentversies().length == 0) {
-            return [];
+            return;
         }
         let module = {
             _ns: Activiteit.STOP_Data,
@@ -6565,7 +6648,7 @@ class Project extends SpecificatieElement {
 
     /**
      * De unieke code voor dit project
-     * @returns
+     * @returns {string}
      */
     Code() {
         return this.Eigenschap();
@@ -6573,6 +6656,7 @@ class Project extends SpecificatieElement {
 
     /**
      * Naam van het project
+     * @returns {string}
      */
     Naam() {
         return this.Specificatie().Naam;
@@ -6580,6 +6664,7 @@ class Project extends SpecificatieElement {
 
     /**
      * Geeft de activiteit waarin de branch is ontstaan
+     * @returns {Activiteit}
      */
     OntstaanIn() {
         return this.SuperInvoer();
@@ -6713,6 +6798,7 @@ class Activiteit extends SpecificatieElement {
      * Geef alle gespecificeerde activiteiten, gesorteerd op tijdstip
      * @param {Tijdstip} tijdstip - Optioneel: tijdstip waarop de activiteit uiterlijk uitgevoerd moet zijn - undefined voor alle activiteiten
      * @param {Project} project - Optioneel: project waarbij de activiteiten getoond moeten worden.
+     * @returns {Activiteit[]}
      */
     static Activiteiten(tijdstip, project) {
 
@@ -6772,7 +6858,7 @@ class Activiteit extends SpecificatieElement {
      * Geeft aan dat de activiteit verwijderd kan worden door de opsteller van het scenario.
      * Dit is niet mogelijk als het resultaat van deze activiteit gebruikt is in de specificatie
      * van een latere activiteit.
-     * @returns
+     * @returns {boolean}
      */
     KanVerwijderdWorden() {
         return this.#blokkerendeActiviteiten.length === 0;
@@ -6822,6 +6908,7 @@ class Activiteit extends SpecificatieElement {
     /**
      * Geeft aan of de activiteit vermeld moet worden in het overzicht van het project
      * @param {Project} project - Het project waarvoor het overzicht gemaakt wordt
+     * @returns {boolean}
      */
     ToonInProject(project) {
         if (project === null) {
@@ -6933,7 +7020,7 @@ class Activiteit extends SpecificatieElement {
      * Geeft aan of er meldingen over de specificatie zijn. Deze kunnen zowel bij het inlezen 
      * van de specificatie aangevuld worden als bij het wijzigen ervan, als een nieuwe activiteit
      * voor een eerdere datum leidt tot inconsistenties bij latere activiteiten.
-     * @returns
+     * @returns {boolean}
      */
     HeeftSpecificatieMeldingen() {
         return this.#heeftSpecificatieMeldingen;
@@ -6994,9 +7081,9 @@ class Activiteit extends SpecificatieElement {
      * Maak een momentopname voor een branch als onderdeel van de specificatie
      * @param {string} branchcode - Code van de branch. De branch moet bestaan.
      * @param {any} specificatie - De specificatie voor zover die anders is dan de specificatie van deze activiteit
-     * @param {bool/Tijdstip/Momentopname} werkUitgangssituatieBij - Geeft aan of de uitgangssituatie bijgewerkt moet worden,
-     *                                              en evt voor welk tijdstip de geconsolideerde regelgeving gebruikt moet worden
-     *                                              c.q. welke momentopname. 
+     * @param {bool/int/Momentopname} werkUitgangssituatieBij - Geeft aan of de uitgangssituatie bijgewerkt moet worden, voor Branch.Soort_GeldendeRegelgeving
+     *                                             evt voor welk tijdstip de geconsolideerde regelgeving gebruikt moet worden en voor anderen
+     *                                             evt de Momentopname die als uitgangspunt genomen moet worden
      * @param {Momentopname[]} ontvlochtenversies - De wijzigingen die ontvlochten moeten worden met deze wijziging
      * @param {Momentopname[]} vervlochtenversies - De wijzigingen die vervlochten moeten worden met deze wijziging
      */
@@ -7028,6 +7115,7 @@ class Activiteit extends SpecificatieElement {
 
     /**
      * Geeft aan of de activiteit leidt tot een aanlevering van een revisie aan de LVBB
+     * @returns {boolean}
      */
     IsRevisie() {
         return this.Publicatiebron() && this.Publicatiebron().endsWith("revisie");
@@ -7058,6 +7146,7 @@ class Activiteit extends SpecificatieElement {
 
     /**
      * Geeft de HTML voor het verslag van de uitvoering van de geselecteerde activiteit
+     * @returns {string}
      */
     UitvoeringsverslagHtml() {
         let html = '';
@@ -7100,7 +7189,7 @@ class Activiteit extends SpecificatieElement {
 
     /**
      * Geeft aan of er STOP modules uitgewisseld zijn bij de uitvoering van de activiteit
-     * @returns
+     * @returns {boolean}
      */
     HeeftUitwisselingen() {
         return this.#uitwisselingen.length > 0;
@@ -7202,6 +7291,7 @@ ${uitwisseling.STOPXml.replace(/&/g, '&amp').replace(/</g, '&lt;').replace(/>/g,
      * @param {string} moduleNaam - Naam van de module
      * @param {any} module - Inhoud van de module
      * @param {string} instrumentversie - Optioneel: instrumentversie waar de module bij hoort
+     * @returns {string}
      */
     static ModuleToXml(moduleNaam, module, instrumentversie) {
         let xml = `<${moduleNaam} xmlns="${module._ns}">`;
@@ -7311,18 +7401,12 @@ ${indent}<${tag}>${value}</${tag}>`
         html += '</table>';
         return html;
     }
-
-    /**
-     * Geef een overzicht van de status van de besluiten na deze activiteit
-     */
-    BesluitStatus() {
-        return { Html: () => 'TODO' };
-    }
     //#endregion
 
     //#region Ondersteuning implementatie specificatie-element
     /**
      * Geeft de HTML die opgenomen moet worden aan het begin van de WeergaveInnerHtml/InvoerInnerHtml
+     * @returns {string}
      */
     StartInnerHtml() {
         let html = `<h3>${this.Naam()}</h3>`;
@@ -7334,6 +7418,7 @@ ${indent}<${tag}>${value}</${tag}>`
 
     /**
      * Geeft de HTML die opgenomen moet worden aan het einde van de WeergaveInnerHtml/InvoerInnerHtml
+     * @returns {string}
      */
     EindeInnerHtml() {
         let html = '';
@@ -7498,8 +7583,8 @@ class MogelijkeActiviteit {
         },
         'Bijwerken uitgangssituatie': {
             KanVolgenOp: [MogelijkeActiviteit.SoortActiviteit_MaakProject, MogelijkeActiviteit.SoortActiviteit_Uitwisseling],
-            KanNietVolgenOp: false,
-            Props: [],
+            KanNietVolgenOp: [MogelijkeActiviteit.SoortActiviteit_Vaststellingsbesluit],
+            Props: ['Invoer'],
             MomentopnameTijdstempels: false,
             MomentopnameProps: [],
             Constructor: (specificatie, nieuw) => new Activiteit_BijwerkenUitgangssituatie(specificatie, nieuw),
@@ -7580,6 +7665,7 @@ class MogelijkeActiviteit {
 
     /**
      * Geef de soort activiteiten die voor een project uitgevoerd kunnen worden
+     * @returns {string[]}
      */
     ProjectActiviteiten(projectcode) {
         let soorten = this.#bijBevoegdGezag[projectcode];
@@ -7976,7 +8062,7 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
                 if (laatsteVoorDezeActiviteit && beschikbaar.IWTMoment().Datum().Vergelijk(laatsteVoorDezeActiviteit) < 0) {
                     continue;
                 }
-                if (beschikbaar.IsVoltooid() || iwtDatums.length === 0) {
+                if (beschikbaar.IsVoltooid()) {
                     this.#beschikbareConsolidatie.push(beschikbaar.IWTMoment().Datum());
                 }
             }
@@ -7990,7 +8076,7 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
                             this.#datumConsolidatie = iwt.Specificatie();
                         }
                     }
-                    if (!this.#datumConsolidatie) {
+                    if (this.#datumConsolidatie === undefined) {
                         this.#branch.IWTDatum().SpecificatieWordt(undefined);
                     }
                 }
@@ -7998,6 +8084,9 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
                 this.#volgtOpBranch = this.#branch.VolgtOpBranch();
                 this.#volgtOpProject = this.#volgtOpBranch.Project();
             }
+        }
+        if (this.#datumConsolidatie === undefined && this.#beschikbareConsolidatie.length === 1) {
+            this.#datumConsolidatie = this.#beschikbareConsolidatie[0].Specificatie();
         }
     }
     #branch;
@@ -8020,6 +8109,9 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
             html += ' In het project wordt aan nieuwe regelingen gewerkt.'
         } else {
             html += ` Het project begint met de regelgeving die geldig is op:<br><select id="${this.ElementId('I')}"${disabled}>`;
+            if (this.#datumConsolidatie === undefined) {
+                html += `<option value="" selected></option>`;
+            }
             for (let iwt of this.#beschikbareConsolidatie) {
                 html += `<option value="${iwt.Specificatie()}"${this.#datumConsolidatie === iwt.Specificatie() ? ' selected' : ''}>${iwt.DatumTijdHtml()}</option>`;
             }
@@ -8103,8 +8195,8 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
                 this.#isOnafhankelijk = true;
                 this.#volgtOpProject = undefined;
                 this.#volgtOpBranch = undefined;
-                let elt = document.getElementById(this.ElementId('I'));
-                if (elt) {
+                let elt = this.Element('I');
+                if (elt && elt.value) {
                     this.#datumConsolidatie = parseInt(elt.value);
                 }
                 this.VervangInnerHtml();
@@ -8118,7 +8210,12 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
 
     ValideerInvoer(accepteerInvoer) {
         if (accepteerInvoer) {
-            if (!this.#isOnafhankelijk && !this.#volgtOpBranch) {
+            if (this.#isOnafhankelijk) {
+                if (!this.Element('I').value) {
+                    return true;
+                }
+            }
+            else if (!this.#volgtOpBranch) {
                 return true;
             }
         }
@@ -8228,7 +8325,7 @@ class Activiteit_Download extends Activiteit {
                 if (laatsteVoorDezeActiviteit && beschikbaar.IWTMoment().Datum().Vergelijk(laatsteVoorDezeActiviteit) < 0) {
                     continue;
                 }
-                if (beschikbaar.IsVoltooid() || iwtDatums.length === 0) {
+                if (beschikbaar.IsVoltooid()) {
                     this.#beschikbareConsolidatie.push(beschikbaar.IWTMoment().Datum());
                 }
             }
@@ -8240,10 +8337,13 @@ class Activiteit_Download extends Activiteit {
                         this.#datumConsolidatie = iwt.Specificatie();
                     }
                 }
-                if (!this.#datumConsolidatie) {
+                if (this.#datumConsolidatie === undefined) {
                     this.#branch.IWTDatum().SpecificatieWordt(undefined);
                 }
             }
+        }
+        if (this.#datumConsolidatie === undefined && this.#beschikbareConsolidatie.length === 1) {
+            this.#datumConsolidatie = this.#beschikbareConsolidatie[0].Specificatie();
         }
     }
     #branch;
@@ -8255,6 +8355,9 @@ class Activiteit_Download extends Activiteit {
 
         let html = `${this.StartInnerHtml()}<p>Welke regelgeving wordt uit de LVBB gedownload?</p>
                     <p>De regelgeving die geldig is op: <select id="${this.ElementId('I')}"${disabled}>`;
+        if (this.#datumConsolidatie === undefined) {
+            html += `<option value="" selected></option>`;
+        }
         for (let iwt of this.#beschikbareConsolidatie) {
             html += `<option value="${iwt.Specificatie()}"${this.#datumConsolidatie === iwt.Specificatie() ? ' selected' : ''}>${iwt.DatumTijdHtml()}</option>`;
         }
@@ -8265,6 +8368,21 @@ class Activiteit_Download extends Activiteit {
         return html;
     }
 
+    OnInvoerChange(elt, idSuffix) {
+        if (idSuffix === 'I') {
+            if (elt.value) {
+                this.#datumConsolidatie = parseInt(elt.value);
+                this.VervangInnerHtml();
+            }
+        }
+    }
+
+    ValideerInvoer(accepteerInvoer) {
+        if (!this.Element('I').value) {
+            return true;
+        }
+    }
+
     EindeInvoer(accepteerInvoer) {
         if (accepteerInvoer) {
             let naam = 'Regelgeving waarvoor het project is ingericht';
@@ -8272,7 +8390,7 @@ class Activiteit_Download extends Activiteit {
             if (this.#branch) {
                 this.#branch.Verwijder();
             }
-            this.#datumConsolidatie = parseInt(document.getElementById(this.ElementId('I')).value);
+            this.#datumConsolidatie = parseInt(this.Element('I').value);
             this.#branch = Branch.MaakBranch(this, this.#project, this.Specificatie().Invoer.Branch, naam, beschrijving, Branch.Soort_GeldendeRegelgeving, this.#datumConsolidatie);
             this.Specificatie().Invoer.Branch = this.#branch.Code();
         }
@@ -8353,7 +8471,7 @@ class Activiteit_Uitwisseling extends Activiteit {
 
 //#endregion
 
-//#region Wijzigen en bijwerken uitgangssituatie
+//#region Wijzigen
 
 class Activiteit_Wijzigen extends Activiteit {
     //#region Initialisatie
@@ -8505,7 +8623,9 @@ class Activiteit_Wijzigen extends Activiteit {
     //#endregion
 }
 
+//#endregion
 
+//#region Bijwerken uitgangssituatie
 class Activiteit_BijwerkenUitgangssituatie extends Activiteit {
     //#region Initialisatie
     /**
@@ -8515,14 +8635,211 @@ class Activiteit_BijwerkenUitgangssituatie extends Activiteit {
      */
     constructor(specificatie, isNieuw) {
         super(specificatie, isNieuw);
+        if (isNieuw) {
+            this.VerwerkMomentopnameSpecificaties(false);
+        }
+        for (let branch of Branch.Branches(this.Tijdstip(), this.Project())) {
+            if (branch.Soort() === Branch.Soort_GeldendeRegelgeving) {
+                this.#isRegulier = true;
+                break;
+            }
+        }
+        if (this.IsNieuw()) {
+            this.#InterpreteerInvoer();
+        } else {
+            if (!this.Specificatie().Invoer) {
+                throw new Error(`De specificatie van de invoer ontbreekt (Tijdstip = ${this.Tijdstip().Specificatie})`);
+            }
+            this.#datumConsolidatie = this.Specificatie().Invoer.IWTDatum;
+        }
     }
     //#endregion
 
     //#region Implementatie van de activiteit
+    PasSpecificatieToe() {
+        this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, 'De medewerker wil de regelgeving in het project bijwerken zodat de wijzigingen ten opzichte van een meer recente juridische uitgangssituatie beschreven kunnen worden.');
+        this.VerwerkMomentopnameSpecificaties(true);
+        this.#InterpreteerInvoer();
+    }
 
-    LeesMomentopnameSpecificaties(branchnamen) {
-        for (let branch of Branch.Branches(this.Tijdstip(), this.Project())) {
-            new Momentopname(this, this.Specificatie(), branch, this.TijdstempelsMogelijk(), this.TijdstempelsVerplicht(), true);
+    VerwerkMomentopnameSpecificatie(branchcode, specificatie, werkUitgangssituatieBij, ontvlochtenversies, vervlochtenversies) {
+        super.VerwerkMomentopnameSpecificatie(branchcode, specificatie, this.IsNieuw() && !this.IsInvoer() ? false : this.#isRegulier && this.#datumConsolidatie ? this.#datumConsolidatie : true);
+    }
+    #isRegulier = false;
+    //#endregion
+
+    //#region Implementatie specificatie-element
+    IsReadOnly() {
+        for (let mo of this.Momentopnamen()) {
+            if (!mo.IsReadOnly()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    WeergaveInnerHtml() {
+        let html = this.StartInnerHtml();
+
+        if (this.#isRegulier) {
+            html += `<p>Kies als nieuwe uitgangssituatie de regelgeving die geldig is op: <select id="${this.ElementId('I')}" disabled>`;
+            if (this.#datumConsolidatie === undefined) {
+                html += `<option value="" selected></option>`;
+            }
+            for (let iwt of this.#beschikbareConsolidatie) {
+                html += `<option value="${iwt.Specificatie()}"${this.#datumConsolidatie === iwt.Specificatie() ? ' selected' : ''}>${iwt.DatumTijdHtml()}</option>`;
+            }
+            html += `</select></p>`;
+        }
+
+        if (this.Momentopnamen().length > 1) {
+            html += '<dl>';
+            for (let mo of this.Momentopnamen(true)) {
+                let gewijzigd = mo.HeeftGewijzigdeInstrumentversie();
+                html += `<dt><input type="checkbox" ${gewijzigd ? ' checked' : ''} disabled> ${mo.Branch().InteractieNaam()}</dt>`;
+                if (gewijzigd) {
+                    html += `<dd><div>${mo.Html()}</div></dd> `;
+                }
+            }
+            html += '</dl>';
+        } else {
+            let heeftGewijzigd = false;
+            for (let mo of this.Momentopnamen(true)) {
+                if (mo.HeeftGewijzigdeInstrumentversie()) {
+                    html += mo.Html();
+                    heeftGewijzigd = true;
+                }
+            }
+            if (!heeftGewijzigd) {
+                html += '(Geen regelgeving aangepast)';
+            }
+        }
+
+        html += this.EindeInnerHtml();
+        return html;
+    }
+
+    BeginInvoer() {
+        this.#wijzigMomentopname = this.#isRegulier ? undefined : 0;
+    }
+    #InterpreteerInvoer() {
+        this.#beschikbareConsolidatie = [];
+
+        if (this.#isRegulier) {
+            let huidigeIWT;
+            for (let mo of this.Momentopnamen()) {
+                if (!mo.IsVaststellingsbesluitGepubliceerd() && mo.Branch().Soort() === Branch.Soort_GeldendeRegelgeving) {
+                    huidigeIWT = mo.JuridischeUitgangssituatie().JuridischWerkendVanaf();
+                    break;
+                }
+            }
+            // Zoek beschikbare iwt-datums op
+            let status = this.VoorgaandeConsolidatiestatus();
+            if (status && status.Bepaald().length > 0) {
+                let laatsteVoorDezeActiviteit;
+                for (let beschikbaar of status.Bepaald()) {
+                    if (beschikbaar.IWTMoment().Datum().Vergelijk(this.Tijdstip()) <= 0) {
+                        laatsteVoorDezeActiviteit = beschikbaar.IWTMoment().Datum();
+                    }
+                }
+                for (let beschikbaar of status.Bepaald()) {
+                    if (laatsteVoorDezeActiviteit && beschikbaar.IWTMoment().Datum().Vergelijk(laatsteVoorDezeActiviteit) < 0) {
+                        continue;
+                    }
+                    if (huidigeIWT && beschikbaar.IWTMoment().Datum().Specificatie() <= huidigeIWT) {
+                        continue;
+                    }
+                    if (beschikbaar.IsVoltooid()) {
+                        this.#beschikbareConsolidatie.push(beschikbaar.IWTMoment().Datum());
+                    }
+                }
+            }
+            if (!this.IsNieuw()) {
+                let origineleWaarde = this.#datumConsolidatie;
+                if (this.#datumConsolidatie && !this.#beschikbareConsolidatie.includes(this.#datumConsolidatie)) {
+                    this.#datumConsolidatie = undefined;
+                    for (let beschikbaar of this.#beschikbareConsolidatie) {
+                        if (beschikbaar <= origineleWaarde || this.#datumConsolidatie === undefined) {
+                            this.#datumConsolidatie = beschikbaar;
+                        }
+                    }
+                }
+                if (this.#datumConsolidatie === undefined) {
+                    this.SpecificatieMelding('De activiteit is gemaakt voor een oudere versie van het scenario. In dit scenario is er geen sprake van bijwerken van de regelgeving.');
+                }
+            }
+        }
+        if (this.#datumConsolidatie === undefined && this.#beschikbareConsolidatie.length === 1) {
+            this.#datumConsolidatie = this.#beschikbareConsolidatie[0].Specificatie();
+        }
+    }
+    #datumConsolidatie;
+    #beschikbareConsolidatie;
+    #wijzigMomentopname;
+
+    InvoerInnerHtml() {
+        let html = this.StartInnerHtml();
+
+        if (this.#isRegulier && this.#wijzigMomentopname === undefined) {
+            this.VolgendeStapNodig();
+            html += `<p>Kies als nieuwe uitgangssituatie de regelgeving die geldig is op: <select id="${this.ElementId('I')}">`;
+            if (this.#datumConsolidatie === undefined) {
+                html += `<option value="" selected></option>`;
+            }
+            for (let iwt of this.#beschikbareConsolidatie) {
+                html += `<option value="${iwt.Specificatie()}"${this.#datumConsolidatie === iwt.Specificatie() ? ' selected' : ''}>${iwt.DatumTijdHtml()}</option>`;
+            }
+            html += `</select></p>`;
+
+        } else {
+            if (this.#wijzigMomentopname < this.Momentopnamen().length - 1) {
+                this.VolgendeStapNodig();
+            }
+            let momentopname = this.Momentopnamen(true)[this.#wijzigMomentopname];
+            if (this.Momentopnamen().length > 1) {
+                html += `<h4>${momentopname.Branch().InteractieNaam()}</h4>`;
+            }
+            html += momentopname.Html();
+        }
+
+        html += this.EindeInnerHtml();
+        return html;
+    }
+
+    OnInvoerChange(elt, idSuffix) {
+        if (idSuffix === 'I') {
+            if (elt.value) {
+                this.#datumConsolidatie = parseInt(elt.value);
+                this.VervangInnerHtml();
+            }
+        }
+    }
+
+    ValideerInvoer(accepteerInvoer) {
+        if (accepteerInvoer) {
+            if (this.#isRegulier && this.#wijzigMomentopname === undefined) {
+                if (this.#datumConsolidatie === undefined) {
+                    return true;
+                } else {
+                    this.#wijzigMomentopname = 0;
+                    this.VolgendeStapNodig();
+                }
+            }
+        }
+    }
+
+    EindeInvoer(accepteerInvoer) {
+        if (accepteerInvoer) {
+            if (this.#isRegulier && this.#wijzigMomentopname === undefined) {
+                this.#wijzigMomentopname = 0;
+                // Maak de nieuwe bijgewerkte momemtopnamen
+                for (let mo of [...this.Momentopnamen()]) {
+                    mo.Verwijder();
+                }
+                this.VerwerkMomentopnameSpecificaties(false);
+            } else {
+                this.#wijzigMomentopname++;
+            }
         }
     }
     //#endregion
