@@ -106,6 +106,11 @@ Applicatie = (function () {
         SelecteerUitwisseling(gemaaktOp);
     }
 
+    // Selectie van uitwisselingen
+    Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
+        SelecteerUitwisseling(gemaaktOp);
+    }
+
     // Initialisatie van een diagram
     Applicatie.InitialseerDiagram = function (svgElementId) {
         // svgPanZoom werkt niet als de SVG hidden is
