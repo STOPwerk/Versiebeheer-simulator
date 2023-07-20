@@ -1,0 +1,134 @@
+{
+    "SpecificatieVersie": "2023-06",
+    "start": {
+        "reg_01": {
+            "uuid": 1,
+            "Metadata": "Omgevingsplan Pyrodam"
+        },
+        "pdf_01": {
+            "uuid": 2,
+            "Metadata": "Voorschriften veilig gebruik vuurwerk"
+        }
+    },
+    "Activiteiten": [
+        {
+            "Soort": "Maak project",
+            "Tijdstip": 1,
+			"Beschrijving": "Een project waarin het effect voor STOP annotaties wordt gedemonstreerd.",
+            "p01": {
+                "Naam": "1. STOP annotaties"
+            },
+            "Invoer": {
+                "Project": "p01",
+                "Branch": "p01_01"
+            },
+            "p01_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 2,
+            "Project": "p01",
+			"Beschrijving": "Naast een wijziging van de tekst een STOP annotatie aan de regeling wordt toegevoegd en een niet-muteerbaar informatieobject opnieuw wordt vastgesteld (zonder aanpassing van de annotaties).",
+            "p01_01": {
+                "reg_01": {
+                    "uuid": 3,
+                    "Toelichtingsrelaties": true
+                },
+                "pdf_01": {
+                    "uuid": 4
+                }
+            }
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 21,
+            "Project": "p01",
+			"Beschrijving": "Omdat de basisversie en juridische uitgangssituatie voor de regelingversie gelijk zijn, wordt ongeacht de systematiek dezelfde (nieuwe) annotatie uitgewisseld. Voor de gewijzigde PDF wordt geen metadata uitgewisseld als het versiebeheer wordt gevolgd, maar wel als de juridische uitgangssituatie gevolgd wordt omdat de PDF geen was-versie kent."
+        },
+        {
+            "Soort": "Vaststellingsbesluit",
+            "Tijdstip": 72,
+            "Project": "p01",
+			"Beschrijving": "Als het versiebeheer gevolgd wordt hoeft de STOP annotatie bij de regeling niet opnieuw uitgewisseld te worden, als de juridische uitgangssituatie gevolgd wordt wel. Voor de gewijzigde PDF wordt geen metadata uitgewisseld als het versiebeheer wordt gevolgd, maar wel als de juridische uitgangssituatie gevolgd wordt omdat de PDF geen was-versie kent.",
+            "p01_01": {
+                "JuridischWerkendVanaf": 100
+            },
+            "Besluitnaam": "Vaststellingsbesluit"
+        },
+        {
+            "Soort": "Maak project",
+            "Tijdstip": 101,
+            "p02": {
+                "Naam": "2. Non-STOP annotaties"
+            },
+            "Invoer": {
+                "Project": "p02",
+                "Branch": "p02_01"
+            },
+            "p02_01": {
+                "Soort": "Regulier"
+            }
+        },
+        {
+            "Soort": "Wijziging",
+            "Tijdstip": 102,
+            "Project": "p02",
+			"Beschrijving": "Naast een wijziging van de tekst wordt een GIO met STOP annotaties toegevoegd. De GIO wordt tevens vertaald naar non-STOP annotaties.",
+            "p02_01": {
+                "reg_01": {
+                    "uuid": 5,
+                    "NonSTOP": {
+                        "#01 Gebiedsaanwijzing": true,
+                        "#02 Locatiegroep": true,
+                        "#03 Locatie gebied 1": true,
+                        "#04 Locatie gebied 2": true,
+                        "#05 Locatie gebied 3": true,
+                        "#06 Locatie gebied 4": true,
+                        "#07 Locatie gebied 5": true,
+                        "#08 Locatie gebied 6": true,
+                        "#09 Locatie gebied 7": true,
+                        "#10 Locatie gebied 8": true,
+                        "#11 Locatie gebied 9": true,
+                        "#12 Locatie gebied 10": true,
+                        "#13 Locatie gebied 11": true,
+                        "#14 Locatie gebied 12": true,
+                        "#15 Locatie gebied 13": true,
+                        "#16 Locatie gebied 14": true,
+                        "#17 Locatie gebied 15": true,
+                        "#18 Locatie gebied 16": true,
+                        "#19 Locatie gebied 17": true,
+                        "#20 Locatie gebied 18": true,
+                        "#21 Locatie gebied 19": true,
+                        "#22 Locatie gebied 20": true
+                    }
+                },
+                "gio_01": {
+                    "uuid": 6,
+                    "Metadata": "Vuurwerkvrije zone",
+					"Symbolisatie": true
+                }
+            }
+        },
+        {
+            "Soort": "Ontwerpbesluit",
+            "Tijdstip": 121,
+            "Project": "p02",
+			"Beschrijving": "Ongeacht de systematiek worden dezelfde (nieuwe) annotaties uitgewisseld."
+        },
+        {
+            "Soort": "Vaststellingsbesluit",
+            "Tijdstip": 172,
+            "Project": "p02",
+			"Beschrijving": "Als het versiebeheer gevolgd wordt hoeft geen enkele annotatie meer uitgewisseld te worden, als de juridische uitgangssituatie gevolgd wordt moeten alle nieuwe annotaties opnieuw aangeleverd worden.",
+            "p02_01": {
+                "JuridischWerkendVanaf": 200
+            },
+            "Besluitnaam": "Vaststellingsbesluit"
+        }
+    ],
+    "BevoegdGezag": "Gemeente",
+    "Naam": "Annotaties - basisversie vs juridische uitgangssituatie",
+    "Beschrijving": "Alleen de gewijzigde annotaties hoeven uitgewisseld te worden. Daarbij kan gekozen worden om annotaties te vergelijken met een eerdere versie volgens het versiebeheer, of een eerdere versie in de juridische uitgangssituatie. Dit scenario kan gebruikt worden om het effect van beide keuzes te bekijken. Selecteer de overeenkomstige optie om de juridische uitgangssituatie te gebruiken."
+}

@@ -93,6 +93,10 @@ class BGProcesSimulator {
 
         // Maak de eerste versie van de pagina.
         this.#MaakPagina();
+        if (BGProcesSimulator.Opties.AnnotatiesViaUitgangssituatie) {
+            // Maak de vertaling opnieuw
+            this.WerkScenarioUit(0);
+        }
     }
     //#endregion
 
@@ -131,7 +135,12 @@ class BGProcesSimulator {
         /**
          * Geeft aan dat het scenario annotaties bij regelingen en informatieobjecten kent
          */
-        NonStopAnnotaties: false
+        NonStopAnnotaties: false,
+        /**
+         * Geeft aan dat voor de overerving van ongewijzigde annotaties de juridische
+         * uitgangssituatie gebruikt wordt in plaats van de basisversie.
+         */
+        AnnotatiesViaUitgangssituatie: false
     }
 
     /**
@@ -3487,7 +3496,26 @@ class Instrumentversie {
 
             if (!this.#instrumentversieUitgewisseld || !this.ExpressionIdentificatie()) {
                 // Eerste keer dat deze instrumentversie wordt uitgewisseld
-                this.#MaakAnnotatieModules(lvbbBasisversie, true, registreerAnnotatieModule);
+                let voorgaandeVersie = lvbbBasisversie;
+                if (BGProcesSimulator.Opties.AnnotatiesViaUitgangssituatie) {
+                    // Voorgaande versie is de juridische uitgangssituatie
+                    voorgaandeVersie = undefined;
+                    if (Instrument.SoortInstrument_Muteerbaar.includes(this.SoortInstrument())) {
+                        for (let momentopname = this.Momentopname().JuridischeUitgangssituatie(); momentopname; momentopname = momentopname.JuridischeUitgangssituatie()) {
+                            let versie = momentopname.Instrumentversie(this.Instrument())?.Instrumentversie();
+                            if (!versie?.HeeftJuridischeInhoud()) {
+                                break;
+                            }
+                            if (versie.#instrumentversieUitgewisseld) {
+                                voorgaandeVersie = versie;
+                                break;
+                            }
+                        }
+                    }
+                } else if (this.HeeftAnnotaties()) {
+                    this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Instrument ${this.Instrument()} is niet muteerbaar, dus worden alle annotaties bij elke instrumentversie (opnieuw) uitgewisseld.`)
+                }
+                this.#MaakAnnotatieModules(voorgaandeVersie, true, registreerAnnotatieModule);
             }
         }
         this.#instrumentversieUitgewisseld = true;
@@ -3629,7 +3657,6 @@ class Instrumentversie {
                 break;
         }
 
-        // Eerste keer dat deze instrumentversie wordt uitgewisseld
         this.#MaakAnnotatieModules(laatstUitgewisseldeVersie, false, (moduleNaam, stopXml, ns) => {
             modules.push({
                 localName: moduleNaam,
@@ -3645,23 +3672,24 @@ class Instrumentversie {
     /**
      * Maak de "STOP" modules voor de annotaties die sinds de gespecificeerde versie zijn gewijzigd
      * @param {Instrumentversie} laatstUitgewisseldeVersie - Instrumentversie zoals die voor het laatst is uitgewisseld (vóór deze versie).
-     * @param {boolean} alsWijziging - Geeft aan dat een module als wijziging wordt uitgewisseld in plaats van altijd als stand van zaken
+     * @param {boolean} alleenIndienGewijzigd - Geeft aan dat een module als wijziging wordt uitgewisseld in plaats van altijd als stand van zaken
      * @param {any} registreerModule - Methode die wordt aangeroepen voor elke module, met de naam, STOP xml en namespace van de module
      */
-    #MaakAnnotatieModules(laatstUitgewisseldeVersie, alsWijziging, registreerModule) {
+    #MaakAnnotatieModules(laatstUitgewisseldeVersie, alleenIndienGewijzigd, registreerModule) {
         if (!BGProcesSimulator.Opties.Annotaties && !BGProcesSimulator.Opties.NonStopAnnotaties) {
             return;
         }
         let expressionId = this.ExpressionIdentificatie();
+        let gewijzigdTenOpzichteVan = laatstUitgewisseldeVersie?.ExpressionIdentificatie() ? ` (gewijzigd ten opzichte van de eerdere versie ${laatstUitgewisseldeVersie.ExpressionIdentificatie()})` : '';
 
         //#region STOP annotaties
         if (BGProcesSimulator.Opties.Annotaties) {
             let laatstUitgewisseld = laatstUitgewisseldeVersie ? Object.assign({}, laatstUitgewisseldeVersie.#stopAnnotaties) : {};
             for (let annotatie in this.#stopAnnotaties) {
                 // Maak alleen een module als de aanwezige annotatie is gewijzigd
-                if (!alsWijziging || !this.#stopAnnotaties[annotatie].IsGelijkAan(laatstUitgewisseld[annotatie])) {
+                if (!alleenIndienGewijzigd || !this.#stopAnnotaties[annotatie].IsGelijkAan(laatstUitgewisseld[annotatie])) {
                     // Geef de annotatie door
-                    this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Toegevoegd: de STOP module ${annotatie} behorend bij versie ${expressionId}`)
+                    this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Toegevoegd: de STOP module ${annotatie} behorend bij versie ${expressionId}${gewijzigdTenOpzichteVan}`)
                     if (annotatie === Annotatie.SoortAnnotatie_Citeertitel) {
                         let moduleNaam = this.#soortInstrument === Instrument.SoortInstrument_Regeling ? 'RegelingMetadata' : 'InformatieobjectMetadata';
                         registreerModule(moduleNaam, Activiteit.ModuleToXml(moduleNaam, {
@@ -3684,7 +3712,7 @@ class Instrumentversie {
                 }
                 delete laatstUitgewisseld[annotatie];
             }
-            if (alsWijziging) {
+            if (alleenIndienGewijzigd) {
                 for (let annotatie in laatstUitgewisseld) {
                     // Deze annotatie is niet meer aanwezig
                     if (annotatie === Annotatie.SoortAnnotatie_Symbolisatie) {
@@ -3711,7 +3739,7 @@ class Instrumentversie {
 
             let laatstUitgewisseld = laatstUitgewisseldeVersie ? Object.assign({}, laatstUitgewisseldeVersie.#nonStopAnnotaties) : {};
             for (let annotatie in this.#nonStopAnnotaties) {
-                if (alsWijziging) {
+                if (alleenIndienGewijzigd) {
                     if (!this.#nonStopAnnotaties[annotatie].IsGelijkAan(laatstUitgewisseld[annotatie])) {
                         nonStopMutaties.push({ naam: annotatie, wijzigactie: 'nieuw' });
                     }
@@ -3720,13 +3748,13 @@ class Instrumentversie {
                 }
                 delete laatstUitgewisseld[annotatie];
             }
-            if (alsWijziging) {
+            if (alleenIndienGewijzigd) {
                 for (let annotatie in laatstUitgewisseld) {
                     nonStopMutaties.push({ naam: annotatie, wijzigactie: 'verwijder' });
                 }
             }
             if (nonStopMutaties.length > 0) {
-                this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Toegevoegd: mutaties in de non-STOP annotaties die volgen uit versie ${expressionId}`)
+                this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Toegevoegd: de non-STOP annotaties bij de versie ${expressionId}${gewijzigdTenOpzichteVan}`)
                 registreerModule('Non-STOP annotaties', Activiteit.ModuleToXml('NonSTOPAnnotaties', {
                     _ns: Activiteit.NonSTOP_Data,
                     mutaties: {
@@ -6845,6 +6873,16 @@ class Activiteit extends SpecificatieElement {
     #soort;
 
     /**
+     * Geeft de beschrijving van de activiteit
+     * @returns {Beschrijving}
+     */
+    Beschrijving() {
+        return this.#beschrijving;
+    }
+    #beschrijving;
+
+
+    /**
      * Geeft aan of de activiteit nieuw is, d.w.z. dat de specificatie nog ingevoerd wordt.
      * @returns {boolean}
      */
@@ -7427,7 +7465,6 @@ ${indent}<${tag}>${value}</${tag}>`
         }
         return html;
     }
-    #beschrijving;
 
     OnWeergaveClick(elt, idSuffix) {
         if (idSuffix === 'AM' || idSuffix === 'AW') {
@@ -7580,7 +7617,7 @@ class MogelijkeActiviteit {
             Props: [],
             Constructor: (specificatie, nieuw, doorAdviesbureau) => new Activiteit_Uitwisseling(specificatie, nieuw, doorAdviesbureau),
             Beschrijving: 'Wissel een versie van de regelgeving uit tussen bevoegd gezag en adviesbureau.'
-        },
+        }/*,
         'Bijwerken uitgangssituatie': {
             KanVolgenOp: [MogelijkeActiviteit.SoortActiviteit_MaakProject, MogelijkeActiviteit.SoortActiviteit_Uitwisseling],
             KanNietVolgenOp: [MogelijkeActiviteit.SoortActiviteit_Vaststellingsbesluit],
@@ -7589,7 +7626,7 @@ class MogelijkeActiviteit {
             MomentopnameProps: [],
             Constructor: (specificatie, nieuw) => new Activiteit_BijwerkenUitgangssituatie(specificatie, nieuw),
             Beschrijving: 'Neem de wijzigingen over die zijn aangebrancht in de uitgangssituatie voor dit project sinds de start van het project (of sinds de vorige keer dat de uitgangssituatie is bijgewerkt).'
-        },
+        }*//*,
         'Maak branch': {
             KanVolgenOp: [MogelijkeActiviteit.SoortActiviteit_MaakProject, MogelijkeActiviteit.SoortActiviteit_Uitwisseling],
             KanNietVolgenOp: false,
@@ -7598,7 +7635,7 @@ class MogelijkeActiviteit {
             MomentopnameProps: ['Soort', 'Branch', 'Branches'],
             Constructor: (specificatie, nieuw) => new Activiteit_MaakBranch(specificatie, nieuw),
             Beschrijving: ''
-        },
+        }*/,
         'Ontwerpbesluit': {
             SoortBG: [BGProcesSimulator.SoortBG_Gemeente],
             KanVolgenOp: [MogelijkeActiviteit.SoortActiviteit_MaakProject, MogelijkeActiviteit.SoortActiviteit_Uitwisseling],
@@ -8211,7 +8248,7 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
     ValideerInvoer(accepteerInvoer) {
         if (accepteerInvoer) {
             if (this.#isOnafhankelijk) {
-                if (!this.Element('I').value) {
+                if (this.#beschikbareConsolidatie.length > 0 && !this.Element('I').value) {
                     return true;
                 }
             }
@@ -9161,3 +9198,40 @@ class Activiteit_Besluit extends Activiteit {
 
 //#endregion
 
+//#region Activiteit met alleen beschrijving
+class Activiteit_Overig extends Activiteit {
+    //#region Initialisatie
+    /**
+     * Maak de activiteit aan vanuit de specificatie
+     * @param {any} specificatie - Specificatie van de activiteit
+     * @param {boolean} isNieuw - Geeft aan of de activiteit gemaakt wordt om de specificatie in te voeren
+     */
+    constructor(specificatie, isNieuw) {
+        super(specificatie, isNieuw);
+        this.#naam = new Naam(this.Specificatie(), this, (n) => n);
+    }
+    //#endregion
+
+    //#region Implementatie van de activiteit
+    Naam() {
+        return this.#naam.Specificatie() ?? '...';
+    }
+    #naam;
+    //#endregion
+
+    //#region Implementatie specificatie-element
+    WeergaveInnerHtml() {
+        return `${this.StartInnerHtml()}
+                ${this.Beschrijving().Html()}
+                ${this.EindeInnerHtml()}`;
+    }
+
+    InvoerInnerHtml() {
+        return `${this.StartInnerHtml()}
+                ${this.#naam.Html()}
+                ${this.EindeInnerHtml()}`;
+    }
+    //#endregion
+}
+
+//#endregion

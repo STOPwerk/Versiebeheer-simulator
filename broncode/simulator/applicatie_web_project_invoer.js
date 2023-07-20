@@ -12,6 +12,7 @@ window.addEventListener('load', function () {
     const spec_info_bg = document.getElementById('_start_specificatie_info_soortBG');
     const spec_info_naam = document.getElementById('_start_specificatie_info_naam');
     const spec_info_beschrijving = document.getElementById('_start_specificatie_info_beschrijving');
+    const optie_ju_container = document.getElementById('_start_ju');
     const simulator_container = document.getElementById('_bgps_container');
     const simulator_IO = document.getElementById('_bgps_simulator');
     const simulator_startknop = document.getElementById('_start_startknop');
@@ -23,6 +24,7 @@ window.addEventListener('load', function () {
     lvbb_startknop.style.display = 'none';
     fileInputFout.style.display = 'none';
     spec_info_container.style.display = 'none';
+    optie_ju_container.style.display = 'none';
     simulator_container.style.display = 'none';
     simulator_startknop.style.display = 'none';
 
@@ -32,6 +34,9 @@ window.addEventListener('load', function () {
             elt.checked = true;
             elt.disabled = disable;
         }
+    }
+    function JU_Optie() {
+        optie_ju_container.style.display = document.getElementById('_start_optie_annotaties').checked || document.getElementById('_start_optie_nonstop').checked ? '' : 'none';
     }
 
     var simulator;
@@ -49,6 +54,7 @@ window.addEventListener('load', function () {
         if (simulator) {
             start_BG.style.display = 'none';
             start_file.style.display = 'none';
+            optie_ju_container.style.display = 'none';
             simulator_startknop.style.display = '';
 
             spec_info_bg.innerText = simulator.BevoegdGezag();
@@ -62,7 +68,7 @@ window.addEventListener('load', function () {
             Optie('_start_optie_io', 'InformatieObjecten', true);
             Optie('_start_optie_annotaties', 'Annotaties', false);
             Optie('_start_optie_nonstop', 'NonStopAnnotaties', false);
-
+            JU_Optie();
         }
     }
     simulator_startknop.addEventListener('click', e => {
@@ -71,6 +77,7 @@ window.addEventListener('load', function () {
         BGProcesSimulator.Opties.InformatieObjecten = document.getElementById('_start_optie_io').checked;
         BGProcesSimulator.Opties.Annotaties = document.getElementById('_start_optie_annotaties').checked;
         BGProcesSimulator.Opties.NonStopAnnotaties = document.getElementById('_start_optie_nonstop').checked;
+        BGProcesSimulator.Opties.AnnotatiesViaUitgangssituatie = BGProcesSimulator.Opties.Annotaties || BGProcesSimulator.Opties.NonStopAnnotaties ? document.getElementById('_start_optie_ju').checked : false;
         simulator_container.style.display = '';
         simulator.Start(lvbb_form, lvbb_startknop, lvbb_download, sim_download);
     });
@@ -124,4 +131,5 @@ window.addEventListener('load', function () {
             }
         }), false);
     }
+    ['_start_optie_annotaties', '_start_optie_nonstop'].forEach(id => document.getElementById(id).addEventListener('click', () => JU_Optie()), false);
 });
