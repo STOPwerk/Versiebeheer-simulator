@@ -33,10 +33,6 @@
     <Content Include="simulator\applicatie_meldingen_filter.html" />
     <Content Include="simulator\applicatie_meldingen_start.html" />
     <Content Include="simulator\weergave_actueletoestanden_help.html" />
-    <Content Include="simulator\weergave_bg_versiebeheer.js" />
-    <Content Include="simulator\weergave_bg_versiebeheer_help.html" />
-    <Content Include="simulator\weergave_bg_versiebeheer.css" />
-    <Content Include="simulator\weergave_bg_uitwisselingen_help.html" />
     <Content Include="simulator\weergave_resultaat_Applicatie.js" />
     <Content Include="simulator\weergave_resultaat_help_meldingen.html" />
     <Content Include="simulator\weergave_resultaat_help_sectie_op.html" />
@@ -64,7 +60,6 @@
     <Content Include="simulator\weergave_toestandbepaling_completetoestanden.css" />
     <Content Include="simulator\weergave_uitwisselingen_help.html" />
     <Content Include="simulator\weergave_uitwisselingen.css" />
-    <Content Include="simulator\weergave_bg_proces.js" />
     <Content Include="simulator\weergave_uitwisselingselector.html" />
     <Content Include="simulator\weergave_uitwisselingselector.css" />
     <Content Include="simulator\weergave_uitwisselingselector.js" />
@@ -114,7 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="simulator\applicatie.py" />
-    <Compile Include="simulator\applicatie_versie.py" />
     <Compile Include="simulator\applicatie_meldingen.py" />
     <Compile Include="simulator\applicatie_versie.py" />
     <Compile Include="simulator\data_validatie.py" />

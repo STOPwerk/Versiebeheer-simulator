@@ -80,30 +80,6 @@ Applicatie = (function () {
                 Applicatie.SelecteerToestand(geselecteerdeToestand.Identificatie, uniekId);
             }
         }
-        // Uitwisselingen en activiteiten delen dezelfde tijdlijn
-        window.dispatchEvent(new CustomEvent('activiteit', {
-            detail: uitgevoerdOp
-        }));
-    }
-
-    // Selectie van uitwisselingen
-    Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
-        SelecteerUitwisselingOfActiviteit(gemaaktOp, false);
-    }
-
-    // Selectie van BG-activiteit
-    Applicatie.SelecteerActiviteit = function (uitgevoerdOp) {
-        SelecteerUitwisselingOfActiviteit(uitgevoerdOp, true);
-    }
-
-    // Selectie van uitwisselingen
-    Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
-        SelecteerUitwisseling(gemaaktOp);
-    }
-
-    // Selectie van uitwisselingen
-    Applicatie.SelecteerUitwisseling = function (gemaaktOp) {
-        SelecteerUitwisseling(gemaaktOp);
     }
 
     // Selectie van uitwisselingen

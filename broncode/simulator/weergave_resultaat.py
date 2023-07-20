@@ -115,7 +115,7 @@ class ResultaatGenerator (WebpaginaGenerator):
             self.VoegHtmlToe (self.Scenario.Opties.Beschrijving)
             self.VoegHtmlToe (einde)
         Weergave_Uitwisselingselector(self.Scenario).VoegSelectorToe (self)
-        self.VoegHeadScriptToe (self.LeesJSTemplate ('Applicatie', False).replace ('TOESTANDEN_DATA', self._MaakToestandenData()).replace ('UITWISSELING_VOOR_ACTIVITEIT', self._MaakUitwisselingVoorActiviteit()))
+        self.VoegHeadScriptToe (self.LeesJSTemplate ('Applicatie', False).replace ('TOESTANDEN_DATA', self._MaakToestandenData()))
         self.VoegHtmlToe ('</div>')
 
         einde = self.StartToelichting ('Over deze pagina')
@@ -210,12 +210,3 @@ class ResultaatGenerator (WebpaginaGenerator):
                         toestandData[toestand.GemaaktOp] = toestand._UniekId
 
         return ',\n'.join (str(d) + ': [' + ', '.join ('["' + g + '", ' + str (u) + ']' for g, u in sorted (gu.items(), key = lambda x: x[0])) + ']' for d, gu in data.items ())
-
-    def _MaakUitwisselingVoorActiviteit (self):
-        # Verzamel de tijdstippen van activiteiten met een uitwisseling naar de landelijke voorzieningen
-        data = []
-        if self.Scenario.Opties.BGProces:
-            for activiteit in self.Scenario.Procesvoortgang.Activiteiten:
-                if activiteit.UitwisselingMetLV:
-                    data.append (activiteit.UitgevoerdOp)
-        return '"' + '", "'.join (data) + '"';

@@ -57,6 +57,14 @@
             <label for="_start_optie_nonstop"><input type="checkbox" id="_start_optie_nonstop"> non-STOP annotaties</label>
             bij regeling-/informatieobjectversies.
         </p>
+        <p id="_start_ju">
+            Bij de aanlevering van informatie met LVBB hoeft alleen uitgewisseld te worden hetgeen er gewijzigd is sinds de voorgaande uitlevering.
+            Deze simulator gebruikt als <i>voorgaande</i> de uitlevering die gevonden wordt door de basisversie-relatie in omgekeerde volgorde te doorlopen,
+            en dus de volgorde te gebruiken die uit het versiebeheer komt. Een alternatieve werkwijze is om als <i>voorgaande</i> de juridische volgorde
+            te gebruiken, en als <i>voorgaande</i> de uitlevering te nemen waar de besluiten etc uit de onderhavige levering een wijziging op specificeren.
+            Om het effect daarvan te zien, selecteer:
+            <label for="_start_optie_ju"><input type="checkbox" id="_start_optie_ju"> ongewijzigde annotaties worden overgenomen van de juridische uitgangssituatie</label>.
+        </p>
         <p><button id="_start_startknop">Start de simulator</button></p>
     </div>
 </div>
