@@ -28,6 +28,8 @@ class ProcesOpties:
         self.CompleteToestanden = True if defaultSelectie is None else defaultSelectie
         # Geeft aan dat de webpagina met resultaten gemaakt wordt
         self.Applicatie_Resultaat = True
+        # Titel (tekst) van het scenario
+        self.Titel = None
         # Beschrijving (html) van het scenario
         self.Beschrijving = None
         # Benoemde uitwisselingen in het scenario
@@ -71,7 +73,14 @@ class ProcesOpties:
             if optie in data:
                 if hasattr (opties, optie):
                     gevonden = True
-                    if optie == 'Beschrijving':
+                    if optie == 'Titel':
+                        if not isinstance (data[optie], str):
+                            log.Fout ("Bestand '" + pad + "': '" + optie + "' moet als waarde een string hebben")
+                            opties.IsValide = False
+                            continue
+                        opties.Titel = data[optie]
+
+                    elif optie == 'Beschrijving':
                         if not isinstance (data[optie], str):
                             log.Fout ("Bestand '" + pad + "': '" + optie + "' moet als waarde een string hebben")
                             opties.IsValide = False

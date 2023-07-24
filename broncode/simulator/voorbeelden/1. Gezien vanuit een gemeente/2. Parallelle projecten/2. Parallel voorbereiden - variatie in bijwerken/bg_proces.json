@@ -1,0 +1,177 @@
+{
+  "SpecificatieVersie": "2023-06",
+  "start": {
+    "reg_01": {
+      "uuid": 1
+    }
+  },
+  "Activiteiten": [
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 1,
+      "p01": {
+        "Naam": "Project #1"
+      },
+      "Invoer": {
+        "Project": "p01",
+        "Branch": "p01_01"
+      },
+      "Beschrijving": "In dit scenario worden drie projecten tegelijk gestart; dit is het eerste.",
+      "p01_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 2,
+      "p02": {
+        "Naam": "Project #2"
+      },
+      "Invoer": {
+        "Project": "p02",
+        "Branch": "p02_01"
+      },
+      "Beschrijving": "In dit scenario worden drie projecten tegelijk gestart; dit is het tweede.",
+      "p02_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 3,
+      "p03": {
+        "Naam": "Project #3"
+      },
+      "Invoer": {
+        "Project": "p03",
+        "Branch": "p03_01"
+      },
+      "Beschrijving": "In dit scenario worden drie projecten tegelijk gestart; dit is het derde.",
+      "p03_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 20,
+      "Project": "p01",
+      "p01_01": {
+        "reg_01": {
+          "uuid": 2
+        }
+      },
+      "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 21,
+      "Project": "p01",
+      "Beschrijving": "Het eerste project leidt al snel tot een ontwerpbesluit."
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 39,
+      "Project": "p01",
+      "p01_01": {
+        "JuridischWerkendVanaf": 67
+      },
+      "Besluitnaam": "Vaststellingsbesluit",
+      "Beschrijving": "Er komen geen zienswijzen binnen, het vaststellingsbesluit is gelijk aan het ontwerpbesluit."
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 45,
+      "Project": "p02",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 3
+        }
+      },
+      "Beschrijving": "De laatste wijziging voor project #2 vindt plaats nadat de wijzigingen van project #1 zijn bekendgemaakt maar voordat ze in werking zijn getreden."
+    },
+    {
+      "Soort": "Bijwerken uitgangssituatie",
+      "Tijdstip": 46,
+      "Project": "p02",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 7
+        }
+      },
+      "Invoer": {
+        "IWTDatum": 67
+      },
+      "Beschrijving": "De juridische uitgangssituatie is verouderd omdat de wijzigingen van project #1 in werking zullen zijn getreden voordat de wijzigingen uit project #2 in werking treden. Werk de uitgangssituatie bij naar de laatst besloten versie van de regeling zodat het ontwerpbesluit de wijzigingen ten opzichte van project #1 weergeeft."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 70,
+      "Project": "p02"
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 105,
+      "Project": "p02",
+      "p02_01": {
+        "JuridischWerkendVanaf": 133
+      },
+      "Besluitnaam": "Vaststellingsbesluit"
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 100,
+      "Project": "p03",
+      "p03_01": {
+        "reg_01": {
+          "uuid": 4
+        }
+      },
+      "Beschrijving": "De laatste wijziging voor project #3."
+    },
+    {
+      "Soort": "Bijwerken uitgangssituatie",
+      "Tijdstip": 103,
+      "Project": "p03",
+      "p03_01": {
+        "reg_01": {
+          "uuid": 9
+        }
+      },
+      "Invoer": {
+        "IWTDatum": 67
+      },
+      "Beschrijving": "De juridische uitgangssituatie wordt bijgewerkt. Hoewel de wijzigingen van project #2 bijna zijn vastgesteld en in werking zullen treden voordat de wijzigingen in dit project in werking treden, wordt toch besloten het ontwerpbesluit te baseren op de uitkomst van project #1, om de terinzagelegging van het ontwerpbesluit niet te vertragen."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 106,
+      "Project": "p03"
+    },
+    {
+      "Soort": "Bijwerken uitgangssituatie",
+      "Tijdstip": 125,
+      "Project": "p03",
+      "p03_01": {
+        "reg_01": {
+          "uuid": 8
+        }
+      },
+      "Invoer": {
+        "IWTDatum": 133
+      },
+      "Beschrijving": "De juridische uitgangssituatie wordt wel bijgewerkt naar de uitkomst van project #2 voordat het vaststellingsbesluit opgesteld wordt."
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 150,
+      "Project": "p03",
+      "p03_01": {
+        "JuridischWerkendVanaf": 178
+      },
+      "Besluitnaam": "Vaststellingsbesluit"
+    }
+  ],
+  "BevoegdGezag": "Gemeente",
+  "Naam": "Parallel bijwerken - variatie in bijwerken - gemeente",
+  "Beschrijving": "Dit scenario laat variatie zien in het bijwerken van de juridische uitgangssituatie voor ontwerpbesluiten als er meerdere projecten tegelijk in de voorbereidingsfase zijn. Bij de start van het scenario is er al een versie van de regeling in werking."
+}

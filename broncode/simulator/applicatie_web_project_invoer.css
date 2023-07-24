@@ -161,6 +161,10 @@ input.number4 {
     text-align: right;
 }
 
+.verplicht {
+    color: #6c8ebf;
+}
+
 .voegtoe {
     font-size: larger;
     color: #82b366;
@@ -346,12 +350,6 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
         border: 2px solid #6c8ebf;
     }
 
-#_bgps_versiebeheer {
-    padding: 1em;
-    border: 1px solid #000000;
-    aspect-ratio: 2 / 3;
-}
-
 #_bgps_verwerking {
     background-color: #ffffff;
     padding: 1em;
@@ -361,6 +359,78 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
     #_bgps_verwerking.active > div {
         border: 3px solid #82B366;
     }
+
+.bgvbd_tabel {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.bgvbd_legenda_symbool {
+    white-space: nowrap;
+    height: 1.5em;
+    width: 2em;
+}
+
+.bgvbd_legenda_svg {
+    display: inline;
+    width: 100%;
+    height: 100%;
+}
+
+.bgvbd_BG_U {
+    background-color: #ffffff;
+    border: 1px solid #666666;
+    fill: #ffffff;
+    stroke: #666666;
+}
+
+.bgvbd_BG_I {
+    background-color: #d5e8d4;
+    border: 1px solid #82b366;
+    fill: #d5e8d4;
+    stroke: #82b366;
+}
+
+.bgvbd_BG_A {
+    background-color: #e1d5e7;
+    border: 1px solid #9673a6;
+    fill: #e1d5e7;
+    stroke: #9673a6;
+}
+
+.bgvbd_BG_P {
+    background-color: #ffe6cc;
+    border: 1px solid #d79b00;
+    fill: #ffe6cc;
+    stroke: #d79b00;
+}
+
+.bgvbd_STOP_P {
+    background-color: #dae8fc;
+    border: 1px solid #6c8ebf;
+    fill: #dae8fc;
+    stroke: #6c8ebf;
+}
+
+.bgvbd_STOP_R {
+    background-color: #fff2cc;
+    border: 1px solid #d6b656;
+    fill: #fff2cc;
+    stroke: #d6b656;
+}
+
+.bgvbd_STOP_nvt {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    fill: #ffffff;
+    stroke: #cccccc;
+}
+
+.bgvbd_diagram {
+    padding: 1em;
+    border: 1px solid #000000;
+    aspect-ratio: 2 / 3;
+}
 
 .bgvbd_naam {
     user-select: none;
@@ -384,6 +454,7 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
         font-weight: bold;
     }
 
+
 .bgvbd_naam_l {
     fill: none;
     stroke: #666666;
@@ -398,34 +469,18 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
     cursor: pointer;
 }
 
-.bgvbd_mo_u {
-    fill: #ffffff;
-    stroke: #666666;
-}
-
 .bgvbd_mo_tegelijk {
     fill: #ffffff;
     stroke: #000000;
     stroke-width: 3;
 }
 
-.bgvbd_mo_bg {
-    fill: #dae8fc;
-    stroke: #6c8ebf;
+.bgvbd_mo {
+    stroke-width: 1;
     cursor: pointer;
 }
 
-    .bgvbd_mo_bg.huidige-act { /* geselecteerde momentopname */
-        stroke-width: 3;
-    }
-
-.bgvbd_mo_a {
-    fill: #fff2cc;
-    stroke: #d6b656;
-    cursor: pointer;
-}
-
-    .bgvbd_mo_a.huidige-act { /* geselecteerde momentopname */
+    .bgvbd_mo.huidige-act { /* geselecteerde momentopname */
         stroke-width: 3;
     }
 
@@ -435,11 +490,23 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
     stroke-width: 1;
 }
 
-.bgvbd_line_exbranch { /* Lijn branch voor mo met nieuwe basisversie */
+.bgvbd_line_exbranch { /* Lijn branch naar iwtmoment */
     fill: none;
     stroke: #000000;
     stroke-width: 1;
     stroke-dasharray: 6 6;
+}
+
+.bgvbd_line_bg { /* Lijn intern-bg-relaties */
+    fill: none;
+    stroke: #aaaaaa;
+    stroke-width: 2;
+}
+
+.bgvbd_line_bg_p { /* Punt van lijn intern-bg-relaties */
+    fill: #aaaaaa;
+    stroke: #aaaaaa;
+    stroke-width: 1;
 }
 
 .bgvbd_line_basis { /* Lijn basisversie */

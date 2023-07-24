@@ -1,0 +1,137 @@
+{
+  "SpecificatieVersie": "2023-06",
+  "start": {
+    "reg_01": {
+      "uuid": 1
+    }
+  },
+  "Activiteiten": [
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 1,
+      "p01": {
+        "Naam": "Project #1"
+      },
+      "Invoer": {
+        "Project": "p01",
+        "Branch": "p01_01"
+      },
+      "Beschrijving": "In dit scenario worden twee projecten tegelijk gestart; dit is het eerste.",
+      "p01_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 2,
+      "p02": {
+        "Naam": "Project #2"
+      },
+      "Invoer": {
+        "Project": "p02",
+        "Branch": "p02_01"
+      },
+      "Beschrijving": "In dit scenario worden twee projecten tegelijk gestart; dit is het tweede.",
+      "p02_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 10,
+      "Project": "p01",
+      "p01_01": {
+        "reg_01": {
+          "uuid": 2
+        }
+      },
+      "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd."
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 15,
+      "Project": "p02",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 3
+        }
+      },
+      "Beschrijving": "De regeling wordt in beide projecten onafhankelijk van elkaar gewijzigd."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 21,
+      "Project": "p01",
+      "Beschrijving": "Het eerste project leidt al snel tot een ontwerpbesluit."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 30,
+      "Project": "p02",
+      "Beschrijving": "Ook het ontwerpbesluit voor het tweede project wordt ter inzage gelegd."
+    },
+    {
+      "Soort": "Concept-vaststellingsbesluit",
+      "Tijdstip": 64,
+      "Project": "p01",
+      "p01_01": {
+        "JuridischWerkendVanaf": 107
+      },
+      "Beschrijving": "Het vaststellingsbesluit wordt opgesteld en aangeboden ter vaststelling. De beoogde datum van inwerkingtreding is al wel bekend, maar omdat het besluit nog niet is bekendgemaakt wordt het besluit nog niet geconsolideerd."
+    },
+    {
+      "Soort": "Concept-vaststellingsbesluit",
+      "Tijdstip": 65,
+      "Project": "p02",
+      "p02_01": {
+        "JuridischWerkendVanaf": 121
+      },
+      "Beschrijving": "Ook voor het tweede project wordt een besluit opgesteld ter vaststelling."
+    },
+    {
+      "Soort": "Anders...",
+      "Tijdstip": 72.20,
+      "Project": "p01",
+      "Beschrijving": "Het eerste besluit wordt in de raadsvergadering vastgesteld.",
+      "Naam": "Vaststelling besluit"
+    },
+    {
+      "Soort": "Anders...",
+      "Tijdstip": 72.21,
+      "Project": "p02",
+      "Beschrijving": "Ook het tweede besluit wordt in de raadsvergadering vastgesteld.",
+      "Naam": "Vaststelling besluit"
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 79,
+      "Project": "p01",
+      "Beschrijving": "Het eerste besluit treedt als eerste in werking. Het wordt daarom als eerste bekendgemaakt.",
+      "Besluitnaam": "Vaststellingsbesluit"
+    },
+    {
+      "Soort": "Bijwerken uitgangssituatie",
+      "Tijdstip": 81,
+      "Project": "p02",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 6
+        }
+      },
+      "Beschrijving": "Voordat het tweede besluit bekendgemaakt wordt, wordt de juridische uitgangssituatie bijgewerkt. De wijzigingen in het tweede besluit worden daarmee gebaseerd op de regelingversie die in het eerste project is gemaakt. De regelingversie uit het tweede project wordt daarmee de geconsolideerde versie van beide besluiten.   ",
+      "Invoer": {
+        "IWTDatum": 107
+      }
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 82,
+      "Project": "p02",
+      "Beschrijving": "Tot slot wordt het tweede besluit bekendgemaakt.",
+      "Besluitnaam": "Vaststellingsbesluit"
+    }
+  ],
+  "BevoegdGezag": "Gemeente",
+  "Naam": "Parallel besluiten - samenloop voorafgaand aan de bekendmaking oplossen - gemeente",
+  "Beschrijving": "Dit scenario laat zien hoe samenloop opgelost kan worden voordat vaststellingsbesluiten bekendgemaakt worden. De besluiten komen uit projecten die tot de vaststelling onafhankelijk van elkaar de voorbereidingsfase doorlopen, omdat tot de vaststelling niet bekend is in welke volgorde ze vastgesteld worden en in werking zullen treden. De besluiten worden tegelijk ter vaststelling aangeboden, en worden ook in dezelfde raadsvergadering vastgesteld. Voorafgaand aan de bekendmaking wordt de samenloop tussen de besluiten opgelost. Hoewel dit een valide scenario is, is het eenvoudiger om de samenloop achteraf op te lossen. Zeker als alle besluiten uit de raadsvergadering tegelijk bekendgemaakt worden en in werking treden - de samenloop kan dan in één keer via een revisie opgelost worden. Bij de start van het scenario is er al een versie van de regeling in werking."
+}

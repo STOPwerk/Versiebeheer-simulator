@@ -1,4 +1,4 @@
-De simulator kan de werking van de LVBB simuleren. De invoer bestaat dan uit STOP modules die de LVBB ontvangt als onderdeel van de aanlevering van een publicatie van een besluit, rectificatie of mededeling, of van een revisie. Elke aanlevering aan de LVBB bestaat uit:
+De Simulator @LVBB kan de werking van de LVBB simuleren. De invoer bestaat dan uit STOP modules die de LVBB ontvangt als onderdeel van de aanlevering van een publicatie van een besluit, rectificatie of mededeling, of van een revisie. Elke aanlevering aan de LVBB bestaat uit:
 
 * Een enkele [ConsolidatieInformatie](@@@STOP_Documentatie_Url@@@data_xsd_Element_data_ConsolidatieInformatie.html) module. Deze is onderdeel van het scenario.
 * Een besluit of revisie met daarin de tekst of mutatie van een of meer regelingen. Deze informatie wordt niet gebruikt door de simulator.
@@ -32,6 +32,7 @@ Het scenario bestaat uit een map met invoerbestanden:
 De beschrijving van het scenario wordt alleen gebruikt voor de weergave van de resultaten. Het maakt de resultaatpagina beter te begrijpen. Het is een .json bestand dat een object bevat:
 ```
 {
+    "Titel": "... titel ...",
     "Beschrijving": "... beschrijving (html) ...",
     "Uitwisselingen": [
         { "naam": "... naam ...", "gemaaktOp": "...", "beschrijving": "...", "revisie": true },
@@ -46,6 +47,7 @@ De beschrijving van het scenario wordt alleen gebruikt voor de weergave van de r
 }
 ```
 Elk van de attributen is optioneel, maar er moet tenminste één aanwezig zijn:
+* `Titel` is een tekst die opgenomen wordt in de titel en in de HTML van de pagina.
 * `Beschrijving` is HTML die opgenomen wordt in  de webpagina met het resultaat.
 * `Uitwisselingen` is een lijst met benoemde uitwisselingen. De uitwisselingen worden in `Applicatie_Resultaat.html` gebruikt om het versiebeheer na de uitwisseling te tonen. De eerstgenoemde uitwisseling wordt geselecteerd voor de weergave op de resultaatpagina. Elke uitwisseling heeft:
     * `naam`: een korte naam voor de uitwisseling, wordt gebruikt in de uitwisselingselector.

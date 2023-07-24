@@ -1,0 +1,134 @@
+{
+  "SpecificatieVersie": "2023-06",
+  "start": {
+    "reg_01": {
+      "uuid": 1
+    }
+  },
+  "Activiteiten": [
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 1,
+      "p01": {
+        "Naam": "Project #1"
+      },
+      "Invoer": {
+        "Project": "p01",
+        "Branch": "p01_01"
+      },
+      "Beschrijving": "In dit scenario worden twee projecten tegelijk gestart; dit is het eerste.",
+      "p01_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 2,
+      "p02": {
+        "Naam": "Project #2"
+      },
+      "Invoer": {
+        "Project": "p02",
+        "Branch": "p02_01"
+      },
+      "Beschrijving": "In dit scenario worden twee projecten tegelijk gestart; dit is het tweede.",
+      "p02_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 10,
+      "Project": "p01",
+      "p01_01": {
+        "reg_01": {
+          "uuid": 2
+        }
+      },
+      "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd."
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 15,
+      "Project": "p02",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 3
+        }
+      },
+      "Beschrijving": "De regeling wordt in beide projecten onafhankelijk van elkaar gewijzigd."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 21,
+      "Project": "p01",
+      "Beschrijving": "Het eerste project leidt al snel tot een ontwerpbesluit."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 30,
+      "Project": "p02",
+      "Beschrijving": "Ook het ontwerpbesluit voor het tweede project wordt ter inzage gelegd."
+    },
+    {
+      "Soort": "Concept-vaststellingsbesluit",
+      "Tijdstip": 64,
+      "Project": "p01",
+      "p01_01": {
+        "JuridischWerkendVanaf": 107
+      },
+      "Beschrijving": "Het vaststellingsbesluit wordt opgesteld en aangeboden ter vaststelling. De beoogde datum van inwerkingtreding is al wel bekend, maar omdat het besluit nog niet is bekendgemaakt wordt het besluit nog niet geconsolideerd."
+    },
+    {
+      "Soort": "Concept-vaststellingsbesluit",
+      "Tijdstip": 65,
+      "Project": "p02",
+      "p02_01": {
+        "JuridischWerkendVanaf": 107
+      },
+      "Beschrijving": "Ook voor het tweede project wordt een besluit opgesteld ter vaststelling, met dezelfde beoogde datum van inwerkingtreding."
+    },
+    {
+      "Soort": "Anders...",
+      "Tijdstip": 72.20,
+      "Project": "p01",
+      "Beschrijving": "Het eerste besluit wordt in de raadsvergadering vastgesteld.",
+      "Naam": "Vaststelling besluit"
+    },
+    {
+      "Soort": "Anders...",
+      "Tijdstip": 72.21,
+      "Project": "p02",
+      "Beschrijving": "Ook het tweede besluit wordt in de raadsvergadering vastgesteld.",
+      "Naam": "Vaststelling besluit"
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 79,
+      "Project": "p01",
+      "Beschrijving": "Het eerste besluit wordt bekendgemaakt.",
+      "Besluitnaam": "Vaststellingsbesluit"
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 80,
+      "Project": "p02",
+      "Beschrijving": "Het tweede besluit wordt ongewijzigd bekendgemaakt. De geconsolideerde regeling na inwerkingtreding van dit besluit is niet bekend omdat geen van de regelingversies uit de twee projecten de wijzigingen uit beide projecten bevat.",
+      "Besluitnaam": "Vaststellingsbesluit"
+    },
+    {
+      "Soort": "Voltooi consolidatie",
+      "Tijdstip": 81,
+      "Project": "p02",
+      "Beschrijving": "Nadat de bekendmaking van het tweede besluit wordt de samenloop tussen de besluiten opgelost door de wijzigingen van het eerste besluit in de regelingversie van het tweede project op te nemen. Deze versie wordt als een revisie aan de LVBB geleverd. Deze activiteit wordt als onderdeel van het tweede project uitgevoerd, maar had ook als onderdeel van het eerste project uitgevoerd kunnen worden. De keuze van het project bepaalt ten opzichte van welk besluit de wijziging in de revisie wordt opgesteld.",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 5
+        }
+      }
+    }
+  ],
+  "BevoegdGezag": "Gemeente",
+  "Naam": "Parallel besluiten - gelijktijdige inwerkingtreding met samenloop - gemeente",
+  "Beschrijving": "Dit scenario laat zien hoe samenloop opgelost kan worden nadat vaststellingsbesluiten bekendgemaakt zijn die tegelijk in werking treden. De besluiten komen uit projecten die tot de vaststelling onafhankelijk van elkaar de voorbereidingsfase doorlopen, omdat tot de vaststelling niet bekend is in welke volgorde ze vastgesteld worden en in werking zullen treden. De besluiten worden tegelijk ter vaststelling aangeboden, in dezelfde raadsvergadering vastgesteld en daarna ongewijzigd bekendgemaakt met dezelfde inwerkingtredingsdatum. De geconsolideerde regeling is vanwege samenloop niet bekend na de inwerkingtreding van de besluiten. Daarom wordt via een revisie de samenloop opgelost. Bij de start van het scenario is er al een versie van de regeling in werking."
+}

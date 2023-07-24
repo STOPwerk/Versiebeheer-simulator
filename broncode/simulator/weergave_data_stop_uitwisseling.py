@@ -64,4 +64,4 @@ class STOPModuleSnapshot:
         self.WeergaveBeschrijving = module.WeergaveBeschrijving
 
     def ModuleXml (self):
-        return self._ModuleXml ()
+        return self._ModuleXml
