@@ -93,7 +93,6 @@ class ScenarioPostedDataIterator (ScenarioIterator):
         lees_xml lambda(pad,xml) Methode die voor elk json bestand wordt aangeroepen.
                                  Argumenten zijn pad en inhoud van het bestand als tekst.
         """
-        self.Scenario.Titel = "Versiebeheer-simulator resultaat"
         self.Scenario.ResultaatPad = None
         for naam, data in self._Data:
             filetype = os.path.splitext (naam)[1]

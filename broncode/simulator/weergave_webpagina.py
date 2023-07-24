@@ -21,7 +21,7 @@ import webbrowser
 #======================================================================
 class WebpaginaGenerator:
 
-    def __init__ (self, titel = None, favicon = None):
+    def __init__ (self, titel = None, favicon = None, subtitel = None):
         """Maak een generator aan voor een webpagina
 
         Argumenten:
@@ -50,7 +50,7 @@ class WebpaginaGenerator:
             favicon = '\n<link rel="icon" type="image/png" href="' + favicon + '">'
 
         if not titel is None:
-            self._Start = self._Start.replace ("<!--TITEL-->", "<title>" + titel + "</title>" + favicon)
+            self._Start = self._Start.replace ("<!--TITEL-->", "<title>" + titel + ("" if subtitel is None else " - " + subtitel) + "</title>" + favicon)
             self._Html += "<h1>" + titel + "</h1>"
 
 #----------------------------------------------------------------------

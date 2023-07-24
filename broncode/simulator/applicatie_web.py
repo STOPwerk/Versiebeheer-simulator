@@ -35,8 +35,8 @@ class WebApplicatie:
 
     @staticmethod
     def InvoerPagina():
-        """Invoerpagina"""
-        generator = WebpaginaGenerator ("Simulator invoer", WebApplicatie.FAVICON)
+        """Invoerpagina Simulator @LVBB"""
+        generator = WebpaginaGenerator ("Simulator @LVBB", WebApplicatie.FAVICON)
         # Bron: https://bdwm.be/drag-and-drop-upload-files/
         generator.LeesHtmlTemplate ('invoer')
         generator.LeesCssTemplate ('invoer')
@@ -45,12 +45,12 @@ class WebApplicatie:
 
     @staticmethod
     def ProjectInvoerPagina():
-        """Invoerpagina voor BG-projecten"""
+        """Startpagina voor Simulator @bevoegd gezag"""
         return WebApplicatie.ProjectInvoerPaginaVoorbeeld (None)
 
     @staticmethod
     def ProjectInvoerPaginaVoorbeeld(voorbeeldFilePad):
-        """Invoerpagina voor BG-projecten, te vullen met een voorbeeld"""
+        """Voorbeeld voor Simulator @bevoegd gezag"""
         generator = WebpaginaGenerator ("Simulator @bevoegd gezag", WebApplicatie.FAVICON)
         html = generator.LeesHtmlTemplate ('project_invoer', False)
         html = html.replace ("@@@HELP_START@@@", generator.LeesHtmlTemplate ('project_invoer_help', False))
@@ -71,7 +71,7 @@ class WebApplicatie:
 
     @staticmethod
     def Simuleer(request):
-        """Voer de simulator uit"""
+        """Voer de Simulator @LVBB uit"""
         generator = []
         def _MaakResultaatPagina (scenario : Scenario):
             if scenario.IsValide:
@@ -81,13 +81,13 @@ class WebApplicatie:
         if len (generator) > 0:
             generator = generator[0]
         else:
-            generator = WebpaginaGenerator ("Simulator resultaat", WebApplicatie.FAVICON)
+            generator = WebpaginaGenerator ("Simulator @LVBB", WebApplicatie.FAVICON)
             applicatieLog.MaakHtml (generator, 'request_meldingen', None)
         return generator.Html ()
 
     @staticmethod
     def SimuleerVoorbeeld(voorbeeldMapPad):
-        """Voer de simulator uit voor een voorbeeld"""
+        """Voer de Simulator @LVBB uit voor een voorbeeld"""
         generator = []
         def _MaakResultaatPagina (scenario : Scenario):
             if scenario.IsValide:
@@ -97,6 +97,6 @@ class WebApplicatie:
         if len (generator) > 0:
             generator = generator[0]
         else:
-            generator = WebpaginaGenerator ("Simulator resultaat", WebApplicatie.FAVICON)
+            generator = WebpaginaGenerator ("Simulator @LVBB", WebApplicatie.FAVICON)
             applicatieLog.MaakHtml (generator, 'request_meldingen', None)
         return generator.Html ()

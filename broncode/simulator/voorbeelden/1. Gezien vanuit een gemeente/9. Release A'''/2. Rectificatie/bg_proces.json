@@ -1,0 +1,110 @@
+{
+  "SpecificatieVersie": "2023-06",
+  "start": {
+    "reg_01": {
+      "uuid": 1
+    }
+  },
+  "Activiteiten": [
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 1,
+      "p01": {
+        "Naam": "Project #1"
+      },
+      "Invoer": {
+        "Project": "p01",
+        "Branch": "p01_01"
+      },
+      "Beschrijving": "Een nieuw project waarin zoveel geknoeid wordt dat er steeds rectificaties nodig zijn.",
+      "p01_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 10,
+      "Project": "p01",
+      "p01_01": {
+        "reg_01": {
+          "uuid": 2
+        }
+      },
+      "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 21,
+      "Project": "p01",
+      "Beschrijving": "Het project leidt al snel tot een ontwerpbesluit."
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 25,
+      "Project": "p01",
+      "p01_01": {
+        "reg_01": {
+          "uuid": 3
+        }
+      },
+      "Beschrijving": "Er blijken fouten in het ontwerpbesluit te staan. Die worden gecorrigeerd in de regelingversie van het project."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 26,
+      "Project": "p01",
+      "Beschrijving": "Het is in A''' niet mogelijk om het ontwerpbesluit te rectificeren. Er kan wel een nieuwe versie van het ontwerpbesluit gepubliceerd worden waarbij toegelicht wordt wat er aangepast is ten opzichte van de eerste versie.",
+      "Besluitnaam": "Ontwerpbesluit (rectificatie)"
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 85,
+      "Project": "p01",
+      "p01_01": {
+        "JuridischWerkendVanaf": 113
+      },
+      "Besluitnaam": "Vaststellingsbesluit",
+      "Beschrijving": "Er komen geen zienswijzen binnen, het vaststellingsbesluit is gelijk aan het ontwerpbesluit."
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 87,
+      "p02": {
+        "Naam": "Project #1 Rectificatie"
+      },
+      "Invoer": {
+        "Project": "p02",
+        "Branch": "p02_01"
+      },
+      "Beschrijving": "In de bekendmaking is een verkeerde versie van het vaststellingsbesluit opgenomen. Het is in A''' niet mogelijk om de bekendmaking te rectificeren. De enige mogelijkheid is om de rectificatie te vermommen als een nieuw besluit.",
+      "p02_01": {
+        "Soort": "Regulier",
+        "IWTDatum": 113
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 88,
+      "Project": "p02",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 4
+        }
+      },
+      "Beschrijving": "De regelingversie die gebruikt is voor het vaststellingsbesluit wordt aangepast."
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 89,
+      "Project": "p02",
+      "p02_01": {
+        "JuridischWerkendVanaf": 114
+      },
+      "Besluitnaam": "Vaststellingsbesluit (rectificatie)",
+      "Beschrijving": "Het besluit mag pas in werking treden na het laatstgepubliceerde besluit, en moet de wijzigingen ten opzichte van de regelingversie uit dat besluit beschrijven. Als het laatstgepubliceerde besluit niet het te rectificeren besluit is, dan reflecteert de renvooiweergave misschien niet de wijzigingen die voor de rectificatie aangebracht moeten worden - dat moet toegelicht worden."
+    }
+  ],
+  "BevoegdGezag": "Gemeente",
+  "Naam": "A''' Rectificatie - gemeente",
+  "Beschrijving": "Dit scenario laat zien hoe in Release A''' een rectificatie gedaan kan worden door de techniek van een besluit te misbruiken. Bij de start van het scenario is er al een versie van de regeling in werking."
+}

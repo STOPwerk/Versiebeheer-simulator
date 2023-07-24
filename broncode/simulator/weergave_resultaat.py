@@ -84,7 +84,7 @@ class ResultaatGenerator (WebpaginaGenerator):
         scenario Scenario  De invoer en resultaten van de consolidatie
         favicon string  URL van het favicon voor de webpagina; moet een PNG plaatje zijn
         """
-        super().__init__ (scenario.Titel, favicon)
+        super().__init__ ("Simulator @LVBB", favicon, scenario.Titel)
         self.Scenario = scenario
 
     def _AlleenMeldingen (self):
@@ -112,8 +112,12 @@ class ResultaatGenerator (WebpaginaGenerator):
         self.VoegHtmlToe ('<div id="intro">')
         if self.Scenario.Opties.Beschrijving:
             einde = self.StartToelichting ('Beschrijving van het scenario')
+            if self.Scenario.Titel:
+                self.VoegHtmlToe ('<b>' + self.Scenario.Titel + '</b><br>')
             self.VoegHtmlToe (self.Scenario.Opties.Beschrijving)
             self.VoegHtmlToe (einde)
+        elif self.Scenario.Titel:
+            self.VoegHtmlToe ('<b>' + self.Scenario.Titel + '</b><br>')
         Weergave_Uitwisselingselector(self.Scenario).VoegSelectorToe (self)
         self.VoegHeadScriptToe (self.LeesJSTemplate ('Applicatie', False).replace ('TOESTANDEN_DATA', self._MaakToestandenData()))
         self.VoegHtmlToe ('</div>')

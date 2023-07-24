@@ -405,6 +405,8 @@ class Scenario:
         # Default opties
         if self.Opties is None:
             self.Opties = ProcesOpties (None if self.IsValide else False)
+        elif self.Opties.Titel:
+            self.Titel = self.Opties.Titel
 
         # Sorteer de consolidatie-informatie op volgorde van uitwisseling
         self.Uitwisselingen = [uitwisselingPerGemaaktOp[gm] for gm in sorted (uitwisselingPerGemaaktOp.keys ())]

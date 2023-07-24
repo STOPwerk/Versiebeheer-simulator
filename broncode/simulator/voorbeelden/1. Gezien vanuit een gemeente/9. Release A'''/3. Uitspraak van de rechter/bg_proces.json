@@ -1,0 +1,122 @@
+{
+  "SpecificatieVersie": "2023-06",
+  "start": {
+    "reg_01": {
+      "uuid": 1
+    }
+  },
+  "Activiteiten": [
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 1,
+      "p01": {
+        "Naam": "Onfortuinlijk project"
+      },
+      "Invoer": {
+        "Project": "p01",
+        "Branch": "p01_01"
+      },
+      "Beschrijving": "Het project dat resulteert in een besluit waar de rechter het niet mee eens zal zijn.",
+      "p01_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 2,
+      "Project": "p01",
+      "p01_01": {
+        "reg_01": {
+          "uuid": 2
+        }
+      },
+      "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd."
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 3,
+      "Project": "p01",
+      "p01_01": {
+        "JuridischWerkendVanaf": 31
+      },
+      "Besluitnaam": "Vaststellingsbesluit",
+      "Beschrijving": "Het gaat in dit scenario om het verwerken van de uitspraak van de rechter, de projecten in dit scenario leiden daarom vliegensvlug en tegen de regels in tot een vaststellingsbesluit."
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 366,
+      "p02": {
+        "Naam": "Project #2"
+      },
+      "Invoer": {
+        "Project": "p02",
+        "Branch": "p02_01"
+      },
+      "Beschrijving": "De afhandeling van een beroep duurt enige tijd. In de tussentijd zullen er andere projecten tot besluiten leiden. In dit scenario is dat er één.",
+      "p02_01": {
+        "Soort": "Regulier"
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 367,
+      "Project": "p02",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 4
+        }
+      },
+      "Beschrijving": "De enige wijziging in het latere project."
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 368,
+      "Project": "p02",
+      "p02_01": {
+        "JuridischWerkendVanaf": 396
+      },
+      "Besluitnaam": "Vaststellingsbesluit",
+      "Beschrijving": "Wederom een onrealistisch snel uitgevoerd project - in dit scenario is alleen het vaststellingsbesluit van belang."
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 369,
+      "p03": {
+        "Naam": "Uitspraak rechter"
+      },
+      "Invoer": {
+        "Project": "p03",
+        "Branch": "p03_01"
+      },
+      "Beschrijving": "De gemeente ontvangt de uitspraak van de rechter. Het effect van de uitspraak op de geconsolideerde regelgeving moet vastgelegd worden. Dat moet gedaan worden voor de nu geldende regelgeving. In A''' kan dat niet als er (zoals in dit scenario) nog besluiten in werking moeten treden, dan moet het effect beschreven worden op de regeling die na inwerkingtreding van die besluiten geldig is.",
+      "p03_01": {
+        "Soort": "Regulier",
+        "IWTDatum": 396
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 370,
+      "Project": "p03",
+      "p03_01": {
+        "reg_01": {
+          "uuid": 5
+        }
+      },
+      "Beschrijving": "De geconsolideerde regeling wordt aangepast."
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 375,
+      "Project": "p03",
+      "p03_01": {
+        "JuridischWerkendVanaf": 397
+      },
+      "Besluitnaam": "Vaststellingsbesluit (uitspraak)",
+      "Beschrijving": "De tekst van het besluit moet duidelijk maken dat het om een mededeling van een uitspraak van de rechter gaat en niet om een besluit. De renvooiweergave die het effect van de uitspraak op de geconsolideerde regeling beschrijft is al wel in overeenstemming met hoe het eigenlijk moet zijn."
+    }
+  ],
+  "BevoegdGezag": "Gemeente",
+  "Naam": "A''' Uitspraak rechter - gemeente",
+  "Beschrijving": "Dit scenario laat zien hoe in Release A''' een uitspraak van de rechter verwerkt kan worden door de techniek van een besluit te misbruiken. Bij de start van het scenario is er al een versie van de regeling in werking."
+}
