@@ -1,0 +1,257 @@
+{
+  "SpecificatieVersie": "2023-06",
+  "start": {
+    "reg_01": {
+      "uuid": 1
+    },
+    "gio_01": {
+      "uuid": 2
+    },
+    "gio_02": {
+      "uuid": 3
+    },
+    "pdf_01": {
+      "uuid": 4
+    }
+  },
+  "Activiteiten": [
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 1,
+      "p01": {
+        "Naam": "Project #1"
+      },
+      "Invoer": {
+        "Project": "p01",
+        "Branch": "p01_01"
+      },
+      "Beschrijving": "In dit scenario worden drie projecten tegelijk gestart; dit is het eerste.",
+      "p01_01": {
+        "Soort": "Regulier",
+        "IWTDatum": 0
+      }
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 2,
+      "p02": {
+        "Naam": "Project #2"
+      },
+      "Invoer": {
+        "Project": "p02",
+        "Branch": "p02_01"
+      },
+      "Beschrijving": "In dit scenario worden drie projecten tegelijk gestart; dit is het tweede.",
+      "p02_01": {
+        "Soort": "Regulier",
+        "IWTDatum": 0
+      }
+    },
+    {
+      "Soort": "Maak project",
+      "Tijdstip": 3,
+      "p03": {
+        "Naam": "Project #3"
+      },
+      "Invoer": {
+        "Project": "p03",
+        "Branch": "p03_01"
+      },
+      "Beschrijving": "In dit scenario worden drie projecten tegelijk gestart; dit is het derde.",
+      "p03_01": {
+        "Soort": "Regulier",
+        "IWTDatum": 0
+      }
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 10,
+      "Project": "p01",
+      "p01_01": {
+        "reg_01": {
+          "uuid": 5
+        },
+        "gio_01": {
+          "uuid": 6
+        },
+        "gio_02": {
+          "uuid": 7
+        },
+        "pdf_01": {
+          "uuid": 8
+        }
+      },
+      "Beschrijving": "In het project zal op meerdere momenten de regelgeving worden aangepast. In dit scenario wordt slechts één daarvan opgevoerd.\n\nNaast wijzigingen in de tekst van de regeling worden beide al aanwezige GIO's aangepast. Ook de PDF bijlage wordt bijgewerkt."
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 15,
+      "Project": "p02",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 9
+        },
+        "gio_01": {
+          "uuid": 10
+        },
+        "gio_03": {
+          "uuid": 12
+        },
+        "gio_02": false
+      },
+      "Beschrijving": "De regeling wordt in de drie projecten onafhankelijk van elkaar gewijzigd.\nIn de regeling wordt de juridische regel aangepast die van een van de GIO's gebruik maakt. Dat GIO komt daarom niet meer voor in de tekst van de regeling en wordt ingetrokken. Er wordt tevens een nieuw artikel opgenomen waarvoor een nieuwe GIO wordt geïntroduceerd."
+    },
+    {
+      "Soort": "Wijziging",
+      "Tijdstip": 17,
+      "Project": "p03",
+      "p03_01": {
+        "pdf_01": {
+          "uuid": 15
+        },
+        "reg_01": {
+          "uuid": 13
+        },
+        "gio_02": {
+          "uuid": 14
+        }
+      },
+      "Beschrijving": "De regeling wordt in de drie projecten onafhankelijk van elkaar gewijzigd.\nIn de regeling wordt de PDF bijlage bijgewerkt en wordt het tweede GIO bijgewerkt, wat ook tot een wijziging (nieuwe PDF/GIO-versie-identificatie) in de tekst van de regeling leidt."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 21,
+      "Project": "p01",
+      "Beschrijving": "Het eerste project leidt al snel tot een ontwerpbesluit."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 30,
+      "Project": "p02",
+      "Beschrijving": "Ook het ontwerpbesluit voor het tweede project wordt ter inzage gelegd."
+    },
+    {
+      "Soort": "Ontwerpbesluit",
+      "Tijdstip": 35,
+      "Project": "p03",
+      "Beschrijving": "Tot slot wordt het ontwerpbesluit voor het derde project ter inzage gelegd."
+    },
+    {
+      "Soort": "Concept-vaststellingsbesluit",
+      "Tijdstip": 64,
+      "Project": "p01",
+      "p01_01": {
+        "JuridischWerkendVanaf": 107
+      },
+      "Beschrijving": "Het vaststellingsbesluit wordt opgesteld en aangeboden ter vaststelling. De beoogde datum van inwerkingtreding is al wel bekend, maar omdat het besluit nog niet is bekendgemaakt wordt het besluit nog niet geconsolideerd."
+    },
+    {
+      "Soort": "Concept-vaststellingsbesluit",
+      "Tijdstip": 65,
+      "Project": "p02",
+      "p02_01": {
+        "JuridischWerkendVanaf": 121
+      },
+      "Beschrijving": "Ook voor het tweede project wordt een besluit opgesteld ter vaststelling."
+    },
+    {
+      "Soort": "Concept-vaststellingsbesluit",
+      "Tijdstip": 66,
+      "Project": "p03",
+      "p03_01": {
+        "JuridischWerkendVanaf": 123
+      },
+      "Beschrijving": "Tot slot wordt voor het derde project een besluit opgesteld ter vaststelling."
+    },
+    {
+      "Soort": "Anders...",
+      "Tijdstip": 72.2,
+      "Project": "p01",
+      "Beschrijving": "Het eerste besluit wordt in de raadsvergadering vastgesteld.",
+      "Naam": "Vaststelling besluit"
+    },
+    {
+      "Soort": "Anders...",
+      "Tijdstip": 72.21,
+      "Project": "p02",
+      "Beschrijving": "Ook het tweede besluit wordt in de raadsvergadering vastgesteld.",
+      "Naam": "Vaststelling besluit"
+    },
+    {
+      "Soort": "Anders...",
+      "Tijdstip": 72.22,
+      "Project": "p03",
+      "Beschrijving": "Als laatste wordt het derde besluit in de raadsvergadering vastgesteld.",
+      "Naam": "Vaststelling besluit"
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 79,
+      "Project": "p01",
+      "Beschrijving": "Het eerste besluit wordt bekendgemaakt.",
+      "Besluitnaam": "Vaststellingsbesluit"
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 80,
+      "Project": "p02",
+      "Beschrijving": "Het tweede besluit wordt ongewijzigd bekendgemaakt. De geconsolideerde regeling na inwerkingtreding van dit besluit is niet bekend omdat geen van de regelingversies uit de twee projecten de wijzigingen uit beide projecten bevat.",
+      "Besluitnaam": "Vaststellingsbesluit"
+    },
+    {
+      "Soort": "Voltooi consolidatie",
+      "Tijdstip": 81,
+      "Project": "p02",
+      "Beschrijving": "Nadat de bekendmaking van het tweede besluit wordt de samenloop tussen de besluiten opgelost door de wijzigingen van het eerste besluit in de tekst en eerste GIO van het tweede project op te nemen. Tevens wordt bevestigd dat de tweede GIO ingetrokken moet worden. Deze versie wordt als een revisie aan de LVBB geleverd.",
+      "p02_01": {
+        "reg_01": {
+          "uuid": 16
+        },
+        "gio_01": {
+          "uuid": 17
+        },
+        "gio_02": false
+      }
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 82,
+      "Project": "p03",
+      "p03_01": {
+        "JuridischWerkendVanaf": 123
+      },
+      "Beschrijving": "Het derde besluit wordt ongewijzigd bekendgemaakt. De geconsolideerde regeling na inwerkingtreding van dit besluit is niet bekend omdat geen van de aangeleverde regelingversies de wijzigingen uit alle drie de projecten bevat.",
+      "Besluitnaam": "Vaststellingsbesluit"
+    },
+    {
+      "Soort": "Voltooi consolidatie",
+      "Tijdstip": 85,
+      "Project": "p03",
+      "Branch": "p03_02",
+      "p03_02": {
+        "reg_01": {
+          "uuid": 22
+        },
+        "gio_02": false,
+        "gio_03": 12,
+        "pdf_01": {
+          "uuid": 23
+        }
+      },
+      "Beschrijving": "Er zijn twee redenen dat de samenloop niet via een revisie opgelost kan worden:\n<ol>\n<li>De onderliggende wijzigingen zijn niet juridisch onafhankelijk: in dit project is een GIO gewijzigd die vanwege project #2 geen onderdeel meer is van de geldende regelgeving.</li>\n<li>Hoewel het PDF-informatieobject zowel in dit project als in project #1 is gewijzigd is er juridisch geen sprake van samenloop: de PDF wordt iedere keer opnieuw vastgesteld, dus de versie van dit project overschrijft die van project #1. Als dat niet de bedoeling is (zoals in dit scenario), dan moet de samengevoegde versie opnieuw bekendgemaakt worden.</li>\n</ol>\nIn dit scenario wordt ervan uitgegaan dat het besluit met de oplossing van de samenloop nog voor de inwerkingtreding van het derde vaststellingsbesluit bekendgemaakt kan worden en dat het niet vatbaar is voor beroep. Dan kan de oplossing van de samenloop op dezelfde branch uitgewerkt worden. Anders moet daarvoor een nieuwe branch (en doel) gemaakt worden."
+    },
+    {
+      "Soort": "Vaststellingsbesluit",
+      "Tijdstip": 100,
+      "Project": "p03",
+      "Beschrijving": "De oplossing van de samenloop wordt in een vaststellingsbesluit bekendgemaakt.",
+      "Besluitnaam": "Vervolgbesluit",
+      "p03_02": {
+        "JuridischWerkendVanaf": 123
+      }
+    }
+  ],
+  "BevoegdGezag": "Gemeente",
+  "Naam": "Parallel besluiten - samenloop na de bekendmaking oplossen - gemeente",
+  "Beschrijving": "Dit scenario laat zien hoe samenloop opgelost kan worden nadat vaststellingsbesluiten bekendgemaakt worden. Het gaat dan met name op de samenloop tussen wijzigingen in informatieobjecten. De besluiten komen uit projecten die tot de vaststelling onafhankelijk van elkaar de voorbereidingsfase doorlopen, omdat tot de vaststelling niet bekend is in welke volgorde ze vastgesteld worden en in werking zullen treden. De besluiten worden tegelijk ter vaststelling aangeboden, in dezelfde raadsvergadering vastgesteld en daarna ongewijzigd bekendgemaakt. Om het scenario niet te ingewikkeld te maken treden beide besluiten na elkaar in werking. De geconsolideerde regeling is vanwege samenloop niet bekend na de inwerkingtreding van het tweede besluit. Daarom wordt via een revisie de samenloop opgelost. \n\n<p>Dit scenario laat ook zien wat er gebeurt als samenloop niet via een revisie opgelost kan worden. Dan moet de samenloop-oplossing via een nieuw besluit vastgesteld worden. Als dat besluit niet tijdig in werking kan treden (tegelijk met de laatste van de besluiten met samenloop), dan is de geldende regelgeving tijdelijk onbekend. Dat is een zeer onwenselijke situatie die te allen tijde voorkomen moet worden.</p>\n\n<p>Bij de start van het scenario is er al een versie van de regeling in werking.</p>"
+}

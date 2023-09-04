@@ -78,12 +78,12 @@ scenarioIterator = ScenarioMappenIterator (log, directory_paden, recursie)
 if testen:
     log.Informatie ("Voer unit tests uit")
     from applicatie_testen import UnitTests
-    Scenario.VoorElkScenario (log, scenarioIterator, UnitTests.VoerUit)
+    Scenario.VoorElkScenario (log, scenarioIterator, UnitTests.VoerUit, True)
     log.Informatie ("Unit tests: " + str (scenarioIterator.AantalScenarios) + " uitgevoerd, " + str (scenarioIterator.AantalSucces) + " geslaagd, " + str (scenarioIterator.AantalScenarios - scenarioIterator.AantalSucces)+ " gefaald")
 else:
     log.Informatie ("Bepaal de consolidatie voor de scenario's")
     from applicatie_uitvoeren import Uitvoering
-    Scenario.VoorElkScenario (log, scenarioIterator, Uitvoering.VoerUit)
+    Scenario.VoorElkScenario (log, scenarioIterator, Uitvoering.VoerUit, True)
     log.Informatie ("Consolidaties: " + str (scenarioIterator.AantalSucces) + " uitgevoerd, " + str (scenarioIterator.AantalScenarios - scenarioIterator.AantalSucces) + " niet (volledig) uitgevoerd")
 
 log.ToonHtml ('applicatie_meldingen', meldingen_pad)

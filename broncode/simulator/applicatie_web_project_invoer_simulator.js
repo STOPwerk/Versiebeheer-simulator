@@ -55,7 +55,6 @@ class BGProcesSimulator {
         BGProcesSimulator.#This = this;
         this.#elt_simulator = elt_simulator;
         this.#data.BevoegdGezag = soortBG;
-        this.#data.BGCode = soortBG == BGProcesSimulator.SoortBG_Gemeente ? "gm9999" : "mnre9999";
         this.#data.Naam = this.#MaakValideTitel();
     }
     #elt_simulator;
@@ -169,7 +168,7 @@ class BGProcesSimulator {
      * @returns {string}
      */
     BGCode() {
-        return this.#data.BGCode;
+        return this.#data.BGCode ?? this.BevoegdGezag() === BGProcesSimulator.SoortBG_Gemeente ? "gm9999" : "mnre9999";
     }
 
     /**
@@ -191,14 +190,17 @@ class BGProcesSimulator {
     Startdatum() {
         return this.#startdatum.Datum();
     }
+    /** @type {Startdatum} */
     #startdatum;
 
     /**
      * De uitgangssituatie van het scenario
+     * @returns {Uitgangssituatie}
      */
     Uitgangssituatie() {
         return this.#uitgangssituatie;
     }
+    /** @type {Uitgangssituatie} */
     #uitgangssituatie;
 
     /**
@@ -255,7 +257,7 @@ class BGProcesSimulator {
         } else {
             throw new Error('Invalide specificatie - bevoegd gezag ontbreekt');
         }
-        if (data.BGCode) {
+        if (data.BGCode && data.BGCode !== simulator.BGCode()) {
             simulator.#data.BGCode = data.BGCode;
         }
         if (data.Naam) {
@@ -265,9 +267,8 @@ class BGProcesSimulator {
             simulator.#data.Beschrijving = data.Beschrijving;
         }
         if (data.Startdatum) {
-            simulator.#data.Startdatum = data.Startdatum;
+            simulator.#data.Startdatum = new Startdatum(simulator.#data).Specificatie();
         }
-        new Startdatum(simulator.#data);
 
         let regelingen = {};
         let uuidAanwezig = {};
@@ -463,7 +464,7 @@ class BGProcesSimulator {
      * dat voor elk tijdstip de actuele stand van zaken beschrijft.
      */
     #VertaalSpecificatie() {
-        this.#startdatum = new Startdatum(this.#data);
+        this.#startdatum = new Startdatum(this.#data.Startdatum ? this.#data : {});
 
         // Maak de uitgangssituatie aan
         this.#uitgangssituatie = new Uitgangssituatie(this.#data);
@@ -551,8 +552,11 @@ class BGProcesSimulator {
         }
     }
     static #IsEmpty(value) {
-        if (value === null || value === undefined || value === '') {
+        if (value === undefined || value === '') {
             return true;
+        }
+        if (value === null) {
+            return false;
         }
 
         if (Array.isArray(value)) {
@@ -795,7 +799,9 @@ ${this.#diagram.Html()}
         BGProcesSimulator.LuisterNaarEvents();
         this.#SelecteerActiviteit(-1);
     }
+    /** @type {NieuweActiviteit} */
     #nieuweactiviteit;
+    /** @type {VersiebeheerDiagram} */
     #diagram;
 
     #ToonActiviteit() {
@@ -854,7 +860,9 @@ ${this.#diagram.Html()}
         });
         BGProcesSimulator.LuisterNaarEvents();
     }
+    /** @type {Activiteit} */
     #huidigeActiviteit;
+    /** @type {number} */
     #huidigeActiviteitTijdstip;
 
     /**
@@ -886,13 +894,15 @@ ${this.#diagram.Html()}
 
         this.#ToonGerelateerdeActiviteitenProjecten(this.#huidigProject.Index())
     }
+    /** @type {Project} */
     #huidigProject;
+    /** @type {string} */
     #huidigeProjectcode;
 
     /**
      * Past de opmaak aan van activiteiten die bij een project horen,
      * en projecten bij een activiteit
-     * @param {any} projectIndex
+     * @param {number} projectIndex
      */
     #ToonGerelateerdeActiviteitenProjecten(projectIndex) {
         document.querySelectorAll('[data-prj]').forEach((elt) => {
@@ -953,8 +963,8 @@ ${this.#diagram.Html()}
 
     /**
      * Selecteer eerst de activiteit
-     * @param {int} activiteitIndex - Index() van de activiteit
-     * @param {int} projectIndex - Index() van het project
+     * @param {number} activiteitIndex - Index() van de activiteit
+     * @param {number} projectIndex - Index() van het project
      */
     #SelecteerActiviteit(activiteitIndex, projectIndex) {
         // Zoek uit welke activiteit geselecteerd is
@@ -1014,7 +1024,7 @@ ${this.#diagram.Html()}
 
     /**
      * Zoek een activiteit op aan de hand van de index
-     * @param {any} activiteitIndex
+     * @param {number} activiteitIndex
      * @returns {Activiteit}
      */
     #ActiviteitViaIndex(activiteitIndex) {
@@ -1027,7 +1037,7 @@ ${this.#diagram.Html()}
 
     /**
      * Selecteer een project in het overzicht
-     * @param {int} projectIndex - Index() van het project
+     * @param {number} projectIndex - Index() van het project
      */
     #SelecteerProject(projectIndex) {
         if (!this.#huidigeActiviteit) {
@@ -1247,7 +1257,7 @@ class SpecificatieElement {
 
     /**
      * Geef de unieke code voor dit specificatie-element
-     * @returns {int}
+     * @returns {number}
      */
     Index() {
         return this.#index;
@@ -1301,11 +1311,12 @@ class SpecificatieElement {
 
     /**
      * Geeft de stap in een invoerscherm waarvan de invoer in verschillende stappen uitgevoerd moet worden
-     * @returns {int}
+     * @returns {number}
      */
     InvoerStap() {
         return this.IsInvoer() ? this.#invoerStap : 0;
     }
+    /** @type {number} */
     #invoerStap;
 
     //#endregion
@@ -1405,12 +1416,11 @@ class SpecificatieElement {
      * gaat het om de weergave op (bij false) een overzichtspagina, of (bij true) het
      * modal scherm. Deze methode bepaalt alleen wat de container wordt om de eigenlijke
      * html heen: standaard een span. Kan in afgeleide klassen worden aangepast.
-     * @param {lambda} innerHtml - Optioneel: methode die de html binnen de container opstelt
      * @returns {string}
      */
-    Html(innerHtml) {
+    Html() {
         let containerElement = this.ContainerElement();
-        return `<${containerElement} id="${this.ElementId(this.IsInvoer() ? '___M' : '___W')}" ${this.DataSet()}>${innerHtml ? innerHtml() : this.IsInvoer() ? this.InvoerInnerHtml() : this.WeergaveInnerHtml()}</${containerElement}>`
+        return `<${containerElement} id="${this.ElementId(this.IsInvoer() ? '___M' : '___W')}" ${this.DataSet()}>${this.IsInvoer() ? this.InvoerInnerHtml() : this.WeergaveInnerHtml()}</${containerElement}>`
     }
 
     /**
@@ -1440,10 +1450,12 @@ class SpecificatieElement {
 
     /**
      * Geeft aan dat een volgende stap nodig is voor de invoer
+     * @returns {boolean}
      */
     VolgendeStapNodig() {
         BGProcesSimulator.Singletons('UI').ModalOpener.#volgendeStapNodig = true;
     }
+    /** @type {boolean} */
     #volgendeStapNodig;
     //#endregion
 
@@ -1654,6 +1666,7 @@ class SpecificatieElement {
     //#endregion
 }
 
+
 /*------------------------------------------------------------------------------
  *
  * Tijdstippen worden relatief ten opzichte van de startdatum opgegeven in
@@ -1735,7 +1748,7 @@ class Tijdstip extends SpecificatieElement {
     }
     /**
      * Geef het jaar van deze datum/tijdstip
-     * @returns {int}
+     * @returns {number}
      */
     Jaar() {
         let datum = new Date(BGProcesSimulator.This().Startdatum());
@@ -1746,7 +1759,7 @@ class Tijdstip extends SpecificatieElement {
 
     /**
      * Geef het nummer van de dag
-     * @returns {int}
+     * @returns {number}
      */
     Dag() {
         if (this.Specificatie()) {
@@ -1859,6 +1872,7 @@ class Tijdstip extends SpecificatieElement {
         }
         return Boolean(this.#isReadOnly);
     }
+    /** @type {boolean} */
     #isReadOnly;
 
     WeergaveInnerHtml() {
@@ -1873,6 +1887,7 @@ class Tijdstip extends SpecificatieElement {
             return `dag ${dag} (${this.DatumTijdHtml()})`;
         }
     }
+    /** @type {boolean} */
     #isTijdstip;
 
     BeginInvoer() {
@@ -1914,9 +1929,13 @@ class Tijdstip extends SpecificatieElement {
             }
         }
     }
+    /** @type {number} */
     #dag;
+    /** @type {number} */
     #uur = 0;
+    /** @type {number} */
     #naDag;
+    /** @type {number} */
     #naUur;
 
     InvoerInnerHtml() {
@@ -1934,9 +1953,7 @@ class Tijdstip extends SpecificatieElement {
             let dag = parseInt(this.Element('D').value);
             let uur = this.#isTijdstip ? parseInt(this.Element('T').value) : 0;
             this.#InterpreteerSpecificatie(dag + 0.01 * uur);
-            if (dag != this.#dag || uur != this.#uur) {
-                this.VervangInnerHtml();
-            }
+            this.VervangInnerHtml();
             if (this.SuperInvoer()?.TijdstipGewijzigd) {
                 this.SuperInvoer().TijdstipGewijzigd(this);
             }
@@ -1979,7 +1996,18 @@ class VersiebeheerDiagram extends SpecificatieElement {
      * Tekent het diagram opnieuw
      */
     Herteken() {
+        this.#svg = '';
+        this.#instrumentnamen = Instrument.Instrumentnamen().sort(Instrument.VergelijkInstrumentnamen);
+        if (this.#instrumentnamen.length == 0) {
+            return;
+        }
+        if (this.#voorInstrument && !this.#instrumentnamen.includes(this.#voorInstrument)) {
+            this.#voorInstrument = undefined;
+        }
         this.#MaakSvg();
+        for (let instrument of this.#instrumentnamen) {
+            this.#MaakInstrumentSvg(instrument);
+        }
         this.VervangInnerHtml();
     }
     //#endregion
@@ -1989,14 +2017,7 @@ class VersiebeheerDiagram extends SpecificatieElement {
         if (!this.#svg) {
             return '';
         }
-        let instrumentnamen = Instrument.Instrumentnamen().sort(Instrument.VergelijkInstrumentnamen);
-        if (instrumentnamen.length == 0) {
-            return '';
-        }
         this.#idx++;
-        if (this.#voorInstrument && !instrumentnamen.includes(this.#voorInstrument)) {
-            this.#voorInstrument = undefined;
-        }
         let html = `<table class="bgvbd_tabel">
                     <tr>
                         <td>
@@ -2048,13 +2069,13 @@ class VersiebeheerDiagram extends SpecificatieElement {
                                     <td>Ontvlechting</td>
                                 </tr>
 `
-        if (instrumentnamen.length > 1) {
+        if (this.#instrumentnamen.length > 1) {
             html += `
                                 <tr>
                                     <th colspan="2">Toon STOP versiebeheer voor:</th>
                                 </tr>
                                 <tr><td><table>`;
-            for (let instrument of instrumentnamen) {
+            for (let instrument of this.#instrumentnamen) {
                 html += `
                                     <tr>
                                         <td><input type="radio" name="${this.ElementId('T')}" id="${this.ElementId(`VI_${instrument}`)}"${this.#voorInstrument === instrument ? ' checked' : ''} value="${instrument}"></td><td><label for="${this.ElementId(`VI_${instrument}`)}">${Instrument.SoortInstrumentNamen[Instrument.SoortInstrument(instrument)]} ${instrument}</label></td>
@@ -2067,7 +2088,7 @@ class VersiebeheerDiagram extends SpecificatieElement {
         } else {
             html += `
                                 <tr>
-                                    <td><input type="radio" name="${this.ElementId('T')}" id="${this.ElementId('VI')}"${this.#voorInstrument ? ' checked' : ''} value="${instrumentnamen[0]}"></td>
+                                    <td><input type="radio" name="${this.ElementId('T')}" id="${this.ElementId('VI')}"${this.#voorInstrument ? ' checked' : ''} value="${this.#instrumentnamen[0]}"></td>
                                     <th><label for="${this.ElementId('VI')}">Toon STOP versiebeheer</label></th>
                                 </tr>
                                 ${stop_legenda_html}`;
@@ -2095,7 +2116,6 @@ class VersiebeheerDiagram extends SpecificatieElement {
                         <td colspan="3">
                             <div class="bgvbd_diagram"><svg id="${this.ElementId(`svg_${this.#idx}`)}" xmlns="http://www.w3.org/2000/svg" style="display: inline; width: 100%; height: 100%;" viewBox="0 0 ${this.#breedte} ${this.#hoogte}" version="1.1">
                             ${this.#svg}
-                            ${this.#voorInstrument ? this.#MaakInstrumentSvg() : ''}
                             Deze browser ondersteunt geen SVG en dat is erg jammer.
                             </svg></div>
                         </td>
@@ -2104,22 +2124,39 @@ class VersiebeheerDiagram extends SpecificatieElement {
         return html;
     }
     #idx = 0;
+    /** @type {string[]} */
+    #instrumentnamen;
+    /** @type {string} */
     #voorInstrument;
+    /** @type {number} */
     #breedte; // Breedte tot nu toe
+    /** @type {number} */
     #hoogte; // Hoogte tot nu toe
     #svg = ''; // SVG voor het BG-interne versiebeheer
 
     OnWeergaveClick(elt, idSuffix) {
+        let updateDiagram = false;
         if (idSuffix === 'BG') {
             if (elt.checked) {
                 this.#voorInstrument = undefined;
-                this.VervangInnerHtml();
+                updateDiagram = true;
             }
         } else if (idSuffix && idSuffix.startsWith('VI')) {
             if (elt.checked) {
                 this.#voorInstrument = elt.value;
-                this.VervangInnerHtml();
+                updateDiagram = true;
             }
+        }
+        if (updateDiagram) {
+            document.querySelectorAll('[data-bgvbd]').forEach((elt) => {
+                if (elt.dataset.bgvbd == this.#voorInstrument) {
+                    elt.classList.add('bgvbd_active');
+                    elt.classList.remove('bgvbd_hidden');
+                } else {
+                    elt.classList.add('bgvbd_hidden');
+                    elt.classList.remove('bgvbd_active');
+                }
+            });
         }
     }
 
@@ -2153,7 +2190,6 @@ class VersiebeheerDiagram extends SpecificatieElement {
 
     //#region Stel de svg samen - BG-intern versiebeheer
     #MaakSvg() {
-        this.#svg = '';
         this.#positie = {};
         this.#breedte = 0;
         this.#hoogte = 0;
@@ -2168,7 +2204,7 @@ class VersiebeheerDiagram extends SpecificatieElement {
         let iwtMomenten = [];
         let iwtBranches = {};
         Momentopname.VoorAlleMomentopnamen(undefined, undefined, (mo) => {
-            if (mo.HeeftGewijzigdeTijdstempels()) {
+            if (!(mo instanceof Uitgangssituatie)) {
                 if (mo.JuridischWerkendVanaf()?.HeeftWaarde()) {
                     let iwt = mo.JuridischWerkendVanaf().DatumHtml();
                     if (!(iwt in iwtBranches)) {
@@ -2387,6 +2423,7 @@ class VersiebeheerDiagram extends SpecificatieElement {
                 }
 
                 // Teken alle momentopnamen
+                /** @type {Momentopname[]} */
                 let teTekenen = [mo];
                 if (mo.TegelijkBeheerd()) {
                     teTekenen = momentopnamen.filter((m) => mo.TegelijkBeheerd().includes(m.Branch())); // in de juiste volgorde
@@ -2415,7 +2452,7 @@ class VersiebeheerDiagram extends SpecificatieElement {
                         // Dit is de branchlijn
                         let positieVorigeMO = this.#positie[tekenMO.VoorgaandeMomentopname().Index()];
                         if (tekenMO.VoorgaandeMomentopname().Branch() == tekenMO.Branch()) {
-                            this.#svg += `<path d="M ${x + w / 2} ${positieVorigeMO.y + positieVorigeMO.h} L ${x + w / 2} ${y}" class="bgvbd_line_branch"/>`;
+                            this.#svg += `<path d="M ${x + w / 2} ${positieVorigeMO.y + positieVorigeMO.h} L ${x + w / 2} ${y}" class="bgvbd_line_${tekenMO.IsTegelijkBeheerdEnVolgend() ? 'ex' : ''}branch"/>`;
                         } else {
                             // Basisversie
                             this.#svg += this.#BasisversieLijnMetPijlpuntSvg(tekenMO.VoorgaandeMomentopname(), tekenMO, true, 'bg')
@@ -2462,8 +2499,9 @@ class VersiebeheerDiagram extends SpecificatieElement {
     //#region Stel de svg samen - STOP versiebeheer voor instrument
     /**
      * Maak de SVG voor het STOP versiebeheer voor het geselecteerde instrument
+     * @param {string} voorInstrument - Het instrument waarvoor de SVG toegevoegd moet worden
      */
-    #MaakInstrumentSvg() {
+    #MaakInstrumentSvg(voorInstrument) {
         // Zoek uit welke momentopnamen relevant zijn
         let relevanteMO = [];
         let overigeMO = [];
@@ -2472,7 +2510,7 @@ class VersiebeheerDiagram extends SpecificatieElement {
             if (mo instanceof Uitgangssituatie) {
                 return;
             }
-            let versie = mo.Instrumentversie(this.#voorInstrument);
+            let versie = mo.Instrumentversie(voorInstrument);
             if (versie && (versie.Instrumentversie().LVBBUitgewisseld() || versie.Instrumentversie().MomentopnameLaatsteWijziging() === mo)) {
                 relevanteMO.push(mo);
                 relevanteBranches[mo.Branch().Code()] = true;
@@ -2484,26 +2522,28 @@ class VersiebeheerDiagram extends SpecificatieElement {
         });
 
         // Teken de momentopnamen
-        let svg = '';
+        this.#svg += `
+<g data-bgvbd="${voorInstrument}" class="${voorInstrument === this.#voorInstrument ? 'bgvbd_active' : 'bgvbd_hidden'}">`
         for (let mo of overigeMO) {
-            svg += this.#MomentopnameSvg(mo, 'bgvbd_STOP_nvt');
+            this.#svg += this.#MomentopnameSvg(mo, 'bgvbd_STOP_nvt');
         }
         for (let mo of relevanteMO) {
-            svg += this.#MomentopnameSvg(mo, mo.Activiteit().IsOfficielePublicatie() ? 'bgvbd_STOP_P' : 'bgvbd_STOP_R');
+            this.#svg += this.#MomentopnameSvg(mo, mo.Activiteit().IsOfficielePublicatie() ? 'bgvbd_STOP_P' : 'bgvbd_STOP_R');
         }
         for (let mo of relevanteMO) {
-            let versie = mo.Instrumentversie(this.#voorInstrument).Instrumentversie();
+            let versie = mo.Instrumentversie(voorInstrument).Instrumentversie();
             if (versie.LVBBBasisversie() && mo.Branch() !== versie.LVBBBasisversie().Branch()) {
-                svg += this.#BasisversieLijnMetPijlpuntSvg(versie.LVBBBasisversie(), mo, false, 'basis');
+                this.#svg += this.#BasisversieLijnMetPijlpuntSvg(versie.LVBBBasisversie(), mo, false, 'basis');
             }
             for (let v of versie.LVBBVervlochtenVersies()) {
-                svg += this.#VervlochtenLijnMetPijlpuntSvg(v, mo, 'vv');
+                this.#svg += this.#VervlochtenLijnMetPijlpuntSvg(v, mo, 'vv');
             }
             for (let v of versie.LVBBOntvlochtenVersies()) {
-                svg += this.#OntvlochtenLijnMetPijlpuntSvg(v, mo, 'ov');
+                this.#svg += this.#OntvlochtenLijnMetPijlpuntSvg(v, mo, 'ov');
             }
         }
-        return svg;
+        this.#svg += `
+</g>`
     }
     //#endregion
 
@@ -2552,14 +2592,16 @@ class VersiebeheerDiagram extends SpecificatieElement {
      */
     #MomentopnameSvg(momentopname, css) {
         let symbolen = '';
-        if (momentopname.HeeftGewijzigdeInstrumentversie()) {
-            symbolen += VersiebeheerDiagram.#Symbool_Inhoud;
-        }
-        if (momentopname.HeeftGewijzigdeTijdstempels()) {
-            symbolen += VersiebeheerDiagram.#Symbool_Tijdstempel;
-        }
-        if (momentopname.Activiteit().HeeftUitwisselingen()) {
-            symbolen += VersiebeheerDiagram.#Symbool_Uitwisseling;
+        if (!momentopname.IsTegelijkBeheerdEnVolgend()) {
+            if (momentopname.HeeftGewijzigdeInstrumentversie()) {
+                symbolen += VersiebeheerDiagram.#Symbool_Inhoud;
+            }
+            if (momentopname.HeeftGewijzigdeTijdstempels()) {
+                symbolen += VersiebeheerDiagram.#Symbool_Tijdstempel;
+            }
+            if (momentopname.Activiteit().HeeftUitwisselingen()) {
+                symbolen += VersiebeheerDiagram.#Symbool_Uitwisseling;
+            }
         }
         let pos = this.#positie[momentopname.Index()];
         return `<rect x="${pos.x}" y="${pos.y}" width="${pos.w}" height="${pos.h}" data-bga="${momentopname.Activiteit().Index()}" data-prj="${momentopname.Branch().Project().Index()}" rx="3" ry="3" class="bgvbd_mo ${css}"></rect>
@@ -2730,6 +2772,7 @@ class Annotatie {
     Naam() {
         return this.#naam;
     }
+    /** @type {string} */
     #naam;
     /**
      * Geeft een vrije naam voor een non-STOP annotatie
@@ -2749,11 +2792,12 @@ class Annotatie {
 
     /**
      * Uniek ID voor de combinatie van deze annotatie (naam) + waarde ervan.
-     * @returns {int}
+     * @returns {number}
      */
     UUID() {
         return this.#uuid;
     }
+    /** @type {number} */
     #uuid;
     static #laatste_uuid = 0; // Absolute waarde is niet relevant mits >= 0, alleen gebruikt @runtime
 
@@ -2764,6 +2808,7 @@ class Annotatie {
     Momentopname() {
         return this.#momentopname
     }
+    /** @type {Momentopname} */
     #momentopname;
 
     /**
@@ -2799,7 +2844,7 @@ class Metadata extends Annotatie {
     //#region Initialisatie
     /**
      * Maak een metadata annotatie aan
-     * @param {any} citeertitel - Citeertitel, een van de onderdelen van de metadata
+     * @param {string} citeertitel - Citeertitel, een van de onderdelen van de metadata
      * @param {Momentopname} momentopname - Momentopname waarin de versie van de annotatie is aangemaakt
      */
     constructor(citeertitel, momentopname) {
@@ -2816,6 +2861,7 @@ class Metadata extends Annotatie {
     Citeertitel() {
         return this.#citeertitel;
     }
+    /** @type {string} */
     #citeertitel;
 
     /**
@@ -2873,7 +2919,7 @@ class Instrument {
     //#region Globale gegevens
     /**
      * Geef de instrumentsoort behorend bij de instrumentnaam
-     * @param {any} instrumentnaam - Naam van het instrument
+     * @param {string} instrumentnaam - Naam van het instrument
      * @param {boolean} alleenRegelgeving - Geeft aan dat alleen naar de instrumenten van de regelgeving gekeken moet worden
      * @returns {string} Soort instrument, of undefined als het niet bepaald kan worden
      */
@@ -3004,6 +3050,9 @@ class Instrumentversie {
             this.#uuidNieuweVersie = gewijzigd?.#uuidNieuweVersie;
         }
         this.#Kopieer(gewijzigd ? gewijzigd : basisversie);
+        if (gewijzigd?.IsEerdereVersie()) {
+            this.#eerdereVersie = gewijzigd.#eerdereVersie;
+        }
     }
     /**
      * Neem de inhoud over van het origineel
@@ -3016,6 +3065,7 @@ class Instrumentversie {
             this.#publicatieIndex = origineel.#publicatieIndex;
             this.#work = origineel.#work;
             this.#isIngetrokken = origineel.#isIngetrokken;
+            this.#eerdereVersie = origineel.#eerdereVersie;
             this.#juridischeInhoud = origineel.#juridischeInhoud;
             this.#meenemenInConsolidatie = origineel.#meenemenInConsolidatie;
             this.#versieWelInPublicatie = origineel.#versieWelInPublicatie;
@@ -3031,6 +3081,7 @@ class Instrumentversie {
         } else {
             this.#uuid = undefined;
             this.#isIngetrokken = false;
+            this.#eerdereVersie = undefined;
             this.#juridischeInhoud = undefined;
             this.#nonStopAnnotaties = {}
             this.#stopAnnotaties = {}
@@ -3039,7 +3090,6 @@ class Instrumentversie {
             this.#versieWelInPublicatie = true;
             this.#momentopnameLaatsteWijziging = this.Momentopname();
         }
-        this.#eerdereVersie = undefined;
     }
 
     /**
@@ -3069,6 +3119,7 @@ class Instrumentversie {
     Momentopname() {
         return this.#momentopname;
     }
+    /** @type {Momentopname} */
     #momentopname;
 
     /**
@@ -3078,6 +3129,7 @@ class Instrumentversie {
     Instrument() {
         return this.#instrument;
     }
+    /** @type {string} */
     #instrument;
 
     /**
@@ -3087,15 +3139,17 @@ class Instrumentversie {
     SoortInstrument() {
         return this.#soortInstrument;
     }
+    /** @type {string} */
     #soortInstrument;
 
     /**
      * Uniek ID voor deze instrumentversie.
-     * @returns {int}
+     * @returns {number}
      */
     UUID() {
         return this.#uuid;
     }
+    /** @type {number} */
     #uuid;
     #MaakNieuweVersie() {
         if (!this.#uuidNieuweVersie) {
@@ -3112,12 +3166,12 @@ class Instrumentversie {
      * Deze wordt bewaard zodat het uuid niet steeds wijzigt 
      * als in deze applicatie de eindgebruiker de versie wijzigt
      * en de wijziging weer terugdraait.
-     */
+     * @type {number} */
     #uuidNieuweVersie;
 
     /**
      * Geef een UUID door die al in de specificatie wordt gebruikt
-     * @param {int} uuid
+     * @param {number} uuid
      */
     static UUIDGebruiktInSpecificatie(uuid) {
         if (BGProcesSimulator.Singletons('UUID', 0) < uuid) {
@@ -3139,7 +3193,7 @@ class Instrumentversie {
                 return this.#eerdereVersie.ExpressionIdentificatie();
             } else if (this.IsNieuweVersie()) {
                 let work = this.WorkIdentificatie();
-                if (this.#soortInstrument === 'reg') {
+                if (this.SoortInstrument() === Instrument.SoortInstrument_Regeling) {
                     return `${work}/nld@${this.Momentopname().Tijdstip().DatumHtml()};${this.UUID()};${this.Momentopname().Branch().Code()}${publicatieIndex > 1 ? `;pub_${publicatieIndex}` : ''}`;
                 } else {
                     return `${work}/@${this.Momentopname().Tijdstip().DatumHtml()};${this.UUID()};${this.Momentopname().Branch().Code()}${publicatieIndex > 1 ? `;pub_${publicatieIndex}` : ''}`;
@@ -3160,6 +3214,7 @@ class Instrumentversie {
         }
         return this.#work;
     }
+    /** @type {string} */
     #work;
 
     /**
@@ -3169,19 +3224,31 @@ class Instrumentversie {
     MomentopnameLaatsteWijziging() {
         return this.#momentopnameLaatsteWijziging;
     }
+    /** @type {Momentopname} */
     #momentopnameLaatsteWijziging;
 
 
     /**
-     * Geeft aan dat dit een initiële versie is, d.w.z. de eerste
-     * instrumentversie op deze branch en op branches waar deze branch
-     * van afgeleid is.
+     * Geeft aan dat dit een initiële versie is, d.w.z. dat de juridische uitgangssituatie
+     * geen versie van het instrument kent en dat een instrumentversie op deze branch dus
+     * een volledig nieuwe versie moet zijn.
      * @returns {boolean}
      */
     IsInitieleVersie() {
-        for (let basisversie = this.#basisversie; basisversie; basisversie = basisversie.#basisversie) {
-            if (basisversie.Momentopname().Branch() != this.Momentopname().Branch()) {
+        let uitgangssituatie = this.Momentopname().JuridischeUitgangssituatie();
+        if (uitgangssituatie) {
+            if (uitgangssituatie.Instrumentversie(this.Instrument())) {
+                // Instrument bekend in juridische uitgangssituatie
                 return false;
+            }
+            if (uitgangssituatie.JuridischWerkendVanaf().HeeftWaarde()) {
+                // Het kan nog zijn dat het instrument wel in de consolidatie zit maar niet in de juridische uitgangssituatie
+                // als de consolidatie nog niet voltooid is
+                for (let branchCode of uitgangssituatie.Activiteit().Consolidatiestatus().NuGeldend(uitgangssituatie.Tijdstip())?.IWTMoment().Inwerkingtredingbranchcodes() ?? []) {
+                    if (Branch.Branch(branchCode).LaatsteMomentopname(uitgangssituatie.Tijdstip())?.Instrumentversie(this.Instrument())) {
+                        return false;
+                    }
+                }
             }
         }
         return true;
@@ -3217,18 +3284,12 @@ class Instrumentversie {
     MaakOngewijzigdInBranch() {
         if (!this.#isTeruggetrokken) {
             this.#isTeruggetrokken = true;
-            // Zoek de eerste instrumentversie via de basisversies die niet in deze branch zit
-            for (let voorganger = this.#basisversie; voorganger; voorganger = voorganger.#basisversie) {
-                if (voorganger.Branch() != this.Branch()) {
-                    // Dit is de versie
-                    this.#Kopieer(voorganger);
-                    return;
-                }
-            }
-            // Geen voorganger blijkbaar
-            this.#Kopieer(undefined);
+            this.#Kopieer(this.BasisversieStartBranch());
+            // Wel gewijzigd
+            this.#momentopnameLaatsteWijziging = this.Momentopname();
         }
     }
+    /** @type {boolean} */
     #isTeruggetrokken;
 
     /**
@@ -3251,7 +3312,21 @@ class Instrumentversie {
         }
         return false;
     }
+    /** @type {Instrumentversie[]} */
     #isBasisversieVoor = [];
+
+    /**
+     * Geeft de basisversie die gebruikt is bij de start van de branch waarvoor dit een instrumentversie is
+     * @returns {Instrumentversie}
+     */
+    BasisversieStartBranch() {
+        for (let voorganger = this.#basisversie; voorganger; voorganger = voorganger.#basisversie) {
+            if (voorganger.Branch() != this.Branch()) {
+                // Dit is de versie
+                return voorganger;
+            }
+        }
+    }
 
     /**
      * Maak alle wijzigingen ongedaan en maak deze versie gelijk aan de ongewijzigde versie
@@ -3259,6 +3334,7 @@ class Instrumentversie {
     Undo() {
         this.#Kopieer(this.#basisversie);
     }
+    /** @type {Instrumentversie} */
     #basisversie;
 
     /**
@@ -3270,13 +3346,29 @@ class Instrumentversie {
         return Boolean(this.#eerdereVersie);
     }
     /**
+     * Geeft de eerder gemaakte versie (van een andere branch).
+     * @returns {Instrumentversie}
+     */
+    EerdereVersie() {
+        return this.#eerdereVersie;
+    }
+    /**
      * Gebruik een eerder gemaakte versie als volgende instrumentversie op de branch.
      * @param {Instrumentversie} instrumentversie
      */
     GebruikEerdereVersie(instrumentversie) {
-        this.#Kopieer(instrumentversie);
+        this.Undo();
+        this.#isIngetrokken = false;
+        this.#juridischeInhoud = instrumentversie.#juridischeInhoud;
+        this.#nonStopAnnotaties = Object.assign({}, instrumentversie.#nonStopAnnotaties);
+        this.#stopAnnotaties = Object.assign({}, instrumentversie.#stopAnnotaties);
         this.#eerdereVersie = instrumentversie;
+        this.#uuid = instrumentversie.#uuidNieuweVersie;
+        this.#publicatieIndex = instrumentversie.#publicatieIndex;
+        this.#isTeruggetrokken = false;
+        this.#momentopnameLaatsteWijziging = this.Momentopname();
     }
+    /** @type {Instrumentversie} */
     #eerdereVersie;
 
     /**
@@ -3290,6 +3382,7 @@ class Instrumentversie {
     MeenemenInConsolidatie() {
         return this.#meenemenInConsolidatie;
     }
+    /** @type {boolean} */
     #meenemenInConsolidatie;
 
     /**
@@ -3302,6 +3395,7 @@ class Instrumentversie {
         this.#meenemenInConsolidatie = !inderdaad;
         this.#versieWelInPublicatie = this.#meenemenInConsolidatie || versieWelInPublicatie;
     }
+    /** @type {boolean} */
     #versieWelInPublicatie;
     //#endregion
 
@@ -3323,10 +3417,7 @@ class Instrumentversie {
         this.#isIngetrokken = false;
         this.#MaakNieuweVersie();
     }
-    /**
-     * Tijdstip van laatste wijziging van de juridische inhoud
-     * @returns {Momentopname}
-     */
+    /** @type {Annotatie} */
     #juridischeInhoud;
 
     /**
@@ -3344,6 +3435,7 @@ class Instrumentversie {
         this.#juridischeInhoud = undefined;
         this.#MaakNieuweVersie();
     }
+    /** @type {boolean} */
     #isIngetrokken;
 
     /**
@@ -3469,7 +3561,9 @@ class Instrumentversie {
         }
         return false;
     }
+    /** @type {Object.<string,Annotatie>} */
     #stopAnnotaties;
+    /** @type {Object.<string,Annotatie>} */
     #nonStopAnnotaties;
 
     /**
@@ -3479,12 +3573,16 @@ class Instrumentversie {
      * @returns {boolean}
      */
     HeeftDezelfdeInhoud(andereVersie) {
-        if (this.IsIngetrokken()) {
-            return andereVersie.IsIngetrokken();
-        } else if (andereVersie.IsIngetrokken()) {
-            return false;
+        if (andereVersie) {
+            if (this.IsIngetrokken()) {
+                return andereVersie.IsIngetrokken();
+            } else if (andereVersie.IsIngetrokken()) {
+                return false;
+            } else {
+                return this.UUID() === andereVersie.UUID();
+            }
         } else {
-            return this.UUID() === andereVersie.UUID();
+            return false;
         }
     }
     //#endregion
@@ -3516,13 +3614,13 @@ class Instrumentversie {
             let instrumentversie;
             Momentopname.VoorAlleMomentopnamen(this.Momentopname().Tijdstip(), undefined, (mo) => {
                 for (let spec of mo.Instrumentversies()) {
-                    if (spec.Instrumentversie().UUID() === specificatie) {
+                    if (spec?.Instrumentversie().UUID() === specificatie) {
                         instrumentversie = spec.Instrumentversie();
                     }
 
                 }
             });
-            if (instrumentversie) {
+            if (!instrumentversie) {
                 this.Momentopname().Activiteit().SpecificatieMelding(`Specificatie bevat verwijzing naar instrumentversie (${specificatie}) die nog niet bestaat op dit moment`);
             } else if (instrumentversie.Instrument() != this.Instrument()) {
                 this.Momentopname().Activiteit().SpecificatieMelding(`Specificatie voor instrumentversie van ${this.Instrument()} bevat verwijzing naar instrumentversie (${specificatie}) van een ander instrument ${instrumentversie.Instrument()}`);
@@ -3627,6 +3725,10 @@ class Instrumentversie {
      * @returns {boolean}
      */
     IsOnderdeelVanLVBBPublicatie() {
+        if (this.Momentopname().IsTegelijkBeheerdEnVolgend()) {
+            // In publicaties is alleen juridische inhoud van de eerste branch aanwezig
+            return false;
+        }
         if (!this.HeeftJuridischeInhoud()) {
             // In publicaties is alleen juridische inhoud aanwezig
             return false;
@@ -3644,7 +3746,7 @@ class Instrumentversie {
         if (this.IsEerdereVersie()) {
             // Verwijzing naar een (als het goed is) eerder gepubliceerde versie
             if (this.Momentopname().Activiteit().IsOfficielePublicatie() && !(expressionId in collectie)) {
-                this.Momentopname().Activiteit().SpecificatieMelding(`Er wordt verwezen naar een eerdere versie (${expressionId}) maar die is nog niet gepubliceerd`);
+                this.Momentopname().Activiteit().SpecificatieMelding(`Er wordt vanuit branch ${this.Momentopname().Branch().Code()} @${this.Momentopname().Tijdstip().DatumTijdHtml()} verwezen naar een eerdere versie (${expressionId}) maar die is nog niet gepubliceerd`);
             }
             return false;
         }
@@ -3708,6 +3810,19 @@ class Instrumentversie {
     #instrumentversieUitgewisseld = false;
 
     /**
+     * Geeft de laatst met de LVBB uitgewisselde versie.
+     * @param {boolean} inclusiefDeze - Geeft aan of deze versie onderzocht moet worden, anders wordt naar de voorgaande versie gezocht.
+     * @returns {Instrumentversie}
+     */
+    LaatsteLVBBUitgewisseld(inclusiefDeze) {
+        for (let versie = inclusiefDeze ? this : this.#basisversie; versie; versie = versie.#basisversie) {
+            if (versie.#instrumentversieUitgewisseld) {
+                return versie;
+            }
+        }
+    }
+
+    /**
      * Geeft de basisversie die voor deze instrumentversie in de STOP ConsolidatieInformatie module 
      * aan de LVBB is gerapporteerd. Dit wordt in deze simulator gebruikt voor de weergave in het 
      * versiebeheer diagram.
@@ -3716,6 +3831,7 @@ class Instrumentversie {
     LVBBBasisversie() {
         return this.#stopBasisversie;
     }
+    /** @type {Momentopname} */
     #stopBasisversie;
 
     /**
@@ -3727,6 +3843,7 @@ class Instrumentversie {
     LVBBVervlochtenVersies() {
         return this.#stopVervlochtenVersies;
     }
+    /** @type {Momentopname[]} */
     #stopVervlochtenVersies = [];
 
     /**
@@ -3738,6 +3855,7 @@ class Instrumentversie {
     LVBBOntvlochtenVersies() {
         return this.#stopOntvlochtenVersies;
     }
+    /** @type {Momentopname[]} */
     #stopOntvlochtenVersies = [];
 
     /**
@@ -3747,24 +3865,14 @@ class Instrumentversie {
      */
     #IsOnderdeelVanLVBBAanlevering(isRevisie) {
         // Zoek de basisversie voor dit instrument
-        let lvbbBasisversie;
-        for (let basisversie = this.#basisversie; basisversie; basisversie = basisversie.#basisversie) {
-            if (basisversie.#instrumentversieUitgewisseld) {
-                lvbbBasisversie = basisversie;
-                break;
-            }
-        }
+        let lvbbBasisversie = this.LaatsteLVBBUitgewisseld(false);
         let gebruikJuridischeUitgangssituatie = false;
         if (this.Momentopname().Branch() !== lvbbBasisversie?.Branch()) {
             // Dit is de eerste uitwisseling voor deze branch. Als de juridische uitgangssituatie op deze branch is bijgewerkt, dan is die als basisversie misschien beter.
-            for (let basisversie = this.Momentopname().JuridischeUitgangssituatie()?.Instrumentversie(this.Instrument())?.Instrumentversie(); basisversie; basisversie = basisversie.#basisversie) {
-                if (basisversie.#instrumentversieUitgewisseld) {
-                    if (!lvbbBasisversie || basisversie.Momentopname().Tijdstip().Vergelijk(lvbbBasisversie.Momentopname().Tijdstip()) > 0) {
-                        lvbbBasisversie = basisversie;
-                        gebruikJuridischeUitgangssituatie = true;
-                    }
-                    break;
-                }
+            let juridischeBasisversie = this.Momentopname().JuridischeUitgangssituatie()?.Instrumentversie(this.Instrument())?.Instrumentversie().LaatsteLVBBUitgewisseld(true);
+            if (!lvbbBasisversie || juridischeBasisversie.Momentopname().Tijdstip().Vergelijk(lvbbBasisversie.Momentopname().Tijdstip()) > 0) {
+                lvbbBasisversie = juridischeBasisversie;
+                gebruikJuridischeUitgangssituatie = true;
             }
         }
 
@@ -3796,8 +3904,10 @@ class Instrumentversie {
             if (!isRevisie) {
                 this.IsOnderdeelVanLVBBPublicatie();
             }
-            // Hoeft alleen gemeld te worden in de consolidatie-informatie, als dat inhoudelijk of qua identificatie afwijkt van de voorgaande situatie
-            if (this.UUID() != lvbbBasisversie?.UUID() || this.ExpressionIdentificatie() !== lvbbBasisversie.ExpressionIdentificatie()) {
+
+            if (this.Momentopname().Instrumentversie(this.Instrument()).VervlochtenVersies().length > 0 || this.Momentopname().Instrumentversie(this.Instrument()).OntvlochtenVersies().length > 0 // Moet vermeld worden als er sprake is van vervlechting of ontvlechting
+                || this.UUID() != lvbbBasisversie?.UUID() || this.ExpressionIdentificatie() !== lvbbBasisversie.ExpressionIdentificatie() // Hoeft anders alleen gemeld te worden in de consolidatie-informatie, als dat inhoudelijk of qua identificatie afwijkt van de voorgaande situatie
+            ) {
                 if (isRevisie) {
                     if (this.#meenemenInConsolidatie) {
                         this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Toegevoegd aan consolidatie-informatie voor branch ${this.Branch().Code()}: gebruik versie ${this.ExpressionIdentificatie()} in de consolidatie voor instrument ${this.Instrument()}.`)
@@ -3837,7 +3947,7 @@ class Instrumentversie {
      * maak de "STOP" modules voor de annotaties die sinds de laatste uitwisseling met de LVBB zijn gewijzigd
      * @param {any} consolidatieInformatieModule - ConsolidatieInformatie module waaraan de informatie toegevoegd moet worden
      * @param {boolean} isRevisie - Geeft aan of de momentopname deel is van een revisie en geen verwijzing naar de tekst kan hebben
-     * @param {any} registreerAnnotatieModule - Methode die wordt aangeroepen voor elke annotatiemodule, met de naam en STOP xml van de module
+     * @param {registreerSTOPModule} registreerAnnotatieModule - Methode die wordt aangeroepen voor elke annotatiemodule, met de naam en STOP xml van de module
      */
     MaakModulesVoorLVBB(consolidatieInformatieModule, isRevisie, registreerAnnotatieModule) {
         let [isGewijzigd, lvbbBasisversie] = this.#IsOnderdeelVanLVBBAanlevering();
@@ -3847,11 +3957,12 @@ class Instrumentversie {
 
         // Maak eerst het juiste element voor de consolidatie-informatie module
         let toegevoegd;
+        let metVerOntVlechtingen = false;
         if (this.IsOngewijzigdInBranch()) {
             if (!consolidatieInformatieModule.Terugtrekkingen) {
                 consolidatieInformatieModule.Terugtrekkingen = [];
             }
-            if (this.SoortInstrument() === 'reg') {
+            if (this.SoortInstrument() === Instrument.SoortInstrument_Regeling) {
                 toegevoegd = {
                     doel: this.Branch().Doel(),
                     instrument: this.WorkIdentificatie(),
@@ -3870,10 +3981,9 @@ class Instrumentversie {
                     TerugtrekkingInformatieobject: toegevoegd
                 });
             }
-            consolidatieInformatieModule.Terugtrekkingen.push(toegevoegd);
 
         } else if (this.IsIngetrokken()) {
-            if (this.SoortInstrument() === 'reg') {
+            if (this.SoortInstrument() === Instrument.SoortInstrument_Regeling) {
                 toegevoegd = {
                     doel: this.Branch().Doel(),
                     instrument: this.WorkIdentificatie(this.Instrument()),
@@ -3890,6 +4000,7 @@ class Instrumentversie {
                 consolidatieInformatieModule.Intrekkingen = [];
             }
             consolidatieInformatieModule.Intrekkingen.push({ Intrekking: toegevoegd });
+            metVerOntVlechtingen = true;
 
         } else {
             if (!consolidatieInformatieModule.BeoogdeRegelgeving) {
@@ -3900,16 +4011,14 @@ class Instrumentversie {
                     { doel: this.Branch().Doel() }
                 ]
             };
-            if (this.Momentopname().TegelijkBeheerd()) {
-                // De instrumentversie geldt voor meerdere doelen, maar misschien niet voor alle branches
-                // die tegelijk beheerd worden. Waar het wel voor geldt staat in de vervlochten versies.
-                let versies = this.Momentopname().Instrumentversie(this.Instrument()).VervlochtenVersies();
-                for (let versie of versies) {
-                    if (this.Momentopname().TegelijkBeheerd().includes(versie.Branch())) {
-                        toegevoegd.doelen.push({ doel: versie.Branch().Doel() });
+            if (this.Momentopname().IsEersteVanTegelijkBeheerd()) {
+                // De instrumentversie geldt voor meerdere doelen
+                for (let branch of this.Momentopname().TegelijkBeheerd()) {
+                    if (branch != this.Momentopname().Branch()) {
+                        toegevoegd.doelen.push({ doel: branch.Doel() });
+                        // De bijbehorende instrumentversie moet ook als uitgewisseld gemarkeerd worden
+                        branch.LaatsteMomentopname(this.Momentopname().Tijdstip()).Instrumentversie(this.Instrument()).Instrumentversie().#instrumentversieUitgewisseld = true;
                     }
-                    // De bijbehorende instrumentversie moet ook als uitgewisseld gemarkeerd worden
-                    versie.Branch().LaatsteMomentopname(this.Momentopname().Tijdstip()).Instrumentversie(this.Instrument()).Instrumentversie().#instrumentversieUitgewisseld = true;
                 }
             }
             if (this.ExpressionIdentificatie()) {
@@ -3920,7 +4029,7 @@ class Instrumentversie {
             if (!this.#meenemenInConsolidatie) {
                 toegevoegd.VoorConsolidatie = false;
             }
-            if (this.SoortInstrument() === 'reg') {
+            if (this.SoortInstrument() === Instrument.SoortInstrument_Regeling) {
                 toegevoegd.eId = isRevisie || !this.#versieWelInPublicatie ? undefined : "eId_wijzigartikel";
                 consolidatieInformatieModule.BeoogdeRegelgeving.push({
                     BeoogdeRegeling: toegevoegd
@@ -3955,6 +4064,7 @@ class Instrumentversie {
                 }
                 this.#MaakAnnotatieModules(voorgaandeVersie, true, registreerAnnotatieModule);
             }
+            metVerOntVlechtingen = true;
         }
         this.#instrumentversieUitgewisseld = true;
 
@@ -3968,7 +4078,7 @@ class Instrumentversie {
             }];
             this.#stopBasisversie = lvbbBasisversie.Momentopname();
 
-            if (this.Momentopname().Branch() === lvbbBasisversie.Branch()) {
+            if (metVerOntVlechtingen && this.Momentopname().Branch() === lvbbBasisversie.Branch()) {
                 if (!this.Momentopname().IsVaststellingsbesluitGepubliceerd()) {
                     // Een verandering van juridische uitgangssituatie voorafgaand aan de vaststelling moet als vervlechting gerapporteerd worden
                     if (this.Momentopname().JuridischeUitgangssituatie() !== lvbbBasisversie.Momentopname().JuridischeUitgangssituatie()) {
@@ -3984,32 +4094,34 @@ class Instrumentversie {
                     }
                 } else {
                     // Kijk of er ver-/ontvlechtingen zijn. In deze simulator worden ver-/ontvlechtingen direct doorgegeven.
-                    let versies = this.Momentopname().Instrumentversie(this.Instrument()).VervlochtenVersies();
+                    let versies = this.MomentopnameLaatsteWijziging().Instrumentversie(this.Instrument()).VervlochtenVersies().map(v => v.Instrumentversie());
                     if (versies.length > 0) {
                         this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Toegevoegd aan consolidatie-informatie voor branch ${this.Branch().Code()} en instrument ${this.Instrument()}:
-                        het oplossen van samenloop leidt tot een vervlechting met: ${versies.map(v => `branch ${v.Momentopname().Branch().Code()} @ ${v.Momentopname().Tijdstip().DatumTijdHtml()}`).join(', ')}.`)
+                        het oplossen van samenloop leidt tot een vervlechting met: ${versies.map(v => `branch ${v.MomentopnameLaatsteWijziging().Branch().Code()} @ ${v.MomentopnameLaatsteWijziging().Tijdstip().DatumTijdHtml()}`).join(', ')}.`)
                         for (let versie of versies) {
+                            let uitgewisseldeMO = versie.LaatsteLVBBUitgewisseld(true).Momentopname();
                             toegevoegd.gemaaktOpBasisVan.push({
                                 VervlochtenVersie: {
-                                    doel: versie.Momentopname().Branch().Doel(),
-                                    gemaaktOp: versie.Momentopname().Tijdstip().STOPDatumTijd()
+                                    doel: uitgewisseldeMO.Branch().Doel(),
+                                    gemaaktOp: uitgewisseldeMO.Tijdstip().STOPDatumTijd()
                                 }
                             });
-                            this.#stopVervlochtenVersies.push(versie.Momentopname());
+                            this.#stopVervlochtenVersies.push(uitgewisseldeMO);
                         }
                     }
-                    versies = this.Momentopname().Instrumentversie(this.Instrument()).OntvlochtenVersies();
+                    versies = this.MomentopnameLaatsteWijziging().Instrumentversie(this.Instrument()).OntvlochtenVersies().map(v => v.Instrumentversie());
                     if (versies.length > 0) {
                         this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Toegevoegd aan consolidatie-informatie voor branch ${this.Branch().Code()} en instrument ${this.Instrument()}:
-                        het oplossen van samenloop leidt tot een ontvlechting met: ${versies.map(v => `branch ${v.Momentopname().Branch().Code()} @ ${v.Momentopname().Tijdstip().DatumTijdHtml()}`).join(', ')}.`)
+                        het oplossen van samenloop leidt tot een ontvlechting met: ${versies.map(v => `branch ${v.MomentopnameLaatsteWijziging().Branch().Code()} @ ${v.MomentopnameLaatsteWijziging().Tijdstip().DatumTijdHtml()}`).join(', ')}.`)
                         for (let versie of versies) {
+                            let uitgewisseldeMO = versie.LaatsteLVBBUitgewisseld(true).Momentopname();
                             toegevoegd.gemaaktOpBasisVan.push({
                                 OntvlochtenVersie: {
-                                    doel: versie.Momentopname().Branch().Doel(),
-                                    gemaaktOp: versie.Momentopname().Tijdstip().STOPDatumTijd()
+                                    doel: uitgewisseldeMO.Branch().Doel(),
+                                    gemaaktOp: uitgewisseldeMO.Tijdstip().STOPDatumTijd()
                                 }
                             });
-                            this.#stopOntvlochtenVersies.push(versie.Momentopname());
+                            this.#stopOntvlochtenVersies.push(uitgewisseldeMO);
                         }
                     }
                 }
@@ -4026,7 +4138,7 @@ class Instrumentversie {
      * @param {any[]} uitgewisseldeInstrumenten - UitgewisseldInstrument array uit de Momentopname module waaraan de informatie toegevoegd moet worden
      * @param {Momentopname} sindsMomentopname - De momentopname die de vorige levering aan het adviesbureau aangeeft.
      *                                           Undefined voor de beschrijving van een downloadpakket of uitlevering door bevoegd gezag.
-     * @param {any} registreerModule - Methode die wordt aangeroepen voor elke STOP module, met de naam en STOP xml van de module
+     * @param {registreerSTOPModule} registreerModule - Methode die wordt aangeroepen voor elke STOP module, met de naam en STOP xml van de module
      */
     MaakModulesVoorUitwisseling(activiteit, bron, pakbonComponenten, uitgewisseldeInstrumenten, sindsMomentopname, registreerModule) {
 
@@ -4034,12 +4146,7 @@ class Instrumentversie {
         let laatstUitgewisseldeVersie;
         if (bron === Activiteit.Systeem_LVBB || (bron === Activiteit.Systeem_Adviesbureau && !sindsMomentopname)) {
             // Laatst uitgewisselde versie is de laatst aan LVBB geleverde versie
-            for (let versie = this; versie; versie = versie.#basisversie) {
-                if (versie.#instrumentversieUitgewisseld) {
-                    laatstUitgewisseldeVersie = versie;
-                    break;
-                }
-            }
+            laatstUitgewisseldeVersie = this.LaatsteLVBBUitgewisseld(true);
         } else if (bron === Activiteit.Systeem_Adviesbureau) {
             // Laatst door BG geleverde versie
             laatstUitgewisseldeVersie = sindsMomentopname?.Instrumentversie(this.Instrument())?.Instrumentversie();
@@ -4158,7 +4265,7 @@ class Instrumentversie {
      * Maak de "STOP" modules voor de annotaties die sinds de gespecificeerde versie zijn gewijzigd
      * @param {Instrumentversie} laatstUitgewisseldeVersie - Instrumentversie zoals die voor het laatst is uitgewisseld (vóór deze versie).
      * @param {boolean} alleenIndienGewijzigd - Geeft aan dat een module als wijziging wordt uitgewisseld in plaats van altijd als stand van zaken
-     * @param {any} registreerModule - Methode die wordt aangeroepen voor elke module, met de naam, STOP xml en namespace van de module
+     * @param {Instrumentversie~registreerAnnotatieModule} registreerModule - Methode die wordt aangeroepen voor elke module, met de naam, STOP xml en namespace van de module
      */
     #MaakAnnotatieModules(laatstUitgewisseldeVersie, alleenIndienGewijzigd, registreerModule) {
         if (!BGProcesSimulator.Opties.Annotaties && !BGProcesSimulator.Opties.NonStopAnnotaties) {
@@ -4176,7 +4283,7 @@ class Instrumentversie {
                     // Geef de annotatie door
                     this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, `Toegevoegd: de STOP module ${annotatie} behorend bij versie ${expressionId}${gewijzigdTenOpzichteVan}`)
                     if (annotatie === Annotatie.SoortAnnotatie_Citeertitel) {
-                        let moduleNaam = this.#soortInstrument === Instrument.SoortInstrument_Regeling ? 'RegelingMetadata' : 'InformatieobjectMetadata';
+                        let moduleNaam = this.SoortInstrument() === Instrument.SoortInstrument_Regeling ? 'RegelingMetadata' : 'InformatieobjectMetadata';
                         registreerModule(moduleNaam, Activiteit.ModuleToXml(moduleNaam, {
                             _ns: Activiteit.STOP_Data,
                             Citeertitel: this.#stopAnnotaties[annotatie].Citeertitel()
@@ -4252,6 +4359,19 @@ class Instrumentversie {
     //#endregion
 }
 
+/**
+ * Registratie van een uit te wisselen module
+ * @callback registreerSTOPModule
+ * @param {string} localName - Naam van de STOP module
+ * @param {string} moduleXml - XML van de module
+ */
+/**
+ * Registratie van een uit te wisselen module
+ * @callback Instrumentversie~registreerAnnotatieModule
+ * @param {string} localName - Naam van de STOP module
+ * @param {string} moduleXml - XML van de module
+ * @param {string} namespace - XML namespace van de module
+ */
 //#endregion
 
 //#region Invoer van instrumentversie
@@ -4277,6 +4397,10 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
         super(momentopname.Specificatie(), instrument, undefined, momentopname);
 
         this.#actueleversie = new Instrumentversie(momentopname, instrument, basisversie?.Instrumentversie());
+        if (basisversie && basisversie.Momentopname().Branch() === this.Momentopname().Branch() && !basisversie.Instrumentversie().LVBBUitgewisseld()) {
+            this.#vervlochtenversies = Object.assign({}, basisversie.#vervlochtenversies);
+            this.#ontvlochtenversies = Object.assign({}, basisversie.#ontvlochtenversies);
+        }
         this.#BepaalSamenloop(teOntvlechtenVersies, teVervlechtenVersies);
         this.#actueleversie.PasSpecificatieToe(this.Specificatie());
     }
@@ -4346,7 +4470,9 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
     Instrumentversie() {
         return this.IsInvoer() ? this.#nieuweversie : this.#actueleversie;
     }
+    /** @type {Instrumentversie} */
     #actueleversie;
+    /** @type {Instrumentversie} */
     #nieuweversie;
 
     /**
@@ -4355,27 +4481,29 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
      * @returns
      */
     IsOplossingSamenloop() {
-        return this.#samenloopVersies.length > 0;
+        return this.#isOplossingSamenloop;
     }
-    #samenloopVersies = [];
+    #isOplossingSamenloop = false;
 
     /**
-     * Geeft de expliciet ontvlochten versies
+     * Geeft de expliciet ontvlochten versies sinds de laatste uitwisseling met de LVBB
      * @returns {InstrumentversieSpecificatie[]}
      */
     OntvlochtenVersies() {
-        return this.#ontvlochtenversies;
+        return Object.values(this.#ontvlochtenversies);
     }
-    #ontvlochtenversies = [];
+    /** @type {Object.<number,InstrumentversieSpecificatie>} */
+    #ontvlochtenversies = {};
 
     /**
-     * Geeft de expliciet vervlochten versies
+     * Geeft de expliciet vervlochten versies sinds de laatste uitwisseling met de LVBB
      * @returns {InstrumentversieSpecificatie[]}
      */
     VervlochtenVersies() {
-        return this.#vervlochtenversies;
+        return Object.values(this.#vervlochtenversies);
     }
-    #vervlochtenversies = [];
+    /** @type {Object.<number,InstrumentversieSpecificatie>} */
+    #vervlochtenversies = {};
     //#endregion
 
     //#region Statusoverzicht
@@ -4384,22 +4512,44 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
      * @returns {string}
       */
     OverzichtHtml() {
-        let html = `laatst gewijzigd op ${this.Instrumentversie().MomentopnameLaatsteWijziging().Tijdstip().DatumTijdHtml()}`;
-        if (this.Instrumentversie().HeeftAnnotaties()) {
-            html = `<table><tr><td colspan="2">${html}</td></tr>`;
-            for (let isStop of [true, false]) {
-                for (let naam of this.Instrumentversie().AnnotatieNamen(isStop)) {
-                    let annotatie = this.Instrumentversie().Annotatie(isStop, naam);
-                    if (annotatie) {
-                        if (naam === Annotatie.SoortAnnotatie_Citeertitel) {
-                            html += `<tr><td>${naam}</td><td>d.d. ${annotatie.Momentopname().Tijdstip().DatumTijdHtml()}</td></tr><tr><td>Citeertitel</td><td>${annotatie.Citeertitel()}</td></tr>`;
-                        } else {
-                            html += `<tr><td>${naam}</td><td>d.d. ${annotatie.Momentopname().Tijdstip().DatumTijdHtml()}</td></tr>`;
+        let html = '';
+        let wijzigingHtml = '';
+        let toonVersie = this.Instrumentversie();
+        var laatstGewijzigd = this.Instrumentversie().MomentopnameLaatsteWijziging();
+        if (laatstGewijzigd.Branch() === this.Momentopname().Branch()) {
+            if (this.Instrumentversie().IsEerdereVersie()) {
+                if (!this.Instrumentversie().IsOngewijzigdInBranch()) {
+                    wijzigingHtml = `verwijzing naar andere versie ingesteld op ${laatstGewijzigd.Tijdstip().DatumTijdHtml()}`;
+                }
+                toonVersie = toonVersie.EerdereVersie();
+            } else if (this.Instrumentversie().IsIngetrokken()) {
+                html += `niet meer in gebruik sinds ${laatstGewijzigd.Tijdstip().DatumTijdHtml()}`;
+            } else if (this.Instrumentversie().IsOngewijzigdInBranch()) {
+                wijzigingHtml = `wijzigingen voor dit project teruggedraaid op ${laatstGewijzigd.Tijdstip().DatumTijdHtml()}`;
+                toonVersie = toonVersie.BasisversieStartBranch();
+            }
+        }
+        if (toonVersie?.HeeftJuridischeInhoud()) {
+            html += `laatst gewijzigd op ${toonVersie.MomentopnameLaatsteWijziging().Tijdstip().DatumTijdHtml()}`;
+            if (toonVersie.HeeftAnnotaties()) {
+                html = `<table><tr><td colspan="2">${html}</td></tr>`;
+                for (let isStop of [true, false]) {
+                    for (let naam of toonVersie.AnnotatieNamen(isStop)) {
+                        let annotatie = toonVersie.Annotatie(isStop, naam);
+                        if (annotatie) {
+                            if (naam === Annotatie.SoortAnnotatie_Citeertitel) {
+                                html += `<tr><td>${naam}</td><td>d.d. ${annotatie.Momentopname().Tijdstip().DatumTijdHtml()}</td></tr><tr><td>Citeertitel</td><td>${annotatie.Citeertitel()}</td></tr>`;
+                            } else {
+                                html += `<tr><td>${naam}</td><td>d.d. ${annotatie.Momentopname().Tijdstip().DatumTijdHtml()}</td></tr>`;
+                            }
                         }
                     }
                 }
+                html += '</table>';
             }
-            html += '</table>';
+        }
+        if (wijzigingHtml) {
+            html += `<br>(${wijzigingHtml})`;
         }
         return html;
     }
@@ -4417,7 +4567,11 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
         } else {
             let html = `${this.Instrumentversie().ExpressionIdentificatie()}<br>(`;
             if (this.Instrumentversie().IsEerdereVersie()) {
-                html += 'Verwijzing naar eerder gepubliceerde versie';
+                if (this.Momentopname().IsTegelijkBeheerdEnVolgend()) {
+                    html += `Versie overgenomen van branch ${this.Momentopname().TegelijkBeheerd()[0].Code()}`;
+                } else {
+                    html += 'Verwijzing naar eerder gepubliceerde versie';
+                }
             } else if (this.Instrumentversie().IsInitieleVersie()) {
                 html += 'Initiële versie';
             } else {
@@ -4458,8 +4612,37 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
     #InnerHtml(instrumentversie, enabled) {
         let disabled = enabled ? '' : ' disabled';
         let html;
-        if (instrumentversie.IsInitieleVersie()) {
-            // Opties zijn: een (na terugtrekking nieuwe) eerste versie of niet aanwezig in de branch
+        let initieleVersie = instrumentversie.IsInitieleVersie();
+        let branchHeeftEerdereWijziging = false;
+        for (let versie = instrumentversie.Basisversie(); versie; versie = versie.Basisversie()) {
+            if (versie.Branch() !== instrumentversie.Branch()) {
+                break;
+            }
+            if (versie.UUID() != versie.Basisversie()?.UUID()) {
+                branchHeeftEerdereWijziging = true;
+                break;
+            }
+        }
+        let teSelecterenVersies;
+        if (instrumentversie.SoortInstrument() != Instrument.SoortInstrument_Regeling) {
+            // Zoek eerst alle nieuwe instrumentversies die op dit moment bekend zijn
+            Momentopname.VoorAlleMomentopnamen(this.Momentopname().Tijdstip(), undefined, (mo) => {
+                let versie = mo.Instrumentversie(this.Instrument());
+                if (versie && versie !== this && versie.Instrumentversie().IsNieuweVersie()) {
+                    //Een andere instrumentversie dan deze die een nieuwe versie specificeert
+                    if (instrumentversie.Basisversie()?.UUID() == versie.Instrumentversie().UUID()) {
+                        // Naar een versie met dezelfde expression-ID als de ongewijzigde versie moet niet verwezen worden, dan moet van de wijziging afgezien worden.
+                        return;
+                    }
+                    if (!teSelecterenVersies) {
+                        teSelecterenVersies = {};
+                    }
+                    teSelecterenVersies[`Op ${versie.Momentopname().Tijdstip().DatumTijdHtml()} voor: ${versie.Momentopname().Branch().InteractieNaam()}`] = versie.Momentopname().Index();
+                }
+            });
+        }
+        if (!branchHeeftEerdereWijziging && initieleVersie && !teSelecterenVersies) {
+            // Er is geen eerdere versie in een voorgaande momentopname
             html = `<input type="checkbox" id="${this.ElementId('N')}"${(instrumentversie.HeeftJuridischeInhoud() ? ' checked' : '')}${disabled}><label for="${this.ElementId('N')}">Nieuwe initiële versie</label>`
             if (instrumentversie.HeeftJuridischeInhoud()) {
                 html += this.#AnnotatiesInnerHtml(instrumentversie, enabled);
@@ -4467,62 +4650,41 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
         } else {
             // Er is een eerdere versie, geef een keuze voor de status waarin een instrument zich bevindt.
             html = '<table>';
-            let branchHeeftEerdereWijziging = false;
-            for (let versie = instrumentversie.Basisversie(); versie; versie = versie.Basisversie()) {
-                if (versie.Branch() !== instrumentversie.Branch()) {
-                    break;
-                }
-                if (versie.UUID() != versie.Basisversie()?.UUID()) {
-                    branchHeeftEerdereWijziging = true;
-                    break;
-                }
-            }
             let checked = 'B';
-            if (instrumentversie.IsIngetrokken()) {
-                checked = 'D';
-            } else if (branchHeeftEerdereWijziging && instrumentversie.IsOngewijzigdInBranch()) {
-                checked = 'T';
-            }
-            else if (instrumentversie.IsNieuweVersie()) {
-                checked = 'W';
-            }
-            else if (instrumentversie.IsEerdereVersie()) {
-                checked = 'V';
+            if (instrumentversie.MomentopnameLaatsteWijziging() === this.Momentopname()) {
+                if (instrumentversie.IsIngetrokken()) {
+                    checked = 'D';
+                } else if (branchHeeftEerdereWijziging && instrumentversie.IsOngewijzigdInBranch()) {
+                    checked = 'T';
+                }
+                else if (instrumentversie.IsNieuweVersie()) {
+                    checked = 'W';
+                }
+                else if (instrumentversie.IsEerdereVersie()) {
+                    checked = 'V';
+                }
             }
             if (this.IsOplossingSamenloop()) {
                 html += '<tr><td class="verplicht">&#10045;</td><td>Een van de opties moet gekozen worden om de samenloop op te lossen</td></tr>';
-            } else {
+            }
+            if ((!this.IsOplossingSamenloop() || Instrument.SoortInstrument(this.Instrument()) != Instrument.SoortInstrument_Regeling) // Een informatieobject kan opnieuw verstgesteld worden; blijft ongewijzigd bij oplossen samenloop
+                && (branchHeeftEerdereWijziging || !initieleVersie)) {
                 html += `<tr><td><input type="radio" id="${this.ElementId('B')}" name="${this.ElementId('R')}"${(checked == 'B' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('B')}">Ongewijzigd laten</label></td></tr>`;
             }
             html += `<tr><td><input type="radio" id="${this.ElementId('W')}" name="${this.ElementId('R')}"${(checked == 'W' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('W')}">Nieuwe versie</label>${(checked == 'W' ? this.#AnnotatiesInnerHtml(instrumentversie, enabled) : '')}</td></tr>`;
-            if (!instrumentversie.IsInitieleVersie()) {
+            if (!initieleVersie) {
                 html += `<tr><td><input type="radio" id="${this.ElementId('D')}" name="${this.ElementId('R')}"${(checked == 'D' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('D')}">Intrekken</label></td></tr>`;
             }
             if (branchHeeftEerdereWijziging) {
                 html += `<tr><td><input type="radio" id="${this.ElementId('T')}" name="${this.ElementId('R')}"${(checked == 'T' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('T')}">${instrumentversie.IsInitieleVersie() ? 'Verwijderen' : 'Terug naar versie bij de start van het project'}</label></td></tr>`;
             }
-            if (instrumentversie.SoortInstrument() != Instrument.SoortInstrument_Regeling) {
-                // Zoek eerst alle nieuwe instrumentversies die op dit moment bekend zijn
-                let versies = {};
-                Momentopname.VoorAlleMomentopnamen(this.Momentopname().Tijdstip(), undefined, (mo) => {
-                    let versie = mo.Instrumentversie(this.Instrument());
-                    if (versie && versie !== this && versie.Instrumentversie().IsNieuweVersie()) {
-                        //Een andere instrumentversie dan deze die een nieuwe versie specificeert
-                        if (instrumentversie.Basisversie()?.UUID() == versie.Instrumentversie().UUID()) {
-                            // Naar een versie met dezelfde expression-ID als de ongewijzigde versie moet niet verwezen worden, dan moet van de wijziging afgezien worden.
-                            return;
-                        }
-                        versies[`Op ${versie.Momentopname().Tijdstip().DatumTijdHtml()} voor: ${versie.Momentopname().Branch().InteractieNaam()}`] = versie.UUID();
-                    }
-                });
-                if (versies.length > 0) {
-                    html += `<tr><td><input type="radio" id="${this.ElementId('V')}" name="${this.ElementId('R')}"${(checked == 'V' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('V')}">Gelijk aan een eerder opgestelde versie:<label><br>`;
-                    html += `<select id="${this.ElementId('VL')}"${disabled}>`;
-                    for (let versie of Object.keys(versies).sort()) {
-                        html += `<option value="${versies[versie]}"${(checked == 'V' && versies[versie] === instrumentversie.UUID() ? ' selected' : '')}>${versie}</option>`;
-                    }
-                    html += '</select></td></tr>';
+            if (teSelecterenVersies) {
+                html += `<tr><td><input type="radio" id="${this.ElementId('V')}" name="${this.ElementId('R')}"${(checked == 'V' ? ' checked' : '')}${disabled}></td><td><label for="${this.ElementId('V')}">Gelijk aan een eerder opgestelde versie:<label><br>`;
+                html += `<select id="${this.ElementId('VL')}"${disabled}>`;
+                for (let versie of Object.keys(teSelecterenVersies).sort()) {
+                    html += `<option value="${teSelecterenVersies[versie]}"${(checked == 'V' && teSelecterenVersies[versie] === instrumentversie.UUID() ? ' selected' : '')}>${versie}</option>`;
                 }
+                html += '</select></td></tr>';
             }
             html += '</table>';
         }
@@ -4721,7 +4883,8 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
 
     ValideerInvoer(accepteerInvoer) {
         if (accepteerInvoer) {
-            if (this.IsOplossingSamenloop() && this.Instrumentversie().MomentopnameLaatsteWijziging() !== this.Momentopname()) {
+            if (this.IsOplossingSamenloop() && this.#nieuweversie.MomentopnameLaatsteWijziging() !== this.Momentopname()
+                && this.Instrumentversie().SoortInstrument() === Instrument.SoortInstrument_Regeling) {
                 return true;
             }
         }
@@ -4746,13 +4909,13 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
     #BepaalSamenloop(teOntvlechtenVersies, teVervlechtenVersies) {
         let meldBijwerkenVersie = false;
         let meldAlVervlochten = false;
-        for (let teVervlechten of teVervlechtenVersies) {
+        for (let teVervlechten of (teVervlechtenVersies ?? [])) {
             // Als de actuele versie een latere versie is van de te vervlechten versie, dan hoeft er niet vervlochten te worden
             if (this.#HeeftBijdrageIsVervlochten(this, teVervlechten.Momentopname())) {
                 meldAlVervlochten = true;
                 continue;
             }
-            this.#vervlochtenversies.push(teVervlechten);
+            this.#vervlochtenversies[teVervlechten.Momentopname().Branch().Index()] = teVervlechten;
 
             // Als de te vervlechten versie en de actuele versie identiek zijn, dan hoeft de actuele versie niet aangepast te worden,
             // ook al zijn er verschillende dingen gebeurt op de twee routes (via branch en via vervlechting)
@@ -4770,30 +4933,30 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                 }
             }
             if (werkActueleVersieBij) {
-                this.#actueleversie = new Instrumentversie(momentopname, instrument, teVervlechten);
+                this.#actueleversie = new Instrumentversie(this.Momentopname(), this.Instrument(), teVervlechten.Instrumentversie());
                 meldBijwerkenVersie = true;
                 continue;
             }
 
             // Merge conflict!
-            this.#samenloopVersies.push(teVervlechten);
+            this.#isOplossingSamenloop = true;
         }
-        let meldAlOntvlochten = teOntvlechtenVersies.length > 0;
+        let meldAlOntvlochten = (teOntvlechtenVersies?.length ?? 0) > 0;
 
-        for (let teOntvlechten of teOntvlechtenVersies) {
+        for (let teOntvlechten of (teOntvlechtenVersies ?? [])) {
             // Er is geen noodzaak tot ontvlechting als dit instrument geen bijdrage (meer) heeft van de te ontvlechten branch
             if (this.#HeeftBijdrageIsOntvlochten(this, teOntvlechten.Momentopname().Branch())[0]) {
                 meldAlOntvlochten = false;
-                this.#ontvlochtenversies.push(teOntvlechten);
+                this.#ontvlochtenversies[teOntvlechten.Momentopname().Branch().Index()] = teOntvlechten;
 
                 // Actie vereist
-                this.#samenloopVersies.push(teOntvlechten);
+                this.#isOplossingSamenloop = true;
             }
         }
 
         if (this.IsOplossingSamenloop()) {
             this.Momentopname().Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Procesbegeleiding, `Voor instrument ${this.Instrument()} kan de vervlechting/ontvlechting niet geautomatiseerd uitgevoerd worden; de software vraagt de eindgebruiker de samenloop op te lossen.`);
-        } else {
+        } else if (meldBijwerkenVersie || meldAlVervlochten || meldAlOntvlochten) {
             let melding = `Voor instrument ${this.Instrument()} `
             if (meldBijwerkenVersie) {
                 melding += 'kan de vervlechting geautomatiseerd uitgevoerd worden door de versie in de branch bij te werken';
@@ -4828,7 +4991,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
                 // als de bijdrage gelijk of recenter is dan de te vervlechten momentopname.
                 return gewijzigdeVersie.Momentopname().Tijdstip().Vergelijk(teVervlechtenMomentopname.Tijdstip()) >= 0;
             }
-            for (let versie of gewijzigdeVersie.#vervlochtenversies) {
+            for (let versie of gewijzigdeVersie.VervlochtenVersies()) {
                 if (this.#HeeftBijdrageIsVervlochten(versie, teVervlechtenMomentopname)) {
                     // Een van de vervlochten versies heeft de te vervlechten momentopname als bijdrage
                     return true;
@@ -4857,7 +5020,7 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
             }
             let enigeBijdrage = false;
             let enigeOntvlechting = false;
-            for (let vervlochten of gewijzigdeVersie.#vervlochtenversies) {
+            for (let vervlochten of gewijzigdeVersie.VervlochtenVersies()) {
                 let [bijdrage, ontvlochten] = this.#HeeftBijdrageIsOntvlochten(vervlochten, teOntvlechtenBranch);
                 enigeBijdrage ||= bijdrage;
                 enigeOntvlechting ||= ontvlochten;
@@ -4882,10 +5045,10 @@ class InstrumentversieSpecificatie extends SpecificatieElement {
      */
     #GebruikEerdereVersie(elt) {
         if (elt.selectedIndex >= 0) {
+            let moIndex = parseInt(elt.value);
             Momentopname.VoorAlleMomentopnamen(this.Momentopname().Tijdstip(), undefined, (mo) => {
-                let versie = mo.Instrumentversie(this.Instrument());
-                if (versie?.Instrumentversie().UUID() === elt.value && versie.Instrumentversie().IsNieuweVersie()) {
-                    this.#nieuweversie.GebruikEerdereVersie(versie.Instrumentversie());
+                if (mo.Index() === moIndex) {
+                    this.#nieuweversie.GebruikEerdereVersie(mo.Instrumentversie(this.Instrument()).Instrumentversie());
                     return true;
                 }
             });
@@ -4964,6 +5127,7 @@ class TijdstempelsSpecificatie extends SpecificatieElement {
     JuridischWerkendVanaf() {
         return this.#juridischWerkendVanaf;
     }
+    /** @type {Tijdstip} */
     #juridischWerkendVanaf;
 
     /**
@@ -4973,6 +5137,7 @@ class TijdstempelsSpecificatie extends SpecificatieElement {
     GeldigVanaf() {
         return this.#geldigVanaf;
     }
+    /** @type {Tijdstip} */
     #geldigVanaf;
 
     /**
@@ -5003,7 +5168,9 @@ class TijdstempelsSpecificatie extends SpecificatieElement {
     IsReadOnly() {
         return !this.#tijdstempelsToegestaan;
     }
+    /** @type {boolean} */
     #tijdstempelsToegestaan;
+    /** @type {boolean} */
     #tijdstempelsVerplicht;
 
     ContainerElement() {
@@ -5026,7 +5193,9 @@ class TijdstempelsSpecificatie extends SpecificatieElement {
             this.#nieuweGv = new Tijdstip(this, { Datum: this.#geldigVanaf.Specificatie() }, 'Datum', false);
         }
     }
+    /** @type {Tijdstip} */
     #nieuweJwv;
+    /** @type {Tijdstip} */
     #nieuweGv;
 
     InvoerInnerHtml() {
@@ -5140,8 +5309,8 @@ class Momentopname extends SpecificatieElement {
     constructor(superInvoer, eigenaarObject, branch, tijdstempelsToegestaan, tijdstempelsVerplicht, werkUitgangssituatieBij = false, ontvlochtenversies, vervlochtenversies) {
         super(eigenaarObject, branch.Code(), undefined, superInvoer, {});
         this.#branch = branch;
-        this.#ontvlochtenMet = ontvlochtenversies ?? [];
-        this.#vervlochtenMet = vervlochtenversies ?? [];
+        this.#ontvlochtenMet = ontvlochtenversies ? [...ontvlochtenversies] : [];
+        this.#vervlochtenMet = vervlochtenversies ? [...vervlochtenversies] : [];
 
         // Zoek de voorgaande momentopname waar deze momentopname op doorgaat
         let voorgaandeMomentopnameDezeBranch;
@@ -5161,47 +5330,53 @@ class Momentopname extends SpecificatieElement {
             if (voorgaandeMomentopnameDezeBranch.#isOnderdeelVanPublicatie) {
                 // De vorige momentopname is nu de uitgangssituatie
                 this.#juridischeUitgangssituatie = voorgaandeMomentopnameDezeBranch;
-                this.#inhoudVorigeMOIsGewijzigd = false;
             } else {
                 // Neem uitgangssituatie over
                 this.#juridischeUitgangssituatie = voorgaandeMomentopnameDezeBranch.#juridischeUitgangssituatie;
-                this.#inhoudVorigeMOIsGewijzigd = voorgaandeMomentopnameDezeBranch.IsInhoudGewijzigd();
             }
             this.#isVastgesteld = voorgaandeMomentopnameDezeBranch.#isOnderdeelVanPublicatie || voorgaandeMomentopnameDezeBranch.#isVastgesteld;
         }
 
         let voorgaandeMomentopname = voorgaandeMomentopnameDezeBranch;
+        /** @type {Momentopname} */
         let uitgangssituatie;
         if (werkUitgangssituatieBij !== false || !voorgaandeMomentopnameDezeBranch) {
             // Zoek de laatste momentopname op van de uitgangssituatie waar de branch van uitgaat.
             if (this.Branch().Soort() === Branch.Soort_GeldendeRegelgeving) {
                 if (!(this instanceof Uitgangssituatie)) {
                     // De uitgangssituatie (en tevens basisversie) is de geldende regelgeving.
-                    let status = this.Activiteit().VoorgaandeConsolidatiestatus();
-                    if (!status || status.Bepaald().length === 0) {
+                    let consolidatie = this.Activiteit().VoorgaandeConsolidatiestatus();
+                    if (!consolidatie || consolidatie.Bepaald().length === 0) {
                         this.Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `Er is nog geen geldende regelgeving bekend; deze branch leidt tot nieuwe regelingen.`);
                     } else {
                         let tijdstip = typeof werkUitgangssituatieBij === "number" ? Tijdstip.Maak(werkUitgangssituatieBij, true) : this.Branch().IWTDatum().HeeftWaarde() ? this.Branch().IWTDatum() : this.Tijdstip();
                         this.Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `De uitgangssituatie van de regelgeving van deze branch wordt bijgewerkt naar de regelgeving die geldig is op ${tijdstip.DatumTijdHtml()}`);
-                        status = status.NuGeldend(tijdstip);
-                        uitgangssituatie = status.IWTMoment().LaatsteBijdrage(status.IWTMoment().Inwerkingtredingbranchcodes()[0]);
-                        if (!status.IsVoltooid()) {
-                            this.Activiteit().SpecificatieMelding(`Consolidatie van nu geldende regelgeving is incompleet; scenario gebruikt de regelgeving van de branch ${uitgangssituatie.Branch().Code()} per ${uitgangssituatie.Tijdstip().DatumTijdHtml()}.`);
+                        let status = consolidatie.NuGeldend(tijdstip);
+                        for (let iwtMomentopname of status.IWTMoment().Inwerkingtredingbranchcodes().map(bc => status.IWTMoment().LaatsteBijdrage(bc))) {
+                            if (!uitgangssituatie) {
+                                uitgangssituatie = iwtMomentopname;
+                                if (!status.IsVoltooid()) {
+                                    this.Activiteit().SpecificatieMelding(`Consolidatie van nu geldende regelgeving is incompleet; scenario gebruikt de regelgeving van de branch ${uitgangssituatie.Branch().Code()} per ${uitgangssituatie.Tijdstip().DatumTijdHtml()}.`);
+                                }
+                            }
+                            iwtMomentopname.#gebruiktAlsConsolidatieDoor.push(this);
                         }
-                        uitgangssituatie.#gebruiktAlsConsolidatieDoor.push(this);
                     }
                 }
             } else {
                 // De uitgangssituatie is de laatste momentopname van de branch waar deze branch op volgt
                 uitgangssituatie = werkUitgangssituatieBij instanceof Momentopname ? werkUitgangssituatieBij : this.Branch().VolgtOpBranch().LaatsteMomentopname(this.Tijdstip());
                 this.Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `De uitgangssituatie van de regelgeving van deze branch wordt bijgewerkt naar de regelgeving van de branch ${uitgangssituatie.Branch().Code()} per ${uitgangssituatie.Tijdstip().DatumTijdHtml()}.`);
-                if (this.Branch().Soort() === Branch.Soort_OplossingSamenloop) {
+                if (this.Branch().Soort() === Branch.Soort_OplossingSamenloop || this.Branch().Soort() === Branch.Soort_Consolidatie) {
                     // De andere branches werken als een vervlechting
                     for (let andereBranch of this.Branch().TreedtConditioneelInWerkingMet()) {
                         if (andereBranch != this.Branch().VolgtOpBranch()) {
                             let andereMO = andereBranch.LaatsteMomentopname(this.Tijdstip());
                             this.Activiteit().UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `Tevens worden de wijzigingen van de regelgeving van de branch ${andereMO.Branch().Code()} (waarmee de samenloop opgelost moet worden) per ${andereMO.Tijdstip().DatumTijdHtml()} in deze momentopname vervlochten.`);
-                            this.#vervlochtenMet.push(andereMO);
+                            let huidigeMo = this.#vervlochtenMet.filter(mo => mo.Branch() === andereBranch);
+                            if (!huidigeMo) {
+                                this.#vervlochtenMet.push(andereMO);
+                            }
                         }
                     }
                 }
@@ -5211,6 +5386,11 @@ class Momentopname extends SpecificatieElement {
                 if (!voorgaandeMomentopnameDezeBranch) {
                     // Dit is de eerste momentopname van de branch, de voorgaande is tevens de juridische uitgangssituatie
                     this.#juridischeUitgangssituatie = voorgaandeMomentopname = uitgangssituatie;
+                    // Vervlechting is niet nodig
+                    let huidigeMo = this.#vervlochtenMet.filter(mo => mo.Branch() === uitgangssituatie.Branch());
+                    if (huidigeMo?.length) {
+                        this.#vervlochtenMet.splice(this.#vervlochtenMet.indexOf(huidigeMo[0]), 1);
+                    }
                 } else {
                     // Na vaststelling is de uitgangssituatie altijd de voorgaande publicatie op dezelfde branch
                     if (!this.#isVastgesteld) {
@@ -5218,7 +5398,10 @@ class Momentopname extends SpecificatieElement {
                         this.#juridischeUitgangssituatie = uitgangssituatie
                     }
                     // Dit werkt hetzelfde als een vervlechting in versiebeheer
-                    this.#vervlochtenMet.push(uitgangssituatie);
+                    let huidigeMo = this.#vervlochtenMet.filter(mo => mo.Branch() === uitgangssituatie.Branch());
+                    if (!huidigeMo?.length) {
+                        this.#vervlochtenMet.push(uitgangssituatie);
+                    }
                 }
             }
         }
@@ -5268,16 +5451,20 @@ class Momentopname extends SpecificatieElement {
         }
 
         // Maak specificatie-elementen voor de tijdstempels
-        this.#tijdstempels = new TijdstempelsSpecificatie(this, tijdstempelsToegestaan, tijdstempelsVerplicht);
+        if (this.Branch().Soort() !== Branch.Soort_OplossingSamenloop) {
+            this.#tijdstempels = new TijdstempelsSpecificatie(this, tijdstempelsToegestaan, tijdstempelsVerplicht);
+        }
     }
 
     destructor() {
         if (this.#juridischeUitgangssituatie) {
-            let idx = this.#juridischeUitgangssituatie.#gebruiktAlsConsolidatieDoor.indexOf(this);
-            if (idx >= 0) {
-                this.#juridischeUitgangssituatie.#gebruiktAlsConsolidatieDoor.splice(idx, 1);
-            }
             this.#juridischeUitgangssituatie = undefined;
+            Momentopname.VoorAlleMomentopnamen(undefined, undefined, (mo) => {
+                let idx = mo.#gebruiktAlsConsolidatieDoor.indexOf(this);
+                if (idx >= 0) {
+                    mo.#gebruiktAlsConsolidatieDoor.splice(idx, 1);
+                }
+            });
         }
         super.destructor();
     }
@@ -5316,6 +5503,7 @@ class Momentopname extends SpecificatieElement {
     Branch() {
         return this.#branch;
     }
+    /** @type {Branch} */
     #branch;
 
     /**
@@ -5358,6 +5546,7 @@ class Momentopname extends SpecificatieElement {
     JuridischeUitgangssituatie() {
         return this.#juridischeUitgangssituatie;
     }
+    /** @type {Momentopname} */
     #juridischeUitgangssituatie;
 
     /**
@@ -5366,17 +5555,13 @@ class Momentopname extends SpecificatieElement {
      * @returns {boolean}
      */
     IsInhoudGewijzigd() {
-        if (this.#inhoudVorigeMOIsGewijzigd) {
-            return true;
-        }
-        for (let versie of this.Instrumentversies()) {
-            if (this === versie.Instrumentversie().MomentopnameLaatsteWijziging()) {
+        for (let versie of this.Instrumentversies().map(x => x.Instrumentversie())) {
+            if (!versie.IsOngewijzigdInBranch() && !versie.HeeftDezelfdeInhoud(this.#juridischeUitgangssituatie?.Instrumentversie(versie.Instrument())?.Instrumentversie())) {
                 return true;
             }
         }
         return false;
     }
-    #inhoudVorigeMOIsGewijzigd;
 
     /**
      * Geeft aan of de inwerkingtreding is gewijzigd ten opzichte van de laatste
@@ -5384,7 +5569,10 @@ class Momentopname extends SpecificatieElement {
      * @returns {boolean}
      */
     IsInwerkingtredingGewijzigd() {
-        if (!this.IsVaststellingsbesluitGepubliceerd() || this.IsOnderdeelVanPublicatieVastgesteldeInhoud()) {
+        if (this.Branch().Soort() === Branch.Soort_OplossingSamenloop) {
+            // De trigger voor wijzigen van IWT komt altijd elders vandaan
+            return false;
+        } else if (!this.IsVaststellingsbesluitGepubliceerd() || this.IsOnderdeelVanPublicatieVastgesteldeInhoud()) {
             // Nog geen vaststellingsbesluit gepubliceerd (of deze momentopname beschrijft de publicatie)
             return this.JuridischWerkendVanaf().HeeftWaarde();
         } else {
@@ -5404,7 +5592,13 @@ class Momentopname extends SpecificatieElement {
         return this.#isOnderdeelVanPublicatie;
     }
     IsOnderdeelVanPublicatieVastgesteldeInhoudWordt() {
-        this.#isOnderdeelVanPublicatie = true;
+        if (this.TegelijkBeheerd()) {
+            for (let branch of this.TegelijkBeheerd()) {
+                this.#bijdragen[branch.Code()].#isOnderdeelVanPublicatie = true;
+            }
+        } else {
+            this.#isOnderdeelVanPublicatie = true;
+        }
     }
     #isOnderdeelVanPublicatie = false;
 
@@ -5438,7 +5632,9 @@ class Momentopname extends SpecificatieElement {
         let versies = this.IsInvoer() ? this.#nieuweInstrumenten : this.#actueleInstrumenten;
         return versies[instrument];
     }
+    /** @type {Object.<string,InstrumentversieSpecificatie>} */
     #actueleInstrumenten = {};
+    /** @type {Object.<string,InstrumentversieSpecificatie>} */
     #nieuweInstrumenten = {};
 
     /**
@@ -5474,7 +5670,22 @@ class Momentopname extends SpecificatieElement {
      * @returns {Tijdstip}
      */
     JuridischWerkendVanaf() {
-        return this.#tijdstempels.JuridischWerkendVanaf();
+        if (this.Branch().Soort() === Branch.Soort_OplossingSamenloop) {
+            let jwv;
+            for (let branch of this.Branch().TreedtConditioneelInWerkingMet()) {
+                let mo = this.Activiteit().LaatsteMomentopname(branch);
+                if (!mo.JuridischWerkendVanaf().HeeftWaarde()) {
+                    // Nog niet allemaal in werking
+                    return mo.JuridischWerkendVanaf();
+                } else if (!jwv || mo.JuridischWerkendVanaf().Specificatie() > jwv.Specificatie()) {
+                    // Bewaar de laatste/grootste datum
+                    jwv = mo.JuridischWerkendVanaf();
+                }
+            }
+            return jwv;
+        } else {
+            return this.#tijdstempels.JuridischWerkendVanaf();
+        }
     }
 
     /**
@@ -5482,7 +5693,25 @@ class Momentopname extends SpecificatieElement {
      * @returns {Tijdstip}
      */
     GeldigVanaf() {
-        return this.#tijdstempels.GeldigVanaf();
+        if (this.Branch().Soort() === Branch.Soort_OplossingSamenloop) {
+            let gv;
+            for (let branch of this.Branch().TreedtConditioneelInWerkingMet()) {
+                let mo = this.Activiteit().LaatsteMomentopname(branch);
+                if (!mo.JuridischWerkendVanaf().HeeftWaarde()) {
+                    // Nog niet allemaal in werking
+                    return mo.JuridischWerkendVanaf();
+                } else {
+                    let datum = mo.GeldigVanaf()?.HeeftWaarde() ? mo.GeldigVanaf() : mo.JuridischWerkendVanaf();
+                    if (!gv || datum.Specificatie() > gv.Specificatie()) {
+                        // Bewaar de laatste/grootste datum
+                        gv = datum;
+                    }
+                }
+            }
+            return gv && !gv.IsGelijk(this.JuridischWerkendVanaf()) ? gv : undefined;
+        } else {
+            return this.#tijdstempels.GeldigVanaf();
+        }
     }
 
     /**
@@ -5490,8 +5719,19 @@ class Momentopname extends SpecificatieElement {
      * @returns {boolean}
      */
     HeeftGewijzigdeTijdstempels() {
-        return this.#tijdstempels.HeeftGewijzigdeTijdstempels();
+        if (this.Branch().Soort() === Branch.Soort_OplossingSamenloop) {
+            for (let branch of this.Branch().TreedtConditioneelInWerkingMet()) {
+                let mo = this.Activiteit().Momentopname(branch);
+                if (mo?.HeeftGewijzigdeTijdstempels()) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return this.#tijdstempels.HeeftGewijzigdeTijdstempels();
+        }
     }
+    /** @type {TijdstempelsSpecificatie} */
     #tijdstempels;
     //#endregion
 
@@ -5503,6 +5743,7 @@ class Momentopname extends SpecificatieElement {
     VoorgaandeMomentopname() {
         return this.#voorgaandeMomentopname;
     }
+    /** @type {Momentopname} */
     #voorgaandeMomentopname;
 
     /**
@@ -5512,6 +5753,7 @@ class Momentopname extends SpecificatieElement {
     OntvlochtenMet() {
         return this.#ontvlochtenMet;
     }
+    /** @type {Momentopname[]} */
     #ontvlochtenMet;
 
     /**
@@ -5521,13 +5763,14 @@ class Momentopname extends SpecificatieElement {
     VervlochtenMet() {
         return this.#vervlochtenMet;
     }
+    /** @type {Momentopname[]} */
     #vervlochtenMet;
 
     /**
      * Geeft de namen van de braches waarvan de inhoud is verwerkt in de
      * inhoud van deze momentopname. Dat is inclusief de branch van deze
      * momentopname.
-     * @returns {boolean}
+     * @returns {string[]}
      */
     HeeftBijdragenVan() {
         return Object.keys(this.#bijdragen);
@@ -5536,7 +5779,7 @@ class Momentopname extends SpecificatieElement {
      * Geeft de momentopname van de laatste bijdrage van een branch die in deze 
      * momentopname is verwerkt
      * @param {string} branchNaam - Een van de namen uit HeeftBijdragenVan
-     * @returns {Tijdstip}
+     * @returns {Momentopname|boolean} - Geeft de momentopname van laatste wijziging, of false
      */
     LaatsteBijdrage(branchNaam) {
         return this.#bijdragen[branchNaam];
@@ -5545,6 +5788,7 @@ class Momentopname extends SpecificatieElement {
     /**
      * Per branch het tijdstip van laatste tijdstip van bijdragen
      */
+    /** @type {Object.<string,Momentopname>} */
     #bijdragen = {};
     /**
      * Bepaal welke branches (en tot welk tijdstip) verwerkt zijn in deze momentopname
@@ -5552,7 +5796,22 @@ class Momentopname extends SpecificatieElement {
     #BepaalBijdragen() {
         // Verzamel eerst alle bijdragen
         this.#bijdragen = this.#voorgaandeMomentopname ? Object.assign({}, this.#voorgaandeMomentopname.#bijdragen) : {};
+
+        // Registreer deze momentopname (en die van de tegelijk beheerde branches)
         this.#bijdragen[this.Branch().Code()] = this;
+        if (this.TegelijkBeheerd()) {
+            for (let branch of this.TegelijkBeheerd()) {
+                if (branch != this.Branch()) {
+                    let mo = this.Activiteit().Momentopname(branch);
+                    if (mo) { // Als BepaalBijdrage in de constructor wordt aangeroepen, dan hoeven nog niet alle momentopnamen aangemaakt te zijn
+                        this.#bijdragen[branch.Code()] = mo;
+                        mo.#bijdragen[this.Branch().Code()] = this;
+                    }
+                }
+            }
+        }
+
+        // Pas de expliciete vervlechtingen toe
         for (let vervlochten of this.#vervlochtenMet) {
             for (let [branchcode, laatsteMO] of Object.entries(vervlochten.#bijdragen)) {
                 let huidig = this.#bijdragen[branchcode];
@@ -5561,9 +5820,10 @@ class Momentopname extends SpecificatieElement {
                 }
             }
         }
-        // Haal de bijdragen van ontvlochten branches weg
+
+        // Markeer de bijdragen van de ontvlochten branches als niet aanwezig
         for (let v of this.#ontvlochtenMet) {
-            delete this.#bijdragen[v.Branch().Code()];
+            this.#bijdragen[v.Branch().Code()] = false;
         }
     }
     //#endregion
@@ -5577,25 +5837,55 @@ class Momentopname extends SpecificatieElement {
     TegelijkBeheerd() {
         return this.#tegelijkBeheerd;
     }
+    /**
+     * Geeft aan dat er sprake is van tegelijk beheerde branches, en dat deze branch de 
+     * eerste is waar het werk op uitgevoerd wordt
+     * @returns
+     */
+    IsEersteVanTegelijkBeheerd() {
+        return this.#tegelijkBeheerd && this.Branch() === this.#tegelijkBeheerd[0];
+    }
+    /**
+     * Geeft aan dat er sprake is van tegelijk beheerde branches, en dat deze branch de 
+     * niet een branch is waar het werk op uitgevoerd wordt; deze branch volgt andere branches.
+     * @returns
+     */
+    IsTegelijkBeheerdEnVolgend() {
+        return this.#tegelijkBeheerd && this.Branch() !== this.#tegelijkBeheerd[0];
+    }
+    /** @type {Branch[]} */
     #tegelijkBeheerd;
 
     /**
-     * Geeft aan dat deze momentopname tegelijk beheerd wordt met een andere momentopname.
-     * De instrumentversies van de andere momentopname moeten overgenomen worden.
-     * @param {Momentopname} eersteMomentopname - Eerste van de momentopnamen die tegelijk beheerd worden, of undefined als deze branch weer solo gaat.
+     * Geeft aan dat deze momentopname tegelijk beheerd wordt met andere momentopname(n).
+     * Deze methode moet als eerste voor de eerste momentopname uitgevoerd worden.
+     * De instrumentversies van de eerste momentopname uit momentopnamen moeten overgenomen worden.
+     * @param {Momentopname[]} momentopnamen - De momentopname die tegelijk beheerd worden, of undefined als deze branch weer solo gaat.
      */
-    BeheerTegelijkMet(eersteMomentopname) {
-        if (!eersteMomentopname) {
-            this.#tegelijkBeheerd = undefined;
-            return;
+    BeheerTegelijk(momentopnamen) {
+        this.#tegelijkBeheerd = momentopnamen?.map(mo => mo.Branch());
+        if (momentopnamen) {
+            if (this === momentopnamen[0]) {
+                // Bepaal de bijdragen opnieuw
+                this.#BepaalBijdragen();
+            } else {
+                // Werk de instrumentversies bij
+                for (let instrumentversie of momentopnamen[0].Instrumentversies()) {
+                    let huidig = this.Instrumentversie(instrumentversie.Instrument());
+                    if (!huidig) {
+                        // Voeg de instrumentversie toe
+                        this.#actueleInstrumenten[instrumentversie.Instrument()] = new InstrumentversieSpecificatie(this, instrumentversie.Instrument(), instrumentversie);
+                    } else if (!huidig.Instrumentversie().HeeftDezelfdeInhoud(instrumentversie.Instrumentversie())) {
+                        huidig.Instrumentversie().GebruikEerdereVersie(instrumentversie.Instrumentversie());
+                    }
+                }
+                // Neem alle bijdragen over
+                this.#bijdragen = Object.assign({}, momentopnamen[0].#bijdragen);
+            }
+        } else {
+            // Bepaal de bijdragen opnieuw
+            this.#BepaalBijdragen();
         }
-        if (!eersteMomentopname.#tegelijkBeheerd) {
-            eersteMomentopname.#tegelijkBeheerd = [eersteMomentopname.Branch()];
-        }
-        eersteMomentopname.#tegelijkBeheerd.push(this.Branch());
-        this.#tegelijkBeheerd = eersteMomentopname.#tegelijkBeheerd;
-
-        // TODO: instrumentversies bijwerken
     }
 
     /**
@@ -5609,6 +5899,8 @@ class Momentopname extends SpecificatieElement {
                 // Alleen deze branch over
                 this.#tegelijkBeheerd = undefined;
             }
+            // Bepaal de bijdragen opnieuw
+            this.#BepaalBijdragen();
         }
     }
     //#endregion
@@ -5619,11 +5911,11 @@ class Momentopname extends SpecificatieElement {
      * maak de "STOP" modules voor de annotaties die sinds de laatste uitwisseling met de LVBB zijn gewijzigd
      * @param {any} consolidatieInformatieModule - ConsolidatieInformatie module waaraan de informatie toegevoegd moet worden
      * @param {boolean} isRevisie - Geeft aan of de momentopname deel is van een revisie en geen verwijzing naar de tekst kan hebben
-     * @param {any} registreerAnnotatieModule - Methode die wordt aangeroepen voor elke annotatiemodule, met de naam en STOP xml van de module
+     * @param {registreerSTOPModule} registreerAnnotatieModule - Methode die wordt aangeroepen voor elke annotatiemodule, met de naam en STOP xml van de module
      */
     MaakModulesVoorLVBB(consolidatieInformatieModule, isRevisie, registreerAnnotatieModule) {
         // Alleen de eerste van de tegelijk beheerde momentopnamen wordt gebruikt voor de uitwisseling van instrumentversies
-        if (!this.TegelijkBeheerd() || this.Branch() === this.TegelijkBeheerd()[0]) {
+        if (!this.IsTegelijkBeheerdEnVolgend()) {
             // Voeg de instrumentversie-informatie toe
             for (let instrumentversie of this.Instrumentversies(true)) {
                 instrumentversie.Instrumentversie().MaakModulesVoorLVBB(consolidatieInformatieModule, isRevisie, registreerAnnotatieModule)
@@ -5692,7 +5984,7 @@ class Momentopname extends SpecificatieElement {
     /**
      * Maak de modules voor de uitwisseling van regelgeving tussen downloadservice, adviesbureau en bevoegd gezag.
      * @param {string} bron - Een van de Activiteit.Systeem* waarden die aangeeft welk systeem als bron optreedt
-     * @param {any} registreerModule - Methode die wordt aangeroepen voor elke STOP module, met de naam en STOP xml van de module
+     * @param {registreerSTOPModule} registreerModule - Methode die wordt aangeroepen voor elke STOP module, met de naam en STOP xml van de module
      */
     MaakModulesVoorUitwisseling(bron, registreerModule) {
         let pakbonModule = {
@@ -5781,7 +6073,7 @@ class Momentopname extends SpecificatieElement {
             let heeftVersiesVanDezeSoort = false;
             for (let instr of Object.keys(this.#actueleInstrumenten).sort()) {
                 let instrument = this.#actueleInstrumenten[instr];
-                if (instrument.Instrumentversie().HeeftJuridischeInhoud() && instrument.Instrumentversie().SoortInstrument() === soortInstrument) {
+                if ((instrument.Instrumentversie().HeeftJuridischeInhoud() || instrument.Instrumentversie().MomentopnameLaatsteWijziging()?.Branch() === this.Branch()) && instrument.Instrumentversie().SoortInstrument() === soortInstrument) {
                     html += `<tr><td class="nw">${soortnaam}</td>`;
                     if (meerdereInstrumentenMogelijk) {
                         html += `<td class="nw">${instrument.Instrument()}</td>`;
@@ -5827,8 +6119,9 @@ class Momentopname extends SpecificatieElement {
                 html += `Indien aanwezig wordt in een ${this.#MogelijkePublicatie(this.IsVaststellingsbesluitGepubliceerd())} `;
             }
             if (heeftInhoudWijzigingen) {
-                if (this.JuridischeUitgangssituatie()) {
-                    html += `de wijziging ten opzichte van ${this.JuridischeUitgangssituatie().Branch().InteractieNaam()} d.d. ${this.JuridischeUitgangssituatie().Tijdstip().DatumTijdHtml()} beschreven`;
+                let uitgangssituatie = (this.IsTegelijkBeheerdEnVolgend() ? this.#bijdragen[this.TegelijkBeheerd()[0].Code()] : this).JuridischeUitgangssituatie();
+                if (uitgangssituatie) {
+                    html += `de wijziging ten opzichte van ${uitgangssituatie.Branch().InteractieNaam()} d.d. ${uitgangssituatie.Tijdstip().DatumTijdHtml()} beschreven`;
                 } else {
                     html += 'een integrale versie van de tekst/informatieobjecten opgenomen.';
                 }
@@ -5856,7 +6149,7 @@ class Momentopname extends SpecificatieElement {
             <tr><td>Geldig vanaf</td><td>${this.GeldigVanaf()?.HeeftWaarde() ? this.GeldigVanaf().DatumTijdHtml() : '-'}</td></tr>
             <tr><td>Bevat wijzigingen van</td><td><ul>${Object.values(this.#bijdragen).sort((a, b) => -Branch.Vergelijk(a.Branch(), b.Branch())).map(mo => `<li>Branch <code>${mo.Branch().Code()}</code> @ ${mo.Tijdstip().DatumTijdHtml()}</li>`).join('')}</ul></td></tr>
             <tr><td>Regelgeving gepubliceerd in vaststellingsbesluit?</td><td>${this.IsVaststellingsbesluitGepubliceerd()
-                ? 'Ja; juridische uitgangssituatie is een eerdere publicatie van deze branch' :
+                ? 'Ja; juridische uitgangssituatie is een publicatie van deze branch' :
                 this.IsOnderdeelVanPublicatieVastgesteldeInhoud()
                     ? 'Ja; dit is de juridische uitgangssituatie voor volgende publicaties.'
                     : 'Nee; juridische uitgangssituatie is geen publicatie deze branch.'
@@ -5887,6 +6180,7 @@ class Momentopname extends SpecificatieElement {
     IsUitgangssituatieAlsConsolidatie() {
         return this.#gebruiktAlsConsolidatieDoor.length > 0;
     }
+    /** @type {Momentopname[]} */
     #gebruiktAlsConsolidatieDoor = []
 
     /**
@@ -5949,7 +6243,7 @@ class Momentopname extends SpecificatieElement {
         return html;
     }
     TijdstempelsHtml() {
-        return this.#tijdstempels.Html();
+        return this.#tijdstempels?.Html() ?? '';
     }
 
 
@@ -6196,6 +6490,7 @@ class Branch extends SpecificatieElement {
                 break
 
             case Branch.Soort_OplossingSamenloop:
+            case Branch.Soort_Consolidatie:
                 this.#inWerkingMet = this.Specificatie().Branches.map(bc => {
                     let b = Branch.Branch(bc);
                     if (!b || b.OntstaanIn().Tijdstip().Vergelijk(this.OntstaanIn().Tijdstip()) > 0) {
@@ -6208,8 +6503,6 @@ class Branch extends SpecificatieElement {
         }
 
         this.#volgorde = ++Branch.#volgende_volgorde;
-        this.#naam = new Naam(this.Specificatie(), this, n => n);
-        this.#beschrijving = new Beschrijving(this.Specificatie(), this);
     }
 
     /**
@@ -6217,21 +6510,17 @@ class Branch extends SpecificatieElement {
      * @param {Activiteit} activiteit - Activiteit die de branch aanmaakt
      * @param {Project} project - Project waarvoor de branch wordt aangemaakt
      * @param {string} code - Code voor de branch
-     * @param {string} naam - Naam van de branch
-     * @param {string} beschrijving - Beschrijving van de branch
      * @param {string} soort - Soort branch
-     * @param {Branch/Branch[]} moAndereBranches - Optioneel: branch (Soort_VolgtOpAndereBranch)
-     *                                             / branches (Soort_OplossingSamenloop)
-     *                                             / tijdstip (float) van consolidatie (Soort_GeldendeRegelgeving)
+     * @param {number|Branch|Branch[]} moAndereBranches - Optioneel: branch (Soort_VolgtOpAndereBranch)
+     *                                                       / branches (Soort_OplossingSamenloop / Soort_Consolidatie)
+     *                                                      / tijdstip (float) van consolidatie (Soort_GeldendeRegelgeving)
      */
-    static MaakBranch(activiteit, project, code, naam, beschrijving, soort, moAndereBranches) {
+    static MaakBranch(activiteit, project, code, soort, moAndereBranches) {
         if (!code) {
             code = BGProcesSimulator.VrijeNaam(Branch.Branches(undefined, project).map(b => b.Code()), `${project.Code()}_`);
         }
         activiteit.Specificatie()[code] = {
-            Soort: soort,
-            Naam: naam,
-            Beschrijving: beschrijving
+            Soort: soort
         };
         switch (soort) {
             case Branch.Soort_GeldendeRegelgeving:
@@ -6241,7 +6530,8 @@ class Branch extends SpecificatieElement {
                 activiteit.Specificatie()[code].Branch = moAndereBranches.Code();
                 break;
             case Branch.Soort_OplossingSamenloop:
-                activiteit.Specificatie()[code].Branch = moAndereBranches;
+            case Branch.Soort_Consolidatie:
+                activiteit.Specificatie()[code].Branches = moAndereBranches.map(b => b.Code());
                 break;
         }
         return new Branch(activiteit, project, code);
@@ -6265,9 +6555,13 @@ class Branch extends SpecificatieElement {
      */
     static Soort_VolgtOpAndereBranch = "VolgendOp";
     /**
-     * Branch bevat de oplossing van samenloop tussen andere branches
+     * Branch bevat de pro-actieve oplossing van samenloop tussen andere branches
      */
     static Soort_OplossingSamenloop = "TegelijkMet";
+    /**
+     * Branch bevat de oplossing-achteraf van samenloop tussen andere branches
+     */
+    static Soort_Consolidatie = "ConsolidatieVan";
     //#endregion
 
     //#region Eigenschappen
@@ -6290,12 +6584,13 @@ class Branch extends SpecificatieElement {
         branches.sort(Branch.Vergelijk);
         return branches;
     }
+    /** @type {number} */
     #volgorde;
     static #volgende_volgorde = 0; // Absolute waarde is niet relevant
 
     /**
      * Vergelijkingsfunctie om branches te sorteren
-     * @returns {int}
+     * @returns {number}
      */
     static Vergelijk(a, b) {
         let diff = a.OntstaanIn().Tijdstip().Vergelijk(b.OntstaanIn().Tijdstip());
@@ -6306,11 +6601,14 @@ class Branch extends SpecificatieElement {
     }
 
     /**
-     * Geef de branch met de gegeven naam
-     * @param {string} branchcode - Naam van de branch
+     * Geef de branch met de gegeven code
+     * @param {string|Branch} branchcode - Code van de branch
      * @returns {Branch}
      */
     static Branch(branchcode) {
+        if (branchcode instanceof Branch) {
+            return branchcode
+        }
         return BGProcesSimulator.Singletons('Branches', {})[branchcode];
     }
 
@@ -6329,6 +6627,7 @@ class Branch extends SpecificatieElement {
     IWTDatum() {
         return this.#iwtDatum;
     }
+    /** @type {Tijdstip} */
     #iwtDatum
 
     /**
@@ -6338,6 +6637,7 @@ class Branch extends SpecificatieElement {
     Project() {
         return this.#project;
     }
+    /** @type {Project} */
     #project;
 
     /**
@@ -6349,34 +6649,33 @@ class Branch extends SpecificatieElement {
     }
 
     /**
-     * Geeft de naam van de branch zoals die in de specificatie voorkomt
-     * @returns {string}
-     */
-    Naam() {
-        return this.#naam.Specificatie();
-    }
-    #naam;
-
-    /**
      * Geeft de naam van de branch zoals die in de user interface gebruikt moet worden
      * @returns {string}
      */
     InteractieNaam() {
-        if (Branch.Branches(undefined, this.Project()).length <= 1) {
+        let branches = Branch.Branches(undefined, this.Project());
+        if (branches.length <= 1) {
             return this.Project().Naam();
-        } else {
-            return `${this.Naam()} (${this.Project().Naam()})`;
         }
+        switch (this.Soort()) {
+            case Branch.Soort_GeldendeRegelgeving:
+                if (this === branches[0]) {
+                    return `Kern van ${this.Project().Naam()}`;
+                }
+                break;
+            case Branch.Soort_VolgtOpAndereBranch:
+                if (this === branches[0]) {
+                    return `Kern van ${this.Project().Naam()}`;
+                } else {
+                    return `Vervolg op ${this.VolgtOpBranch().InteractieNaam()}`;
+                };
+            case Branch.Soort_OplossingSamenloop:
+                return `Samenloop van: ${this.TreedtConditioneelInWerkingMet().map(b => b.InteractieNaam()).join(', ')}`;
+            case Branch.Soort_Consolidatie:
+                return `Juridische samenvoeging van: ${this.TreedtConditioneelInWerkingMet().map(b => b.InteractieNaam()).join(', ')}`;
+        }
+        return `${this.Project().Naam()} (#${branches.indexOf(this)})`;
     }
-
-    /**
-     * Geeft een toelichting op de aard van de branch, voor weergave
-     * @returns {string}
-     */
-    Beschrijving() {
-        return this.#beschrijving.Specificatie();
-    }
-    #beschrijving;
 
     /**
      * Geeft de soort waartoe de branch behoort.
@@ -6393,6 +6692,7 @@ class Branch extends SpecificatieElement {
     VolgtOpBranch() {
         return this.#volgtOpBranch;
     }
+    /** @type {Branch} */
     #volgtOpBranch;
 
     /**
@@ -6404,6 +6704,7 @@ class Branch extends SpecificatieElement {
     TreedtConditioneelInWerkingMet() {
         return this.#inWerkingMet;
     }
+    /** @type {Branch[]} */
     #inWerkingMet;
 
     /**
@@ -6438,9 +6739,6 @@ class Branch extends SpecificatieElement {
         let html = `<table>
                         <tr><th>Branch</th><td>${this.Code()}</td></tr>
                         <tr><td>Naam</td><td>${this.InteractieNaam()}</td></tr>`;
-        if (this.Beschrijving()) {
-            html += `<tr><td>Beschrijving</td><td>${this.Beschrijving()}</td></tr>`;
-        }
         html += `<tr><td>Doel</td><td>${this.Doel()}</td></tr>
                         <tr><td class="nw">Juridische uitgangssituatie</td><td>`;
         switch (this.Soort()) {
@@ -6451,15 +6749,11 @@ class Branch extends SpecificatieElement {
                 html += `Regelgeving van de branch <code>${this.VolgtOpBranch().Code()}</code> van project "${this.VolgtOpBranch().Project().Naam()}"`;
                 break;
             case Branch.Soort_OplossingSamenloop:
+            case Branch.Soort_Consolidatie:
                 html += `Regelgeving van de branch <code>${this.VolgtOpBranch().Code()}</code>`;
                 break;
         }
         html += '</td></tr></table>';
-        if (this.Soort() === Branch.Soort_OplossingSamenloop) {
-            html += `De branch is gemaakt om in een besluit de oplossing te beschrijven van de samenloop van 
-                ${this.TreedtConditioneelInWerkingMet(), map((b) => `branch <code>${b.Code()}</code> van project ${b.Project().Naam()}`).join(', ')}. 
-                De juridische uitgangssituatie is in deze simulator een branch van dit project; dat had ook een van de andere branches mogen zijn.`;
-        }
         this.OntstaanIn().UitvoeringMelding(Activiteit.Onderwerp_InternDatamodel, html);
     }
     //#endregion
@@ -6613,7 +6907,9 @@ class Project extends SpecificatieElement {
         html += '</table>';
         return html;
     }
+    /** @type {Naam} */
     #naam;
+    /** @type {Beschrijving} */
     #beschrijving;
 
     #MaakValideNaam(naam) {
@@ -6678,6 +6974,7 @@ class IWTMoment {
     Datum() {
         return this.#datum;
     }
+    /** @type {Tijdstip} */
     #datum;
 
     /**
@@ -6697,14 +6994,15 @@ class IWTMoment {
     LaatsteBijdrage(branchcode) {
         return this.#bijdragen[branchcode];
     }
+    /** @type {Object.<string,Momentopname>} */
     #bijdragen = {};
     //#endregion
 
     //#region Bijwerken
     /**
      * Geef een branch door als bijdragend aan een IWT-moment
-     * @param {any} perBranch - Collectie met IWTMoment per branch
-     * @param {any} perDatum - Collectie met IWTMoment per datum
+     * @param {Object.<string,IWTMoment>} perBranch - Collectie met IWTMoment per branch
+     * @param {Object.<string,IWTMoment>} perDatum - Collectie met IWTMoment per datum
      * @param {string} branchcode - Naam van de branch
      * @param {Momentopname} momentopname - laatste momentopname voor de branch
      * @param {Tijdstip} iwtDatum - Nieuwe datum van inwerkingtreding
@@ -6732,8 +7030,8 @@ class IWTMoment {
 
     /**
      * Verwijder een branch als bijdragend aan een IWT-moment
-     * @param {any} perBranch - Collectie met IWTMoment per branch
-     * @param {any} perDatum - Collectie met IWTMoment per datum
+     * @param {Object.<string,IWTMoment>} perBranch - Collectie met IWTMoment per branch
+     * @param {Object.<string,IWTMoment>} perDatum - Collectie met IWTMoment per datum
      * @param {string} branchnaam - Naam van de branch
      */
     #VerwijderBranch(perBranch, perDatum, branchnaam) {
@@ -6750,8 +7048,8 @@ class IWTMoment {
 
     /**
      * Voeg deze instantie toe aan de collectie
-     * @param {any} perBranch - Collectie met IWTMoment per branch
-     * @param {any} perDatum - Collectie met IWTMoment per datum
+     * @param {Object.<string,IWTMoment>} perBranch - Collectie met IWTMoment per branch
+     * @param {Object.<string,IWTMoment>} perDatum - Collectie met IWTMoment per datum
      */
     #WerkCollectieBij(perBranch, perDatum) {
         perDatum[this.#datum.Specificatie()] = this;
@@ -6775,10 +7073,11 @@ class IWTMomentConsolidatiestatus {
      * Maak een nieuwe consolidatiestatus voor een IWT-moment aan
      * @param {Activiteit} activiteit - Activiteit waar de consolidatiestatus bij hoort, of undefined voor de uitgangssituatie
      * @param {IWTMoment} iwtMoment - IWT moment waar dit de status van is.
-     * @param {any} cumulatieveIWTBijdragen - Bijdragen aan de IWT-versie van alle branches die in werking zijn, of undefined als de status niet bepaald hoeft te worden.
+     * @param {string[]} iwtVolgorde - Brachcodes op volgorde van inwerkingtreding, of undefined als de status niet bepaald hoeft te worden.
+     * @param {Object.<string,Momentopname>} cumulatieveIWTBijdragen - Bijdragen aan de IWT-versie van alle branches die in werking zijn, of undefined als de status niet bepaald hoeft te worden.
      * @param {boolean} meldInternDatamodel - Geeft aan of het interne datamodel gerapporteerd moet worden
      */
-    constructor(activiteit, iwtMoment, cumulatieveIWTBijdragen, meldInternDatamodel) {
+    constructor(activiteit, iwtMoment, iwtVolgorde, cumulatieveIWTBijdragen, meldInternDatamodel) {
         this.#iwtMoment = iwtMoment;
         this.#isBepaald = Boolean(cumulatieveIWTBijdragen);
 
@@ -6798,26 +7097,40 @@ class IWTMomentConsolidatiestatus {
             }
 
             // Bepaal de laatste bijdragen van andere branches aan de versie die voor IWT is klaargezet op deze branch
-            // Bij gelijktijdige iwt is de aanname dat de bijdragenViaBranches een goede weergave is van de bijdragen 
+            // Bij gelijktijdige iwt is de aanname dat de bijdragenViaBranches een goede weergave is van de bijdragen
             // als de samenloop - bij - IWT is opgelost.
+            /** @type {Object.<string,Momentopname>} */
             let bijdragenViaBranches = {}
-            for (let branchcode of iwtMoment.Inwerkingtredingbranchcodes()) {
-                for (let bijdragendeBranch of cumulatieveIWTBijdragen[branchcode].HeeftBijdragenVan()) {
-                    let laatste = bijdragenViaBranches[bijdragendeBranch];
-                    let mo = cumulatieveIWTBijdragen[branchcode].LaatsteBijdrage(bijdragendeBranch);
-                    if (!laatste || laatste.Activiteit().Tijdstip().Vergelijk(mo.Activiteit().Tijdstip()) < 0) {
-                        bijdragenViaBranches[bijdragendeBranch] = mo;
+
+            /**
+             * Werk de bijdragenViaBranches bij
+             * @param {Momentopname} bijdragendeMomentopname
+             */
+            function VoegBijdragenToe(bijdragendeMomentopname) {
+                for (let branchCode of bijdragendeMomentopname.HeeftBijdragenVan()) {
+                    let mo = bijdragendeMomentopname.LaatsteBijdrage(branchCode);
+                    if (mo === false) {
+                        bijdragenViaBranches[branchCode] = mo;
+                    } else {
+                        let laatste = bijdragenViaBranches[branchCode];
+                        if (!laatste || laatste.Activiteit().Tijdstip().Vergelijk(mo.Activiteit().Tijdstip()) < 0) {
+                            bijdragenViaBranches[branchCode] = mo;
+                        }
                     }
                 }
+            }
+            for (let branchcode of iwtMoment.Inwerkingtredingbranchcodes()) {
+                VoegBijdragenToe(cumulatieveIWTBijdragen[branchcode]);
             }
 
             // Er is geen sprake van samenloop als elke laatste bijdrage aan het IWT-moment tevens de laatste bijdrage aan de instrumentversies
             // die voor het IWT-moment zijn klaargezet, dus de bijdragen in bijdragenViaBranches.
             this.#teVervlechten = [];
-            for (let vereisteBranchcode in cumulatieveIWTBijdragen) {
+            for (let vereisteBranchcode of Object.keys(cumulatieveIWTBijdragen).sort((bc1, bc2) => iwtVolgorde.indexOf(bc2) - iwtVolgorde.indexOf(bc1))) {
                 let bijdrage = bijdragenViaBranches[vereisteBranchcode];
                 if (!bijdrage || bijdrage != cumulatieveIWTBijdragen[vereisteBranchcode]) {
                     this.#teVervlechten.push(cumulatieveIWTBijdragen[vereisteBranchcode]);
+                    VoegBijdragenToe(cumulatieveIWTBijdragen[vereisteBranchcode]);
                 }
             }
 
@@ -6869,6 +7182,7 @@ class IWTMomentConsolidatiestatus {
     IWTMoment() {
         return this.#iwtMoment;
     }
+    /** @type {IWTMoment} */
     #iwtMoment;
 
     /**
@@ -6878,6 +7192,7 @@ class IWTMomentConsolidatiestatus {
     IsBepaald() {
         return this.#isBepaald;
     }
+    /** @type {boolean} */
     #isBepaald;
 
     /**
@@ -6895,6 +7210,7 @@ class IWTMomentConsolidatiestatus {
     HeeftSamenloopBijIWT() {
         return this.#samenloopBijIWT;
     }
+    /** @type {boolean} */
     #samenloopBijIWT;
 
     /**
@@ -6905,6 +7221,7 @@ class IWTMomentConsolidatiestatus {
     TeVervlechten() {
         return this.#teVervlechten;
     }
+    /** @type {Momentopname[]} */
     #teVervlechten;
 
     /**
@@ -6915,6 +7232,7 @@ class IWTMomentConsolidatiestatus {
     TeOntvlechten() {
         return this.#teOntvlechten;
     }
+    /** @type {Momentopname[]} */
     #teOntvlechten;
     //#endregion
 }
@@ -6970,6 +7288,7 @@ class Consolidatiestatus {
         }
         return resultaat;
     }
+    /** @type {IWTMomentConsolidatiestatus[]} */
     #geldend = [];
 
     /**
@@ -7077,15 +7396,17 @@ class Consolidatiestatus {
         }
 
         let cumulatieveIWTBijdragen = {}
+        let iwtVolgorde = [];
         let bepaalStatus = true;
         for (let iwtDatum of iwtDatums) {
             let iwtMoment = this.#iwtPerDatum[iwtDatum];
             if (!bepaalStatus) {
-                this.#geldend.push(new IWTMomentConsolidatiestatus(undefined, iwtMoment, undefined, false));
+                this.#geldend.push(new IWTMomentConsolidatiestatus(undefined, undefined, iwtVolgorde, undefined, false));
                 continue;
             }
 
             for (let branchnaam of iwtMoment.Inwerkingtredingbranchcodes()) {
+                iwtVolgorde.push(branchnaam);
                 cumulatieveIWTBijdragen[branchnaam] = iwtMoment.LaatsteBijdrage(branchnaam);
             }
             if (iwtDatum < teConsoliderenVanaf) {
@@ -7093,7 +7414,7 @@ class Consolidatiestatus {
             }
 
             // Bepaal de status van de consolidatie
-            let status = new IWTMomentConsolidatiestatus(activiteit instanceof Uitgangssituatie ? undefined : activiteit, iwtMoment, cumulatieveIWTBijdragen, meldConsolidatieActiviteit);
+            let status = new IWTMomentConsolidatiestatus(activiteit instanceof Uitgangssituatie ? undefined : activiteit, iwtMoment, iwtVolgorde, cumulatieveIWTBijdragen, meldConsolidatieActiviteit);
             this.#geldend.push(status);
             if (!status.IsVoltooid() && bepaalStatus) {
                 // Verder gaan heeft geen zin, de volgende zullen incompleet worden als dit IWT-moment wordt opgelost
@@ -7106,7 +7427,9 @@ class Consolidatiestatus {
         }
         return this;
     }
+    /** @type {Object.<string,IWTMoment>} */
     #iwtPerBranch = {};
+    /** @type {Object.<string,IWTMoment>} */
     #iwtPerDatum = {};
 
     //#endregion
@@ -7194,7 +7517,7 @@ class Naam extends SpecificatieElement {
      * Maak het specificatie-element aan voor een naam (van een project of branch)
      * @param {any} specificatie - Volledige specificatie
      * @param {any} superInvoer - Project/branch waar dit een beschrijving van is
-     * @param {lambda} maakValideNaam - Methode die een ingevoerde naam accepteert (en optioneel een indicatie of het de geaccepteerde naam is) en een valide naam teruggeeft
+     * @param {Naam~maakValideNaam} maakValideNaam - Functie om een ingevoerde naam te valideren
      */
     constructor(specificatie, superInvoer, maakValideNaam) {
         super(specificatie, 'Naam', undefined, superInvoer);
@@ -7246,6 +7569,7 @@ class Naam extends SpecificatieElement {
             }
         }
     }
+    /** @type {Naam~maakValideNaam} */
     #maakValideNaam;
 
     EindeInvoer(accepteerInvoer) {
@@ -7261,6 +7585,13 @@ class Naam extends SpecificatieElement {
     }
     //#endregion
 }
+/**
+ * Controle-functie om de naam van de 
+ * @callback Naam~maakValideNaam
+ * @param {string} kandidaat - Voorgestelde naam
+ * @param {boolean} isNieuweVersie - Geeft aan of de naam een geaccepteerde invoer is of een tijdelijke versie
+ * @returns {string} - De valide versie van de naam
+ */
 
 /*------------------------------------------------------------------------------
  *
@@ -7278,11 +7609,9 @@ class Startdatum extends SpecificatieElement {
         super(specificatie, 'Startdatum');
         if (this.Specificatie()) {
             let spec = this.Specificatie();
-            this.#WerkSpecificatieBij(new Date(Date.UTC(parseInt(spec.substr(0, 4)), parseInt(spec.substr(5, 2)) - 1, parseInt(spec.substr(8, 2)))))
+            this.#WerkSpecificatieBij(new Date(Date.UTC(parseInt(spec.substr(0, 4)), parseInt(spec.substr(5, 2)) - 1, parseInt(spec.substr(8, 2)))));
         } else {
-            let datum = new Date(Date.now());
-            datum.setHours(0, 0, 0, 0);
-            this.#WerkSpecificatieBij(datum);
+            this.#WerkSpecificatieBij(this.#Now());
         }
     }
     //#endregion
@@ -7295,12 +7624,13 @@ class Startdatum extends SpecificatieElement {
     Datum() {
         return this.#datum;
     }
+    /** @type {Date} */
     #datum;
     //#endregion
 
     //#region Implementatie specificatie-element
     WeergaveInnerHtml() {
-        return `${this.HtmlWerkBij("Pas de startdatum van het scenario aan", 'M')}${this.Specificatie()}`;
+        return `${this.HtmlWerkBij("Pas de startdatum van het scenario aan", 'M')}${this.Specificatie() ?? `Vandaag (${this.#Now().toJSON().substr(0, 10)})`}`;
     }
 
     InvoerInnerHtml() {
@@ -7335,7 +7665,17 @@ Het werken met dagen-sinds-start maakt het rekenwerk met termijnen eenvoudiger.
     //#region Interne functionaliteit
     #WerkSpecificatieBij(datum) {
         this.#datum = datum;
-        this.SpecificatieWordt(datum.toJSON().substr(0, 10));
+        let spec = datum.toJSON().substr(0, 10);
+        let nu = this.#Now().toJSON().substr(0, 10);
+        this.SpecificatieWordt(nu === spec ? null : spec);
+    }
+    /**
+     * Geef de huidige datum als ware het een UTC datum
+     * @returns
+     */
+    #Now() {
+        let nu = new Date(Date.now());
+        return new Date(Date.UTC(nu.getFullYear(), nu.getMonth(), nu.getDate()));
     }
     //#endregion
 }
@@ -7361,7 +7701,6 @@ class Uitgangssituatie extends Momentopname {
         this.#ModulesVoorLVBBSimulator();
         this.IsOnderdeelVanPublicatieVastgesteldeInhoudWordt()
     }
-    #momentopname;
     //#endregion
 
     //#region Eigenschappen
@@ -7454,11 +7793,12 @@ ${super.InvoerInnerHtml()}`;
     /**
      * Geeft de STOP modules die voor de uitgangssituatie naar de LVBB simulator
      * gestuurd moeten worden.
-     * @returns {any}
+     * @returns {Object[]}
      */
     ModulesVoorLVBBSimulator() {
         return this.#modules;
     }
+    /** @type {Object[]} */
     #modules;
     #ModulesVoorLVBBSimulator() {
         this.#modules = []
@@ -7609,6 +7949,7 @@ class Activiteit extends SpecificatieElement {
     Project() {
         return this.#project;
     }
+    /** @type {Project} */
     #project;
 
     /**
@@ -7618,6 +7959,7 @@ class Activiteit extends SpecificatieElement {
     Tijdstip() {
         return this.#tijdstip;
     }
+    /** @type {Tijdstip} */
     #tijdstip;
 
     /**
@@ -7627,6 +7969,7 @@ class Activiteit extends SpecificatieElement {
     Soort() {
         return this.#soort;
     }
+    /** @type {any} */
     #soort;
 
     /**
@@ -7636,6 +7979,7 @@ class Activiteit extends SpecificatieElement {
     Beschrijving() {
         return this.#beschrijving;
     }
+    /** @type {Beschrijving} */
     #beschrijving;
 
 
@@ -7646,6 +7990,7 @@ class Activiteit extends SpecificatieElement {
     IsNieuw() {
         return this.#isNieuw;
     }
+    /** @type {boolean} */
     #isNieuw;
 
 
@@ -7658,6 +8003,7 @@ class Activiteit extends SpecificatieElement {
     KanVerwijderdWorden() {
         return this.#blokkerendeActiviteiten.length === 0;
     }
+    /** @type {Activiteit[]} */
     #blokkerendeActiviteiten = [];
 
     /**
@@ -7669,6 +8015,7 @@ class Activiteit extends SpecificatieElement {
         this.#blokkeertActiviteit.push(activiteit);
         activiteit.#blokkerendeActiviteiten.push(this);
     }
+    /** @type {Activiteit[]} */
     #blokkeertActiviteit = [];
 
     /**
@@ -7688,6 +8035,41 @@ class Activiteit extends SpecificatieElement {
         }
         return momentopnamen;
     }
+
+    /**
+     * Geef de momentopname voor de branch als daarvoor inmiddels een specificatie-element is aangemaakt.
+     * @param {Branch|string} branch - Branch of de code daarvan
+     * @returns {Momentopname}
+     */
+    Momentopname(branch) {
+        let branchCode = branch instanceof Branch ? branch.Code() : branch;
+        for (let im of this.SubManagers()) {
+            if (im instanceof Momentopname && im.Branch().Code() === branchCode) {
+                return im;
+            }
+        }
+    }
+
+    /**
+     * Geef de laatstbekende momentopname voor de branch, uit deze of uit een voorgaande activiteit
+     * @param {Branch|string} branch - Branch of de code daarvan
+     * @returns {Momentopname}
+     */
+    LaatsteMomentopname(branch) {
+        let mo = this.Momentopname(branch);
+        if (mo) {
+            return mo;
+        }
+        let activiteiten = Activiteit.Activiteiten(this.Tijdstip(), Branch.Branch(branch).Project()).reverse();
+        for (let activiteit of activiteiten) {
+            if (activiteit != this) {
+                let mo = activiteit.Momentopname(branch);
+                if (mo) {
+                    return mo;
+                }
+            }
+        }
+    }
     //#endregion
 
     //#region Te implementeren/overschrijven in afgeleide klassen
@@ -7698,6 +8080,7 @@ class Activiteit extends SpecificatieElement {
     Naam() {
         return this.#naam;
     }
+    /** @type {string} */
     #naam;
 
     /**
@@ -7709,7 +8092,15 @@ class Activiteit extends SpecificatieElement {
         if (!project) {
             return false;
         }
-        return this.Project() === project
+        if (this.Project() === project) {
+            return true;
+        }
+        for (let momentopname of this.Momentopnamen()) {
+            if (momentopname.Branch().Project() === project) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -7776,7 +8167,7 @@ class Activiteit extends SpecificatieElement {
      * Standaard is een overzicht van de momentopnamen.
      */
     MeldInternDatamodel() {
-        for (let momentopname of [...this.Momentopnamen()]) {
+        for (let momentopname of this.Momentopnamen(true)) {
             momentopname.MeldInternDatamodel();
         }
         Instrumentversie.MeldGepubliceerdeInstrumentversies(this);
@@ -7811,7 +8202,6 @@ class Activiteit extends SpecificatieElement {
         this.#heeftSpecificatieMeldingen = true;
         this.UitvoeringMelding(Activiteit.Onderwerp_ScenarioFout, melding);
     }
-    #specificatieMeldingen = [];
 
     /**
      * Geeft aan of er meldingen over de specificatie zijn. Deze kunnen zowel bij het inlezen 
@@ -7887,18 +8277,17 @@ class Activiteit extends SpecificatieElement {
      */
     VerwerkMomentopnameSpecificatie(branchcode, specificatie, werkUitgangssituatieBij = false, ontvlochtenversies, vervlochtenversies) {
         // Kijk of de momentopname al bestaat
-        for (let momentopname of this.Momentopnamen()) {
-            if (momentopname.Branch().Code() === branchcode) {
-                return;
+        let momentopname = this.Momentopname(branchcode);
+        if (!momentopname) {
+            // Zoek de branch op
+            let branch = Branch.Branch(branchcode);
+            if (!branch) {
+                this.SpecificatieMelding(this.Tijdstip(), `branch <code>${branchcode}</code> bestaat (nog) niet`);
+                branch = new Branch(this, this.Project(), branchcode);
             }
+            momentopname = new Momentopname(this, specificatie ?? this.Specificatie(), branch, this.TijdstempelsMogelijk(), this.TijdstempelsVerplicht(), werkUitgangssituatieBij, ontvlochtenversies, vervlochtenversies);
         }
-        // Zoek de branch op
-        let branch = Branch.Branch(branchcode);
-        if (!branch) {
-            this.SpecificatieMelding(this.Tijdstip(), `branch <code>${branchcode}</code> bestaat (nog) niet`);
-            branch = new Branch(this, this.Project(), branchcode);
-        }
-        return new Momentopname(this, specificatie ?? this.Specificatie(), branch, this.TijdstempelsMogelijk(), this.TijdstempelsVerplicht(), werkUitgangssituatieBij, ontvlochtenversies, vervlochtenversies);
+        return momentopname;
     }
     //#endregion
 
@@ -7921,8 +8310,8 @@ class Activiteit extends SpecificatieElement {
 
     /**
      * Vermeld een stap in de uitvoering van de activiteit
-     * @param {any} onderwerp - Onderwerp waar de melding betrekking op heeft
-     * @param {any} melding - Melding (HTML) van de stap in de uitvoering
+     * @param {string} onderwerp - Onderwerp waar de melding betrekking op heeft
+     * @param {string} melding - Melding (HTML) van de stap in de uitvoering
      */
     UitvoeringMelding(onderwerp, melding) {
         if (onderwerp != Activiteit.Onderwerp_ScenarioFout) {
@@ -7955,28 +8344,26 @@ class Activiteit extends SpecificatieElement {
 
             let onderwerp;
             let trStart;
-            let rows = []
+            let rows = [];
+            function VoegMeldingenToe() {
+                if (rows.length > 0) {
+                    html += `<tr${onderwerp === Activiteit.Onderwerp_ScenarioFout ? ' class="specmelding"' : ''}>
+                                <td rowspan="${rows.length}">${onderwerp === Activiteit.Onderwerp_ScenarioFout ? '<span class="specmelding">&#x26A0;</span>' : ''}</td>
+                                <td class="nw" rowspan="${rows.length}">${onderwerp}</td>
+                                <td>${rows.join(`</td></tr><tr${onderwerp === Activiteit.Onderwerp_ScenarioFout ? ' class="specmelding"' : ''}><td>`)}</td>
+                            </tr>`;
+                    rows = [];
+                }
+            }
+
             for (let melding of this.#uitvoeringMeldingen) {
                 if (melding.Onderwerp !== onderwerp) {
-                    if (rows.length > 0) {
-                        html += `<tr${onderwerp === Activiteit.Onderwerp_ScenarioFout ? ' class="specmelding"' : ''}>
-                                    <td rowspan="${rows.length}">${onderwerp === Activiteit.Onderwerp_ScenarioFout ? '<span class="specmelding">&#x26A0;</span>' : ''}</td>
-                                    <td class="nw" rowspan="${rows.length}">${onderwerp}</td>
-                                    <td>${rows.join('</td></tr><tr><td>')}</td>
-                                 </tr>`;
-                    }
+                    VoegMeldingenToe();
                     onderwerp = melding.Onderwerp;
-                    rows = [];
                 }
                 rows.push(melding.Melding);
             }
-            if (rows.length > 0) {
-                html += `<tr${onderwerp === Activiteit.Onderwerp_ScenarioFout ? ' class="specmelding"' : ''}>
-                            <td rowspan="${rows.length}">${onderwerp === Activiteit.Onderwerp_ScenarioFout ? '<span class="specmelding">&#x26A0;</span>' : ''}</td>
-                            <td class="nw" rowspan="${rows.length}">${onderwerp}</td>
-                            <td>${rows.join('</td></tr><tr><td>')}</td>
-                        </tr>`;
-            }
+            VoegMeldingenToe();
             html += '</table>';
         }
         return html;
@@ -8179,16 +8566,14 @@ ${indent}<${tag}>${value}</${tag}>`
             html += `<p class="entry_detail">Aan dit project is voor het laatst op ${this.Tijdstip().DatumTijdHtml()} gewerkt${uitvoerder}.</p>`;
         }
 
-        let momentopnamen = this.Momentopnamen().filter((mo) => mo.Branch().Project() === project);
-        momentopnamen.sort((a, b) => Branch.Vergelijk(a.Branch(), b.Branch()));
-
         html += '<table>';
-        for (let mo of momentopnamen) {
+        let branches = Branch.Branches(this.Tijdstip(), project);
+        for (let branch of branches) {
             html += '<tr>';
-            if (momentopnamen.length > 1) {
-                html += `<td><b>${mo.Branch().InteractieNaam()}</b></td>`;
+            if (branches.length > 1) {
+                html += `<td><b>${branch.InteractieNaam()}</b></td>`;
             }
-            html += `<td>${mo.OverzichtHtml()}</td></tr>`;
+            html += `<td>${naActiviteit.LaatsteMomentopname(branch).OverzichtHtml()}</td></tr>`;
         }
         html += '</table>';
         return html;
@@ -8426,7 +8811,7 @@ class MogelijkeActiviteit {
             KanVolgenOp: [MogelijkeActiviteit.SoortActiviteit_Vaststellingsbesluit],
             KanNietVolgenOp: false,
             KanTochNiet: (tijdstip, activiteiten) => Activiteit_VoltooiConsolidatie.KanTochNiet(tijdstip, activiteiten),
-            Props: ['IWTDatum'],
+            Props: ['IWTDatum', 'Branch'],
             MomentopnameTijdstempels: false,
             MomentopnameProps: [],
             Constructor: (specificatie, nieuw) => new Activiteit_VoltooiConsolidatie(specificatie, nieuw),
@@ -8465,7 +8850,9 @@ class MogelijkeActiviteit {
         projecten.sort((a, b) => a.Naam().localeCompare(b.Naam()));
         return projecten;
     }
+    /** @type {Object.<string,string[]>} */
     #bijAdviesbureau = {};
+    /** @type {Object.<string,string[]>} */
     #bijBevoegdGezag = {};
 
     /**
@@ -8562,7 +8949,9 @@ class NieuweActiviteit extends SpecificatieElement {
                 <tr><td>Tijdstip van uitvoering</td><td>${this.#tijdstip.Html()}</td></tr>
                 </table>`;
     }
+    /** @type {boolean} */
     #adviesbureau;
+    /** @type {Tijdstip} */
     #tijdstip;
 
     #SelecteerActiviteit(voorBevoegdGezag) {
@@ -8606,8 +8995,11 @@ class NieuweActiviteit extends SpecificatieElement {
         html += `</dl>`;
         return html;
     }
+    /** @type {MogelijkeActiviteit} */
     #mogelijkeActiviteit;
+    /** @type {string} */
     #projectcode;
+    /** @type {string} */
     #soortActiviteit;
 
     OnInvoerChange(elt, idSuffix) {
@@ -8757,6 +9149,7 @@ class VerwijderActiviteit extends SpecificatieElement {
 <tr><th>Tijdstip</th><td>${this.#activiteit.Tijdstip().Html()}</td></tr>
 </table>`;
     }
+    /** @type {Activiteit} */
     #activiteit;
 
     EindeModal(accepteerInvoer) {
@@ -8770,7 +9163,6 @@ class VerwijderActiviteit extends SpecificatieElement {
             BGProcesSimulator.This().WerkScenarioUit(tijdstip);
         }
     }
-    #nieuweActiviteit;
     //#endregion
 }
 //#endregion
@@ -8817,6 +9209,7 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
     Project() {
         return this.#project;
     }
+    /** @type {Project} */
     #project;
 
     PasSpecificatieToe() {
@@ -8894,11 +9287,17 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
             this.#datumConsolidatie = this.#beschikbareConsolidatie[0].Specificatie();
         }
     }
+    /** @type {Branch} */
     #branch;
+    /** @type {boolean} */
     #isOnafhankelijk;
+    /** @type {number} */
     #datumConsolidatie;
+    /** @type {Tijdstip[]} */
     #beschikbareConsolidatie;
+    /** @type {Project} */
     #volgtOpProject;
+    /** @type {Branch} */
     #volgtOpBranch;
 
     WeergaveInnerHtml() {
@@ -9028,15 +9427,13 @@ class Activiteit_MaakProject_Gemeente extends Activiteit {
 
     EindeInvoer(accepteerInvoer) {
         if (accepteerInvoer) {
-            let naam = this.#branch?.Naam() ?? 'Regelgeving waarvoor het project is ingericht';
-            let beschrijving = this.#branch?.Beschrijving() ?? 'De regelgeving waaraan binnen het project gewerkt wordt/is. Als er meerdere branches in het project zijn, dan is dit de regelgeving voor het eerste inwerkingtredingmoment.';
             if (this.#branch) {
                 this.#branch.Verwijder();
             }
             if (this.#isOnafhankelijk) {
-                this.#branch = Branch.MaakBranch(this, this.#project, this.Specificatie().Invoer.Branch, naam, beschrijving, Branch.Soort_GeldendeRegelgeving, this.#datumConsolidatie);
+                this.#branch = Branch.MaakBranch(this, this.#project, this.Specificatie().Invoer.Branch, Branch.Soort_GeldendeRegelgeving, this.#datumConsolidatie);
             } else {
-                this.#branch = Branch.MaakBranch(this, this.#project, this.Specificatie().Invoer.Branch, naam, beschrijving, Branch.Soort_VolgtOpAndereBranch, this.#volgtOpBranch);
+                this.#branch = Branch.MaakBranch(this, this.#project, this.Specificatie().Invoer.Branch, Branch.Soort_VolgtOpAndereBranch, this.#volgtOpBranch);
             }
             this.Specificatie().Invoer.Branch = this.#branch.Code();
         }
@@ -9091,6 +9488,7 @@ class Activiteit_Download extends Activiteit {
     Project() {
         return this.#project;
     }
+    /** @type {Project} */
     #project;
 
     PasSpecificatieToe() {
@@ -9151,8 +9549,11 @@ class Activiteit_Download extends Activiteit {
             this.#datumConsolidatie = this.#beschikbareConsolidatie[0].Specificatie();
         }
     }
+    /** @type {Branch} */
     #branch;
+    /** @type {number} */
     #datumConsolidatie;
+    /** @type {Tijdstip[]} */
     #beschikbareConsolidatie;
 
     WeergaveInnerHtml() {
@@ -9190,13 +9591,11 @@ class Activiteit_Download extends Activiteit {
 
     EindeInvoer(accepteerInvoer) {
         if (accepteerInvoer) {
-            let naam = 'Regelgeving waarvoor het project is ingericht';
-            let beschrijving = 'De regelgeving waaraan binnen het project gewerkt wordt/is. Als er meerdere branches in het project zijn, dan is dit de regelgeving voor het eerste inwerkingtredingmoment.';
             if (this.#branch) {
                 this.#branch.Verwijder();
             }
             this.#datumConsolidatie = parseInt(this.Element('I').value);
-            this.#branch = Branch.MaakBranch(this, this.#project, this.Specificatie().Invoer.Branch, naam, beschrijving, Branch.Soort_GeldendeRegelgeving, this.#datumConsolidatie);
+            this.#branch = Branch.MaakBranch(this, this.#project, this.Specificatie().Invoer.Branch, Branch.Soort_GeldendeRegelgeving, this.#datumConsolidatie);
             this.Specificatie().Invoer.Branch = this.#branch.Code();
         }
         this.#InterpreteerInvoer();
@@ -9230,6 +9629,7 @@ class Activiteit_Uitwisseling extends Activiteit {
     UitgevoerdDoorAdviesbureau() {
         return this.#ontvangenDoorAdviesbureau;
     }
+    /** @type {boolean} */
     #ontvangenDoorAdviesbureau;
 
     PasSpecificatieToe() {
@@ -9289,6 +9689,7 @@ class Activiteit_Wijzigen extends Activiteit {
         super(specificatie, isNieuw);
         if (isNieuw) {
             this.VerwerkMomentopnameSpecificaties(false);
+            this.#momentopnamen = this.Momentopnamen(true).filter(mo => !mo.IsTegelijkBeheerdEnVolgend());
         }
     }
     //#endregion
@@ -9301,25 +9702,28 @@ class Activiteit_Wijzigen extends Activiteit {
     PasSpecificatieToe() {
         this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, 'De medewerker werkt verder aan het project.');
         this.VerwerkMomentopnameSpecificaties(true);
+        this.#momentopnamen = this.Momentopnamen(true).filter(mo => !mo.IsTegelijkBeheerdEnVolgend());
     }
     //#endregion
 
     //#region Implementatie specificatie-element
     IsReadOnly() {
-        for (let mo of this.Momentopnamen()) {
+        for (let mo of this.#momentopnamen) {
             if (!mo.IsReadOnly()) {
                 return false;
             }
         }
         return true;
     }
+    /** @type {Momentopname[]} */
+    #momentopnamen;
 
     WeergaveInnerHtml() {
         let html = this.StartInnerHtml();
 
         if (this.Momentopnamen().length > 1) {
             html += '<dl>';
-            for (let mo of this.Momentopnamen(true)) {
+            for (let mo of this.#momentopnamen) {
                 let gewijzigd = mo.HeeftGewijzigdeInstrumentversie() || mo.HeeftGewijzigdeTijdstempels();
                 html += `<dt><input type="checkbox" ${gewijzigd ? ' checked' : ''} disabled> ${mo.Branch().InteractieNaam()}</dt>`;
                 if (gewijzigd) {
@@ -9329,7 +9733,7 @@ class Activiteit_Wijzigen extends Activiteit {
             html += '</dl>';
         } else {
             let heeftGewijzigd = false;
-            for (let mo of this.Momentopnamen(true)) {
+            for (let mo of this.#momentopnamen) {
                 if (mo.HeeftGewijzigdeInstrumentversie() || mo.HeeftGewijzigdeTijdstempels()) {
                     html += mo.Html();
                     heeftGewijzigd = true;
@@ -9345,17 +9749,19 @@ class Activiteit_Wijzigen extends Activiteit {
     }
 
     BeginInvoer() {
-        this.#selecteerBranch = this.Momentopnamen().length > 1;
+        this.#selecteerBranch = this.#momentopnamen.length > 1;
         this.#wijzigMomentopname = this.#selecteerBranch ? undefined : this.Momentopnamen()[0];
     }
+    /** @type {boolean} */
     #selecteerBranch;
+    /** @type {Momentopname} */
     #wijzigMomentopname;
 
     InvoerInnerHtml() {
         if (this.#selecteerBranch) {
             let html = `${this.StartInnerHtml()}
                         <p>Welke regelgeving moet gewijzigd worden?</p><ul>`;
-            for (let mo of this.Momentopnamen(true)) {
+            for (let mo of this.#momentopnamen) {
                 html += `<li><input type="radio" name="${this.ElementId('R')}" id="${this.ElementId('B_' + mo.Branch().Code())}" value="${mo.Branch().Code()}"${mo.IsReadOnly() ? ' disabled' : ''}>${mo.Branch().InteractieNaam()}
                             ${mo.HeeftGewijzigdeInstrumentversie() || mo.HeeftGewijzigdeTijdstempels() ? ' (gewijzigd)' : ''}</li>`;
             }
@@ -9363,39 +9769,26 @@ class Activiteit_Wijzigen extends Activiteit {
                     ${this.EindeInnerHtml()} `;
             return html;
         } else {
-            if (this.Momentopnamen().length > 1) {
+            if (this.#momentopnamen.length > 1) {
                 this.VolgendeStapNodig();
             }
-            return this.InvoerMomentopnameHtml(this.#wijzigMomentopname);
+
+            let html = this.StartInnerHtml();
+            if (this.Momentopnamen().length > 1) {
+                html += `<h4>${this.#wijzigMomentopname.Branch().InteractieNaam()}</h4>`;
+            }
+            html += this.#wijzigMomentopname.Html();
+            html += this.EindeInnerHtml();
+            return html;
         }
     }
 
     OnInvoerClick(elt, idSuffix) {
         if (idSuffix.startsWith('B_') && elt.checked) {
-            for (let mo of this.Momentopnamen()) {
-                if (mo.Branch().Code() == elt.value) {
-                    this.#wijzigMomentopname = mo;
-                    this.VolgendeStapNodig();
-                    this.SluitModal(true);
-                    break;
-                }
-            }
+            this.#wijzigMomentopname = this.Momentopname(elt.value);
+            this.VolgendeStapNodig();
+            this.SluitModal(true);
         }
-    }
-
-    /**
-     * Maak de HTML om de momentopname te wijzigen
-     * @param {Momentopname} momentopname
-     * @returns {string}
-     */
-    InvoerMomentopnameHtml(momentopname) {
-        let html = this.StartInnerHtml();
-        if (this.Momentopnamen().length > 1) {
-            html += `<h4>${momentopname.Branch().InteractieNaam()}</h4>`;
-        }
-        html += momentopname.Html();
-        html += this.EindeInnerHtml();
-        return html;
     }
 
     ValideerInvoer(accepteerInvoer) {
@@ -9471,6 +9864,7 @@ class Activiteit_BijwerkenUitgangssituatie extends Activiteit {
         super.VerwerkMomentopnameSpecificatie(branchcode, specificatie, this.IsNieuw() && !this.IsInvoer() ? false : this.#isRegulier && this.#datumConsolidatie ? this.#datumConsolidatie : true);
     }
     #isRegulier = false;
+    /** @type {number} */
     #datumConsolidatie;
     //#endregion
 
@@ -9529,6 +9923,7 @@ class Activiteit_BijwerkenUitgangssituatie extends Activiteit {
         this.#vorigeDatumConsolidatie = this.#datumConsolidatie;
         this.#wijzigMomentopname = this.#isRegulier ? undefined : 0;
     }
+    /** @type {number} */
     #vorigeDatumConsolidatie;
     #InterpreteerInvoer() {
         this.#beschikbareConsolidatie = [];
@@ -9581,7 +9976,9 @@ class Activiteit_BijwerkenUitgangssituatie extends Activiteit {
             this.#datumConsolidatie = this.#beschikbareConsolidatie[0].Specificatie();
         }
     }
+    /** @type {Tijdstip[]} */
     #beschikbareConsolidatie;
+    /** @type {number} */
     #wijzigMomentopname;
 
     InvoerInnerHtml() {
@@ -9677,6 +10074,7 @@ class Activiteit_Besluit extends Activiteit {
         if (isNieuw) {
             this.#besluitNaam = this.SoortBesluit();
             this.VerwerkMomentopnameSpecificaties(false);
+            this.#momentopnamenMetTijdstempels = this.Momentopnamen(true).filter(mo => !mo.IsTegelijkBeheerdEnVolgend() && mo.Branch().Soort() != Branch.Soort_OplossingSamenloop);
         } else {
             this.#besluitNaam = this.Specificatie().Besluitnaam ?? this.SoortBesluit();
         }
@@ -9699,6 +10097,7 @@ class Activiteit_Besluit extends Activiteit {
     BesluitNaam() {
         return this.#besluitNaam;
     }
+    /** @type {string} */
     #besluitNaam;
 
     /**
@@ -9740,6 +10139,8 @@ class Activiteit_Besluit extends Activiteit {
     PasSpecificatieToe() {
         this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, `De medewerker stelt het ${this.BesluitNaam().toLowerCase()} op of rond het opstellen af.`);
         this.VerwerkMomentopnameSpecificaties(true);
+        this.#momentopnamenMetTijdstempels = this.Momentopnamen(true).filter(mo => !mo.IsTegelijkBeheerdEnVolgend() && mo.Branch().Soort() != Branch.Soort_OplossingSamenloop);
+
         if (this.SoortBesluit() === MogelijkeActiviteit.SoortActiviteit_Vaststellingsbesluit) {
             // De inhoud van alle branches is nu vastgesteld.
             // Althans in deze applicatie, waarin het niet mogelijk is 
@@ -9791,20 +10192,22 @@ class Activiteit_Besluit extends Activiteit {
     WeergaveInnerHtml() {
         let html = this.StartInnerHtml();
 
-        if (this.Soort().MomentopnameTijdstempels) {
-            if (this.Momentopnamen().length > 1) {
+        if (this.Soort().MomentopnameTijdstempels && this.#momentopnamenMetTijdstempels.length > 0) {
+            let meerdereMO = this.Momentopnamen().length > 1;
+
+            if (meerdereMO) {
                 html += '<dl>';
             }
-            for (let mo of this.Momentopnamen(true)) {
-                if (this.Momentopnamen().length > 1) {
+            for (let mo of this.#momentopnamenMetTijdstempels) {
+                if (meerdereMO) {
                     html += `<dt>${mo.Branch().InteractieNaam()}</dt><dd>`;
                 }
                 html += mo.TijdstempelsHtml();
-                if (this.Momentopnamen().length > 1) {
+                if (meerdereMO) {
                     html += `</dd>`;
                 }
             }
-            if (this.Momentopnamen().length > 1) {
+            if (meerdereMO) {
                 html += '</dl>';
             }
         }
@@ -9816,76 +10219,37 @@ class Activiteit_Besluit extends Activiteit {
         html += this.EindeInnerHtml();
         return html;
     }
-
-    BeginInvoer() {
-        this.#wijzigTijdstempels = true;
-        this.#wijzigMomentopname = undefined;
-    }
-    #wijzigTijdstempels;
-    #wijzigMomentopname;
+    #momentopnamenMetTijdstempels;
 
     InvoerInnerHtml() {
         let html = this.StartInnerHtml();
 
-        if (this.#wijzigTijdstempels) {
+        if (this.Soort().MomentopnameTijdstempels && this.#momentopnamenMetTijdstempels.length > 0) {
+            let meerdereMO = this.Momentopnamen().length > 1;
 
-            if (this.Soort().MomentopnameTijdstempels) {
-                if (this.Momentopnamen().length > 1) {
-                    html += '<dl>';
+            if (meerdereMO) {
+                html += '<dl>';
+            }
+            for (let mo of this.#momentopnamenMetTijdstempels) {
+                if (meerdereMO) {
+                    html += `<dt>${mo.Branch().InteractieNaam()}</dt><dd>`;
                 }
-                for (let mo of this.Momentopnamen(true)) {
-                    if (this.Momentopnamen().length > 1) {
-                        html += `<dt>${mo.Branch().InteractieNaam()}</dt><dd>`;
-                    }
-                    html += mo.TijdstempelsHtml();
-                    if (this.Momentopnamen().length > 1) {
-                        html += `</dd>`;
-                    }
-                }
-                if (this.Momentopnamen().length > 1) {
-                    html += '</dl>';
+                html += mo.TijdstempelsHtml();
+                if (meerdereMO) {
+                    html += `</dd>`;
                 }
             }
-        } else {
-            this.VolgendeStapNodig();
-            if (this.Momentopnamen().length > 1) {
-                html += `<h4>${this.#wijzigMomentopname.Branch().InteractieNaam()}</h4>`;
+            if (meerdereMO) {
+                html += '</dl>';
             }
-            html += this.#wijzigMomentopname.Html();
         }
 
         html += this.EindeInnerHtml();
         return html;
     }
 
-    OnInvoerClick(elt, idSuffix) {
-        if (idSuffix.startsWith('B_') || idSuffix.startsWith('W_')) {
-            let branchcode = idSuffix.substr(2);
-            if (idSuffix.charAt(0) == 'W' || elt.checked) {
-                for (let mo of this.Momentopnamen()) {
-                    if (mo.Branch().Code() == branchcode) {
-                        this.#wijzigMomentopname = mo;
-                        this.VolgendeStapNodig();
-                        this.SluitModal(true);
-                        break;
-                    }
-                }
-            } else {
-                for (let mo of this.Momentopnamen()) {
-                    if (mo.Branch().Code() == branchcode) {
-                        for (let versie of mo.Instrumentversies()) {
-                            versie.Instrumentversie().Undo();
-                        }
-                        this.VervangInnerHtml();
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
     EindeInvoer(accepteerInvoer) {
-        if (accepteerInvoer && this.#wijzigTijdstempels) {
+        if (accepteerInvoer) {
             if (this.SoortBesluit() === MogelijkeActiviteit.SoortActiviteit_Vaststellingsbesluit) {
                 // Voor weergave: kan de naam van het besluit accurater?
                 // Kijk of er al eerder een vaststellingsbesluit is geweest
@@ -9897,7 +10261,7 @@ class Activiteit_Besluit extends Activiteit {
                 }
                 if (eerderBesluit) {
                     this.#besluitNaam = 'Vervolgbesluit';
-                    for (let mo of this.Momentopnamen()) {
+                    for (let mo of this.#momentopnamenMetTijdstempels) {
                         if (mo.JuridischWerkendVanaf().HeeftWaarde() && mo.IsInwerkingtredingGewijzigd()) {
                             this.#besluitNaam = 'Inwerkingtredingsbesluit';
                             break;
@@ -9923,10 +10287,11 @@ class Activiteit_VoltooiConsolidatie extends Activiteit {
      */
     constructor(specificatie, isNieuw) {
         super(specificatie, isNieuw);
-        this.#teVoltooien = Activiteit_VoltooiConsolidatie.#TeVoltooien(this.Tijdstip(), Activiteit.Activiteiten(this.Tijdstip(), this.Project()));
+        this.#viaRevisie = isNieuw;
+        this.#teVoltooien = Activiteit_VoltooiConsolidatie.#TeVoltooien(this.Tijdstip(), Activiteit.Activiteiten(this.Tijdstip(), this.Project()).filter(a => a !== this));
         this.#mergeBranches = this.#teVoltooien.IWTMoment().Inwerkingtredingbranchcodes().map(bc => Branch.Branch(bc)).sort((a, b) => Branch.Vergelijk(a, b));
         // Bepaal de branch waarvoor de wijziging wordt aangemaakt. Als er meerdere branches in een project zitten, dan in afnemend logische volgorde:
-        for (let soort of [Branch.Soort_OplossingSamenloop, Branch.Soort_VolgtOpAndereBranch, Branch.Soort_GeldendeRegelgeving]) {
+        for (let soort of [Branch.Soort_Consolidatie, Branch.Soort_OplossingSamenloop, Branch.Soort_VolgtOpAndereBranch, Branch.Soort_GeldendeRegelgeving]) {
             for (let branch of this.#mergeBranches) {
                 if (branch.Project() === this.Project() && branch.Soort() === soort) {
                     if (branch.TreedtConditioneelInWerkingMet()) {
@@ -9981,28 +10346,33 @@ class Activiteit_VoltooiConsolidatie extends Activiteit {
     //#endregion
 
     //#region Implementatie van de activiteit
-    ToonInProject(project) {
-        for (let branch of this.#mergeBranches) {
-            if (branch.Project() === project) {
-                return true;
-            }
-        }
-        return false;
-    }
-    #mergeBranches = [];
-
     Publicatiebron() {
-        return "de revisie";
+        return this.#viaRevisie ? "de revisie" : undefined;
     }
+    /** @type {boolean} */
+    #viaRevisie;
 
     PasSpecificatieToe() {
-        this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, 'De medewerker gaat na dat de samen te voegen wijzigingen inderdaad juridisch onafhankelijk zijn van elkaar.');
+        this.#viaRevisie = !Boolean(this.Specificatie().Branch);
         if (this.#mergeBranches.length > 1) {
             this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, `De medewerker kiest ervoor de samenloop op te lossen voor branch ${this.#wijzigBranch.Code()}.`);
+        }
+        if (this.#viaRevisie) {
+            this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, 'De medewerker constateert dat de samen te voegen wijzigingen inderdaad juridisch onafhankelijk zijn van elkaar.');
+        } else {
+            this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, 'De medewerker constateert dat de samen te voegen wijzigingen niet juridisch onafhankelijk zijn van elkaar. De oplossing van de samenloop zal in een nieuw vaststellingsbesluit vastgelegd moeten worden.');
         }
         this.VerwerkMomentopnameSpecificaties();
 
         this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, 'De medewerker lost de samenloop op.');
+        if (this.#mergeBranches.length > 1) {
+            this.UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `De software neemt de inhoud van de branch ${this.#wijzigBranch.Code()}
+            over in de andere branch${this.#mergeBranches.length > 2 ? 'es' : ''} die tegelijk in werking ${this.#mergeBranches.length > 2 ? 'treden' : 'treedt'}: ${this.#mergeBranches.filter(b => b != this.#wijzigBranch).map(b => b.Code()).join(', ')}`);
+        }
+        let nietMeerTegelijk = this.Momentopnamen(true).filter(mo => mo.Branch() != this.#wijzigBranch && this.#mergeBranches.indexOf(mo.Branch()) < 0);
+        if (nietMeerTegelijk.length > 0) {
+            this.UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `Deze branch${this.#mergeBranches.length > 1 ? 'es worden' : ' wordt'} niet meer tegelijk beheerd met de branch${nietMeerTegelijk.length > 1 ? 'es' : ''} ${nietMeerTegelijk.map(b => b.Branch().Code()).join(', ')}`);
+        }
 
         let versiesInRevisie = this.Momentopnamen()[0].Instrumentversies().filter((versie) => versie.Instrumentversie().IsOnderdeelVanLVBBPublicatie());
         versiesInRevisie = versiesInRevisie.sort((a, b) => a.Instrumentversie().WorkIdentificatie().localeCompare(b.Instrumentversie().WorkIdentificatie()));
@@ -10026,38 +10396,66 @@ class Activiteit_VoltooiConsolidatie extends Activiteit {
                         ${mutatieMeldingen.join('')}
                         </table>`);
         }
-        this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, `Na uitvoerige controle geeft een medewerker de revisie vrij voor doorgifte aan de LVBB`);
-        this.UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, 'De software maakt het aanleverpakket voor het bronhouderkoppelvlak klaar');
-        this.VoegModulesVoorMomentopnamenToe();
-        this.UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, 'De software verstuurt het aanleverpakket aan het bronhouderkoppelvlak');
+        if (this.#viaRevisie) {
+            this.UitvoeringMelding(Activiteit.Onderwerp_Invoer, `Na uitvoerige controle geeft een medewerker de revisie vrij voor doorgifte aan de LVBB`);
+            this.UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, 'De software maakt het aanleverpakket voor het bronhouderkoppelvlak klaar');
+            this.VoegModulesVoorMomentopnamenToe();
+            this.UitvoeringMelding(Activiteit.Onderwerp_Uitwisseling, 'De software verstuurt het aanleverpakket aan het bronhouderkoppelvlak');
+        }
     }
 
     VerwerkMomentopnameSpecificaties() {
+        // Bij een revisie is this.#wijzigBranch de branch waarop de samenloop opgelost wordt
         let overigeBranches = this.#teVoltooien.IWTMoment().Inwerkingtredingbranchcodes().filter(bc => bc !== this.#wijzigBranch.Code());
-
-        // Maak de momentopname waarop de invoer geschiedt
         let teVervlechten = [];
         if (this.#teVoltooien.HeeftSamenloopBijIWT()) {
             teVervlechten.push(...overigeBranches.map(bc => this.#teVoltooien.IWTMoment().LaatsteBijdrage(bc)));
         }
         teVervlechten.push(...this.#teVoltooien.TeVervlechten());
+
+        // Maak de momentopname waarop de invoer geschiedt
+        if (!this.#viaRevisie) {
+            // De specificatie bevat niet de gegevens van het type branch, maak die opnieuw
+            overigeBranches = [this.#wijzigBranch.Code(), ...overigeBranches];
+            teVervlechten = [this.#teVoltooien.IWTMoment().LaatsteBijdrage(this.#wijzigBranch.Code()), ...teVervlechten];
+            let spec = Object.assign({}, this.Specificatie()[this.Specificatie().Branch]);
+            let branch = Branch.MaakBranch(this, this.Project(), this.Specificatie().Branch, Branch.Soort_Consolidatie, teVervlechten.map(mo => mo.Branch()));
+            this.Specificatie()[this.Specificatie().Branch] = Object.assign(spec, branch.Specificatie());
+            branch.destructor();
+
+            // Maak nu de branch aan
+            this.#wijzigBranch = new Branch(this, this.Project(), this.Specificatie().Branch);
+            this.UitvoeringMelding(Activiteit.Onderwerp_Verwerking_Invoer, `De software maakt een nieuwe branch ${this.#wijzigBranch.Code()} aan om de oplossing van de samenloop te beheren`);
+            this.#wijzigBranch.PasSpecificatieToe();
+        }
         let bijgewerkt = super.VerwerkMomentopnameSpecificatie(this.#wijzigBranch.Code(), this.Specificatie(), false, this.#teVoltooien.TeOntvlechten(), teVervlechten);
 
-        // Verzamel alle branches die tot nu toe tegelijk beheerd werden, maar straks niet meer tegelijk met de iwt-branches
+        /**
+         * Verzamel alle branches die tot nu toe tegelijk beheerd werden 
+         * @type {Momentopname[]} */
         let werdenTegelijkBeheerd = [];
         if (bijgewerkt.TegelijkBeheerd()) {
             werdenTegelijkBeheerd.push(...bijgewerkt.TegelijkBeheerd().map(b => b.Code()));
         }
-        bijgewerkt.BeheerTegelijkMet();
+        /**
+         * Verzamel alle branches die vanaf nu toe tegelijk beheerd werden
+         * @type {Momentopname[]} */
+        let wordenTegelijkBeheerd = [bijgewerkt];
         if (overigeBranches.length > 0) {
             // Maak de momentopnamen voor de overige IWT-branches
             for (let branchcode of overigeBranches) {
                 let momentopname = super.VerwerkMomentopnameSpecificatie(branchcode, {});
+                wordenTegelijkBeheerd.push(momentopname);
                 if (momentopname.TegelijkBeheerd()) {
                     werdenTegelijkBeheerd.push(...momentopname.TegelijkBeheerd().map(b => b.Code()));
                 }
-                momentopname.BeheerTegelijkMet(bijgewerkt);
             }
+        }
+        for (let momentopname of wordenTegelijkBeheerd) {
+            momentopname.BeheerTegelijk(wordenTegelijkBeheerd);
+        }
+        if (this.#viaRevisie) {
+            bijgewerkt.IsOnderdeelVanPublicatieVastgesteldeInhoudWordt();
         }
 
         // Maak de momentopnamen die niet meer tegelijk beheerd worden
@@ -10069,7 +10467,11 @@ class Activiteit_VoltooiConsolidatie extends Activiteit {
             }
         }
     }
+    /** @type {Branch[]} */
+    #mergeBranches = [];
+    /** @type {Branch} */
     #wijzigBranch;
+    /** @type {IWTMomentConsolidatiestatus} */
     #teVoltooien;
     //#endregion
 
@@ -10110,9 +10512,35 @@ class Activiteit_VoltooiConsolidatie extends Activiteit {
         }
 
         html += `.</p>
+                 <p>
+                   <input type="checkbox" id="${this.ElementId('R')}"${this.#viaRevisie ? ' checked' : ''}${this.IsInvoer() ? '' : ' disabled'}>
+                   <label for="${this.ElementId('R')}">De onderliggende wijzigingen zijn juridisch onafhankelijk; oplossing van de samenloop vereist geen nieuw besluit.</label>
+                 </p>
                  ${this.Momentopnamen()[0].Html()}
                  ${this.EindeInnerHtml()}`;
         return html;
+    }
+
+    EindeInvoer(accepteerInvoer) {
+        if (accepteerInvoer) {
+            let wasRevisie = this.#viaRevisie;
+            this.#viaRevisie = this.Element('R').checked;
+            if (this.#viaRevisie !== wasRevisie) {
+                let momentopnameSpec = this.#wijzigBranch.Specificatie();
+                this.Specificatie()[this.#wijzigBranch.Code()] = undefined;
+                let branch;
+                if (this.#viaRevisie) {
+                    // Het was een aparte branch; nu niet meer
+                    branch = this.#wijzigBranch.VolgtOpBranch();
+                    momentopnameSpec.Soort = momentopnameSpec.Branches = undefined;
+                } else {
+                    // Het was een gewone branch, wordt een aparte branch
+                    branch = Branch.MaakBranch(this, this.Project(), undefined, Branch.Soort_Consolidatie, [this.#wijzigBranch, this.#mergeBranches.filter(b => b != this.#wijzigBranch)])
+                }
+                this.Specificatie()[branch.Code()] = momentopnameSpec;
+                // De activiteit wordt opnieuw vanuit de specificatie ingelezen, dan worden de overige properties goed gezet
+            }
+        }
     }
     //#endregion
 }
@@ -10137,6 +10565,7 @@ class Activiteit_Overig extends Activiteit {
     Naam() {
         return this.#naam.Specificatie() ?? '...';
     }
+    /** @type {string} */
     #naam;
     //#endregion
 

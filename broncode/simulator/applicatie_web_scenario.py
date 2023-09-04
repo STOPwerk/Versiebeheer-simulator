@@ -28,7 +28,6 @@ class ScenarioPostedDataIterator (ScenarioIterator):
         files {} Meegestuurde bestanden
         """
         super ().__init__()
-        self.MeldingenApart = False
         self._Log = log
         self._Data = []
         if not files is None and 'files[]' in files:

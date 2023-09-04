@@ -74,10 +74,11 @@ class WebApplicatie:
         """Voer de Simulator @LVBB uit"""
         generator = []
         def _MaakResultaatPagina (scenario : Scenario):
+            scenario.ResultaatPad = None
             if scenario.IsValide:
                 generator.append (ResultaatGenerator.MaakPagina (scenario, WebApplicatie.FAVICON))
         applicatieLog = Meldingen (True)
-        Scenario.VoorElkScenario (applicatieLog, ScenarioPostedDataIterator (applicatieLog, request.form, request.files), lambda s: Uitvoering.VoerUit (s, _MaakResultaatPagina))
+        Scenario.VoorElkScenario (applicatieLog, ScenarioPostedDataIterator (applicatieLog, request.form, request.files), lambda s: Uitvoering.VoerUit (s, _MaakResultaatPagina), False)
         if len (generator) > 0:
             generator = generator[0]
         else:
@@ -90,10 +91,11 @@ class WebApplicatie:
         """Voer de Simulator @LVBB uit voor een voorbeeld"""
         generator = []
         def _MaakResultaatPagina (scenario : Scenario):
+            scenario.ResultaatPad = None
             if scenario.IsValide:
                 generator.append (ResultaatGenerator.MaakPagina (scenario, WebApplicatie.FAVICON))
         applicatieLog = Meldingen (True)
-        Scenario.VoorElkScenario (applicatieLog, ScenarioMappenIterator (applicatieLog, [voorbeeldMapPad] , False), lambda s: Uitvoering.VoerUit (s, _MaakResultaatPagina))
+        Scenario.VoorElkScenario (applicatieLog, ScenarioMappenIterator (applicatieLog, [voorbeeldMapPad] , False), lambda s: Uitvoering.VoerUit (s, _MaakResultaatPagina), False)
         if len (generator) > 0:
             generator = generator[0]
         else:
