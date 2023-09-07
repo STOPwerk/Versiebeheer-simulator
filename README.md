@@ -1,6 +1,6 @@
 # Versiebeheer-simulator
 
-Huidige versie: `2023-09-07 13:01:08`.
+Huidige versie: `2023-09-07 13:02:50`.
 
 **Deze versie is gebaseerd op de release candidate van STOP 2.0. In afwachting van de uitkomsten van de bespreking van de release candidate is de (door-)ontwikkeling van deze simulator gepauzeerd.**
 
