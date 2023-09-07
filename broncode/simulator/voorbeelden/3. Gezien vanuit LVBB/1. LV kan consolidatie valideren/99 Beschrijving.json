@@ -1,0 +1,26 @@
+{
+    "Beschrijving": "<p>Demonstratie van de mogelijkheid van de LVBB om te valideren of de consolidatie door bevoegd gezag is afgerond. In dit voorbeeld worden kort na elkaar publicaties gedaan waarbij geen van de regelingversies in de publicaties de toekomstig geldende regelgeving weergeeft:<ol><li>Twee besluiten met een wijziging van de regeling zoals die ten tijde van de publicatie geldt</li><li>Een mededeling van een uitspraak van de rechter met een gedeeltelijke vernietiging van een eerder besluit.</li></ol>. Het bevoegd gezag heeft ervoor gekozen om de mededeling van de uitspraak (2) zo snel mogelijk te publiceren. De publicatie haalt daarmee de doorgifte van de revisie in die klaargemaakt was om de samenloop van de twee besluiten (1) op te lossen. In die revisie is nog niet het effect van de uitspraak van de rechter verwerkt, dat gebeurt in een volgende revisie. De LVBB kan zien dat de eerste revisie inderdaad nog niet alle wijzigingen bevat, maar dat de regelingversie uit de tweede revisie wel alle wijzigingen bevat.</p>",
+    "Uitwisselingen": [{
+            "naam": "Publicatie tweede besluit met dezelfde IWT",
+            "gemaaktOp": "2022-05-02T07:00:00Z",
+            "beschrijving": "De laatste van de twee besluiten met gelijktijdige IWT wordt gepubliceerd."
+        },
+		{
+            "naam": "Uitspraak rechter",
+            "gemaaktOp": "2022-05-03T07:00:00Z",
+            "beschrijving": "Mededeling uitspraak rechter, wijzigt de op dat moment geldende regelgeving. Toekomstig geldende regelgeving moet nog aangepast worden."
+        },
+		{
+            "naam": "Oplossen samenloop gelijke IWT",
+            "gemaaktOp": "2022-05-04T07:00:00Z",
+            "beschrijving": "Oplossen van de samenloop van de twee besluiten die tegelijk in werking treden. Samenloop met de uitspraak van de rechter wordt nog niet opgelost.",
+			"revisie": true
+        },
+		{
+            "naam": "Oplossen samenloop uitspraak rechter",
+            "gemaaktOp": "2022-05-07T07:00:00Z",
+            "beschrijving": "Doorwerking van de uitspraak van de rechter in toekomstig geldende regelgeving.",
+			"revisie": true
+        }
+	]
+}

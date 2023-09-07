@@ -455,6 +455,10 @@ table.activiteiten_overzicht { /* Selectielijst activiteiten */
     }
 
 
+.bgvbd_hidden {
+    display: none;
+}
+
 .bgvbd_naam_l {
     fill: none;
     stroke: #666666;

@@ -46,9 +46,6 @@ class ScenarioIterator:
         self.AantalScenarios = 0
         # Aantal scenario's dat met succes is uitgevoerd
         self.AantalSucces = 0
-        # Geeft aan dat de meldingen voor een scenario apart gehouden moeten wordn 
-        # van de meldingen voor de hele applicatie
-        self.MeldingenApart = True
 
     def VindElkScenario (self, lees_scenario):
         """Vind elk scenario en roep lees_scenario aan met de iterator als argument als een potentieel scenario gevonden is
@@ -192,21 +189,21 @@ class ScenarioMappenIterator (ScenarioIterator):
 class Scenario:
     
     @staticmethod
-    def VoorElkScenario (log : Meldingen, iterator: ScenarioIterator, voer_uit):
+    def VoorElkScenario (log : Meldingen, iterator: ScenarioIterator, voer_uit, meldingenApart : bool):
         """Voer het proces uit voor elk gevonden scenario
         
         Argumenten:
         log Meldingen  Verzameling van meldingen over het lokaliseren en uitvoeren van scenario's
-        directory_pad string[]  lijst met directories waarin de applicatie begint met zoeken naar scenario's
-        recursief boolean  Geeft aan dat er ook in subdirectories gezocht moet worden.
+        iterator ScenarioIterator  Iterator om over de verschillende scenario's te itereren
         voer_uit lambda(Scenario)  Methode die voor elk gevonden scenario uitgevoerd moet worden,
                                                en die True/False teruggeeft om succesvolle uitvoering aan te geven.
+        meldingenApart bool Geeft aan dat de meldingen voor het scenario in een eigen log gezet moeten worden
         """
         iterator.AantalScenarios = 0
         iterator.AantalSucces = 0
 
         def __LeesScenario (pad):
-            iterator.Scenario = scenario = Scenario (log, pad, iterator.MeldingenApart)
+            iterator.Scenario = scenario = Scenario (log, pad, meldingenApart)
             scenario._VoorScenario (iterator)
             if scenario.IsScenario:
                 iterator.AantalScenarios += 1
@@ -215,7 +212,7 @@ class Scenario:
                     succes = voer_uit (scenario)
                     log.Informatie ("Uitvoering afgerond voor het scenario in '" + scenario.Pad + "'")
                 else:
-                    if iterator.MeldingenApart:
+                    if meldingenApart:
                         log.Meldingen.extend (scenario.Log.Meldingen)
                     log.Fout ("Niet-valide invoer voor scenario in '" + scenario.Pad + "'")
                     succes = voer_uit (scenario)
@@ -255,6 +252,7 @@ class Scenario:
         log Meldingen  Verzameling van meldingen over het lokaliseren en uitvoeren van scenario's
         pad string  Pad naar de directory met de invoer voor het proces
         meldingenApart bool Geeft aan dat de meldingen voor het scenario in een eigen log gezet moeten worden
+        logMetTijd boolean  Geeft aan of bij de uitvoering van het scenario de executietijd gerapporteerd moet worden
         """
         #--------------------------------------------------------------
         # Invoer
