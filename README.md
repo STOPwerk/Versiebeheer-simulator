@@ -2,6 +2,8 @@
 
 Huidige versie: `@@@VERSIE@@@`.
 
+**Deze versie is gebaseerd op de release candidate van STOP 2.0. In afwachting van de uitkomsten van de bespreking van de release candidate is de (door-)ontwikkeling van deze simulator gepauzeerd.**
+
 ## Wat is het?
 Simulator die laat zien hoe het [STOP](@@@STOP_Documentatie_Url@@@)-versiebeheer gebruikt kan worden in de keten van adviesbureaus, bevoegd gezagen, landelijke voorzieningen en hun afnemers.
 
